@@ -17,6 +17,7 @@ Este documento explica as relações previstas no modelo conceitual e as regras 
 | USUARIO | cria | PERFIL_ANALISE | 1:N opcional no perfil |
 | REGULAMENTO | contextualiza | PERFIL_ANALISE | 1:N opcional no perfil |
 | PERFIL_ANALISE | recomenda | NATUREZA | N:N |
+| PERFIL_ANALISE | recomenda | HABILIDADE | N:N opcional |
 | REGULAMENTO | permite | FORMA | N:N |
 
 ## 2. Leitura das cardinalidades
@@ -67,6 +68,10 @@ Um regulamento pode contextualizar vários perfis competitivos. Um perfil person
 
 Um perfil pode recomendar uma ou mais naturezas. Uma natureza pode ser recomendada por diversos perfis.
 
+### PERFIL_ANALISE — HABILIDADE (N:N opcional)
+
+Um perfil pode recomendar uma ou mais habilidades, mas também pode deixar a habilidade em aberto. Uma habilidade pode ser recomendada por vários perfis.
+
 ### REGULAMENTO — FORMA (N:N)
 
 Um regulamento pode permitir várias formas, e uma forma pode aparecer em vários regulamentos. Essa relação deve refletir somente listas oficiais e precisa considerar as condições específicas do regulamento.
@@ -74,6 +79,8 @@ Um regulamento pode permitir várias formas, e uma forma pode aparecer em vário
 ## 3. Restrições que não são resolvidas apenas pela cardinalidade
 
 - A habilidade selecionada em POKEMON_CAPTURADO deve ser uma habilidade disponibilizada pela FORMA correspondente.
+- A forma associada a POKEMON_CAPTURADO deve estar marcada como capturável diretamente; formas temporárias de batalha não podem ser registradas como captura independente.
+- Se um perfil recomendar habilidades, a habilidade selecionada pelo usuário deve ser comparada com essa lista; ausência de recomendação não deve ser tratada automaticamente como erro.
 - Um perfil personalizado deve possuir um usuário proprietário.
 - Um perfil competitivo deve ser mantido pelo sistema e, quando depender de regras específicas, estar vinculado ao regulamento correspondente.
 - A soma e os limites de EV devem obedecer ao jogo e à geração selecionados.
