@@ -115,11 +115,12 @@ Representa um exemplar registrado por um usuário. O nome é mais abrangente que
 - apelido: apelido opcional.
 - nivel: nível, quando aplicável.
 - metodo_obtencao: capturado, transferido, recrutado ou outro método documentado.
+- jogo_origem: jogo em que foi obtido originalmente, quando conhecido.
 - data_registro: data do registro.
 - iv_hp, iv_ataque, iv_defesa, iv_atq_especial, iv_def_especial e iv_velocidade: valores individuais, quando o jogo utilizar IV.
 - ev_hp, ev_ataque, ev_defesa, ev_atq_especial, ev_def_especial e ev_velocidade: valores de esforço, quando o jogo utilizar EV.
 
-Cada registro pertence a um usuário e a um DADOS_FORMA_JOGO. Natureza e habilidade selecionada são opcionais quando não se aplicarem ao contexto.
+Cada registro pertence a um usuário e a um DADOS_FORMA_JOGO, que identifica o contexto atual de jogo. O jogo de origem é opcional, pois um Pokémon pode ter sido transferido. Natureza e habilidade selecionada são opcionais quando não se aplicarem ao contexto.
 
 **Nulo não é zero:** nulo significa não aplicável ou não informado; zero é um valor real.
 
@@ -176,6 +177,7 @@ A transformação liga dois registros de DADOS_FORMA_JOGO. Isso permite cataloga
 - DADOS_FORMA_JOGO 1:N HABILIDADE_FORMA_JOGO.
 - HABILIDADE 1:N HABILIDADE_FORMA_JOGO.
 - USUARIO 1:N POKEMON_COLECAO.
+- JOGO 1:N POKEMON_COLECAO, opcional no registro, como jogo de origem.
 - DADOS_FORMA_JOGO 1:N POKEMON_COLECAO.
 - NATUREZA 1:N POKEMON_COLECAO, opcional no registro.
 - HABILIDADE_FORMA_JOGO 1:N POKEMON_COLECAO, opcional no registro.
