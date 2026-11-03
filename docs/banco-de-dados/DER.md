@@ -15,6 +15,7 @@ erDiagram
     USUARIO o|--o{ PERFIL_ANALISE : cria
     REGULAMENTO o|--o{ PERFIL_ANALISE : contextualiza
     PERFIL_ANALISE }|--|{ NATUREZA : recomenda
+    PERFIL_ANALISE }o--o{ HABILIDADE : recomenda
     REGULAMENTO }o--o{ FORMA : permite
 
     USUARIO {
@@ -36,6 +37,7 @@ erDiagram
         int id_forma PK
         string nome_forma
         string categoria
+        boolean pode_ser_capturada
         float altura
         float peso
         int hp_base
@@ -108,6 +110,7 @@ erDiagram
         string jogo
         string formato
         string temporada
+        string geracao_mecanica
         date data_inicio
         date data_fim
         string fonte_oficial
@@ -121,4 +124,6 @@ erDiagram
 - `}|--|{` representa uma relação de muitos para muitos em que cada lado participa de pelo menos um relacionamento no catálogo.
 - Os relacionamentos opcionais de PERFIL_ANALISE com USUARIO e REGULAMENTO representam os perfis que podem ser mantidos pelo sistema e os perfis personalizados.
 - Limites como "uma forma pode ter no máximo dois tipos" não são expressos completamente pela notação do diagrama; são regras de negócio.
+- Uma forma só pode ser associada a POKEMON_CAPTURADO quando estiver marcada como capturável diretamente.
+- PERFIL_ANALISE pode recomendar habilidades, mas essa relação é opcional.
 - Este é um DER conceitual inicial. O modelo lógico ainda deverá converter as relações N:N em estruturas apropriadas e definir as chaves estrangeiras.
