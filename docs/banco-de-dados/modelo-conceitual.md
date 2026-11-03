@@ -73,8 +73,6 @@ Cada edição deve ter registro próprio quando disponibilidade ou regras pudere
 - status_iv: USA, NAO_USA ou NAO_VERIFICADO.
 - status_ev: USA, NAO_USA ou NAO_VERIFICADO.
 - status_natureza: USA, NAO_USA ou NAO_VERIFICADO.
-- iv_minimo e iv_maximo: limites de IV, quando aplicáveis.
-- ev_maximo_atributo e ev_maximo_total: limites de EV, quando aplicáveis.
 - sistema_treinamento: sistema próprio identificado.
 - formula_atributos: versão/referência da fórmula de cálculo.
 - vigencia_inicio e vigencia_fim: período, quando aplicável.
@@ -176,20 +174,34 @@ Representa o estado atual de um exemplar em um contexto específico.
 
 Um exemplar pode possuir estados em vários jogos. Deve existir no máximo um estado atual por combinação exemplar + mecânica. Quando evolui dentro daquele jogo, o registro do estado é atualizado para a forma de destino; não se cria um novo exemplar. Histórico de estados fica fora da primeira versão.
 
+### GRUPO_LIMITE_TREINAMENTO
+Define um limite agregado para um conjunto de atributos de treinamento em uma mecânica.
+- **id_grupo_limite:** identificador.
+- id_mecanica: contexto ao qual o grupo pertence.
+- codigo: código estável do grupo, como EV_TOTAL.
+- nome: descrição do grupo.
+- limite_total: valor máximo agregado.
+- unidade: unidade/escala usada.
+- fonte_url e data_verificacao.
+
+O limite total fica armazenado uma única vez. Os atributos que participam desse limite apontam para este grupo, evitando repetir a mesma regra em seis registros.
+
 ### ATRIBUTO_TREINAMENTO
 Define valores de treinamento existentes em uma mecânica.
 - **id_atributo_treinamento:** identificador.
 - id_mecanica: contexto.
+- id_grupo_limite: grupo agregado opcional.
 - codigo: código estável.
 - categoria: IV, EV, TREINAMENTO_PROPRIO ou outra categoria documentada.
 - atributo: HP, ataque, defesa, ataque especial, defesa especial, velocidade ou outro atributo.
 - nome_exibicao: rótulo da interface.
+- tipo_valor: INTEIRO ou DECIMAL.
 - unidade: unidade/escala.
 - valor_minimo e valor_maximo: limites individuais.
-- grupo_validacao e limite_grupo: agrupamento/limite agregado, quando aplicável.
+- incremento: passo permitido entre valores.
 - fonte_url e data_verificacao.
 
-Não criar atributos antes de conhecer sua definição, escala e limites. Isso permite contextos de treinamento distintos sem conversão implícita.
+Não criar atributos antes de conhecer sua definição, escala, limites e incremento. Isso permite contextos de treinamento distintos sem conversão implícita.
 
 ### VALOR_TREINAMENTO_POKEMON
 Registra o valor de treinamento de um estado.
@@ -306,6 +318,8 @@ Transformação e evolução são relações distintas. Transformação não cri
 - DADOS_FORMA_JOGO 1:N POKEMON_ESTADO_JOGO.
 - NATUREZA 0:N POKEMON_ESTADO_JOGO.
 - HABILIDADE_FORMA_JOGO 0:N POKEMON_ESTADO_JOGO.
+- MECANICA_JOGO 1:N GRUPO_LIMITE_TREINAMENTO.
+- GRUPO_LIMITE_TREINAMENTO 0:N ATRIBUTO_TREINAMENTO.
 - MECANICA_JOGO 1:N ATRIBUTO_TREINAMENTO.
 - POKEMON_ESTADO_JOGO 1:N VALOR_TREINAMENTO_POKEMON.
 - ATRIBUTO_TREINAMENTO 1:N VALOR_TREINAMENTO_POKEMON.
