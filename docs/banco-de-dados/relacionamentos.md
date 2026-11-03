@@ -10,6 +10,7 @@
 | DADOS_FORMA_JOGO | disponibiliza | HABILIDADE_FORMA_JOGO | 1:N |
 | HABILIDADE | aparece em | HABILIDADE_FORMA_JOGO | 1:N |
 | USUARIO | possui | POKEMON_COLECAO | 1:N |
+| JOGO | é origem de | POKEMON_COLECAO | 1:N opcional no registro |
 | DADOS_FORMA_JOGO | representa | POKEMON_COLECAO | 1:N |
 | NATUREZA | caracteriza | POKEMON_COLECAO | 1:N opcional no registro |
 | HABILIDADE_FORMA_JOGO | é selecionada em | POKEMON_COLECAO | 1:N opcional no registro |
@@ -49,6 +50,10 @@ Uma habilidade pode aparecer em muitas formas/jogos. Cada opção de habilidade 
 
 ### USUARIO — POKEMON_COLECAO (1:N)
 Um usuário pode registrar nenhum, um ou muitos Pokémon. Cada registro pertence a exatamente um usuário.
+
+### JOGO — POKEMON_COLECAO (1:N, opcional no registro)
+
+Um jogo pode ser a origem de muitos registros da coleção. Um registro pode informar zero ou um jogo de origem, pois a origem pode ser desconhecida ou o registro pode representar um Pokémon recrutado no contexto atual.
 
 ### DADOS_FORMA_JOGO — POKEMON_COLECAO (1:N)
 Um contexto de forma/jogo pode ser usado por muitos exemplares. Cada exemplar está vinculado a exatamente um contexto. O método de obtenção distingue captura, transferência ou recrutamento.
