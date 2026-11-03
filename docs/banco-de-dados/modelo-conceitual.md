@@ -1,154 +1,217 @@
 # Modelo conceitual do banco de dados
 
 **Projeto:** PokéAnalyzer  
-**Etapa:** modelo conceitual inicial  
-**Notação:** Entidade-Relacionamento (ER)
+**Versão:** 2.0  
+**Etapa:** revisão do modelo conceitual
 
-## 1. Objetivo do modelo
+## 1. Objetivo
 
-Representar os dados necessários para manter o catálogo da Pokédex, as contas dos usuários, suas coleções e os perfis usados pelo analisador.
+O banco sustenta três partes do sistema:
 
-O modelo conceitual descreve entidades, atributos e relacionamentos. Chaves estrangeiras e tabelas associativas serão detalhadas no modelo lógico.
+1. **Pokédex global:** espécies e todas as formas oficiais catalogadas.
+2. **Dados por jogo:** estatísticas, tipos, habilidades, disponibilidade e mecânicas específicas de cada jogo.
+3. **Coleção e análise:** Pokémon registrados por usuários, perfis de comparação e regulamentos competitivos.
 
-## 2. Entidades
+A separação evita assumir que uma forma existe em todos os jogos, que seus atributos são sempre iguais ou que toda espécie é permitida em qualquer competição.
+
+## 2. Contexto adotado
+
+A referência principal para IV, EV e natureza será Pokémon Scarlet e Pokémon Violet, da Geração IX. Pokémon Champions será registrado como jogo de batalha separado, com recrutamento e treinamento próprios. Pokémon Legends: Z-A também terá seu próprio contexto de mecânicas.
+
+Winds e Waves estão previstos para 2027 e não terão regras cadastradas até que sejam lançados e documentados oficialmente.
+
+**Regra central:** nunca converter os valores de treinamento de um jogo para IV/EV de outro sem equivalência oficial documentada.
+
+## 3. Entidades
 
 ### USUARIO
-
-Representa uma conta no website.
-
-- **id_usuario:** identificador do usuário.
-- nome_usuario: nome público/identificação.
-- email: endereço usado para acesso.
-- senha_hash: hash da senha, nunca a senha original.
-- data_cadastro: data de criação da conta.
+- **id_usuario:** identificador.
+- nome_usuario: nome público.
+- email: e-mail de acesso, único.
+- senha_hash: hash seguro da senha.
+- data_cadastro: data de criação.
 
 ### ESPECIE
-
-Representa uma espécie da Pokédex Nacional.
-
 - **numero_nacional:** número nacional da espécie.
 - nome_pt: nome em português.
 - nome_en: nome em inglês.
-- geracao: geração de estreia.
+- geracao_origem: geração em que foi introduzida.
 
-A espécie é separada de suas formas para evitar tratar cada variação como uma espécie independente.
+Uma espécie é distinta de suas formas. Formas regionais ou de batalha não recebem novo número nacional.
 
 ### FORMA
-
-Representa uma forma ou variação catalogada de uma espécie.
-
-- **id_forma:** identificador da forma.
+- **id_forma:** identificador.
 - nome_forma: nome ou identificação da forma.
-- categoria: classificação, como forma padrão, regional ou especial.
-- pode_ser_capturada: indica se a forma pode ser registrada diretamente como captura; formas de transformação temporária podem ter valor falso.
-- altura: altura de referência.
-- peso: peso de referência.
-- hp_base: HP base.
-- ataque_base: Ataque base.
-- defesa_base: Defesa base.
-- ataque_especial_base: Ataque Especial base.
-- defesa_especial_base: Defesa Especial base.
-- velocidade_base: Velocidade base.
-- imagem_url: referência visual, quando disponível.
+- categoria: padrão, regional, gênero, sazonal, cosmética, batalha ou outra categoria documentada.
+- descricao: explicação da diferença.
+- forma_padrao: indica a forma padrão.
+- referencia_visual: referência visual, quando disponível.
 
-A forma padrão também deve ser registrada. Variações apenas cosméticas podem compartilhar os mesmos dados de batalha, evitando duplicação desnecessária.
+Todas as formas oficiais entram no catálogo global. Estatísticas, tipos, habilidades e disponibilidade ficam em DADOS_FORMA_JOGO, pois podem variar entre jogos.
+
+### JOGO
+- **id_jogo:** identificador.
+- nome: título oficial.
+- categoria: série principal, jogo de batalha ou spin-off.
+- geracao: geração associada, quando aplicável.
+- plataforma: plataforma oficial.
+- data_lancamento: data de lançamento, quando disponível.
+
+### MECANICA_JOGO
+- **id_mecanica:** identificador.
+- versao: nome ou versão das regras.
+- usa_iv: indica se o contexto utiliza IV; pode ficar não definido enquanto não houver confirmação.
+- usa_ev: indica se o contexto utiliza EV; pode ficar não definido enquanto não houver confirmação.
+- usa_natureza: indica se o contexto utiliza natureza; pode ficar não definido enquanto não houver confirmação.
+- iv_minimo e iv_maximo: limites aplicáveis, quando existentes.
+- ev_maximo_atributo: limite individual, quando existente.
+- ev_maximo_total: limite total, quando existente.
+- sistema_treinamento: descrição do sistema de treinamento do jogo.
+- fonte_regras: URL ou referência oficial.
+- data_inicio e data_fim: período de validade, quando aplicável.
+
+Cada versão de mecânicas pertence a um jogo. Um jogo pode ter mais de uma versão documentada ao longo do tempo.
+
+### DADOS_FORMA_JOGO
+Representa como uma forma aparece em um contexto específico de mecânicas.
+- **id_dados_forma:** identificador.
+- status_disponibilidade: disponível, transferível, indisponível ou não verificado.
+- metodo_obtencao: captura, evolução, transferência, recrutamento, transformação ou outro método documentado.
+- pode_ser_registrada: indica se pode ser registrada como exemplar independente.
+- altura e peso: valores do contexto do jogo.
+- hp_base, ataque_base, defesa_base, ataque_especial_base, defesa_especial_base e velocidade_base: atributos-base.
+- fonte_dados: referência da origem dos dados.
+
+Esta entidade liga FORMA a MECANICA_JOGO. Se os dados não estiverem verificados, o sistema não inventará estatísticas nem concluirá automaticamente que a forma é proibida.
 
 ### TIPO
-
-Representa um tipo elemental.
-
-- **id_tipo:** identificador do tipo.
+- **id_tipo:** identificador.
 - nome_tipo: nome do tipo.
 
 ### HABILIDADE
-
-Representa uma habilidade existente no catálogo.
-
-- **id_habilidade:** identificador da habilidade.
-- nome: nome da habilidade.
+- **id_habilidade:** identificador.
+- nome: nome oficial.
 - descricao: descrição resumida.
 
+### HABILIDADE_FORMA_JOGO
+Entidade associativa entre DADOS_FORMA_JOGO e HABILIDADE.
+- **id_habilidade_forma:** identificador.
+- slot: habilidade normal, oculta ou outra posição documentada.
+- condicao: condição de obtenção ou uso, quando aplicável.
+
+Isso impede que o usuário selecione uma habilidade que não esteja disponível naquela forma e naquele jogo.
+
 ### NATUREZA
-
-Representa uma das naturezas existentes nos jogos compatíveis.
-
-- **id_natureza:** identificador da natureza.
+- **id_natureza:** identificador.
 - nome: nome da natureza.
-- atributo_aumentado: atributo favorecido.
-- atributo_reduzido: atributo prejudicado.
+- atributo_aumentado: atributo favorecido, quando aplicável.
+- atributo_reduzido: atributo prejudicado, quando aplicável.
 
-Naturezas neutras não aumentam nem reduzem atributos; nesse caso, os dois campos podem representar ausência de alteração.
+Naturezas neutras não aumentam nem reduzem atributos. Os efeitos devem respeitar MECANICA_JOGO.
 
-### POKEMON_CAPTURADO
-
-Representa um exemplar registrado por um usuário.
-
-- **id_capturado:** identificador do registro.
+### POKEMON_COLECAO
+Representa um exemplar registrado por um usuário. O nome é mais abrangente que POKEMON_CAPTURADO porque alguns jogos usam transferência ou recrutamento.
+- **id_pokemon_colecao:** identificador.
 - apelido: apelido opcional.
-- nivel: nível atual.
-- iv_hp, iv_ataque, iv_defesa, iv_atq_especial, iv_def_especial, iv_velocidade: valores individuais.
-- ev_hp, ev_ataque, ev_defesa, ev_atq_especial, ev_def_especial, ev_velocidade: valores de esforço.
+- nivel: nível, quando aplicável.
+- metodo_obtencao: capturado, transferido, recrutado ou outro método documentado.
+- data_registro: data do registro.
+- iv_hp, iv_ataque, iv_defesa, iv_atq_especial, iv_def_especial e iv_velocidade: valores individuais, quando o jogo utilizar IV.
+- ev_hp, ev_ataque, ev_defesa, ev_atq_especial, ev_def_especial e ev_velocidade: valores de esforço, quando o jogo utilizar EV.
 
-Cada registro pertence a um usuário, corresponde a uma forma, possui uma natureza e registra a habilidade selecionada.
+Cada registro pertence a um usuário e a um DADOS_FORMA_JOGO. Natureza e habilidade selecionada são opcionais quando não se aplicarem ao contexto.
+
+**Nulo não é zero:** nulo significa não aplicável ou não informado; zero é um valor real.
 
 ### PERFIL_ANALISE
-
 Representa uma configuração usada como objetivo de comparação.
-
-- **id_perfil:** identificador do perfil.
-- nome_perfil: nome do perfil.
-- descricao: finalidade e estratégia.
+- **id_perfil:** identificador.
+- nome_perfil: nome.
+- descricao: finalidade.
 - tipo_perfil: competitivo ou personalizado.
-- iv_hp_ideal, iv_ataque_ideal, iv_defesa_ideal, iv_atq_especial_ideal, iv_def_especial_ideal, iv_velocidade_ideal: referências de IV, quando aplicáveis.
-- ev_hp, ev_ataque, ev_defesa, ev_atq_especial, ev_def_especial, ev_velocidade: distribuição de EV de referência.
-- naturezas recomendadas: relacionamento com NATUREZA.
-- habilidades recomendadas: relacionamento com HABILIDADE.
+- iv_hp_ideal, iv_ataque_ideal, iv_defesa_ideal, iv_atq_especial_ideal, iv_def_especial_ideal e iv_velocidade_ideal: referências opcionais.
+- ev_hp, ev_ataque, ev_defesa, ev_atq_especial, ev_def_especial e ev_velocidade: distribuição de referência opcional.
 
-Um perfil competitivo é mantido pelo sistema e pode estar relacionado a um regulamento. Um perfil personalizado pertence a um usuário. A entidade também se relaciona com a forma para a qual foi criada.
+Cada perfil aponta para um DADOS_FORMA_JOGO específico. Perfil personalizado pertence a um usuário. Perfil competitivo mantido pelo sistema não tem proprietário e deve indicar o regulamento quando for específico de uma competição. Naturezas e habilidades recomendadas são relacionamentos opcionais.
 
 ### REGULAMENTO
-
-Representa um conjunto publicado de regras competitivas.
-
 - **id_regulamento:** identificador.
-- nome: nome ou código oficial.
-- jogo: título/jogo aplicável.
-- formato: formato competitivo.
+- codigo: código oficial.
+- nome: nome.
+- formato: individual, duplas ou outro formato documentado.
 - temporada: temporada ou série.
-- geracao_mecanica: geração ou conjunto de mecânicas usado como referência para cálculos.
-- data_inicio: início de vigência, quando informado.
-- data_fim: fim de vigência, quando informado.
-- fonte_oficial: URL ou referência documental.
-- ativo: indicador administrativo de vigência no catálogo.
+- data_inicio e data_fim: período de vigência.
+- fonte_oficial: URL ou referência oficial.
+- data_consulta: data da última verificação.
 
-## 3. Identificadores
+Cada regulamento pertence a uma MECANICA_JOGO específica.
 
-Os atributos em negrito são os identificadores conceituais de cada entidade. No modelo lógico serão convertidos em chaves primárias.
+### ELEGIBILIDADE_REGULAMENTO
+Entidade associativa entre REGULAMENTO e DADOS_FORMA_JOGO.
+- **id_elegibilidade:** identificador.
+- status: permitido, restrito, proibido, condicional ou não verificado.
+- condicao: restrição ou condição aplicável.
+- fonte_verificacao: referência que sustenta a classificação.
+- data_verificacao: data da verificação.
 
-## 4. Decisões de simplificação
+A elegibilidade é específica para um regulamento. A presença na Pokédex não implica permissão competitiva.
 
-- Os seis IVs e seis EVs ficam como atributos de POKEMON_CAPTURADO e PERFIL_ANALISE nesta versão didática. Uma futura versão poderia normalizá-los em uma entidade de atributo/valor, mas isso aumentaria a complexidade.
-- A relação entre forma e tipo é N:N, pois uma forma pode ter um ou dois tipos e cada tipo aparece em muitas formas.
-- A relação entre forma e habilidade é N:N, pois uma habilidade pode estar disponível em várias formas e uma forma pode disponibilizar várias habilidades.
-- A habilidade selecionada no Pokémon capturado será uma relação separada. A regra de negócio exige que ela esteja entre as habilidades disponíveis para a forma.
-- Perfis de análise podem recomendar habilidades por meio de um relacionamento N:N com HABILIDADE.
-- FORMA inclui a indicação de captura direta para distinguir formas que podem ser registradas na coleção de transformações temporárias, como Mega Evoluções.
-- Uma análise pode ser calculada na hora e não precisa ser armazenada nesta primeira versão.
-- Não haverá entidade de equipe, golpes ou itens na primeira entrega.
+### TRANSFORMACAO_FORMA
+Representa uma transformação de uma forma de origem em uma forma de destino.
+- **id_transformacao:** identificador.
+- tipo_transformacao: Mega Evolução ou outro estado especial.
+- condicao: condição necessária.
+- item_requerido: item necessário, quando aplicável.
+- observacao: detalhes adicionais.
 
-## 5. Regras de negócio importantes
+A transformação liga dois registros de DADOS_FORMA_JOGO. Isso permite catalogar formas de batalha sem tratá-las automaticamente como capturas independentes.
 
-1. Uma espécie possui uma ou mais formas catalogadas.
-2. Uma forma pertence a exatamente uma espécie.
-3. Uma forma possui um ou dois tipos.
-4. Um Pokémon capturado pertence a exatamente um usuário.
-5. Um Pokémon capturado corresponde a exatamente uma forma.
-6. Um Pokémon capturado possui exatamente uma natureza e uma habilidade selecionada.
-7. A habilidade selecionada deve ser compatível com a forma.
-8. A forma vinculada a um Pokémon capturado deve permitir captura direta.
-9. Um perfil pode recomendar uma ou mais habilidades, ou não especificar habilidade.
-10. Um perfil de análise corresponde a uma forma.
-11. Um perfil personalizado pertence a exatamente um usuário.
-12. Um perfil competitivo pode estar associado a um regulamento e não pertence a um usuário.
-13. Um perfil pode aceitar uma ou mais naturezas e pode recomendar habilidades.
-14. A permissão de uma forma em um regulamento deve ser registrada apenas quando houver fonte oficial verificável.
+## 4. Relacionamentos principais
+
+- ESPECIE 1:N FORMA.
+- FORMA 1:N DADOS_FORMA_JOGO.
+- JOGO 1:N MECANICA_JOGO.
+- MECANICA_JOGO 1:N DADOS_FORMA_JOGO.
+- DADOS_FORMA_JOGO N:N TIPO.
+- DADOS_FORMA_JOGO 1:N HABILIDADE_FORMA_JOGO.
+- HABILIDADE 1:N HABILIDADE_FORMA_JOGO.
+- USUARIO 1:N POKEMON_COLECAO.
+- DADOS_FORMA_JOGO 1:N POKEMON_COLECAO.
+- NATUREZA 1:N POKEMON_COLECAO, opcional no registro.
+- HABILIDADE_FORMA_JOGO 1:N POKEMON_COLECAO, opcional no registro.
+- DADOS_FORMA_JOGO 1:N PERFIL_ANALISE.
+- USUARIO 1:N PERFIL_ANALISE, opcional no perfil.
+- MECANICA_JOGO 1:N REGULAMENTO.
+- REGULAMENTO 1:N ELEGIBILIDADE_REGULAMENTO.
+- DADOS_FORMA_JOGO 1:N ELEGIBILIDADE_REGULAMENTO.
+- PERFIL_ANALISE N:N NATUREZA, opcional.
+- PERFIL_ANALISE N:N HABILIDADE_FORMA_JOGO, opcional.
+- REGULAMENTO 1:N PERFIL_ANALISE, opcional no perfil.
+- DADOS_FORMA_JOGO 1:N TRANSFORMACAO_FORMA como origem e 1:N como destino.
+
+## 5. Regras de negócio
+
+1. Uma espécie possui uma ou mais formas; cada forma pertence a uma espécie.
+2. Uma forma pode ter dados em vários jogos.
+3. A disponibilidade é específica do jogo.
+4. Uma forma possui um ou dois tipos no contexto aplicável.
+5. As habilidades disponíveis dependem da forma e do jogo.
+6. Cada Pokémon da coleção pertence a um usuário.
+7. Cada registro de coleção representa uma forma em um contexto de jogo.
+8. Um perfil de análise deve apontar para a forma e as mecânicas que avalia.
+9. Perfil personalizado deve ter proprietário.
+10. Perfil competitivo específico deve apontar para o regulamento correspondente.
+11. A mesma forma pode ser permitida em um regulamento e proibida em outro.
+12. Elegibilidade deve ter fonte e data de verificação.
+13. Transformação temporária não é automaticamente uma captura independente.
+14. IV/EV só são exigidos se as mecânicas selecionadas os utilizarem.
+15. Habilidade selecionada deve ser compatível com a forma e o jogo.
+16. Dados desconhecidos permanecem desconhecidos; nunca preencher com valores presumidos.
+
+## 6. Decisões de simplificação controlada
+
+- Os seis IVs e seis EVs permanecem como atributos separados para facilitar a explicação escolar.
+- Tipos, habilidades e disponibilidade ficam ligados a DADOS_FORMA_JOGO, não à FORMA global.
+- Relações N:N serão convertidas em tabelas associativas no modelo lógico.
+- A análise será calculada quando solicitada; o histórico de relatórios fica fora da primeira versão.
+- O treinamento próprio de Champions não será convertido em IV/EV sem equivalência oficial confirmada.
