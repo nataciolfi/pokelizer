@@ -41,6 +41,7 @@ As tecnologias ainda são uma decisão de planejamento, não uma implementação
 - [Escopo do projeto](docs/escopo.md)
 - [Requisitos](docs/requisitos.md)
 - [Modelo conceitual](docs/banco-de-dados/modelo-conceitual.md)
+- [Revisão e fechamento do DER](docs/banco-de-dados/revisao-der.md)
 - [Relacionamentos e cardinalidades](docs/banco-de-dados/relacionamentos.md)
 - [Diagrama Entidade-Relacionamento](docs/banco-de-dados/DER.md)
 - [Decisões técnicas](docs/decisoes-tecnicas.md)
