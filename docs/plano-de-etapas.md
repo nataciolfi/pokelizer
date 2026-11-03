@@ -75,6 +75,7 @@
 - [ ] Testar formas, transformações e métodos de obtenção.
 
 ## Etapa 7 — Testes e entrega
+- [ ] Implementar os cenários descritos em [casos-de-teste.md](testes/casos-de-teste.md).
 - [ ] Testar unidade dos cálculos e validadores.
 - [ ] Testar integração banco/backend.
 - [ ] Testar fluxo completo no navegador.
