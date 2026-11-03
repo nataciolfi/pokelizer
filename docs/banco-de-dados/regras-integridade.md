@@ -85,15 +85,18 @@ O limite de dois tipos pode exigir validação transacional no serviço ou gatil
 
 ## 9. Atributos e valores de treinamento
 
-1. ATRIBUTO_TREINAMENTO pertence a uma MECANICA_JOGO.
-2. Código do atributo é único dentro da mecânica.
-3. Cada valor pertence a um estado e a um atributo compatível.
-4. Estado + atributo é único.
-5. Valor respeita mínimo e máximo do atributo.
-6. Limites individuais são verificados no banco ou serviço.
-7. Limites totais/grupos exigem validação transacional no serviço e testes.
-8. Atributo não cadastrado não é presumido como zero.
-9. IV, EV e treinamento próprio são categorias distintas.
+1. GRUPO_LIMITE_TREINAMENTO pertence a uma MECANICA_JOGO.
+2. Código do grupo é único dentro da mecânica.
+3. ATRIBUTO_TREINAMENTO pertence a uma MECANICA_JOGO e pode apontar para um grupo daquela mesma mecânica.
+4. Código do atributo é único dentro da mecânica.
+5. Cada atributo define tipo numérico, unidade, mínimo, máximo e incremento quando conhecidos.
+6. Cada valor pertence a um estado e a um atributo compatível.
+7. Estado + atributo é único.
+8. Valor respeita mínimo, máximo e incremento do atributo.
+9. Limites agregados são armazenados uma única vez no grupo, não repetidos em MECANICA_JOGO ou em cada atributo.
+10. Soma do grupo é verificada em transação no serviço e coberta por testes.
+11. Atributo não cadastrado não é presumido como zero.
+12. IV, EV e treinamento próprio são categorias distintas.
 
 ## 10. Perfis de análise
 
