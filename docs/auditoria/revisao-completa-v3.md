@@ -159,7 +159,16 @@ A especificação corrigida está em [wireframes.md](../design/wireframes.md). O
 - Registrar fontes e datas.
 - Implementar primeiro cálculo validado para Scarlet/Violet.
 
-## 9. O que não foi alterado nem alegado
+## 9. Verificação de normalização do treinamento
+
+Na checagem final da própria proposta v3, foi identificada uma duplicação potencial: armazenar limites IV/EV em MECANICA_JOGO e repetir limites individuais/agregados em ATRIBUTO_TREINAMENTO criaria fontes de verdade concorrentes. Essa duplicação foi removida antes da publicação da revisão.
+
+- Limites individuais, unidade, tipo numérico e incremento ficam em ATRIBUTO_TREINAMENTO.
+- Limites agregados ficam uma única vez em GRUPO_LIMITE_TREINAMENTO.
+- Cada atributo pode referenciar um grupo da mesma mecânica.
+- O serviço valida a soma do grupo dentro de uma transação.
+
+## 10. O que não foi alterado nem alegado
 
 - Não existe backend implementado.
 - Não existe frontend implementado.
