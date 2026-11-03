@@ -1,22 +1,33 @@
 # Diagrama Entidade-Relacionamento
 
-Este diagrama é a representação visual inicial do modelo conceitual. Ele usa a sintaxe ER do Mermaid para ficar versionado em texto e poder ser visualizado diretamente no GitHub.
+**Versão:** 2.0  
+**Status:** modelo conceitual revisado
+
+O diagrama separa o catálogo global, os dados por jogo, a coleção dos usuários e a elegibilidade competitiva.
 
 ```mermaid
 erDiagram
-    USUARIO ||--o{ POKEMON_CAPTURADO : possui
+    USUARIO ||--o{ POKEMON_COLECAO : possui
     ESPECIE ||--|{ FORMA : possui
-    FORMA }|--|{ TIPO : possui
-    FORMA }o--|{ HABILIDADE : disponibiliza
-    FORMA ||--o{ POKEMON_CAPTURADO : representa
-    NATUREZA ||--o{ POKEMON_CAPTURADO : caracteriza
-    HABILIDADE ||--o{ POKEMON_CAPTURADO : selecionada
-    FORMA ||--o{ PERFIL_ANALISE : orienta
-    USUARIO o|--o{ PERFIL_ANALISE : cria
-    REGULAMENTO o|--o{ PERFIL_ANALISE : contextualiza
-    PERFIL_ANALISE }|--|{ NATUREZA : recomenda
-    PERFIL_ANALISE }o--o{ HABILIDADE : recomenda
-    REGULAMENTO }o--o{ FORMA : permite
+    FORMA ||--o{ DADOS_FORMA_JOGO : recebe_dados
+    JOGO ||--|{ MECANICA_JOGO : possui
+    MECANICA_JOGO ||--o{ DADOS_FORMA_JOGO : define
+    DADOS_FORMA_JOGO }|--|{ TIPO : possui
+    DADOS_FORMA_JOGO ||--o{ HABILIDADE_FORMA_JOGO : disponibiliza
+    HABILIDADE ||--o{ HABILIDADE_FORMA_JOGO : aparece
+    DADOS_FORMA_JOGO ||--o{ POKEMON_COLECAO : identifica
+    NATUREZA |o--o{ POKEMON_COLECAO : caracteriza
+    HABILIDADE_FORMA_JOGO |o--o{ POKEMON_COLECAO : selecionada
+    DADOS_FORMA_JOGO ||--o{ PERFIL_ANALISE : recebe_perfil
+    USUARIO |o--o{ PERFIL_ANALISE : cria
+    MECANICA_JOGO ||--o{ REGULAMENTO : recebe
+    REGULAMENTO ||--o{ ELEGIBILIDADE_REGULAMENTO : define
+    DADOS_FORMA_JOGO ||--o{ ELEGIBILIDADE_REGULAMENTO : avaliada
+    PERFIL_ANALISE }o--o{ NATUREZA : recomenda
+    PERFIL_ANALISE }o--o{ HABILIDADE_FORMA_JOGO : recomenda
+    REGULAMENTO |o--o{ PERFIL_ANALISE : contextualiza
+    DADOS_FORMA_JOGO ||--o{ TRANSFORMACAO_FORMA : origem
+    DADOS_FORMA_JOGO ||--o{ TRANSFORMACAO_FORMA : destino
 
     USUARIO {
         int id_usuario PK
@@ -30,14 +41,48 @@ erDiagram
         int numero_nacional PK
         string nome_pt
         string nome_en
-        int geracao
+        int geracao_origem
     }
 
     FORMA {
         int id_forma PK
         string nome_forma
         string categoria
-        boolean pode_ser_capturada
+        string descricao
+        boolean forma_padrao
+        string referencia_visual
+    }
+
+    JOGO {
+        int id_jogo PK
+        string nome
+        string categoria
+        int geracao
+        string plataforma
+        date data_lancamento
+    }
+
+    MECANICA_JOGO {
+        int id_mecanica PK
+        string versao
+        boolean usa_iv
+        boolean usa_ev
+        boolean usa_natureza
+        int iv_minimo
+        int iv_maximo
+        int ev_maximo_atributo
+        int ev_maximo_total
+        string sistema_treinamento
+        string fonte_regras
+        date data_inicio
+        date data_fim
+    }
+
+    DADOS_FORMA_JOGO {
+        int id_dados_forma PK
+        string status_disponibilidade
+        string metodo_obtencao
+        boolean pode_ser_registrada
         float altura
         float peso
         int hp_base
@@ -46,7 +91,7 @@ erDiagram
         int ataque_especial_base
         int defesa_especial_base
         int velocidade_base
-        string imagem_url
+        string fonte_dados
     }
 
     TIPO {
@@ -60,6 +105,12 @@ erDiagram
         string descricao
     }
 
+    HABILIDADE_FORMA_JOGO {
+        int id_habilidade_forma PK
+        string slot
+        string condicao
+    }
+
     NATUREZA {
         int id_natureza PK
         string nome
@@ -67,10 +118,12 @@ erDiagram
         string atributo_reduzido
     }
 
-    POKEMON_CAPTURADO {
-        int id_capturado PK
+    POKEMON_COLECAO {
+        int id_pokemon_colecao PK
         string apelido
         int nivel
+        string metodo_obtencao
+        date data_registro
         int iv_hp
         int iv_ataque
         int iv_defesa
@@ -106,24 +159,51 @@ erDiagram
 
     REGULAMENTO {
         int id_regulamento PK
+        string codigo
         string nome
-        string jogo
         string formato
         string temporada
-        string geracao_mecanica
         date data_inicio
         date data_fim
         string fonte_oficial
-        boolean ativo
+        date data_consulta
+    }
+
+    ELEGIBILIDADE_REGULAMENTO {
+        int id_elegibilidade PK
+        string status
+        string condicao
+        string fonte_verificacao
+        date data_verificacao
+    }
+
+    TRANSFORMACAO_FORMA {
+        int id_transformacao PK
+        string tipo_transformacao
+        string condicao
+        string item_requerido
+        string observacao
     }
 ```
 
-## Observações
+## Como interpretar
 
-- `||--o{` representa um lado obrigatório e único ligado a zero ou muitos registros do outro lado.
-- `}|--|{` representa uma relação de muitos para muitos em que cada lado participa de pelo menos um relacionamento no catálogo.
-- Os relacionamentos opcionais de PERFIL_ANALISE com USUARIO e REGULAMENTO representam os perfis que podem ser mantidos pelo sistema e os perfis personalizados.
-- Limites como "uma forma pode ter no máximo dois tipos" não são expressos completamente pela notação do diagrama; são regras de negócio.
-- Uma forma só pode ser associada a POKEMON_CAPTURADO quando estiver marcada como capturável diretamente.
-- PERFIL_ANALISE pode recomendar habilidades, mas essa relação é opcional.
-- Este é um DER conceitual inicial. O modelo lógico ainda deverá converter as relações N:N em estruturas apropriadas e definir as chaves estrangeiras.
+- ESPECIE e FORMA descrevem o catálogo global.
+- DADOS_FORMA_JOGO guarda estatísticas, tipos, habilidades e disponibilidade no contexto de um jogo/mecânica.
+- MECANICA_JOGO registra quais sistemas e limites se aplicam.
+- POKEMON_COLECAO guarda um exemplar sem presumir que todos os jogos utilizem captura, IV ou EV.
+- PERFIL_ANALISE aponta para uma forma em um contexto específico.
+- REGULAMENTO e ELEGIBILIDADE_REGULAMENTO separam a presença na Pokédex da permissão competitiva.
+- TRANSFORMACAO_FORMA liga a forma original à forma transformada.
+
+## Regras importantes
+
+1. Campos de IV/EV podem ser nulos quando não se aplicarem; nulo não equivale a zero.
+2. Uma forma catalogada não precisa estar disponível em todos os jogos.
+3. Uma forma transformada não é automaticamente uma captura independente.
+4. Uma habilidade selecionada precisa estar disponível para a forma no jogo.
+5. A legalidade é verificada por regulamento.
+6. Uma forma não verificada não deve ser declarada proibida.
+7. Relações N:N serão convertidas em tabelas associativas no modelo lógico.
+
+Este DER substitui a versão conceitual anterior. Ele ainda deverá ser desenhado e conferido visualmente no brModelo antes da aprovação final.
