@@ -53,6 +53,7 @@
 - [x] Separar perfil e regulamento.
 - [x] Limitar elegibilidade ao nível realmente verificado.
 - [x] Diferenciar zero, não aplicável e não verificado.
+- [x] Normalizar limites individuais e agregados de treinamento sem duplicar regras.
 - [ ] Desenhar DER v3 no brModelo e conferir cardinalidades.
 - [ ] Converter para modelo lógico e testar FKs compostas.
 - [ ] Fazer revisão visual final antes de aprovar.
