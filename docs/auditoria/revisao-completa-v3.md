@@ -180,7 +180,7 @@ Na checagem final da própria proposta v3, foi identificada uma duplicação pot
 
 A matriz com cenários concretos para catálogo, contexto de jogo, coleção, evolução, análise, regulamentos, segurança e importação está em [casos-de-teste.md](../testes/casos-de-teste.md). Esses cenários ainda não foram executados; são especificações para a futura implementação.
 
-## 10. Portões antes do código
+## 11. Portões antes do código
 
 - [ ] Aprovar separação exemplar/estado por jogo.
 - [ ] Conferir DER v3 no brModelo.
