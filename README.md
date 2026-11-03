@@ -1,8 +1,6 @@
 # PokéAnalyzer
 
-> Repositório: `pokelizer`
-
-PokéAnalyzer é um projeto educacional que combina uma Pokédex Nacional completa com uma coleção pessoal de Pokémon e um analisador de atributos. O usuário poderá cadastrar os Pokémon que possui, informar IVs, EVs, natureza e habilidade, e comparar essas informações com perfis competitivos de referência ou perfis personalizados.
+PokéAnalyzer é um projeto educacional que combina uma Pokédex Nacional completa com uma coleção pessoal e um analisador de atributos. O catálogo mantém espécies e formas oficiais; os dados de estatísticas, tipos, habilidades e disponibilidade são contextualizados por jogo.
 
 ## Objetivo acadêmico
 
@@ -14,13 +12,21 @@ O projeto integra três disciplinas:
 
 ## Escopo definido
 
-- Pokédex Nacional completa, incluindo as formas oficiais catalogadas.
+- Pokédex Nacional completa, incluindo formas oficiais catalogadas.
+- Dados de formas, tipos, habilidades e atributos por jogo.
 - Contas de usuários e coleções individuais.
-- Cadastro, consulta, edição e exclusão de Pokémon capturados.
-- Registro de natureza, habilidade, nível, IVs e EVs.
+- Registro de Pokémon capturados, transferidos ou recrutados.
+- Registro de natureza, habilidade, nível, IVs e EVs quando aplicáveis ao jogo.
 - Comparação com perfis competitivos de referência e perfis personalizados.
-- Consulta de regras competitivas oficiais por jogo, formato e temporada.
-- Recomendações explicáveis: o sistema deverá mostrar quais dados motivaram cada sugestão.
+- Verificação de elegibilidade por regulamento oficial.
+- Recomendações explicáveis, com indicação do jogo e perfil utilizados.
+
+## Contextos de jogo
+
+- **Pokémon Scarlet/Violet (Geração IX):** referência principal da calculadora de IV, EV e natureza.
+- **Pokémon Champions:** contexto competitivo separado, com recrutamento, transferência e sistema próprio de treinamento. Não converter treinamento de Champions em IV/EV de Scarlet/Violet.
+- **Pokémon Legends: Z-A:** contexto próprio; não herdar automaticamente as regras de Scarlet/Violet.
+- **Outros jogos oficiais:** poderão ser acrescentados por meio de novos registros de jogo e mecânica.
 
 ## Tecnologias planejadas
 
@@ -29,12 +35,12 @@ O projeto integra três disciplinas:
 | Python | Backend e regras de análise |
 | Flask | Rotas e comunicação com o website |
 | SQLite | Banco de dados inicial |
-| SQL | Consultas e manipulação de dados |
+| SQL | Consultas e manipulação dos dados |
 | HTML | Estrutura das páginas |
 | CSS | Estilo visual |
 | JavaScript | Interações do frontend |
 
-As tecnologias ainda são uma decisão de planejamento, não uma implementação concluída.
+As tecnologias ainda são decisões de planejamento; a implementação não começou.
 
 ## Documentação
 
@@ -50,15 +56,17 @@ As tecnologias ainda são uma decisão de planejamento, não uma implementação
 
 ## Situação atual
 
-**Etapa:** planejamento conceitual.
+**Etapa:** revisão conceitual, versão 2.0.
 
-Nenhum backend, frontend ou banco físico foi implementado ainda. O próximo objetivo é revisar e fechar o DER antes de convertê-lo em modelo lógico.
+A documentação e o DER textual foram atualizados para separar catálogo global, dados específicos por jogo, coleção e elegibilidade competitiva. Falta conferir o diagrama visual no brModelo antes de considerar a etapa conceitual completamente encerrada.
+
+Nenhum backend, frontend ou banco físico foi implementado ainda.
 
 ## Observações sobre dados e regras
 
-- A Pokédex deve ser mantida como catálogo de espécies e formas, sem limitar o número de registros a uma lista inicial pequena.
-- Dados de espécies, formas, tipos e habilidades deverão ter origem verificável.
-- Regras competitivas devem ser vinculadas à publicação oficial correspondente e à sua vigência.
-- Perfis competitivos do PokéAnalyzer são referências de análise. Eles não devem ser apresentados como builds obrigatórias oficialmente prescritas.
-- Perfis personalizados pertencem ao usuário que os criou.
+- A presença na Pokédex não significa disponibilidade em todos os jogos.
+- A presença no jogo não significa elegibilidade em qualquer regulamento.
+- Perfis competitivos do PokéAnalyzer são referências de análise, não builds obrigatórias publicadas oficialmente.
+- Campos não aplicáveis devem permanecer nulos; zero é um valor real.
+- Dados de espécies, formas, tipos, habilidades e regulamentos devem ter origem verificável.
 - O projeto é independente e não é afiliado à Nintendo, The Pokémon Company ou Game Freak. Pokémon e seus elementos relacionados são propriedade de seus respectivos titulares.
