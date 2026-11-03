@@ -21,6 +21,8 @@
 | DADOS_FORMA_JOGO | define forma atual de | POKEMON_ESTADO_JOGO | 1:N |
 | NATUREZA | caracteriza | POKEMON_ESTADO_JOGO | 1:N opcional |
 | HABILIDADE_FORMA_JOGO | é selecionada em | POKEMON_ESTADO_JOGO | 1:N opcional |
+| MECANICA_JOGO | define | GRUPO_LIMITE_TREINAMENTO | 1:N |
+| GRUPO_LIMITE_TREINAMENTO | agrupa | ATRIBUTO_TREINAMENTO | 1:N opcional no atributo |
 | MECANICA_JOGO | define | ATRIBUTO_TREINAMENTO | 1:N |
 | POKEMON_ESTADO_JOGO | registra | VALOR_TREINAMENTO_POKEMON | 1:N |
 | ATRIBUTO_TREINAMENTO | é medido em | VALOR_TREINAMENTO_POKEMON | 1:N |
@@ -121,6 +123,7 @@ A relação informa a elegibilidade catalogada da forma, não a legalidade compl
 - No máximo dois tipos por contexto e slots distintos.
 - Habilidade selecionada compatível com o contexto do estado.
 - Valores de treinamento vinculados à mesma mecânica do estado.
+- Limites individuais e incrementos definidos por atributo; limites agregados definidos uma única vez por grupo.
 - Limites individuais e agregados de treinamento respeitados.
 - Perfil, regulamento, evolução e transformação contextualmente compatíveis.
 - Perfil personalizado com proprietário; perfil de sistema sem proprietário.
