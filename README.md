@@ -45,6 +45,7 @@ As tecnologias ainda são uma decisão de planejamento, não uma implementação
 - [Diagrama Entidade-Relacionamento](docs/banco-de-dados/DER.md)
 - [Decisões técnicas](docs/decisoes-tecnicas.md)
 - [Plano de etapas](docs/plano-de-etapas.md)
+- [Fontes oficiais e referência de regras](docs/fontes-oficiais.md)
 
 ## Situação atual
 
