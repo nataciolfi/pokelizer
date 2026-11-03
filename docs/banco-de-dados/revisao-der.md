@@ -16,7 +16,7 @@
 
 ## Correções da versão 2.0
 
-- JOGO separa títulos e contextos.
+- JOGO separa títulos e edições. Scarlet e Violet permanecem como jogos distintos para registrar disponibilidade específica de cada edição.
 - MECANICA_JOGO registra versões documentadas de regras.
 - DADOS_FORMA_JOGO guarda estatísticas, disponibilidade e contexto.
 - HABILIDADE_FORMA_JOGO registra habilidade e slot por jogo.
@@ -40,7 +40,7 @@
 - [x] Catalogar formas sem presumir disponibilidade em todos os jogos.
 - [x] Separar dados de forma por jogo/mecânica.
 - [x] Separar tipos e habilidades por contexto.
-- [x] Registrar método de obtenção.
+- [x] Registrar método de obtenção e jogo de origem.
 - [x] Representar transformações de forma.
 - [x] Separar regulamento de elegibilidade.
 - [x] Permitir perfil competitivo e personalizado.
