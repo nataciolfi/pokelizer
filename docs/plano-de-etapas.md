@@ -1,67 +1,58 @@
 # Plano de etapas
 
-O projeto será desenvolvido em etapas pequenas. Uma etapa só será considerada concluída depois de sua documentação e dos testes correspondentes.
-
 ## Etapa 1 — Conceitual
-
-- [x] Definir o tema e o objetivo do PokéAnalyzer.
-- [x] Definir o escopo inicial.
-- [x] Listar requisitos funcionais e não funcionais.
-- [x] Propor entidades, atributos e relacionamentos.
-- [ ] Revisar o DER e validar todas as cardinalidades.
+- [x] Definir tema e objetivo.
+- [x] Definir escopo e requisitos.
+- [x] Identificar entidades e relacionamentos.
+- [x] Separar dados globais e dados específicos por jogo.
+- [x] Documentar regras de formas, treinamento e regulamentos.
+- [ ] Conferir o DER visual no brModelo.
 
 ## Etapa 2 — Modelo lógico
-
-- [ ] Converter o DER para o modelo relacional.
-- [ ] Definir chaves primárias e estrangeiras.
+- [ ] Converter entidades e relacionamentos em tabelas.
 - [ ] Resolver relacionamentos N:N.
-- [ ] Revisar normalização e restrições.
-- [ ] Validar o modelo com exemplos de dados.
+- [ ] Definir PK, FK, nulabilidade e unicidade.
+- [ ] Definir restrições e índices.
+- [ ] Revisar normalização.
 
 ## Etapa 3 — Banco físico
-
-- [ ] Criar o banco SQLite.
+- [ ] Criar banco SQLite.
 - [ ] Criar tabelas e restrições.
-- [ ] Inserir dados iniciais de tipos e naturezas.
-- [ ] Planejar importação do catálogo completo.
+- [ ] Popular tipos e naturezas.
+- [ ] Preparar importação do catálogo de espécies e formas.
 - [ ] Testar consultas SQL.
 
 ## Etapa 4 — Backend e POO
-
 - [ ] Criar estrutura Flask.
 - [ ] Criar classes de domínio.
-- [ ] Criar camada de acesso a dados.
-- [ ] Implementar cadastro e autenticação.
+- [ ] Implementar acesso a dados.
+- [ ] Implementar contas e autenticação.
 - [ ] Implementar CRUD da coleção.
-- [ ] Implementar serviço de comparação.
+- [ ] Implementar comparador.
 
 ## Etapa 5 — Website
-
 - [ ] Criar layout base.
-- [ ] Criar telas da Pokédex.
-- [ ] Criar tela de detalhes da espécie/forma.
-- [ ] Criar telas de login e cadastro.
-- [ ] Criar formulário de Pokémon capturado.
-- [ ] Criar tela de análise.
-- [ ] Criar página da coleção.
+- [ ] Criar Pokédex e pesquisa.
+- [ ] Criar detalhes de espécie e forma.
+- [ ] Criar login e cadastro.
+- [ ] Criar formulário da coleção.
+- [ ] Criar perfil e tela de análise.
 
 ## Etapa 6 — Dados e validação
+- [ ] Importar dados oficiais com fonte registrada.
+- [ ] Registrar contextos de jogo e mecânicas.
+- [ ] Registrar regulamentos e elegibilidade.
+- [ ] Testar limites IV/EV por mecânica.
+- [ ] Testar isolamento entre usuários.
+- [ ] Testar formas e transformações.
 
-- [ ] Carregar o catálogo completo de espécies e formas.
-- [ ] Conferir fontes e qualidade dos dados.
-- [ ] Carregar habilidades, tipos e naturezas.
-- [ ] Registrar os regulamentos oficiais selecionados.
-- [ ] Testar limites de IV, EV e compatibilidade.
-- [ ] Testar isolamento de dados entre usuários.
-
-## Etapa 7 — Entrega e apresentação
-
+## Etapa 7 — Entrega
 - [ ] Preparar dados de demonstração.
 - [ ] Testar o fluxo completo.
-- [ ] Documentar como executar o projeto.
-- [ ] Preparar explicação de Banco de Dados, POO e Website.
+- [ ] Documentar execução.
+- [ ] Preparar apresentação das três disciplinas.
 - [ ] Registrar limitações conhecidas.
 
 ## Regra de trabalho
 
-Cada etapa deve gerar commits pequenos e com mensagens descritivas. Não avançar para implementação antes de revisar e aprovar o modelo lógico.
+Cada etapa deve gerar commits pequenos e mensagens claras. Não implementar o banco físico antes de revisar o modelo lógico.
