@@ -20,6 +20,7 @@
 | RF14 | O sistema deve apresentar pontos adequados, divergências e sugestões de melhoria. |
 | RF15 | O sistema deve identificar o jogo, formato, temporada e fonte do regulamento competitivo usado. |
 | RF16 | O sistema deve verificar a elegibilidade de espécies/formas quando houver dados oficiais suficientes para o regulamento selecionado. |
+| RF17 | O sistema deve comparar a habilidade selecionada com as habilidades recomendadas pelo perfil, quando o perfil especificar recomendações. |
 
 ## 2. Requisitos não funcionais
 
@@ -44,6 +45,7 @@ Os limites exatos devem ser implementados de acordo com o jogo e a geração sel
 - EV: valor inteiro não negativo, com limites por atributo e limite total definidos pelas regras do jogo escolhido.
 - Nível: valor inteiro válido para o jogo selecionado.
 - Natureza e habilidade: devem existir no catálogo e ser compatíveis com a forma cadastrada.
+- A forma cadastrada na coleção deve permitir captura direta; transformações temporárias de batalha não são capturas independentes.
 - A soma e a distribuição de EVs devem ser verificadas conforme as regras aplicáveis, não apenas por uma regra genérica se houver diferenças entre títulos.
 
 ## 4. Critérios de aceitação iniciais
@@ -52,6 +54,8 @@ Os limites exatos devem ser implementados de acordo com o jogo e a geração sel
 - Um usuário não consegue visualizar ou alterar a coleção de outro usuário.
 - Uma espécie pode possuir mais de uma forma.
 - Uma forma pode possuir um ou dois tipos.
+- Formas marcadas como não capturáveis diretamente não podem ser cadastradas como capturas independentes.
+- Perfis podem recomendar habilidades; quando não houver recomendação, a habilidade não será julgada como inadequada por esse critério.
 - Um Pokémon capturado não pode receber IVs fora do intervalo permitido.
 - O analisador identifica o perfil selecionado e apresenta uma explicação para cada recomendação.
 - Um perfil personalizado pertence ao usuário que o criou.
