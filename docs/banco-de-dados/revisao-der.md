@@ -1,60 +1,74 @@
 # Revisão e fechamento do DER
 
-**Versão revisada:** 2.0  
+**Versão:** 3.0  
 **Data:** 03/11/2026
 
-## Problemas encontrados na versão anterior
+## Problemas encontrados no modelo anterior
 
-1. Estatísticas-base ficavam diretamente em FORMA, embora possam variar entre jogos.
+1. Estatísticas-base estavam globais, embora dependam do jogo.
 2. Tipos e habilidades não tinham contexto de jogo.
-3. Um único atributo de captura não representava captura, transferência, recrutamento e transformação.
-4. A relação REGULAMENTO–FORMA não guardava condição nem fonte da decisão.
-5. POKEMON_CAPTURADO não representava jogos em que Pokémon são recrutados ou transferidos.
-6. O modelo pressupunha IV/EV de forma genérica.
-7. Transformações de batalha não eram relacionadas à forma original.
-8. O catálogo global não era separado da disponibilidade em cada jogo.
+3. Método de obtenção era um único campo, embora existam vários caminhos.
+4. Coleção apontava diretamente para dados de forma/jogo e misturava origem com estado atual.
+5. Colunas fixas de IV/EV não representavam sistemas de treinamento diferentes.
+6. Elegibilidade era interpretada como legalidade integral do exemplar.
+7. Perfil e regulamento não estavam suficientemente separados.
+8. A coleção guardava uma espécie fixa, o que entrava em conflito com a evolução.
+9. A tela de detalhes previa evolução, mas o modelo não tinha relação evolutiva; transformação de batalha não substitui evolução.
+10. Status booleanos não distinguiam regra inexistente de dado não verificado.
 
-## Correções da versão 2.0
+## Correções da versão 3.0
 
-- JOGO separa títulos e edições. Scarlet e Violet permanecem como jogos distintos para registrar disponibilidade específica de cada edição.
-- MECANICA_JOGO registra versões documentadas de regras.
-- DADOS_FORMA_JOGO guarda estatísticas, disponibilidade e contexto.
-- HABILIDADE_FORMA_JOGO registra habilidade e slot por jogo.
-- POKEMON_CAPTURADO foi substituída por POKEMON_COLECAO.
-- ELEGIBILIDADE_REGULAMENTO registra estado, condição, fonte e data.
-- TRANSFORMACAO_FORMA liga forma de origem e destino.
-- PERFIL_ANALISE aponta para um contexto específico.
-- IV/EV podem ficar nulos quando não forem aplicáveis ou informados.
+- ESPECIE e FORMA compõem o catálogo global.
+- JOGO representa a edição; MECANICA_JOGO representa regras de atributos/treinamento.
+- DADOS_FORMA_JOGO guarda atributos, presença e registrabilidade por contexto.
+- DADOS_FORMA_TIPO guarda tipo primário/secundário.
+- HABILIDADE_FORMA_JOGO garante opções por contexto.
+- METODO_OBTENCAO e OBTENCAO_FORMA_JOGO permitem vários métodos por forma/jogo.
+- POKEMON_COLECAO identifica o indivíduo e guarda procedência, não espécie atual.
+- POKEMON_ESTADO_JOGO guarda forma atual e atributos daquele exemplar no contexto.
+- EVOLUCAO_FORMA_JOGO representa evolução permanente; TRANSFORMACAO_FORMA representa transformação de estado.
+- ATRIBUTO_TREINAMENTO e valores relacionados permitem contextos de treinamento diferentes.
+- PERFIL_ANALISE permanece separado de REGULAMENTO.
+- ELEGIBILIDADE_REGULAMENTO se limita à forma.
+- Status trivalorados preservam desconhecimento.
 
-## Decisão sobre jogos
+## Decisões sobre jogos
 
-- Scarlet/Violet (Geração IX) é a referência principal da calculadora de IV, EV e natureza.
-- Pokémon Champions é registrado como jogo de batalha separado, com seu recrutamento e treinamento por Pontos de Vitória.
-- Champions não terá seus valores de treinamento convertidos automaticamente em IV/EV.
-- Legends: Z-A terá contexto próprio, sem herdar automaticamente as regras de Scarlet/Violet.
-- Winds e Waves não terão regras cadastradas antes do lançamento e da documentação oficial.
+- Scarlet/Violet são edições distintas e formam o primeiro contexto numérico.
+- Pokémon Champions tem recrutamento, visitantes e treinamento próprios; nenhum treinamento é convertido automaticamente para IV/EV.
+- Legends: Z-A possui contexto próprio.
+- Winds/Waves não recebe regras antes do lançamento e de fontes verificadas.
 
-## Checklist do fechamento
+## Checklist
 
 - [x] Separar espécie e forma.
-- [x] Catalogar formas sem presumir disponibilidade em todos os jogos.
-- [x] Separar dados de forma por jogo/mecânica.
-- [x] Separar tipos e habilidades por contexto.
-- [x] Registrar método de obtenção e jogo de origem.
-- [x] Representar transformações de forma.
-- [x] Separar regulamento de elegibilidade.
-- [x] Permitir perfil competitivo e personalizado.
-- [x] Diferenciar nulo de zero.
-- [ ] Desenhar o DER em ferramenta visual e conferir cardinalidades.
-- [ ] Fazer revisão final visual antes de aprovar o modelo.
+- [x] Separar catálogo global e dados por jogo.
+- [x] Diferenciar edição, mecânica e regulamento.
+- [x] Separar presença, obtenibilidade e registrabilidade.
+- [x] Separar exemplar e estado por jogo.
+- [x] Permitir evolução sem criar exemplar duplicado.
+- [x] Diferenciar evolução e transformação.
+- [x] Modelar atributos de treinamento por contexto.
+- [x] Resolver N:N de tipos, habilidades recomendadas e obtenção.
+- [x] Separar perfil e regulamento.
+- [x] Limitar elegibilidade ao nível realmente verificado.
+- [x] Diferenciar zero, não aplicável e não verificado.
+- [x] Normalizar limites individuais e agregados de treinamento sem duplicar regras.
+- [ ] Desenhar DER v3 no brModelo e conferir cardinalidades.
+- [ ] Converter para modelo lógico e testar FKs compostas.
+- [ ] Fazer revisão visual final antes de aprovar.
 
 ## Casos de teste conceituais
 
-1. Uma forma regional possui dados diferentes da forma padrão.
-2. Uma forma Mega existe no catálogo, mas não é cadastrada como captura independente quando só pode ser alcançada por transformação.
-3. Um Pokémon transferido para Champions pode ser registrado sem inventar valores de IV/EV.
-4. Uma espécie aparece na Pokédex, mas não é elegível em um regulamento.
-5. Um perfil personalizado existe sem regulamento.
-6. Um perfil competitivo específico aponta para o regulamento e as mecânicas corretos.
+1. Forma regional possui dados próprios diferentes da forma padrão.
+2. Forma disponível por transformação não vira captura independente.
+3. Pokémon transferido pode ter estados por jogo sem conversão de treinamento.
+4. Pokémon evolui e mantém o mesmo registro individual.
+5. Forma de origem permanece preservada após evolução.
+6. Uma espécie aparece na Pokédex, mas está ausente de um jogo.
+7. Elegibilidade não verificada não é interpretada como proibida.
+8. Perfil personalizado existe sem regulamento.
+9. Perfil competitivo específico referencia contexto e regulamento corretos.
+10. Uma forma tem vários métodos de obtenção no mesmo jogo.
 
-O DER só será considerado definitivamente fechado quando a representação visual corresponder a esta documentação e as cardinalidades forem conferidas.
+**O DER só estará fechado quando a representação visual corresponder a esta documentação e as restrições do modelo lógico forem verificadas.**

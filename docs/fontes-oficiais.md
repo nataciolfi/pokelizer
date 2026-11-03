@@ -1,48 +1,87 @@
-# Fontes oficiais e contexto de regras
+# Fontes e política de verificação de dados
 
-**Última verificação:** 03/11/2026
+**Última revisão das referências:** 03/11/2026
 
-## Catálogo
+## 1. Fontes oficiais prioritárias
+
+### Catálogo
 - [Pokédex oficial Pokémon](https://www.pokemon.com/br/pokedex)
 - [Portal oficial de imprensa Pokémon](https://press.pokemon.com/)
 
-O catálogo deve incluir espécies e formas oficiais. Antes de importar imagens ou outros materiais, conferir os termos de uso e os direitos dos titulares.
+A Pokédex oficial é uma fonte de consulta e conferência. Antes de declarar a cobertura completa de espécies e formas, o projeto precisa confrontar a lista importada com uma referência versionada e documentar o tratamento de formas regionais, alternativas, sazonais, cosméticas, de gênero e de batalha.
 
-## Geração mais recente da série principal
-- [Calendário oficial de lançamentos de videogames](https://press.pokemon.com/pt-BR/Items/Schedule/Video-Game?types=2)
-- [Anúncio oficial de Pokémon Winds e Pokémon Waves](https://windswaves.pokemon.com/pt-br/)
+Não presumir que uma página visual da Pokédex ofereça um arquivo completo ou uma API pública para importação. A origem técnica de cada conjunto importado deverá ser registrada separadamente.
 
-Na data desta verificação, Winds e Waves estão previstos para 2027. Scarlet/Violet é a referência da Geração IX para a calculadora principal.
+### Pokémon Champions
+- [Pokémon e recrutamento em Pokémon Champions](https://champions.pokemon.com/pt-br/pokemon/)
+- [Mecânicas de Pokémon Champions](https://champions.pokemon.com/pt-br/gameplay/)
+- [Notícias de Pokémon Champions](https://champions.pokemon.com/pt-br/news/)
+- [Transição das competições Play! Pokémon para Champions, anúncio de 24/03/2026](https://www.pokemon.com/uk/news/play-pokemon-competitions-transition-to-pokemon-champions-on-april-and-may-2026)
 
-## Pokémon Champions
-- [Mecânicas de jogo de Pokémon Champions](https://champions.pokemon.com/pt-br/gameplay/)
-- [Pokémon e treinamento em Pokémon Champions](https://champions.pokemon.com/pt-br/pokemon/)
-- [Notícias e regulamentos de Pokémon Champions](https://champions.pokemon.com/pt-br/news/)
-- [Play! Pokémon — regras e formatos competitivos](https://play.pokemon.com/pt-br/resources/rules/?category=vgc)
+Pontos confirmados nas páginas oficiais consultadas:
+- Pokémon podem entrar como visitantes via Pokémon HOME, desde que apareçam em Champions.
+- Também existem Pokémon recrutados no próprio jogo.
+- O treinamento do Champions usa Pontos de Vitória e é próprio do jogo.
+- O treinamento feito em Champions não é mantido no Pokémon HOME ao retornar o visitante; ao voltar a Champions, o visitante pode recuperar o treinamento anterior salvo naquele contexto. Uma mudança de forma ao sair e retornar pode apagar o treinamento de Champions.
+- O anúncio de 24/03/2026 informou a transição das competições de videogame Play! Pokémon para Champions a partir de 08/04/2026.
 
-A página oficial informa que Pokémon Champions é o jogo oficial utilizado no Campeonato Mundial de videogame de 2026 e nos eventos da Série de Campeonatos que antecedem o Mundial. Scarlet e Violet ainda podem ser usados em eventos da Série de Campeonatos em algumas regiões.
+Consequência para o modelo: o mesmo exemplar precisa poder ter estados distintos em jogos diferentes. Valores do treinamento de Champions não podem ser gravados como IV/EV de Scarlet/Violet.
 
-A página oficial de Champions descreve transferência por Pokémon HOME, recrutamento no próprio jogo e treinamento por Pontos de Vitória para melhorar atributos, habilidades e movimentos.
+### Regulamentos competitivos
+- [Regras e formatos do Play! Pokémon](https://play.pokemon.com/pt-br/resources/rules/?category=vgc)
+- [Documentos e recursos oficiais Play! Pokémon](https://play.pokemon.com/pt-br/resources/documents/)
 
-**Regra de modelagem:** não converter o treinamento de Champions em IV/EV de Scarlet/Violet sem equivalência oficial documentada.
+Cada regulamento deverá ser identificado pelo jogo/mecânica, código ou nome, formato, temporada/série, data de início, data de término quando houver, fonte oficial e data da última verificação. Uma temporada ou série não deve ser armazenada como se fosse uma versão de mecânicas do jogo.
 
-## Regulamentos
-Cada regulamento deve ser armazenado com jogo e mecânica aplicável, código e nome, formato, temporada, datas de vigência, fonte oficial e data de consulta.
+### Pokémon Winds e Pokémon Waves
+- [Site oficial de Pokémon Ventos e Pokémon Ondas](https://windswaves.pokemon.com/pt-br/)
 
-A elegibilidade deve ser registrada por regulamento e por forma/jogo. A Pokédex completa não deve ser confundida com a lista de Pokémon permitidos em competição.
+A página oficial consultada informa lançamento global simultâneo em 2027, exclusivamente para Nintendo Switch 2. Portanto, em 03/11/2026, o projeto não deve inventar disponibilidade, atributos ou mecânicas desses jogos.
 
-## Política de dados
-1. Priorizar fontes oficiais.
-2. Guardar fonte e data de consulta.
-3. Verificar termos de uso antes de importar imagens e materiais.
-4. Não tratar rankings ou builds comunitárias como regras oficiais.
-5. Perfis estratégicos do projeto são referências, não builds obrigatórias oficiais.
-6. Marcar como não verificado o que não tiver confirmação suficiente.
-7. Não converter sistemas de treinamento diferentes sem regra documentada.
+## 2. Fontes técnicas secundárias
 
-## Conceitos que não devem ser confundidos
-- **Geração:** geração da série principal.
-- **Jogo:** título ou contexto de jogo.
-- **Mecânica de jogo:** regras de atributos e treinamento daquele título/versão.
-- **Regulamento:** restrições competitivas de um período e formato.
-- **Perfil de análise:** objetivo usado para comparar um Pokémon.
+Quando uma fonte oficial não publicar um dado em formato utilizável, poderá ser considerada uma fonte secundária estruturada, desde que:
+- seja identificada como não oficial;
+- tenha cobertura e consistência verificadas;
+- tenha licença/termos de uso avaliados;
+- registre versão, data de coleta e URL;
+- seja comparada com fontes oficiais para uma amostra;
+- possa ser substituída sem mudar a identidade interna das espécies/formas.
+
+Não usar scraping frágil de páginas visuais como única fonte de dados. Não assumir que uma API de comunidade seja oficial ou tenha permissão irrestrita de uso.
+
+## 3. Política de importação
+
+Cada lote de importação deve registrar:
+1. fonte e URL;
+2. versão/data da fonte;
+3. data de importação;
+4. quantidade de registros processados;
+5. quantidade inserida, atualizada, ignorada e rejeitada;
+6. erros e registros sem confirmação;
+7. critério usado para identificar espécies e formas.
+
+Usar identificadores internos estáveis. Nomes traduzidos não devem ser usados como chaves primárias.
+
+## 4. Estados de conhecimento
+
+- **Verificado:** há fonte suficiente e uma data de verificação.
+- **Não verificado:** falta confirmação; não significa indisponível ou proibido.
+- **Não aplicável:** a mecânica não usa aquele atributo.
+- **Desconhecido:** o dado deveria existir, mas a fonte/registro ainda não foi encontrado.
+
+Não usar um único NULL de modo ambíguo para todos esses significados na lógica da aplicação. O banco pode usar nulo onde apropriado, mas a interface deve preservar o motivo da ausência.
+
+## 5. Conceitos que não devem ser confundidos
+
+- **Espécie:** identidade da Pokédex Nacional.
+- **Forma:** variante oficialmente documentada da espécie.
+- **Jogo:** título/edição, como Scarlet ou Violet.
+- **Mecânica:** conjunto de regras de atributos e treinamento usado naquele contexto.
+- **Presença:** se a forma aparece nos dados do jogo.
+- **Obtenibilidade:** como o exemplar pode ser obtido/transferido naquele contexto.
+- **Registrabilidade:** se a forma é um exemplar independente ou apenas um estado de transformação.
+- **Regulamento:** regras de uma competição com formato e vigência.
+- **Elegibilidade da forma:** status catalogado da forma no regulamento.
+- **Perfil de análise:** objetivo de comparação; não é um regulamento.
+- **Estado do exemplar no jogo:** forma, habilidade, nível e treinamento naquele contexto.
