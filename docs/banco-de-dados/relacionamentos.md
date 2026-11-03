@@ -1,108 +1,127 @@
 # Relacionamentos e cardinalidades — PokéAnalyzer
 
+**Versão:** 3.0
+
 | Entidade A | Relacionamento | Entidade B | Cardinalidade |
 |---|---|---|---|
+| USUARIO | possui | POKEMON_COLECAO | 1:N |
 | ESPECIE | possui | FORMA | 1:N |
 | FORMA | possui dados em | DADOS_FORMA_JOGO | 1:N |
-| JOGO | possui versões de | MECANICA_JOGO | 1:N |
-| MECANICA_JOGO | define | DADOS_FORMA_JOGO | 1:N |
-| DADOS_FORMA_JOGO | possui | TIPO | N:N |
+| JOGO | possui contextos | MECANICA_JOGO | 1:N |
+| MECANICA_JOGO | contextualiza | DADOS_FORMA_JOGO | 1:N |
+| DADOS_FORMA_JOGO | possui tipos | TIPO | N:N, por DADOS_FORMA_TIPO |
 | DADOS_FORMA_JOGO | disponibiliza | HABILIDADE_FORMA_JOGO | 1:N |
 | HABILIDADE | aparece em | HABILIDADE_FORMA_JOGO | 1:N |
-| USUARIO | possui | POKEMON_COLECAO | 1:N |
-| JOGO | é origem de | POKEMON_COLECAO | 1:N opcional no registro |
-| DADOS_FORMA_JOGO | representa | POKEMON_COLECAO | 1:N |
-| NATUREZA | caracteriza | POKEMON_COLECAO | 1:N opcional no registro |
-| HABILIDADE_FORMA_JOGO | é selecionada em | POKEMON_COLECAO | 1:N opcional no registro |
-| DADOS_FORMA_JOGO | é alvo de | PERFIL_ANALISE | 1:N |
-| USUARIO | cria | PERFIL_ANALISE | 1:N opcional no perfil |
+| DADOS_FORMA_JOGO | permite métodos | METODO_OBTENCAO | N:N, por OBTENCAO_FORMA_JOGO |
+| JOGO | é origem de | POKEMON_COLECAO | 1:N opcional no exemplar |
+| METODO_OBTENCAO | descreve a origem | POKEMON_COLECAO | 1:N opcional no exemplar |
+| POKEMON_COLECAO | possui estados | POKEMON_ESTADO_JOGO | 1:N |
+| DADOS_FORMA_JOGO | define contexto de | POKEMON_ESTADO_JOGO | 1:N |
+| NATUREZA | caracteriza | POKEMON_ESTADO_JOGO | 1:N opcional no estado |
+| HABILIDADE_FORMA_JOGO | é selecionada em | POKEMON_ESTADO_JOGO | 1:N opcional no estado |
+| MECANICA_JOGO | define | ATRIBUTO_TREINAMENTO | 1:N |
+| POKEMON_ESTADO_JOGO | registra | VALOR_TREINAMENTO_POKEMON | 1:N |
+| ATRIBUTO_TREINAMENTO | é medido em | VALOR_TREINAMENTO_POKEMON | 1:N |
+| DADOS_FORMA_JOGO | recebe perfis | PERFIL_ANALISE | 1:N |
+| USUARIO | cria | PERFIL_ANALISE | 1:N opcional no perfil do sistema |
+| REGULAMENTO | contextualiza | PERFIL_ANALISE | 1:N opcional no perfil |
+| PERFIL_ANALISE | define valores | VALOR_TREINAMENTO_PERFIL | 1:N |
+| ATRIBUTO_TREINAMENTO | é referência de | VALOR_TREINAMENTO_PERFIL | 1:N |
+| PERFIL_ANALISE | recomenda | NATUREZA | N:N, por PERFIL_NATUREZA |
+| PERFIL_ANALISE | recomenda | HABILIDADE_FORMA_JOGO | N:N, por PERFIL_HABILIDADE |
 | MECANICA_JOGO | recebe | REGULAMENTO | 1:N |
 | REGULAMENTO | define | ELEGIBILIDADE_REGULAMENTO | 1:N |
 | DADOS_FORMA_JOGO | é avaliada em | ELEGIBILIDADE_REGULAMENTO | 1:N |
-| PERFIL_ANALISE | recomenda | NATUREZA | N:N opcional |
-| PERFIL_ANALISE | recomenda | HABILIDADE_FORMA_JOGO | N:N opcional |
-| REGULAMENTO | contextualiza | PERFIL_ANALISE | 1:N opcional no perfil |
 | DADOS_FORMA_JOGO (origem) | inicia | TRANSFORMACAO_FORMA | 1:N |
 | DADOS_FORMA_JOGO (destino) | recebe | TRANSFORMACAO_FORMA | 1:N |
 
-## Explicação das relações
+## Explicação das relações principais
 
-### ESPECIE — FORMA (1:N)
-Uma espécie possui uma ou mais formas. Cada forma pertence a uma única espécie.
+### Catálogo e contexto
 
-### FORMA — DADOS_FORMA_JOGO (1:N)
-Uma forma pode aparecer em vários jogos ou conjuntos de mecânicas. Cada registro guarda a representação da forma em um contexto específico.
+**ESPECIE — FORMA (1:N)**  
+Uma espécie possui uma ou mais formas. Cada forma pertence a exatamente uma espécie. O número nacional identifica a espécie, não cada forma.
 
-### JOGO — MECANICA_JOGO (1:N)
-Um jogo pode ter várias versões de mecânicas documentadas. Cada versão pertence a um jogo.
+**FORMA — DADOS_FORMA_JOGO (1:N)**  
+Uma forma pode ter dados em vários contextos de jogo. Uma forma catalogada não precisa estar presente em todos os títulos.
 
-### MECANICA_JOGO — DADOS_FORMA_JOGO (1:N)
-Uma versão de mecânicas pode descrever muitas formas. Cada registro de dados de forma utiliza uma versão específica.
+**JOGO — MECANICA_JOGO (1:N)**  
+Cada jogo pode ter um ou mais contextos documentados de mecânicas. JOGO identifica a edição; MECANICA_JOGO guarda regras de treinamento/atributos. Regulamento competitivo não é uma mecânica.
 
-### DADOS_FORMA_JOGO — TIPO (N:N)
-Uma forma em um jogo possui um ou dois tipos. Um tipo pode aparecer em muitas formas. O limite de dois é uma regra de negócio adicional.
+**MECANICA_JOGO — DADOS_FORMA_JOGO (1:N)**  
+Um contexto de mecânicas descreve muitas formas. Cada linha de dados pertence a um único contexto.
 
-### DADOS_FORMA_JOGO — HABILIDADE_FORMA_JOGO (1:N)
-Uma forma em um jogo disponibiliza uma ou mais opções de habilidade. Cada opção pertence a uma única forma/jogo.
+### Tipos, habilidades e obtenção
 
-### HABILIDADE — HABILIDADE_FORMA_JOGO (1:N)
-Uma habilidade pode aparecer em muitas formas/jogos. Cada opção de habilidade aponta para uma habilidade.
+**DADOS_FORMA_JOGO — TIPO (N:N)**  
+A relação é resolvida por DADOS_FORMA_TIPO, que guarda slot primário/secundário. A regra adicional limita a dois tipos.
 
-### USUARIO — POKEMON_COLECAO (1:N)
-Um usuário pode registrar nenhum, um ou muitos Pokémon. Cada registro pertence a exatamente um usuário.
+**DADOS_FORMA_JOGO — HABILIDADE_FORMA_JOGO (1:N)**  
+Uma forma/contexto pode oferecer várias opções de habilidade. Cada opção pertence a exatamente um contexto.
 
-### JOGO — POKEMON_COLECAO (1:N, opcional no registro)
+**DADOS_FORMA_JOGO — METODO_OBTENCAO (N:N)**  
+A relação é resolvida por OBTENCAO_FORMA_JOGO. Isso permite vários métodos e condições para uma forma no mesmo jogo.
 
-Um jogo pode ser a origem de muitos registros da coleção. Um registro pode informar zero ou um jogo de origem, pois a origem pode ser desconhecida ou o registro pode representar um Pokémon recrutado no contexto atual.
+### Exemplar e estados
 
-### DADOS_FORMA_JOGO — POKEMON_COLECAO (1:N)
-Um contexto de forma/jogo pode ser usado por muitos exemplares. Cada exemplar está vinculado a exatamente um contexto. O método de obtenção distingue captura, transferência ou recrutamento.
+**USUARIO — POKEMON_COLECAO (1:N)**  
+Um usuário pode ter muitos exemplares, inclusive vários da mesma espécie. Cada exemplar pertence a um único usuário.
 
-### NATUREZA — POKEMON_COLECAO (1:N, opcional no registro)
-Uma natureza pode aparecer em muitos exemplares. Um exemplar pode ter uma natureza registrada ou não, dependendo do contexto e dos dados disponíveis.
+**POKEMON_COLECAO — POKEMON_ESTADO_JOGO (1:N)**  
+Um exemplar pode ter zero ou vários estados, um por contexto de jogo em que esteja registrado. Isso separa a origem do exemplar do jogo no qual ele será analisado.
 
-### HABILIDADE_FORMA_JOGO — POKEMON_COLECAO (1:N, opcional no registro)
-Uma opção de habilidade pode ser selecionada por muitos exemplares. Cada exemplar seleciona zero ou uma opção, conforme o jogo. A relação evita selecionar uma habilidade inexistente naquele contexto.
+**DADOS_FORMA_JOGO — POKEMON_ESTADO_JOGO (1:N)**  
+Muitos exemplares podem compartilhar o mesmo contexto de forma/jogo. Cada estado aponta para uma forma e mecânica específicas.
 
-### DADOS_FORMA_JOGO — PERFIL_ANALISE (1:N)
-Uma forma em determinado jogo pode ter vários perfis de análise. Cada perfil é elaborado para um único contexto de forma e mecânicas.
+**NATUREZA e HABILIDADE_FORMA_JOGO — POKEMON_ESTADO_JOGO (1:N opcional)**  
+Um estado pode ter zero ou uma natureza/habilidade selecionada, conforme aplicabilidade e dados conhecidos. A habilidade deve pertencer ao mesmo contexto de forma/jogo do estado.
 
-### USUARIO — PERFIL_ANALISE (1:N, opcional no perfil)
-Um usuário pode criar vários perfis personalizados. Um perfil pode ter zero proprietário se for mantido pelo sistema, ou um proprietário se for personalizado.
+### Treinamento e perfil
 
-### MECANICA_JOGO — REGULAMENTO (1:N)
-Uma versão de mecânicas pode receber vários regulamentos. Cada regulamento se refere a uma versão específica.
+**MECANICA_JOGO — ATRIBUTO_TREINAMENTO (1:N)**  
+Cada mecânica define os atributos de treinamento que realmente existem naquele jogo. Isso impede assumir IV/EV em todos os títulos.
 
-### REGULAMENTO — ELEGIBILIDADE_REGULAMENTO (1:N)
-Um regulamento possui registros de elegibilidade para as formas verificadas. Cada registro pertence a um regulamento.
+**POKEMON_ESTADO_JOGO — VALOR_TREINAMENTO_POKEMON (1:N)**  
+Cada estado armazena seus valores por atributo. A combinação estado + atributo deve ser única.
 
-### DADOS_FORMA_JOGO — ELEGIBILIDADE_REGULAMENTO (1:N)
-Uma forma em determinado jogo pode ser avaliada em vários regulamentos. Cada registro de elegibilidade avalia uma forma/jogo em um regulamento específico.
+**PERFIL_ANALISE — VALOR_TREINAMENTO_PERFIL (1:N)**  
+Cada perfil define faixas ou valores desejados. Os atributos usados precisam pertencer à mesma mecânica do perfil.
 
-### PERFIL_ANALISE — NATUREZA (N:N opcional)
-Um perfil pode recomendar uma ou várias naturezas, ou não especificar nenhuma. Uma natureza pode ser recomendada por vários perfis.
+**PERFIL_ANALISE — NATUREZA e HABILIDADE_FORMA_JOGO (N:N)**  
+Associações permitem registrar várias preferências e prioridades. Preferência não é sinônimo de obrigação; o tipo deve ser explícito.
 
-### PERFIL_ANALISE — HABILIDADE_FORMA_JOGO (N:N opcional)
-Um perfil pode recomendar uma ou várias opções de habilidade. A ausência de recomendação não significa que a habilidade seja inválida.
+### Regulamentos e transformações
 
-### REGULAMENTO — PERFIL_ANALISE (1:N, opcional no perfil)
-Um regulamento pode contextualizar vários perfis. Um perfil pode estar ligado a um regulamento ou não. Perfil competitivo específico de torneio deve apontar para o regulamento; perfil personalizado pode não apontar.
+**MECANICA_JOGO — REGULAMENTO (1:N)**  
+Um contexto de jogo pode receber vários regulamentos, formatos ou temporadas. Cada regulamento pertence a um único contexto.
 
-### DADOS_FORMA_JOGO — TRANSFORMACAO_FORMA
-Cada transformação possui exatamente uma forma de origem e uma forma de destino. Uma forma pode participar de várias transformações.
+**REGULAMENTO — ELEGIBILIDADE_REGULAMENTO (1:N)**  
+Um regulamento tem registros para as formas avaliadas. Sem registro verificado, o resultado é não verificado, não proibido.
 
-## Restrições para o modelo lógico e backend
+**DADOS_FORMA_JOGO — ELEGIBILIDADE_REGULAMENTO (1:N)**  
+Uma forma/contexto pode ser verificada em vários regulamentos. A relação só informa elegibilidade da forma, não legalidade completa do exemplar.
 
-- E-mail único por usuário.
-- Cada FORMA pertence a uma ESPECIE.
-- A combinação FORMA + MECANICA_JOGO deve ser única em DADOS_FORMA_JOGO.
-- Uma forma pode ter no máximo dois tipos em cada contexto.
-- Habilidade selecionada deve pertencer às opções daquela forma/jogo.
-- Um Pokémon da coleção só pode usar DADOS_FORMA_JOGO marcado como registrável.
-- Limites de IV/EV vêm de MECANICA_JOGO.
-- Campos não aplicáveis ficam nulos, não zero.
-- Perfil personalizado deve ter proprietário.
-- Perfil competitivo específico deve apontar para o regulamento.
-- Ausência de elegibilidade verificada não significa proibição.
-- Transformação deve ligar contextos compatíveis e ter condição documentada.
-- Nenhuma análise pode misturar dados de jogos diferentes.
+**DADOS_FORMA_JOGO — TRANSFORMACAO_FORMA**  
+Cada transformação tem um contexto de origem e outro de destino. Origem e destino devem pertencer ao mesmo contexto de mecânicas, exceto exceção oficial documentada. Transformação não cria uma captura independente automaticamente.
+
+## Restrições para o modelo lógico
+
+- E-mail e nome de usuário únicos.
+- Número nacional único por espécie.
+- Código de forma único dentro da espécie.
+- Combinação FORMA + MECANICA_JOGO única.
+- No máximo dois tipos por contexto, com slots distintos.
+- Habilidade selecionada compatível com o estado de jogo.
+- Método de origem do exemplar separado do jogo atual.
+- Valores de treinamento ligados à mesma mecânica do estado.
+- Limites individuais e agregados de treinamento respeitados.
+- Perfil compatível com forma/mecânica do estado analisado.
+- Perfil personalizado com proprietário.
+- Perfil de sistema sem proprietário.
+- Regulamento e forma pertencentes ao mesmo jogo/contexto.
+- Elegibilidade única por regulamento e forma/contexto.
+- Ausência de registro de elegibilidade = não verificado.
+- Transformação com origem e destino contextualmente compatíveis.
+- Toda coleção consultada ou alterada deve ser filtrada pelo usuário autenticado.
+
+As restrições detalhadas e os testes mínimos estão em [regras-integridade.md](regras-integridade.md).
