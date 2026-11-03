@@ -73,7 +73,10 @@ Esta matriz transforma requisitos e regras de integridade em cenários verificá
 | ANA01 | Inserir valor abaixo do mínimo ou acima do máximo | Rejeitar | Banco/serviço |
 | ANA02 | Inserir dois valores para o mesmo atributo e estado | Rejeitar duplicidade | Banco |
 | ANA03 | Associar atributo de treinamento de outra mecânica | Rejeitar | Banco/serviço |
-| ANA04 | Somar valores acima do limite total do contexto | Rejeitar a transação | Serviço |
+| ANA04 | Somar valores acima do limite agregado do grupo | Rejeitar a transação | Serviço |
+| ANA13 | Inserir valor que não respeita o incremento permitido do atributo | Rejeitar | Serviço |
+| ANA14 | Associar atributo a grupo de limite de outra mecânica | Rejeitar | Banco/serviço |
+| ANA15 | A soma atinge exatamente o limite agregado | Aceitar | Serviço |
 | ANA05 | Analisar valor zero | Tratar como valor real | Serviço |
 | ANA06 | Analisar valor não informado | Marcar análise incompleta; não tratar como zero | Serviço |
 | ANA07 | Analisar atributo não aplicável | Excluir da comparação e explicar | Serviço/UI |
