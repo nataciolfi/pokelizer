@@ -1,54 +1,48 @@
-# Fontes oficiais e referência de regras
+# Fontes oficiais e contexto de regras
 
-**Data desta verificação:** 03/11/2026
+**Última verificação:** 03/11/2026
 
-Este documento registra as fontes que orientam o catálogo e a análise. O objetivo é manter o PokéAnalyzer verificável e evitar tratar listas de fãs ou recomendações comunitárias como regras oficiais.
+## Catálogo
+- [Pokédex oficial Pokémon](https://www.pokemon.com/br/pokedex)
+- [Portal oficial de imprensa Pokémon](https://press.pokemon.com/)
 
-## 1. Pokédex e dados de espécies
+O catálogo deve incluir espécies e formas oficiais. Antes de importar imagens ou outros materiais, conferir os termos de uso e os direitos dos titulares.
 
-- [Pokédex oficial de Pokémon](https://www.pokemon.com/br/pokedex)
+## Geração mais recente da série principal
+- [Calendário oficial de lançamentos de videogames](https://press.pokemon.com/pt-BR/Items/Schedule/Video-Game?types=2)
+- [Anúncio oficial de Pokémon Winds e Pokémon Waves](https://windswaves.pokemon.com/pt-br/)
 
-A Pokédex do website deverá manter o catálogo nacional completo. A lista de espécies não deve ser limitada pela lista de Pokémon permitidos em um formato competitivo.
+Na data desta verificação, Winds e Waves estão previstos para 2027. Scarlet/Violet é a referência da Geração IX para a calculadora principal.
 
-Para importar dados em massa, a fonte e a licença/termos de uso devem ser conferidos antes de incorporar qualquer conjunto de dados ao repositório. Imagens e outros materiais visuais também devem respeitar os direitos dos respectivos titulares.
+## Pokémon Champions
+- [Mecânicas de jogo de Pokémon Champions](https://champions.pokemon.com/pt-br/gameplay/)
+- [Pokémon e treinamento em Pokémon Champions](https://champions.pokemon.com/pt-br/pokemon/)
+- [Notícias e regulamentos de Pokémon Champions](https://champions.pokemon.com/pt-br/news/)
+- [Play! Pokémon — regras e formatos competitivos](https://play.pokemon.com/pt-br/resources/rules/?category=vgc)
 
-## 2. Regulamentos competitivos
+A página oficial informa que Pokémon Champions é o jogo oficial utilizado no Campeonato Mundial de videogame de 2026 e nos eventos da Série de Campeonatos que antecedem o Mundial. Scarlet e Violet ainda podem ser usados em eventos da Série de Campeonatos em algumas regiões.
 
-- [Pokémon Champions — Regulation Set M-C](https://champions-news.pokemon-home.com/en/page/816.html)
-- [Play! Pokémon — regras e formatos competitivos](https://play.pokemon.com/en-us/resources/rules/)
-- [Play! Pokémon — Video Game Championships Tournament Handbook](https://mcdn.pokemon.com/pokemon-prod/raw/upload/v1/live/static-assets/content-assets/cms2/pdf/play-pokemon/rules/play-pokemon-vgc-tournament-handbook-en.pdf)
+A página oficial de Champions descreve transferência por Pokémon HOME, recrutamento no próprio jogo e treinamento por Pontos de Vitória para melhorar atributos, habilidades e movimentos.
 
-Na data desta verificação, o anúncio oficial informa que o Regulation Set M-C de Pokémon Champions vigora de 9 de setembro de 2026, às 02:00 UTC, até 2 de dezembro de 2026, às 01:59 UTC.
+**Regra de modelagem:** não converter o treinamento de Champions em IV/EV de Scarlet/Violet sem equivalência oficial documentada.
 
-A página oficial informa que apenas os Pokémon exibidos na lista de elegibilidade daquela regulamentação podem participar. Portanto:
+## Regulamentos
+Cada regulamento deve ser armazenado com jogo e mecânica aplicável, código e nome, formato, temporada, datas de vigência, fonte oficial e data de consulta.
 
-- a Pokédex completa é um catálogo de consulta;
-- a elegibilidade competitiva é uma informação separada e dependente do regulamento;
-- não se deve presumir que todas as espécies da Pokédex são permitidas em uma competição;
-- a fonte oficial, o jogo, o formato, a temporada e o período de vigência devem ser registrados.
+A elegibilidade deve ser registrada por regulamento e por forma/jogo. A Pokédex completa não deve ser confundida com a lista de Pokémon permitidos em competição.
 
-## 3. Próximos jogos da série principal
+## Política de dados
+1. Priorizar fontes oficiais.
+2. Guardar fonte e data de consulta.
+3. Verificar termos de uso antes de importar imagens e materiais.
+4. Não tratar rankings ou builds comunitárias como regras oficiais.
+5. Perfis estratégicos do projeto são referências, não builds obrigatórias oficiais.
+6. Marcar como não verificado o que não tiver confirmação suficiente.
+7. Não converter sistemas de treinamento diferentes sem regra documentada.
 
-- [Calendário oficial de lançamentos da The Pokémon Company](https://press.pokemon.com/pt-BR/Items/Schedule/Video-Game?types=2)
-- [Página oficial de Pokémon Winds e Pokémon Waves](https://windswaves.pokemon.com/pt-br/)
-
-Na data desta verificação, Pokémon Winds e Pokémon Waves aparecem com lançamento previsto para 2027. Quando um novo jogo e suas regras forem lançados, o modelo poderá registrar outro conjunto de mecânicas e regulamentos sem apagar os dados históricos.
-
-## 4. Política de uso das fontes
-
-1. Priorizar páginas, regulamentos e documentos oficiais.
-2. Registrar a URL e a data de consulta de cada regulamento importado.
-3. Não tratar rankings, tiers ou builds criados por comunidades como regulamentos oficiais.
-4. Perfis estratégicos do PokéAnalyzer são referências de comparação, não recomendações oficiais da Pokémon Company.
-5. A análise deve indicar quando uma informação oficial não estiver disponível, em vez de inventar uma regra.
-6. Revisar regulamentos ativos quando houver anúncio de uma nova temporada ou atualização.
-
-## 5. Separação entre mecânicas e regulamentos
-
-O sistema deve distinguir:
-
-- **Mecânicas do jogo/geração:** regras que afetam atributos, IVs, EVs, naturezas e cálculos.
-- **Regulamento competitivo:** regras de elegibilidade para um jogo, formato e período específicos.
-- **Perfil estratégico:** objetivo usado para comparar um Pokémon, que pode ser mantido pelo projeto ou criado pelo usuário.
-
-Essa separação evita misturar regras gerais do jogo com a lista temporária de Pokémon permitidos em um campeonato.
+## Conceitos que não devem ser confundidos
+- **Geração:** geração da série principal.
+- **Jogo:** título ou contexto de jogo.
+- **Mecânica de jogo:** regras de atributos e treinamento daquele título/versão.
+- **Regulamento:** restrições competitivas de um período e formato.
+- **Perfil de análise:** objetivo usado para comparar um Pokémon.
