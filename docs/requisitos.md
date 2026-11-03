@@ -1,67 +1,99 @@
 # Requisitos do PokéAnalyzer
 
-## Requisitos funcionais
+**Versão:** 3.0  
+**Status:** requisitos revisados; implementação ainda não iniciada.
+
+## 1. Requisitos funcionais
 
 | ID | Requisito |
 |---|---|
-| RF01 | Permitir criar conta de usuário. |
-| RF02 | Permitir autenticar e encerrar sessão. |
-| RF03 | Armazenar senhas em hash seguro, nunca em texto puro. |
-| RF04 | Consultar o catálogo nacional de espécies. |
-| RF05 | Pesquisar por número nacional e nome. |
-| RF06 | Filtrar por tipo e geração. |
-| RF07 | Exibir formas oficiais e suas espécies. |
-| RF08 | Exibir dados de uma forma em um jogo específico. |
-| RF09 | Registrar Pokémon na coleção de um usuário. |
-| RF10 | Informar jogo/contexto e método de obtenção. |
-| RF11 | Informar nível, natureza, habilidade, IVs e EVs quando aplicáveis. |
-| RF12 | Consultar, editar e excluir somente registros da própria coleção. |
-| RF13 | Selecionar perfis competitivos de referência. |
-| RF14 | Criar, editar e excluir perfis personalizados. |
-| RF15 | Comparar Pokémon com perfil compatível de forma e mecânicas. |
-| RF16 | Apresentar pontos positivos, divergências e sugestões explicáveis. |
-| RF17 | Consultar elegibilidade da forma no regulamento selecionado. |
-| RF18 | Exibir fonte e data de verificação de regras e elegibilidade. |
-| RF19 | Representar transformações sem tratá-las automaticamente como capturas. |
-| RF20 | Ocultar ou desabilitar campos de IV/EV quando não forem aplicáveis ou confirmados. |
+| RF01 | Permitir criar conta de usuário com validação dos campos. |
+| RF02 | Permitir autenticar, encerrar sessão e impedir acesso à área privada sem autenticação. |
+| RF03 | Armazenar senhas somente em hash seguro. |
+| RF04 | Consultar o catálogo global de espécies e formas. |
+| RF05 | Pesquisar por número nacional, nome e identificador da forma. |
+| RF06 | Filtrar por tipo, geração, categoria de forma e jogo sem confundir filtros globais com filtros específicos. |
+| RF07 | Exibir as formas oficiais catalogadas e indicar a fonte dos dados. |
+| RF08 | Exibir atributos, tipos, habilidades e disponibilidade em contexto de jogo selecionado. |
+| RF09 | Diferenciar presença no jogo, obtenibilidade e elegibilidade competitiva. |
+| RF10 | Permitir registrar vários exemplares da mesma espécie na coleção do usuário. |
+| RF11 | Registrar jogo de origem e método de obtenção separadamente do contexto atual. |
+| RF12 | Registrar o estado de um exemplar em contextos de jogo diferentes, sem misturar dados de treinamento. |
+| RF13 | Exibir somente atributos de treinamento definidos para as mecânicas selecionadas. |
+| RF14 | Consultar, editar e excluir somente exemplares e estados pertencentes ao usuário autenticado. |
+| RF15 | Criar, editar e excluir perfis personalizados pertencentes ao usuário. |
+| RF16 | Consultar perfis estratégicos de referência com fonte, versão e contexto identificados. |
+| RF17 | Exigir compatibilidade entre forma, jogo, mecânicas e perfil antes da análise. |
+| RF18 | Comparar atributos por campo e explicar divergências e preferências. |
+| RF19 | Diferenciar valor zero, valor não informado e atributo não aplicável. |
+| RF20 | Consultar elegibilidade de forma em um regulamento específico. |
+| RF21 | Exibir status de elegibilidade, condição, fonte e data de verificação. |
+| RF22 | Exibir “não verificado” quando a fonte não for suficiente; ausência de registro não significa proibição. |
+| RF23 | Representar transformações como relações entre formas/contextos, sem criar automaticamente um exemplar novo. |
+| RF24 | Registrar múltiplos métodos de obtenção possíveis por forma e contexto. |
+| RF25 | Exibir mensagens de carregamento, vazio, erro e ausência de dados. |
+| RF26 | Permitir que o usuário veja a origem e a versão dos dados usados na análise. |
 
-## Requisitos não funcionais
+## 2. Requisitos não funcionais
 
 | ID | Requisito |
 |---|---|
-| RNF01 | Interface simples para usuários iniciantes. |
-| RNF02 | Código legível e fácil de explicar academicamente. |
+| RNF01 | Interface compreensível para usuários iniciantes. |
+| RNF02 | Código legível, modular e explicável academicamente. |
 | RNF03 | Integridade referencial no banco. |
-| RNF04 | Coleções privadas isoladas por usuário. |
+| RNF04 | Coleções e perfis privados isolados por usuário. |
 | RNF05 | Senhas nunca armazenadas em texto puro. |
-| RNF06 | Entradas numéricas validadas antes de salvar. |
-| RNF07 | Recomendações explicam as regras utilizadas. |
-| RNF08 | Dados de catálogo e regulamentos registram fonte e data/versão. |
-| RNF09 | Execução local durante o desenvolvimento. |
-| RNF10 | Atualizar dados de um jogo sem alterar o catálogo global de formas. |
-| RNF11 | Não converter sistemas de treinamento sem equivalência oficial documentada. |
+| RNF06 | Entradas numéricas validadas no backend. |
+| RNF07 | Consultas SQL parametrizadas. |
+| RNF08 | Rotas de alteração devem aplicar autorização por proprietário. |
+| RNF09 | Interface responsiva em largura desktop e mobile, ainda que o primeiro wireframe seja desktop. |
+| RNF10 | Dados de catálogo e regulamentos registram fonte, versão e data de verificação. |
+| RNF11 | Regras de um jogo não podem ser usadas silenciosamente em outro. |
+| RNF12 | Falha ou ausência de fonte não pode ser convertida em permissão, proibição ou valor numérico presumido. |
+| RNF13 | Banco SQLite deve ativar chaves estrangeiras em cada conexão. |
+| RNF14 | Operações que alterem várias tabelas devem usar transações. |
+| RNF15 | A aplicação deve fornecer instruções reproduzíveis de instalação e execução local. |
 
-## Validações de domínio
+## 3. Regras de domínio
 
-- IV/EV só são exigidos nos contextos que os utilizam.
-- Limites vêm de MECANICA_JOGO.
-- Nulo significa não informado ou não aplicável; zero é um valor real.
-- Habilidade selecionada deve estar disponível para a forma e jogo.
-- Só formas registráveis podem entrar diretamente na coleção.
-- Uma forma pode existir no catálogo sem estar disponível em um jogo.
-- Legalidade vem de ELEGIBILIDADE_REGULAMENTO.
-- Ausência de um dado não prova proibição.
+- Espécie e forma são conceitos diferentes.
+- Uma forma pertence a uma espécie; formas não recebem automaticamente um novo número nacional.
+- O catálogo global não representa disponibilidade em todos os jogos.
+- Presença, obtenibilidade e elegibilidade são estados diferentes.
+- Um jogo representa um título/edição; Scarlet e Violet são registros separados.
+- MECANICA_JOGO representa um conjunto documentado de regras de atributos e treinamento.
+- Um exemplar pertence a um usuário e a uma espécie.
+- O estado de um exemplar em um jogo guarda forma, nível, habilidade, natureza e treinamento daquele contexto.
+- O mesmo exemplar pode possuir estados em mais de um jogo.
+- Método de obtenção não pertence ao registro global de forma; uma forma pode ter vários métodos no mesmo jogo.
+- Os atributos de treinamento são definidos por contexto. IV e EV não são campos universais.
+- Um perfil só pode comparar com um contexto de forma/mecânicas compatível.
 - Perfil personalizado deve ter proprietário.
-- Perfil competitivo específico deve apontar para seu regulamento.
-- A análise não pode misturar dados de jogos diferentes.
+- Perfil de referência deve identificar origem e versão; não deve ser apresentado como build oficial quando não for.
+- Regulamento não define por si só uma única distribuição ideal de atributos.
+- Elegibilidade da forma não é uma verificação completa da legalidade do exemplar.
+- Transformações temporárias não criam capturas independentes automaticamente.
+- Nulo significa desconhecido ou não aplicável conforme o estado do campo; zero é valor real.
+- Toda recomendação deve explicar sua regra e seus dados de entrada.
 
-## Critérios de aceitação
+## 4. Critérios de aceitação
 
-- Um usuário não acessa a coleção de outro usuário.
-- Uma forma regional pode ter dados diferentes da forma padrão.
-- A mesma forma pode ter dados diferentes em jogos distintos.
-- Uma Mega Evolução aparece no catálogo sem ser tratada como captura independente.
-- Um Pokémon de Champions pode ser registrado sem inventar IV/EV.
-- Uma espécie não elegível continua visível na Pokédex.
-- O analisador diferencia permitido, proibido, condicional e não verificado.
-- Toda recomendação identifica o perfil, jogo e regulamento utilizados.
+1. Dois exemplares da mesma espécie podem existir na coleção com apelidos e atributos diferentes.
+2. O mesmo exemplar pode ter estados separados em Scarlet/Violet e Champions sem converter valores de treinamento entre eles.
+3. Um Pokémon transferido mantém seu jogo de origem separado do jogo em que está sendo analisado.
+4. Uma forma regional pode ter tipos, habilidades e estatísticas diferentes da forma padrão.
+5. Uma forma catalogada pode aparecer mesmo sem dados de disponibilidade no jogo selecionado.
+6. Um Pokémon ausente de um regulamento continua visível na Pokédex.
+7. Uma ausência de registro de elegibilidade gera “não verificado”, não “proibido”.
+8. Um perfil personalizado não precisa de regulamento.
+9. Um perfil de referência informa sua origem, versão e contexto.
+10. Uma natureza ou habilidade incompatível com o contexto não pode ser salva.
+11. A soma e os limites dos valores de treinamento são validados conforme a mecânica selecionada.
+12. Nulo não é convertido em zero durante cálculos.
+13. Usuário A não consegue ler, atualizar ou excluir registro de usuário B alterando o ID na URL ou requisição.
+14. Análises com dados insuficientes informam quais dados faltam e não produzem uma nota enganosa.
+15. A interface nunca chama a elegibilidade de forma de “legalidade completa” do exemplar.
+
+## 5. Fora dos critérios iniciais
+
+Não é critério da primeira versão validar movimentos, itens, origem integral, marca, evento, legitimidade ou todos os requisitos individuais de torneio. Esse recurso exigiria um módulo e dados adicionais.
