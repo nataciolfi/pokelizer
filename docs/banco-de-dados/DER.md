@@ -30,7 +30,9 @@ erDiagram
     NATUREZA o|--o{ POKEMON_ESTADO_JOGO : natureza
     HABILIDADE_FORMA_JOGO o|--o{ POKEMON_ESTADO_JOGO : habilidade
 
+    MECANICA_JOGO ||--o{ GRUPO_LIMITE_TREINAMENTO : define_limites
     MECANICA_JOGO ||--o{ ATRIBUTO_TREINAMENTO : define
+    GRUPO_LIMITE_TREINAMENTO o|--o{ ATRIBUTO_TREINAMENTO : agrupa
     POKEMON_ESTADO_JOGO ||--o{ VALOR_TREINAMENTO_POKEMON : registra
     ATRIBUTO_TREINAMENTO ||--o{ VALOR_TREINAMENTO_POKEMON : mede
 
@@ -96,10 +98,6 @@ erDiagram
         string status_iv
         string status_ev
         string status_natureza
-        int iv_minimo
-        int iv_maximo
-        int ev_maximo_atributo
-        int ev_maximo_total
         string sistema_treinamento
         string formula_atributos
         string fonte_regras
@@ -189,18 +187,29 @@ erDiagram
         string observacao
         datetime data_atualizacao
     }
+    GRUPO_LIMITE_TREINAMENTO {
+        int id_grupo_limite PK
+        int id_mecanica FK
+        string codigo
+        string nome
+        float limite_total
+        string unidade
+        string fonte_url
+        date data_verificacao
+    }
     ATRIBUTO_TREINAMENTO {
         int id_atributo_treinamento PK
         int id_mecanica FK
+        int id_grupo_limite FK
         string codigo
         string categoria
         string atributo
         string nome_exibicao
+        string tipo_valor
         string unidade
         float valor_minimo
         float valor_maximo
-        string grupo_validacao
-        float limite_grupo
+        float incremento
         string fonte_url
         date data_verificacao
     }
@@ -292,6 +301,7 @@ erDiagram
 - POKEMON_ESTADO_JOGO indica a forma atual, o nível, a natureza, a habilidade e o treinamento naquele contexto.
 - EVOLUCAO_FORMA_JOGO descreve mudanças permanentes por jogo; TRANSFORMACAO_FORMA descreve mudanças de estado, normalmente temporárias.
 - MECANICA_JOGO identifica regras de atributos/treinamento, não uma temporada competitiva.
+- GRUPO_LIMITE_TREINAMENTO armazena limites agregados uma vez; ATRIBUTO_TREINAMENTO armazena limites individuais, tipo numérico e incremento.
 - DADOS_FORMA_JOGO contextualiza atributos, tipos, habilidades, presença e registrabilidade.
 - OBTENCAO_FORMA_JOGO aceita vários métodos por forma/contexto.
 - ATRIBUTO_TREINAMENTO e VALOR_TREINAMENTO_POKEMON não fixam IV/EV como campos universais.
@@ -302,6 +312,7 @@ erDiagram
 
 1. Forma + mecânica única em DADOS_FORMA_JOGO.
 2. No máximo dois tipos e slots distintos por contexto.
+3. Limites agregados ficam em GRUPO_LIMITE_TREINAMENTO, não duplicados em MECANICA_JOGO e atributos.
 3. Habilidade do estado no mesmo contexto de forma.
 4. Atributo de treinamento da mesma mecânica do estado.
 5. No máximo um estado atual por exemplar + mecânica.
