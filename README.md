@@ -49,6 +49,7 @@ Nenhuma dessas partes está implementada ainda. O repositório atualmente conté
 - [Auditoria completa e decisões corretivas](docs/auditoria/revisao-completa-v3.md)
 - [Escopo do projeto](docs/escopo.md)
 - [Requisitos](docs/requisitos.md)
+- [Matriz de casos de teste](docs/testes/casos-de-teste.md)
 - [Modelo conceitual v3](docs/banco-de-dados/modelo-conceitual.md)
 - [DER v3](docs/banco-de-dados/DER.md)
 - [Relacionamentos e cardinalidades](docs/banco-de-dados/relacionamentos.md)
