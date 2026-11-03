@@ -8,6 +8,7 @@ O diagrama separa o catálogo global, os dados por jogo, a coleção dos usuári
 ```mermaid
 erDiagram
     USUARIO ||--o{ POKEMON_COLECAO : possui
+    JOGO |o--o{ POKEMON_COLECAO : jogo_origem
     ESPECIE ||--|{ FORMA : possui
     FORMA ||--o{ DADOS_FORMA_JOGO : recebe_dados
     JOGO ||--|{ MECANICA_JOGO : possui
