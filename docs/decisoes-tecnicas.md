@@ -73,3 +73,11 @@ Este documento registra decisões de planejamento. Elas poderão ser revisadas a
 **Decisão:** calcular a análise quando o usuário solicitar, sem criar uma entidade de histórico inicialmente.
 
 **Motivo:** manter o escopo reduzido. O histórico poderá ser adicionado posteriormente se houver necessidade.
+
+## DT13 — Fontes oficiais e regras separadas por contexto
+
+**Decisão:** usar fontes oficiais para dados de catálogo e regulamentos. Separar mecânicas do jogo/geração, regulamento competitivo e perfil estratégico.
+
+**Motivo:** a Pokédex completa não é a mesma coisa que a lista de Pokémon permitidos em um campeonato. A elegibilidade muda por regulamento, e perfis estratégicos do projeto não são builds obrigatórias oficiais.
+
+**Registro de referência:** consultar [fontes oficiais e referência de regras](fontes-oficiais.md). A documentação registra que o Regulation Set M-C de Pokémon Champions foi anunciado com vigência de 9 de setembro a 2 de dezembro de 2026 (UTC). Essa informação deve ser atualizada quando o projeto for implementado ou apresentado após o período.
