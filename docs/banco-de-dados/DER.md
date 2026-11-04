@@ -3,7 +3,7 @@
 **Status:** DER textual proposto após auditoria.  
 **Referência conceitual:** [modelo-conceitual-v3.md](modelo-conceitual-v3.md)
 
-Este DER separa catálogo, dados por jogo, mecânicas versionadas, exemplares individuais, treinamento, perfis e regulamentos. Ele ainda precisa ser desenhado e conferido no brModelo.
+Este DER separa catálogo, dados por jogo, mecânicas versionadas, exemplares individuais, valores de atributos, perfis e regulamentos. Ele ainda precisa ser desenhado e conferido no brModelo.
 
 ```mermaid
 erDiagram
@@ -165,15 +165,15 @@ erDiagram
         string nome
     }
     SISTEMA_ATRIBUTO {
-        int id_tipo_treinamento PK
+        int id_sistema_atributo PK
         string codigo UK
         string nome
         string descricao
     }
     MECANICA_SISTEMA_ATRIBUTO {
-        int id_mecanica_treinamento PK
+        int id_mecanica_sistema_atributo PK
         int id_mecanica FK
-        int id_tipo_treinamento FK
+        int id_sistema_atributo FK
         string aplicabilidade
         string unidade
         int valor_minimo
@@ -183,9 +183,9 @@ erDiagram
         date data_verificacao
     }
     VALOR_ATRIBUTO_POKEMON {
-        int id_valor_treinamento PK
+        int id_valor_atributo PK
         int id_pokemon_colecao FK
-        int id_mecanica_treinamento FK
+        int id_mecanica_sistema_atributo FK
         int id_atributo FK
         int valor
     }
@@ -204,7 +204,7 @@ erDiagram
     VALOR_PERFIL_ANALISE {
         int id_valor_perfil PK
         int id_perfil FK
-        int id_mecanica_treinamento FK
+        int id_mecanica_sistema_atributo FK
         int id_atributo FK
         int valor_alvo
     }
@@ -257,9 +257,9 @@ erDiagram
 5. A combinação ficha + habilidade + slot é única.
 6. A combinação ficha + método é única.
 7. A combinação jogo + versão de mecânica é única.
-8. A combinação mecânica + tipo de treinamento é única.
-9. A combinação exemplar + sistema de treinamento + atributo é única.
-10. A combinação perfil + sistema de treinamento + atributo é única.
+8. A combinação mecânica + sistema de valores de atributo é única.
+9. A combinação exemplar + sistema de valores de atributo + atributo é única.
+10. A combinação perfil + sistema de valores de atributo + atributo é única.
 11. Perfil personalizado exige usuário; perfil de referência é mantido pelo sistema.
 12. Forma e mecânica de perfil devem pertencer ao mesmo jogo.
 13. Elegibilidade é única por regulamento + ficha da forma.
