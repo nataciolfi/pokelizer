@@ -1,67 +1,89 @@
-# Requisitos do PokéAnalyzer
+# Requisitos do PokéAnalyzer — revisão 2.0
 
 ## Requisitos funcionais
 
 | ID | Requisito |
 |---|---|
-| RF01 | Permitir criar conta de usuário. |
-| RF02 | Permitir autenticar e encerrar sessão. |
-| RF03 | Armazenar senhas em hash seguro, nunca em texto puro. |
-| RF04 | Consultar o catálogo nacional de espécies. |
-| RF05 | Pesquisar por número nacional e nome. |
-| RF06 | Filtrar por tipo e geração. |
-| RF07 | Exibir formas oficiais e suas espécies. |
-| RF08 | Exibir dados de uma forma em um jogo específico. |
-| RF09 | Registrar Pokémon na coleção de um usuário. |
-| RF10 | Informar jogo/contexto e método de obtenção. |
-| RF11 | Informar nível, natureza, habilidade, IVs e EVs quando aplicáveis. |
-| RF12 | Consultar, editar e excluir somente registros da própria coleção. |
-| RF13 | Selecionar perfis competitivos de referência. |
-| RF14 | Criar, editar e excluir perfis personalizados. |
-| RF15 | Comparar Pokémon com perfil compatível de forma e mecânicas. |
-| RF16 | Apresentar pontos positivos, divergências e sugestões explicáveis. |
-| RF17 | Consultar elegibilidade da forma no regulamento selecionado. |
-| RF18 | Exibir fonte e data de verificação de regras e elegibilidade. |
-| RF19 | Representar transformações sem tratá-las automaticamente como capturas. |
-| RF20 | Ocultar ou desabilitar campos de IV/EV quando não forem aplicáveis ou confirmados. |
+| RF01 | Criar conta de usuário. |
+| RF02 | Autenticar e encerrar sessão. |
+| RF03 | Armazenar somente hash seguro de senha. |
+| RF04 | Consultar espécies por número nacional e nome. |
+| RF05 | Pesquisar por número, nome e código de forma. |
+| RF06 | Filtrar por tipo, geração e disponibilidade em jogo. |
+| RF07 | Exibir formas oficiais com categoria e fonte. |
+| RF08 | Distinguir presença, transferência, métodos de obtenção e registro independente. |
+| RF09 | Exibir dados de uma forma em jogo específico. |
+| RF10 | Registrar um exemplar individual na coleção. |
+| RF11 | Separar jogo atual, jogo de origem e método real de obtenção. |
+| RF12 | Registrar nível, natureza e habilidade quando aplicáveis. |
+| RF13 | Registrar treinamento por sistema, atributo e versão de mecânica. |
+| RF14 | Consultar, editar e excluir somente exemplares próprios. |
+| RF15 | Permitir vários exemplares da mesma espécie/forma. |
+| RF16 | Criar, editar e excluir perfis personalizados. |
+| RF17 | Consultar perfis de referência com fonte e data. |
+| RF18 | Comparar exemplar e perfil somente em contexto compatível. |
+| RF19 | Apresentar divergências e recomendações explicáveis. |
+| RF20 | Consultar elegibilidade de espécie/forma por regulamento. |
+| RF21 | Exibir fonte, data de verificação e estado não verificado. |
+| RF22 | Representar transformações sem criar captura automática. |
+| RF23 | Ocultar ou desabilitar treinamento quando não aplicável/não confirmado. |
+| RF24 | Exibir a Pokédex mesmo sem disponibilidade ou elegibilidade confirmada. |
 
 ## Requisitos não funcionais
 
 | ID | Requisito |
 |---|---|
-| RNF01 | Interface simples para usuários iniciantes. |
-| RNF02 | Código legível e fácil de explicar academicamente. |
+| RNF01 | Interface simples para iniciantes. |
+| RNF02 | Código modular, legível e explicável academicamente. |
 | RNF03 | Integridade referencial no banco. |
-| RNF04 | Coleções privadas isoladas por usuário. |
-| RNF05 | Senhas nunca armazenadas em texto puro. |
-| RNF06 | Entradas numéricas validadas antes de salvar. |
-| RNF07 | Recomendações explicam as regras utilizadas. |
-| RNF08 | Dados de catálogo e regulamentos registram fonte e data/versão. |
-| RNF09 | Execução local durante o desenvolvimento. |
-| RNF10 | Atualizar dados de um jogo sem alterar o catálogo global de formas. |
-| RNF11 | Não converter sistemas de treinamento sem equivalência oficial documentada. |
+| RNF04 | Isolamento de dados por usuário autenticado. |
+| RNF05 | SQL parametrizado. |
+| RNF06 | Entradas validadas no servidor. |
+| RNF07 | Recomendações identificam jogo, mecânica, perfil e dados usados. |
+| RNF08 | Dados variáveis registram fonte e data de verificação. |
+| RNF09 | Execução local na fase de desenvolvimento. |
+| RNF10 | Atualizar mecânicas não deve duplicar o catálogo. |
+| RNF11 | Não converter treinamento sem equivalência documentada. |
+| RNF12 | Formulários têm rótulos e mensagens de erro associadas. |
+| RNF13 | Interface adaptável a telas menores. |
+| RNF14 | Segredos não são versionados no Git. |
+| RNF15 | Formulários de alteração possuem proteção CSRF. |
 
-## Validações de domínio
+## Regras de negócio
 
-- IV/EV só são exigidos nos contextos que os utilizam.
-- Limites vêm de MECANICA_JOGO.
-- Nulo significa não informado ou não aplicável; zero é um valor real.
-- Habilidade selecionada deve estar disponível para a forma e jogo.
-- Só formas registráveis podem entrar diretamente na coleção.
-- Uma forma pode existir no catálogo sem estar disponível em um jogo.
-- Legalidade vem de ELEGIBILIDADE_REGULAMENTO.
-- Ausência de um dado não prova proibição.
-- Perfil personalizado deve ter proprietário.
-- Perfil competitivo específico deve apontar para seu regulamento.
-- A análise não pode misturar dados de jogos diferentes.
+1. Uma espécie possui uma ou mais formas; cada forma pertence a uma espécie.
+2. Existe uma forma padrão por espécie.
+3. Uma forma pode existir no catálogo sem estar presente em um jogo.
+4. Presença, transferência, obtenção e elegibilidade são conceitos diferentes.
+5. Métodos possíveis são associados à forma/jogo; o exemplar guarda o método real.
+6. Jogo de origem pode ser diferente do jogo atual.
+7. Cada registro de coleção representa um exemplar, não uma espécie agrupada.
+8. Um usuário pode ter vários exemplares da mesma forma.
+9. A habilidade selecionada deve existir para a forma no jogo atual.
+10. Natureza só é exigida quando aplicável e confirmada.
+11. Valores de treinamento pertencem a sistema, atributo e versão de mecânica.
+12. Nulo significa não informado/não aplicável; zero é valor real.
+13. Limites desconhecidos permanecem desconhecidos.
+14. Perfil personalizado exige proprietário.
+15. Perfil de referência informa fonte e data.
+16. Perfil e exemplar precisam de jogo/mecânica compatíveis.
+17. Regulamento não determina sozinho uma distribuição ideal.
+18. Elegibilidade da espécie/forma não é legalidade completa do exemplar.
+19. Ausência de elegibilidade registrada não significa proibição.
+20. Transformação temporária não cria exemplar independente.
+21. Nunca misturar valores de treinamento de jogos diferentes.
+22. Toda operação da coleção verifica o proprietário no servidor.
 
 ## Critérios de aceitação
 
-- Um usuário não acessa a coleção de outro usuário.
-- Uma forma regional pode ter dados diferentes da forma padrão.
-- A mesma forma pode ter dados diferentes em jogos distintos.
-- Uma Mega Evolução aparece no catálogo sem ser tratada como captura independente.
-- Um Pokémon de Champions pode ser registrado sem inventar IV/EV.
-- Uma espécie não elegível continua visível na Pokédex.
-- O analisador diferencia permitido, proibido, condicional e não verificado.
-- Toda recomendação identifica o perfil, jogo e regulamento utilizados.
+- Usuário não acessa registros de outra conta.
+- Vários exemplares da mesma forma coexistem.
+- Jogo de origem difere do atual sem perda da informação.
+- Formas indisponíveis continuam visíveis na Pokédex.
+- Um terceiro tipo é rejeitado.
+- Habilidade incompatível é rejeitada.
+- Jogo sem IV/EV não exibe nem exige esses valores.
+- Pokémon de Champions pode ser registrado sem inventar IV/EV.
+- Perfil de outro jogo não pode ser usado na análise.
+- Elegibilidade não verificada nunca é apresentada como proibida.
+- Fonte e data acompanham recomendações.

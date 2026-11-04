@@ -1,58 +1,88 @@
-# Plano de etapas
+# Plano de etapas — revisão após auditoria
 
-## Etapa 1 — Conceitual
-- [x] Definir tema e objetivo.
-- [x] Definir escopo e requisitos.
-- [x] Identificar entidades e relacionamentos.
-- [x] Separar dados globais e dados específicos por jogo.
-- [x] Documentar regras de formas, treinamento e regulamentos.
-- [ ] Conferir o DER visual no brModelo.
+## Etapa 0 — Fechamento da especificação
+- [x] Auditar escopo, requisitos, documentos, DER textual e especificação dos wireframes.
+- [x] Registrar contradições.
+- [x] Propor modelo conceitual 3.0.
+- [ ] Conferir visualmente as oito telas Figma.
+- [ ] Aprovar critérios de inclusão das formas.
+- [ ] Aprovar o limite do MVP.
+
+## Etapa 1 — Modelo conceitual
+- [x] Definir espécie, forma, jogo e mecânica como conceitos separados.
+- [x] Separar jogo atual, origem e método de obtenção.
+- [x] Separar sistemas de treinamento.
+- [x] Separar perfil e regulamento.
+- [ ] Desenhar o DER 3.0 no brModelo.
+- [ ] Conferir entidades associativas, cardinalidades e obrigatoriedade.
+- [ ] Testar exemplos de Pokémon transferido, recrutado e transformado.
 
 ## Etapa 2 — Modelo lógico
-- [ ] Converter entidades e relacionamentos em tabelas.
-- [ ] Resolver relacionamentos N:N.
+- [ ] Converter entidades em tabelas.
+- [ ] Resolver N:N.
 - [ ] Definir PK, FK, nulabilidade e unicidade.
-- [ ] Definir restrições e índices.
-- [ ] Revisar normalização.
+- [ ] Definir CHECK constraints e índices.
+- [ ] Definir regras que pertencem ao backend.
+- [ ] Revisar 1FN, 2FN e 3FN.
+- [ ] Criar dicionário de dados.
 
 ## Etapa 3 — Banco físico
-- [ ] Criar banco SQLite.
-- [ ] Criar tabelas e restrições.
-- [ ] Popular tipos e naturezas.
-- [ ] Preparar importação do catálogo de espécies e formas.
-- [ ] Testar consultas SQL.
+- [ ] Criar SQLite e schema.sql.
+- [ ] Ativar PRAGMA foreign_keys = ON em cada conexão.
+- [ ] Criar restrições e índices.
+- [ ] Popular tipos, naturezas, atributos e sistemas.
+- [ ] Validar com catálogo pequeno antes da importação completa.
+- [ ] Testar dados inválidos.
 
-## Etapa 4 — Backend e POO
-- [ ] Criar estrutura Flask.
-- [ ] Criar classes de domínio.
-- [ ] Implementar acesso a dados.
-- [ ] Implementar contas e autenticação.
+## Etapa 4 — Domínio e POO
+- [ ] Criar classes de domínio para usuário, exemplar, jogo, mecânica e perfil.
+- [ ] Criar DAO/repositórios.
+- [ ] Criar serviço de coleção.
+- [ ] Criar serviço de validação de treinamento.
+- [ ] Criar serviço de análise.
+- [ ] Criar testes unitários.
+
+## Etapa 5 — Backend Flask
+- [ ] Criar configuração e estrutura.
+- [ ] Implementar cadastro, login e logout.
+- [ ] Implementar autorização por proprietário.
 - [ ] Implementar CRUD da coleção.
-- [ ] Implementar comparador.
+- [ ] Implementar catálogo e filtros.
+- [ ] Implementar perfis e elegibilidade limitada.
+- [ ] Validar entradas e proteger formulários.
 
-## Etapa 5 — Website
-- [ ] Criar layout base.
-- [ ] Criar Pokédex e pesquisa.
-- [ ] Criar detalhes de espécie e forma.
-- [ ] Criar login e cadastro.
-- [ ] Criar formulário da coleção.
-- [ ] Criar perfil e tela de análise.
+## Etapa 6 — Website
+- [ ] Criar layout e navegação.
+- [ ] Criar login/cadastro.
+- [ ] Criar Pokédex/filtros.
+- [ ] Criar detalhes de espécie/forma.
+- [ ] Criar lista e detalhe de exemplar.
+- [ ] Criar formulário de adição/edição.
+- [ ] Criar lista/edição de perfis.
+- [ ] Criar analisador e resultado.
+- [ ] Criar estados de erro, vazio, carregamento e dados não verificados.
+- [ ] Revisar responsividade e teclado.
 
-## Etapa 6 — Dados e validação
-- [ ] Importar dados oficiais com fonte registrada.
-- [ ] Registrar contextos de jogo e mecânicas.
-- [ ] Registrar regulamentos e elegibilidade.
-- [ ] Testar limites IV/EV por mecânica.
+## Etapa 7 — Dados e fontes
+- [ ] Definir critérios de formas.
+- [ ] Importar espécie/forma com identificadores estáveis.
+- [ ] Registrar fonte e data.
+- [ ] Registrar disponibilidade, tipos, habilidades e métodos por jogo.
+- [ ] Registrar mecânicas e limites confirmados.
+- [ ] Registrar regulamentos e elegibilidade com fontes.
+- [ ] Marcar lacunas como não verificadas.
+
+## Etapa 8 — Testes e entrega
 - [ ] Testar isolamento entre usuários.
-- [ ] Testar formas e transformações.
-
-## Etapa 7 — Entrega
+- [ ] Testar CRUD de exemplares.
+- [ ] Testar compatibilidade forma/jogo/habilidade.
+- [ ] Testar limites de treinamento.
+- [ ] Testar ausência de conversão entre jogos.
+- [ ] Testar perfis e regulamentos independentes.
+- [ ] Testar estados vazios e erros.
+- [ ] Documentar instalação e execução.
 - [ ] Preparar dados de demonstração.
-- [ ] Testar o fluxo completo.
-- [ ] Documentar execução.
 - [ ] Preparar apresentação das três disciplinas.
-- [ ] Registrar limitações conhecidas.
+- [ ] Registrar limitações.
 
-## Regra de trabalho
-
-Cada etapa deve gerar commits pequenos e mensagens claras. Não implementar o banco físico antes de revisar o modelo lógico.
+**Regra:** não criar banco físico antes do modelo lógico. Não importar o catálogo completo antes de validar a estrutura com poucos registros. O MVP começa por Scarlet/Violet; outro jogo só habilita cálculo com regras confirmadas.
