@@ -50,7 +50,7 @@ A Pokédex oficial consultada apresenta a faixa nacional 1–1025 na data desta 
 
 O modelo 2.0 armazena seis IVs e seis EVs diretamente em POKEMON_COLECAO. Isso só representa jogos que usam esses sistemas. A documentação oficial de Champions descreve recrutamento próprio, visitantes vindos do Pokémon HOME e treinamento com Pontos de Vitória. Também informa que o treinamento feito em Champions não é levado de volta ao HOME e que a mudança de forma de um visitante pode apagar o treinamento anterior. Fontes: https://champions.pokemon.com/pt-br/pokemon/ e https://champions.pokemon.com/pt-br/gameplay/
 
-**Correção:** separar o exemplar de seus valores de treinamento. Cada valor deve apontar para um sistema de treinamento, atributo e versão da mecânica. IV, EV e treinamento próprio de Champions são sistemas diferentes, sem conversão automática. A fonte confirma o uso de PV, mas não autoriza inventar uma escala numérica de atributo: enquanto essa escala não estiver documentada, ela fica não verificada.
+**Correção:** separar o exemplar de seus valores de atributo. Cada valor deve apontar para um sistema de valores de atributo, atributo e versão da mecânica. IV, EV e treinamento próprio de Champions são sistemas diferentes, sem conversão automática. A fonte confirma o uso de PV, mas não autoriza inventar uma escala numérica de atributo: enquanto essa escala não estiver documentada, ela fica não verificada.
 
 ### A04 — Exemplar não é ficha de catálogo
 
@@ -163,7 +163,7 @@ A referência completa é [modelo conceitual 3.0](banco-de-dados/modelo-conceitu
 - Estados vazios, erros e validações.
 
 ### Extensões condicionadas à documentação
-- Champions: contexto de visitante/recrutado e treinamento separado, sem conversão. Cálculo numérico só quando escala e limites forem comprovados.
+- Champions: contexto de visitante/recrutado e sistema de valores separado, sem conversão. Cálculo numérico só quando escala e limites forem comprovados.
 - Legends: Z-A: dados e regras próprios, sem herdar fórmulas de Scarlet/Violet.
 - Outros títulos: novos registros de jogo, dados e mecânicas verificados.
 
