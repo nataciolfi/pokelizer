@@ -11,7 +11,7 @@
 ## Etapa 1 — Modelo conceitual
 - [x] Definir espécie, forma, jogo e mecânica como conceitos separados.
 - [x] Separar jogo atual, origem e método de obtenção.
-- [x] Separar sistemas de treinamento.
+- [x] Separar sistemas de valores de atributo.
 - [x] Separar perfil e regulamento.
 - [ ] Desenhar o DER 3.0 no brModelo.
 - [ ] Conferir entidades associativas, cardinalidades e obrigatoriedade.
@@ -39,7 +39,7 @@
 - [ ] Criar DAO/repositórios.
 - [ ] Criar serviço de coleção.
 - [ ] Criar serviço de validação de treinamento.
-- [ ] Criar serviço de análise.
+- [ ] Criar serviço de análise com regras documentadas de comparação por atributo.
 - [ ] Criar testes unitários.
 
 ## Etapa 5 — Backend Flask
@@ -79,6 +79,7 @@
 - [ ] Testar limites de treinamento.
 - [ ] Testar ausência de conversão entre jogos.
 - [ ] Testar perfis e regulamentos independentes.
+- [ ] Testar resultado sem nota global arbitrária e tratamento de valores ausentes.
 - [ ] Testar estados vazios e erros.
 - [ ] Documentar instalação e execução.
 - [ ] Preparar dados de demonstração.
