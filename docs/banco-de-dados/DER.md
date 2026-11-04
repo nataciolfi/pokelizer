@@ -25,18 +25,18 @@ erDiagram
     METODO_OBTENCAO ||--o{ METODO_FORMA_JOGO : metodo_possivel
 
     JOGO ||--o{ MECANICA_JOGO : possui_versoes
-    MECANICA_JOGO ||--o{ MECANICA_TREINAMENTO : define_sistema
-    TIPO_TREINAMENTO ||--o{ MECANICA_TREINAMENTO : classifica
-    POKEMON_COLECAO ||--o{ VALOR_TREINAMENTO_POKEMON : recebe
-    MECANICA_TREINAMENTO ||--o{ VALOR_TREINAMENTO_POKEMON : valida
-    ATRIBUTO_BATALHA ||--o{ VALOR_TREINAMENTO_POKEMON : afeta
+    MECANICA_JOGO ||--o{ MECANICA_SISTEMA_ATRIBUTO : define_sistema
+    SISTEMA_ATRIBUTO ||--o{ MECANICA_SISTEMA_ATRIBUTO : classifica
+    POKEMON_COLECAO ||--o{ VALOR_ATRIBUTO_POKEMON : recebe
+    MECANICA_SISTEMA_ATRIBUTO ||--o{ VALOR_ATRIBUTO_POKEMON : valida
+    ATRIBUTO_BATALHA ||--o{ VALOR_ATRIBUTO_POKEMON : afeta
 
     DADOS_FORMA_JOGO ||--o{ PERFIL_ANALISE : alvo
     MECANICA_JOGO ||--o{ PERFIL_ANALISE : usa_regras
     USUARIO |o--o{ PERFIL_ANALISE : cria
     REGULAMENTO |o--o{ PERFIL_ANALISE : contextualiza
     PERFIL_ANALISE ||--o{ VALOR_PERFIL_ANALISE : define
-    MECANICA_TREINAMENTO ||--o{ VALOR_PERFIL_ANALISE : usa_sistema
+    MECANICA_SISTEMA_ATRIBUTO ||--o{ VALOR_PERFIL_ANALISE : usa_sistema
     ATRIBUTO_BATALHA ||--o{ VALOR_PERFIL_ANALISE : define_atributo
     PERFIL_ANALISE ||--o{ PERFIL_NATUREZA : recomenda
     NATUREZA ||--o{ PERFIL_NATUREZA : pode_ser_recomendada
@@ -164,13 +164,13 @@ erDiagram
         string codigo UK
         string nome
     }
-    TIPO_TREINAMENTO {
+    SISTEMA_ATRIBUTO {
         int id_tipo_treinamento PK
         string codigo UK
         string nome
         string descricao
     }
-    MECANICA_TREINAMENTO {
+    MECANICA_SISTEMA_ATRIBUTO {
         int id_mecanica_treinamento PK
         int id_mecanica FK
         int id_tipo_treinamento FK
@@ -182,7 +182,7 @@ erDiagram
         string fonte_url
         date data_verificacao
     }
-    VALOR_TREINAMENTO_POKEMON {
+    VALOR_ATRIBUTO_POKEMON {
         int id_valor_treinamento PK
         int id_pokemon_colecao FK
         int id_mecanica_treinamento FK
@@ -267,3 +267,8 @@ erDiagram
 15. Valores e limites não confirmados não devem ser presumidos.
 
 **Atenção:** Mermaid é uma representação documental. A cardinalidade, obrigatoriedade e as restrições acima precisam ser reproduzidas e conferidas no brModelo e depois no modelo lógico.
+
+
+## Semântica da camada de valores de atributos
+
+Os nomes SISTEMA_ATRIBUTO, MECANICA_SISTEMA_ATRIBUTO e VALOR_ATRIBUTO_POKEMON são intencionais: IV não é treinamento. O modelo agrupa sistemas que fornecem valores de atributos sem declarar que todos funcionam da mesma forma.
