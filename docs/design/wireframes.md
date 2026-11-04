@@ -1,6 +1,8 @@
 # Wireframes de baixa fidelidade — revisão de conteúdo
 
-**Figma:** [PokéAnalyzer — Wireframes](https://www.figma.com/design/ElwmtWufS0oyS2KNwLsHFD)  
+**Wireframes:** [PokéAnalyzer — Wireframes](https://www.figma.com/design/ElwmtWufS0oyS2KNwLsHFD)
+
+**DER:** [PokéAnalyzer — DER 3.0 (FigJam)](https://www.figma.com/board/2hpHQKy2zeoTFDFJX6EXQ9)  
 **Escopo existente:** oito telas desktop, 1440 × 1000.  
 **Status:** estrutura criada; auditoria visual detalhada e alterações no Figma pendentes por limite de chamadas do plano Starter.
 
