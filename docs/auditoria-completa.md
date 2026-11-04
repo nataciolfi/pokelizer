@@ -6,7 +6,7 @@
 
 O PokéAnalyzer tem uma ideia consistente e algumas decisões corretas: separar espécie de forma, catálogo global de dados por jogo, coleção por usuário e regulamento de elegibilidade. Porém, a documentação 2.0 ainda promete mais do que o modelo consegue representar.
 
-**O projeto não está pronto para implementação.** A árvore atual do GitHub contém documentação; não foram encontrados código Flask, frontend, banco SQLite, scripts de criação, dados importados, testes automatizados ou arquivo nativo do brModelo. O Figma contém oito wireframes, não uma aplicação funcional.
+**O projeto não está pronto para implementação.** A árvore atual do GitHub contém documentação; não foram encontrados código Flask, frontend, banco SQLite, scripts de criação, dados importados, testes automatizados ou arquivo nativo de modelagem. O Figma contém oito wireframes, não uma aplicação funcional.
 
 A versão 2.0 deve ser tratada como rascunho histórico. A versão 3.0 proposta corrige as principais inconsistências antes do modelo lógico.
 
@@ -196,7 +196,7 @@ Legalidade completa de cada exemplar, simulador/cálculo de dano, movesets e ite
 ## 7. Ordem de execução
 
 1. Aprovar critérios do catálogo e modelo v3.
-2. Desenhar e conferir o DER no brModelo.
+2. Completar e conferir o DER no Figma/FigJam.
 3. Criar modelo lógico e dicionário de dados.
 4. Revisar normalização e restrições.
 5. Criar SQLite e testes de integridade.
