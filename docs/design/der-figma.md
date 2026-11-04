@@ -6,7 +6,7 @@
 
 ## Estado do quadro
 
-<badge>Parcial</badge>
+**Status: parcial.**
 
 O primeiro diagrama foi gerado no FigJam e é editável. Ele cobre o domínio de catálogo e contexto de jogo. O limite de chamadas do Figma MCP no plano Starter impediu acrescentar os outros dois diagramas nesta execução. Portanto, o quadro atual **não deve ser considerado o DER visual completo**.
 
