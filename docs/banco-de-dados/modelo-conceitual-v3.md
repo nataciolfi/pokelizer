@@ -134,15 +134,15 @@ O jogo atual é derivado de DADOS_FORMA_JOGO. Jogo de origem é independente. O 
 - codigo único: HP, ATK, DEF, SP_ATK, SP_DEF, SPEED.
 - nome.
 
-### TIPO_TREINAMENTO
+### SISTEMA_ATRIBUTO
 - **id_tipo_treinamento:** PK.
 - codigo único: IV, EV, CHAMPIONS_TRAINING ou outro sistema documentado.
 - nome, descricao.
 
 CHAMPIONS_TRAINING identifica um sistema separado; não implica que sua escala numérica esteja conhecida.
 
-### MECANICA_TREINAMENTO
-Associação entre MECANICA_JOGO e TIPO_TREINAMENTO.
+### MECANICA_SISTEMA_ATRIBUTO
+Associação entre MECANICA_JOGO e SISTEMA_ATRIBUTO.
 - **id_mecanica_treinamento:** PK.
 - id_mecanica, id_tipo_treinamento.
 - aplicabilidade: aplicável, não aplicável ou não verificado.
@@ -152,7 +152,7 @@ Associação entre MECANICA_JOGO e TIPO_TREINAMENTO.
 
 Mecânica + tipo de treinamento é único. Limites desconhecidos ficam NULL e bloqueiam cálculo automático.
 
-### VALOR_TREINAMENTO_POKEMON
+### VALOR_ATRIBUTO_POKEMON
 Valor de treinamento aplicado a um exemplar.
 - **id_valor_treinamento:** PK.
 - id_pokemon_colecao.
@@ -228,16 +228,16 @@ Origem e destino devem pertencer ao mesmo jogo. Transformação temporária não
 - METODO_OBTENCAO 1:N POKEMON_COLECAO como método real (opcional).
 - NATUREZA 1:N POKEMON_COLECAO (opcional).
 - HABILIDADE_FORMA_JOGO 1:N POKEMON_COLECAO (opcional).
-- MECANICA_JOGO N:N TIPO_TREINAMENTO via MECANICA_TREINAMENTO.
-- POKEMON_COLECAO 1:N VALOR_TREINAMENTO_POKEMON.
-- MECANICA_TREINAMENTO 1:N VALOR_TREINAMENTO_POKEMON.
-- ATRIBUTO_BATALHA 1:N VALOR_TREINAMENTO_POKEMON.
+- MECANICA_JOGO N:N SISTEMA_ATRIBUTO via MECANICA_SISTEMA_ATRIBUTO.
+- POKEMON_COLECAO 1:N VALOR_ATRIBUTO_POKEMON.
+- MECANICA_SISTEMA_ATRIBUTO 1:N VALOR_ATRIBUTO_POKEMON.
+- ATRIBUTO_BATALHA 1:N VALOR_ATRIBUTO_POKEMON.
 - DADOS_FORMA_JOGO 1:N PERFIL_ANALISE.
 - MECANICA_JOGO 1:N PERFIL_ANALISE.
 - USUARIO 1:N PERFIL_ANALISE (opcional no perfil).
 - REGULAMENTO 1:N PERFIL_ANALISE (opcional no perfil).
 - PERFIL_ANALISE 1:N VALOR_PERFIL_ANALISE.
-- MECANICA_TREINAMENTO 1:N VALOR_PERFIL_ANALISE.
+- MECANICA_SISTEMA_ATRIBUTO 1:N VALOR_PERFIL_ANALISE.
 - ATRIBUTO_BATALHA 1:N VALOR_PERFIL_ANALISE.
 - PERFIL_ANALISE N:N NATUREZA via PERFIL_NATUREZA.
 - PERFIL_ANALISE N:N HABILIDADE_FORMA_JOGO via PERFIL_HABILIDADE.
@@ -277,8 +277,20 @@ Origem e destino devem pertencer ao mesmo jogo. Transformação temporária não
 - Tipos migram para TIPO_FORMA_JOGO com posição.
 - Métodos possíveis migram para METODO_FORMA_JOGO.
 - Jogo de origem continua separado do contexto atual.
-- Colunas fixas IV/EV são substituídas por VALOR_TREINAMENTO_POKEMON.
+- Colunas fixas IV/EV são substituídas por VALOR_ATRIBUTO_POKEMON.
 - Valores dos perfis passam para VALOR_PERFIL_ANALISE.
 - “Legalidade” passa a significar elegibilidade da espécie/forma.
 
 **Não iniciar o modelo lógico sem desenhar este DER no brModelo e revisar as cardinalidades.**
+
+
+## 7. Semântica dos valores de atributos
+
+IV não é treinamento; é um valor individual de potencial do atributo. EV representa esforço de treinamento. Outros jogos podem ter sistemas próprios. Por isso, a entidade genérica usa o nome **SISTEMA_ATRIBUTO**, e não “tipo de treinamento”.
+
+- SISTEMA_ATRIBUTO identifica IV, EV ou outro sistema documentado.
+- MECANICA_SISTEMA_ATRIBUTO informa aplicabilidade, unidade e limites dentro da versão de mecânica.
+- VALOR_ATRIBUTO_POKEMON armazena o valor real de um exemplar por sistema e atributo.
+- VALOR_PERFIL_ANALISE armazena o alvo correspondente.
+
+A comparação não presume que valor maior seja melhor. A primeira versão classifica valores como igual, abaixo, acima ou sem dado, conforme [algoritmo de análise](../algoritmo-analise.md).
