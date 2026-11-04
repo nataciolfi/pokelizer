@@ -18,8 +18,8 @@ DADOS_FORMA_JOGO aponta para JOGO. MECANICA_JOGO também aponta para JOGO, mas p
 ## DT06 — Scarlet/Violet primeiro
 Primeira análise numérica para IV, EV e natureza de Scarlet/Violet. Limites vêm do banco, não de condicionais espalhadas pelo código.
 
-## DT07 — Treinamento separado
-Valores pertencem a tipo de sistema, atributo e versão de mecânica. IV, EV e treinamento de Champions não são intercambiáveis.
+## DT07 — Sistemas de valores de atributos separados
+Valores pertencem a um sistema, atributo e versão de mecânica. IV não é treinamento; EV representa esforço; sistemas próprios de outros jogos têm semântica separada. Não há conversão automática entre eles.
 
 ## DT08 — Champions em contexto próprio
 Recrutamento, visitantes via HOME e treinamento por PV são tratados separadamente. O cálculo fica bloqueado até existir escala e limites documentados. Fontes: https://champions.pokemon.com/pt-br/pokemon/ e https://champions.pokemon.com/pt-br/gameplay/
@@ -46,7 +46,7 @@ Dados de forma, mecânicas, regulamentos e perfis de referência guardam URL e d
 Hash de senha por biblioteca reconhecida, SQL parametrizado, sessão segura, proteção CSRF e autorização por proprietário em toda rota de coleção. Não versionar segredos.
 
 ## DT16 — Análise explicável
-Cálculos determinísticos em Python, com jogo, mecânica, sistema, perfil e fonte apresentados no resultado.
+Cálculos determinísticos em Python, com jogo, mecânica, sistema de atributos, perfil e fonte apresentados no resultado. A primeira versão compara cada atributo com o valor-alvo explícito e classifica igual/abaixo/acima/sem dado. Não gera nota global nem presume que valor maior é melhor. Natureza e habilidade são verificadas separadamente como opções categóricas compatíveis. Consulte [algoritmo de análise](algoritmo-analise.md).
 
 ## DT17 — Histórico fora do MVP
 Sem histórico de relatórios ou de todas as transferências na primeira entrega.
