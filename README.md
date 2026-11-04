@@ -34,6 +34,8 @@ Python, Flask, SQLite, SQL, HTML, CSS e JavaScript. Ainda não formam uma aplica
 ## Documentação
 
 - [Auditoria técnica completa](docs/auditoria-completa.md)
+- [Algoritmo de análise — versão inicial](docs/algoritmo-analise.md)
+- [Decisões ainda em aberto](docs/decisoes-em-aberto.md)
 - [Wireframes (Figma)](docs/design/wireframes.md)
 - [Escopo](docs/escopo.md)
 - [Requisitos](docs/requisitos.md)
