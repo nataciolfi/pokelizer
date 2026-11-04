@@ -3,7 +3,7 @@
 **Status:** DER textual proposto após auditoria.  
 **Referência conceitual:** [modelo-conceitual-v3.md](modelo-conceitual-v3.md)
 
-Este DER separa catálogo, dados por jogo, mecânicas versionadas, exemplares individuais, valores de atributos, perfis e regulamentos. Ele ainda precisa ser desenhado e conferido no brModelo.
+Este DER separa catálogo, dados por jogo, mecânicas versionadas, exemplares individuais, valores de atributos, perfis e regulamentos. Ele está sendo materializado no Figma/FigJam em diagramas por domínio, para manter as entidades legíveis.
 
 ```mermaid
 erDiagram
@@ -266,7 +266,7 @@ erDiagram
 14. Uma transformação deve ligar duas fichas do mesmo jogo.
 15. Valores e limites não confirmados não devem ser presumidos.
 
-**Atenção:** Mermaid é uma representação documental. A cardinalidade, obrigatoriedade e as restrições acima precisam ser reproduzidas e conferidas no brModelo e depois no modelo lógico.
+**Atenção:** Mermaid é uma representação documental. A cardinalidade, obrigatoriedade e as restrições acima precisam ser conferidas visualmente no FigJam e depois no modelo lógico.
 
 
 ## Semântica da camada de valores de atributos
