@@ -16,7 +16,7 @@
 | RF10 | Registrar um exemplar individual na coleção. |
 | RF11 | Separar jogo atual, jogo de origem e método real de obtenção. |
 | RF12 | Registrar nível, natureza e habilidade quando aplicáveis. |
-| RF13 | Registrar treinamento por sistema, atributo e versão de mecânica. |
+| RF13 | Registrar valores por sistema, atributo e versão de mecânica. |
 | RF14 | Consultar, editar e excluir somente exemplares próprios. |
 | RF15 | Permitir vários exemplares da mesma espécie/forma. |
 | RF16 | Criar, editar e excluir perfis personalizados. |
@@ -87,3 +87,8 @@
 - Perfil de outro jogo não pode ser usado na análise.
 - Elegibilidade não verificada nunca é apresentada como proibida.
 - Fonte e data acompanham recomendações.
+
+
+## Regra adicional do analisador
+
+A primeira versão compara cada atributo com o alvo explícito do perfil e classifica igual, abaixo, acima ou sem dado. Não calcula uma nota global nem assume que valor maior é melhor. A elegibilidade da espécie/forma fica em painel independente. Consulte [algoritmo de análise](algoritmo-analise.md).
