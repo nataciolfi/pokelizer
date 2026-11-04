@@ -17,7 +17,7 @@ Este arquivo acompanha o [modelo conceitual 3.0](modelo-conceitual-v3.md) e o [D
 | METODO_OBTENCAO | foi usado em | POKEMON_COLECAO | 1:N, opcional no exemplar |
 | NATUREZA | caracteriza | POKEMON_COLECAO | 1:N, opcional |
 | HABILIDADE_FORMA_JOGO | é selecionada em | POKEMON_COLECAO | 1:N, opcional |
-| MECANICA_JOGO | oferece sistemas de treinamento | SISTEMA_ATRIBUTO | N:N via MECANICA_SISTEMA_ATRIBUTO |
+| MECANICA_JOGO | oferece sistemas de valores de atributo | SISTEMA_ATRIBUTO | N:N via MECANICA_SISTEMA_ATRIBUTO |
 | POKEMON_COLECAO | possui valores | VALOR_ATRIBUTO_POKEMON | 1:N |
 | MECANICA_SISTEMA_ATRIBUTO | valida valores | VALOR_ATRIBUTO_POKEMON | 1:N |
 | ATRIBUTO_BATALHA | recebe valor | VALOR_ATRIBUTO_POKEMON | 1:N |
@@ -73,8 +73,8 @@ REGULAMENTO está ligado a uma versão de mecânicas. ELEGIBILIDADE_FORMA_REGULA
 - Posição de tipo restrita a 1 ou 2; sem duplicação.
 - Habilidade e método únicos por ficha e opção/slot.
 - Jogo + versão únicos em MECANICA_JOGO.
-- Mecânica + tipo de treinamento únicos.
-- Exemplar + sistema + atributo únicos nos valores de treinamento.
+- Mecânica + sistema de valores de atributo únicos.
+- Exemplar + sistema + atributo únicos nos valores de atributo.
 - Perfil + sistema + atributo únicos nos valores de perfil.
 - Perfil personalizado exige proprietário.
 - Habilidade selecionada deve pertencer ao contexto atual.
