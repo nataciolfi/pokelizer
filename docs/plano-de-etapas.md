@@ -13,8 +13,9 @@
 - [x] Separar jogo atual, origem e método de obtenção.
 - [x] Separar sistemas de valores de atributo.
 - [x] Separar perfil e regulamento.
-- [ ] Desenhar o DER 3.0 no brModelo.
-- [ ] Conferir entidades associativas, cardinalidades e obrigatoriedade.
+- [x] Criar o primeiro diagrama do DER 3.0 no FigJam (catálogo e jogos).
+- [ ] Completar os diagramas de coleção/atributos e análise/regulamentos no mesmo quadro.
+- [ ] Conferir entidades associativas, cardinalidades e obrigatoriedade no FigJam.
 - [ ] Testar exemplos de Pokémon transferido, recrutado e transformado.
 
 ## Etapa 2 — Modelo lógico
