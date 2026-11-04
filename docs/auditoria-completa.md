@@ -30,6 +30,7 @@ A versão 2.0 deve ser tratada como rascunho histórico. A versão 3.0 proposta 
 | A14 | Média | Interface | Os wireframes não especificam todos os estados nem todo o fluxo de manutenção da coleção. |
 | A15 | Média | Segurança | Hash e isolamento são citados, mas sessão, autorização por registro, CSRF e validação ainda não viraram critérios completos. |
 | A16 | Média | Acessibilidade | Não há critérios verificáveis de teclado, contraste, foco, rótulos ou responsividade. |
+| A17 | Alta | Análise | O projeto promete pontos positivos e sugestões, mas não define a regra exata de comparação nem o significado de uma nota. |
 
 ## 3. Crítica detalhada
 
@@ -127,6 +128,12 @@ Hash não basta. Cada operação da coleção precisa confirmar o proprietário 
 
 **Correção:** rótulos de campos, foco visível, navegação por teclado, contraste, mensagens de erro associadas, ordem de tabulação e layout responsivo.
 
+### A17 — O analisador ainda não tem uma definição objetiva de resultado
+
+O escopo promete mostrar pontos positivos e oportunidades de melhoria, mas não define como o sistema compara valores, quando algo é considerado melhor, como trata dados ausentes nem de onde viria uma pontuação geral. Um IV acima do alvo pode ser indesejado em uma configuração específica; logo, “maior” não significa automaticamente “melhor”.
+
+**Correção:** a primeira versão não atribui uma nota global. Ela compara atributo por atributo contra um alvo explícito do perfil: igual ao alvo, abaixo, acima ou sem dado comparável. Natureza e habilidade são verificações categóricas de compatibilidade/preferência. O texto não chama algo de positivo ou negativo sem regra explicável. Uma métrica agregada só poderá ser adicionada com fórmula, pesos e validação documentados.
+
 ## 4. Correções estruturais adotadas na versão 3.0
 
 1. DADOS_FORMA_JOGO passa a depender de FORMA + JOGO, não de uma versão de mecânica.
@@ -182,6 +189,9 @@ Legalidade completa de cada exemplar, simulador/cálculo de dano, movesets e ite
 | Transformação temporária | Não criar exemplar independente. |
 | Busca sem resultados | Estado vazio e limpeza de filtros. |
 | Dado sem fonte | Não apresentar como confirmado. |
+| IV real maior que valor-alvo | Mostrar “acima do alvo”; não presumir melhor ou pior. |
+| Valor necessário não informado | Mostrar “sem dados”; não classificar como incompatível. |
+| Perfil não define um atributo | Não comparar esse atributo. |
 
 ## 7. Ordem de execução
 
