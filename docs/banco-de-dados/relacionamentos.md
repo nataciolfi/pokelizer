@@ -17,16 +17,16 @@ Este arquivo acompanha o [modelo conceitual 3.0](modelo-conceitual-v3.md) e o [D
 | METODO_OBTENCAO | foi usado em | POKEMON_COLECAO | 1:N, opcional no exemplar |
 | NATUREZA | caracteriza | POKEMON_COLECAO | 1:N, opcional |
 | HABILIDADE_FORMA_JOGO | é selecionada em | POKEMON_COLECAO | 1:N, opcional |
-| MECANICA_JOGO | oferece sistemas de treinamento | TIPO_TREINAMENTO | N:N via MECANICA_TREINAMENTO |
-| POKEMON_COLECAO | possui valores | VALOR_TREINAMENTO_POKEMON | 1:N |
-| MECANICA_TREINAMENTO | valida valores | VALOR_TREINAMENTO_POKEMON | 1:N |
-| ATRIBUTO_BATALHA | recebe valor | VALOR_TREINAMENTO_POKEMON | 1:N |
+| MECANICA_JOGO | oferece sistemas de treinamento | SISTEMA_ATRIBUTO | N:N via MECANICA_SISTEMA_ATRIBUTO |
+| POKEMON_COLECAO | possui valores | VALOR_ATRIBUTO_POKEMON | 1:N |
+| MECANICA_SISTEMA_ATRIBUTO | valida valores | VALOR_ATRIBUTO_POKEMON | 1:N |
+| ATRIBUTO_BATALHA | recebe valor | VALOR_ATRIBUTO_POKEMON | 1:N |
 | DADOS_FORMA_JOGO | é alvo de | PERFIL_ANALISE | 1:N |
 | MECANICA_JOGO | é usada por | PERFIL_ANALISE | 1:N |
 | USUARIO | cria | PERFIL_ANALISE | 1:N, opcional no perfil |
 | REGULAMENTO | contextualiza | PERFIL_ANALISE | 1:N, opcional no perfil |
 | PERFIL_ANALISE | define valores | VALOR_PERFIL_ANALISE | 1:N |
-| MECANICA_TREINAMENTO | define valores de perfil | VALOR_PERFIL_ANALISE | 1:N |
+| MECANICA_SISTEMA_ATRIBUTO | define valores de perfil | VALOR_PERFIL_ANALISE | 1:N |
 | ATRIBUTO_BATALHA | recebe valor-alvo | VALOR_PERFIL_ANALISE | 1:N |
 | PERFIL_ANALISE | recomenda | NATUREZA | N:N via PERFIL_NATUREZA |
 | PERFIL_ANALISE | recomenda | HABILIDADE_FORMA_JOGO | N:N via PERFIL_HABILIDADE |
@@ -56,7 +56,7 @@ METODO_FORMA_JOGO lista o que é possível em determinado jogo. POKEMON_COLECAO 
 Cada exemplar pertence a um usuário e tem um contexto atual por meio de DADOS_FORMA_JOGO. O jogo de origem é opcional e separado. A primeira versão não armazena o histórico inteiro de transferências; esse limite precisa ser informado na interface.
 
 ### Sistemas de treinamento
-MECANICA_TREINAMENTO informa quais sistemas existem em uma versão de mecânicas, sua aplicabilidade, unidade e limites conhecidos. VALOR_TREINAMENTO_POKEMON guarda um valor por exemplar, sistema e atributo. IV, EV e treinamento próprio de outro jogo não podem ser misturados.
+MECANICA_SISTEMA_ATRIBUTO informa quais sistemas existem em uma versão de mecânicas, sua aplicabilidade, unidade e limites conhecidos. VALOR_ATRIBUTO_POKEMON guarda um valor por exemplar, sistema e atributo. IV, EV e treinamento próprio de outro jogo não podem ser misturados.
 
 ### Perfil de análise
 PERFIL_ANALISE define o alvo e a mecânica. VALOR_PERFIL_ANALISE guarda os valores que o exemplar será comparado. Naturezas e habilidades recomendadas ficam em associações próprias. Perfil competitivo não é o mesmo que regulamento.
