@@ -135,7 +135,7 @@ O jogo atual é derivado de DADOS_FORMA_JOGO. Jogo de origem é independente. O 
 - nome.
 
 ### SISTEMA_ATRIBUTO
-- **id_tipo_treinamento:** PK.
+- **id_sistema_atributo:** PK.
 - codigo único: IV, EV, CHAMPIONS_TRAINING ou outro sistema documentado.
 - nome, descricao.
 
@@ -143,20 +143,20 @@ CHAMPIONS_TRAINING identifica um sistema separado; não implica que sua escala n
 
 ### MECANICA_SISTEMA_ATRIBUTO
 Associação entre MECANICA_JOGO e SISTEMA_ATRIBUTO.
-- **id_mecanica_treinamento:** PK.
-- id_mecanica, id_tipo_treinamento.
+- **id_mecanica_sistema_atributo:** PK.
+- id_mecanica, id_sistema_atributo.
 - aplicabilidade: aplicável, não aplicável ou não verificado.
 - unidade.
 - valor_minimo, valor_maximo_atributo, valor_maximo_total.
 - fonte_url, data_verificacao.
 
-Mecânica + tipo de treinamento é único. Limites desconhecidos ficam NULL e bloqueiam cálculo automático.
+Mecânica + sistema de valores de atributo é único. Limites desconhecidos ficam NULL e bloqueiam cálculo automático.
 
 ### VALOR_ATRIBUTO_POKEMON
 Valor de treinamento aplicado a um exemplar.
-- **id_valor_treinamento:** PK.
+- **id_valor_atributo:** PK.
 - id_pokemon_colecao.
-- id_mecanica_treinamento.
+- id_mecanica_sistema_atributo.
 - id_atributo.
 - valor.
 
@@ -177,7 +177,7 @@ Forma e mecânica devem pertencer ao mesmo jogo. Perfil é referência de compar
 ### VALOR_PERFIL_ANALISE
 - **id_valor_perfil:** PK.
 - id_perfil.
-- id_mecanica_treinamento.
+- id_mecanica_sistema_atributo.
 - id_atributo.
 - valor_alvo.
 
@@ -253,7 +253,7 @@ Origem e destino devem pertencer ao mesmo jogo. Transformação temporária não
 - Tipos com posição 1 ou 2; sem duplicação; máximo de dois.
 - Habilidade/slot e método únicos por ficha.
 - Jogo + versão únicos em MECANICA_JOGO.
-- Mecânica + tipo de treinamento únicos.
+- Mecânica + sistema de valores de atributo únicos.
 - Exemplar + sistema + atributo únicos.
 - Perfil + sistema + atributo únicos.
 - Perfil personalizado exige proprietário.
@@ -268,7 +268,7 @@ Origem e destino devem pertencer ao mesmo jogo. Transformação temporária não
 - Um contexto atual por exemplar, além do jogo de origem.
 - Sem histórico completo de transferências.
 - Sem movesets, itens, equipes ou cálculo de dano.
-- Análise somente para sistemas de treinamento documentados.
+- Análise somente para sistemas de valores de atributo documentados.
 - O catálogo pode conter dados não verificados sem inventá-los.
 
 ## 6. Migração em relação à versão 2.0
@@ -286,7 +286,7 @@ Origem e destino devem pertencer ao mesmo jogo. Transformação temporária não
 
 ## 7. Semântica dos valores de atributos
 
-IV não é treinamento; é um valor individual de potencial do atributo. EV representa esforço de treinamento. Outros jogos podem ter sistemas próprios. Por isso, a entidade genérica usa o nome **SISTEMA_ATRIBUTO**, e não “tipo de treinamento”.
+IV não é treinamento; é um valor individual de potencial do atributo. EV representa esforço de treinamento. Outros jogos podem ter sistemas próprios. Por isso, a entidade genérica usa o nome **SISTEMA_ATRIBUTO**, e não “sistema de valores de atributo”.
 
 - SISTEMA_ATRIBUTO identifica IV, EV ou outro sistema documentado.
 - MECANICA_SISTEMA_ATRIBUTO informa aplicabilidade, unidade e limites dentro da versão de mecânica.
