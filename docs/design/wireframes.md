@@ -1,7 +1,7 @@
 # Wireframes de baixa fidelidade
 
-**Escopo:** protótipo desktop de baixa fidelidade.  
-**Status:** estrutura especificada; revisão visual pelo responsável do projeto ainda pendente.
+**Escopo documentado:** oito telas desktop, 1440 × 1000.  
+**Status:** estrutura especificada; revisão visual detalhada e complementação dos estados ainda pendentes.
 
 ## Objetivo
 
