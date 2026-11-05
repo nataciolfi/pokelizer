@@ -1,13 +1,11 @@
 # Wireframes de baixa fidelidade
 
-**Arquivo Figma:** [PokéAnalyzer — Wireframes](https://www.figma.com/design/ElwmtWufS0oyS2KNwLsHFD)  
-**Tipo:** Figma Design  
-**Escopo:** protótipo desktop de baixa fidelidade  
-**Status:** estrutura criada; revisão visual pelo responsável do projeto ainda pendente.
+**Escopo:** protótipo desktop de baixa fidelidade.  
+**Status:** estrutura especificada; revisão visual pelo responsável do projeto ainda pendente.
 
 ## Objetivo
 
-Definir a estrutura, navegação e campos principais do website antes da implementação em HTML, CSS e Flask. O protótipo usa componentes editáveis, textos, formas e placeholders, sem depender de uma imagem achatada.
+Definir a estrutura, navegação e campos principais do website antes da implementação em HTML, CSS e Flask. O protótipo usa componentes, textos, formas e placeholders.
 
 ## Telas criadas
 
@@ -42,8 +40,8 @@ Definir a estrutura, navegação e campos principais do website antes da impleme
 
 ## Revisão pendente
 
-- [ ] Abrir o arquivo Figma e revisar visualmente os oito frames.
-- [ ] Conferir os textos, espaçamentos e alinhamentos.
+- [ ] Revisar visualmente as oito telas especificadas.
+- [ ] Conferir textos, espaçamentos e alinhamentos.
 - [ ] Decidir se é necessário acrescentar telas mobile/responsivas.
 - [ ] Validar o fluxo de navegação antes da implementação do frontend.
 - [ ] Depois da revisão, registrar a versão aprovada no projeto.
