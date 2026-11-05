@@ -14,8 +14,9 @@
 - [x] Separar sistemas de valores de atributo.
 - [x] Separar perfil e regulamento.
 - [x] Criar o primeiro diagrama do DER 3.0 no FigJam (catálogo e jogos).
-- [ ] Completar os diagramas de coleção/atributos e análise/regulamentos no mesmo quadro.
-- [ ] Conferir entidades associativas, cardinalidades e obrigatoriedade no FigJam.
+- [x] Criar o segundo diagrama do DER 3.0 no FigJam (coleção e valores de atributos).
+- [ ] Criar o terceiro diagrama do DER 3.0 no FigJam (análise e regulamentos).
+- [ ] Conferir entidades associativas, cardinalidades e obrigatoriedade nos três diagramas.
 - [ ] Testar exemplos de Pokémon transferido, recrutado e transformado.
 
 ## Etapa 2 — Modelo lógico
