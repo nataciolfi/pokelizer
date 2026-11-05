@@ -281,7 +281,7 @@ Origem e destino devem pertencer ao mesmo jogo. Transformação temporária não
 - Valores dos perfis passam para VALOR_PERFIL_ANALISE.
 - “Legalidade” passa a significar elegibilidade da espécie/forma.
 
-**Não iniciar o modelo lógico até que os diagramas por domínio no FigJam estejam completos e suas cardinalidades tenham sido revisadas.**
+**Não iniciar o modelo lógico até que o DER visual no brModelo esteja completo e suas cardinalidades tenham sido revisadas.**
 
 
 ## 7. Semântica dos valores de atributos
