@@ -1,55 +1,89 @@
-# Wireframes de baixa fidelidade
+# Wireframes de baixa fidelidade — revisão de conteúdo
 
-**Arquivo Figma:** [PokéAnalyzer — Wireframes](https://www.figma.com/design/ElwmtWufS0oyS2KNwLsHFD)  
-**Tipo:** Figma Design  
-**Escopo:** protótipo desktop de baixa fidelidade  
-**Status:** estrutura criada; revisão visual pelo responsável do projeto ainda pendente.
+**Escopo documentado:** oito telas desktop, 1440 × 1000.  
+**Status:** estrutura especificada; revisão visual detalhada e complementação dos estados ainda pendentes.
 
-## Objetivo
+## Diagnóstico
 
-Definir a estrutura, navegação e campos principais do website antes da implementação em HTML, CSS e Flask. O protótipo usa componentes editáveis, textos, formas e placeholders, sem depender de uma imagem achatada.
+As telas formam um ponto de partida, não um fluxo fechado. O conteúdo deve seguir o modelo conceitual 3.0. Textos e dados de exemplo são placeholders, não dados oficiais nem funcionalidades implementadas.
 
-## Telas criadas
+## Correções por tela
 
-| Nº | Tela | Objetivo |
-|---:|---|---|
-| 01 | Entrar | Permitir autenticação e acesso à coleção pessoal. |
-| 02 | Criar conta | Registrar usuário e credenciais. |
-| 03 | Pokédex | Pesquisar espécies e filtrar por tipo, geração e jogo. |
-| 04 | Detalhes do Pokémon | Consultar uma espécie, suas formas e dados no contexto de um jogo. |
-| 05 | Minha coleção | Consultar os Pokémon registrados pelo usuário. |
-| 06 | Adicionar Pokémon | Registrar espécie/forma, jogo, método de obtenção, natureza, habilidade, IVs e EVs quando aplicáveis. |
-| 07 | Analisador | Comparar um exemplar com um perfil competitivo ou personalizado. |
-| 08 | Perfil personalizado | Definir EVs, naturezas e habilidades preferidas para comparação. |
+### 01 — Entrar
+- Incluir mensagens de erro e estado de carregamento.
+- Não revelar se um e-mail existe por mensagens específicas.
+- Manter acesso a criar conta.
 
-## Convenções visuais
+### 02 — Criar conta
+- Mostrar regras mínimas de senha.
+- Validar confirmação no frontend e backend.
+- Associar mensagens de erro aos campos.
+- Impedir duplicidade de e-mail e nome de usuário.
 
-- Wireframe desktop com frames de 1440 × 1000.
-- Paleta neutra e em tons de cinza, para priorizar hierarquia e fluxo.
-- Campos e botões baseados em componentes editáveis do sistema visual Simple Design System.
-- Imagens de Pokémon aparecem como placeholders para não antecipar a decisão sobre fontes e licenças de imagens.
-- O conteúdo de exemplo é ilustrativo e não representa dados oficiais definitivos ou uma análise real.
+### 03 — Pokédex
+- Filtrar por tipo, geração e jogo.
+- Distinguir presença no jogo de transferência, obtenção e elegibilidade.
+- Mostrar espécies mesmo sem dados do jogo.
+- Indicar dados não verificados.
+- Criar estado vazio e opção de limpar filtros.
 
-## Regras funcionais refletidas no protótipo
+### 04 — Detalhes do Pokémon
+- Separar espécie, forma e evolução.
+- Mostrar formas alternativas da mesma espécie.
+- Mostrar jogo, fonte e estado de verificação.
+- Distinguir forma registrável de transformação temporária.
+- Não mostrar estatísticas de um jogo como universais.
 
-1. As coleções pertencem ao usuário autenticado.
-2. A Pokédex consulta espécies e formas; disponibilidade de cada forma deve ser contextualizada pelo jogo.
-3. A tela de cadastro inclui jogo/contexto e método de obtenção.
-4. IVs e EVs só são exibidos quando aplicáveis às mecânicas selecionadas.
-5. O analisador distingue perfis competitivos e personalizados.
-6. O resultado deverá mostrar o jogo, o contexto de mecânicas, o perfil e a fonte/regulamento utilizados.
-7. As telas são wireframes; ainda não existe implementação funcional.
+### 05 — Minha coleção
+- Cada linha/card representa um exemplar.
+- Mostrar apelido, espécie/forma, jogo atual e jogo de origem, quando conhecido.
+- Permitir abrir, editar e excluir um exemplar.
+- Mostrar coleção vazia.
+- Permitir vários exemplares da mesma forma.
 
-## Revisão pendente
+### 06 — Adicionar Pokémon
+Separar identidade, contexto atual, origem, método real, características e treinamento. IV/EV não podem ser campos universais. Para Champions, não mostrar IV/EV por padrão; só apresentar treinamento específico quando a escala estiver confirmada.
 
-- [ ] Abrir o arquivo Figma e revisar visualmente os oito frames.
-- [ ] Conferir os textos, espaçamentos e alinhamentos.
-- [ ] Decidir se é necessário acrescentar telas mobile/responsivas.
-- [ ] Validar o fluxo de navegação antes da implementação do frontend.
-- [ ] Depois da revisão, registrar a versão aprovada no projeto.
+### 07 — Analisador
+- Selecionar exemplar.
+- Selecionar mecânica compatível com o jogo atual.
+- Selecionar perfil e regulamento separadamente.
+- Mostrar sistema de treinamento comparado.
+- Exibir valores ausentes e limites não verificados.
+- Separar comparação de atributos da elegibilidade da espécie/forma.
+- Não declarar legalidade completa do exemplar.
 
-## Relação com as disciplinas
+### 08 — Perfil personalizado
+- Adicionar nome, descrição e salvar.
+- Exibir jogo, forma e mecânica-alvo.
+- Organizar valores por sistema e atributo.
+- Mostrar natureza/habilidade somente quando aplicáveis.
+- Validar limites e soma segundo a mecânica.
+- Criar lista de perfis, editar e excluir.
 
-- **Desenvolvimento de Websites:** define páginas, campos, navegação e hierarquia.
-- **Banco de Dados:** os formulários refletem os dados de usuário, espécie/forma, coleção, perfil e regulamento previstos no modelo.
-- **POO:** a tela do analisador antecipa as operações que serão separadas em classes e métodos no backend.
+## Fluxo necessário
+
+Entrar/criar conta → Pokédex ou coleção → detalhe da forma/exemplar → adicionar/editar → analisador → resultado. O usuário também deve acessar uma lista de perfis, criar/editar perfil e voltar à análise sem perder o exemplar.
+
+## Telas e estados ainda necessários
+
+- Detalhe de exemplar individual.
+- Confirmação de exclusão.
+- Lista/gerenciamento de perfis.
+- Pokédex sem resultados.
+- Coleção vazia.
+- Formulário inválido.
+- Dados de jogo não verificados.
+- Mecânica sem treinamento confirmado.
+- Nenhum perfil compatível.
+- Elegibilidade não verificada.
+
+## Critérios de inspeção visual
+
+Hierarquia consistente, rótulos próximos aos campos, navegação uniforme, espaçamento/alinhamento, contraste, foco de teclado, responsividade e ausência de campos de treinamento incompatíveis. A inspeção visual detalhada das telas ainda não foi realizada.
+
+## Disciplinas
+
+- Websites: páginas, formulários, navegação e acessibilidade.
+- Banco de Dados: os formulários refletem espécie, forma, jogo, exemplar, perfil e regulamento.
+- POO: validações e cálculos ficam em classes/serviços no backend.

@@ -1,90 +1,86 @@
-# Escopo do projeto
+# Escopo do PokéAnalyzer — revisão após auditoria
 
 ## 1. Visão geral
 
-O PokéAnalyzer será um website com Pokédex Nacional completa, incluindo formas oficiais, coleção individual por usuário e analisador de Pokémon. O catálogo global será separado dos dados específicos de cada jogo.
+Website educacional com catálogo de espécies e formas Pokémon documentadas, coleção individual por usuário e analisador de atributos contextualizado por jogo. Catálogo global, dados por jogo e mecânicas versionadas ficam separados.
 
-O usuário poderá consultar espécies e formas, registrar Pokémon capturados, transferidos ou recrutados e comparar dados com perfis compatíveis com o jogo e as mecânicas selecionadas.
+Cada registro da coleção representa um exemplar. Jogo atual, jogo de origem e método de obtenção são informações diferentes.
 
 ## 2. Objetivos
 
-1. Disponibilizar consulta de espécies e todas as formas oficiais catalogadas.
-2. Separar dados globais da Pokédex dos atributos, tipos, habilidades e disponibilidade por jogo.
-3. Permitir contas e coleções individuais.
-4. Registrar método de obtenção, jogo de origem, natureza, habilidade, nível, IVs e EVs quando aplicáveis.
-5. Comparar dados com perfis competitivos de referência ou perfis personalizados.
-6. Explicar pontos positivos e oportunidades de melhoria.
-7. Consultar regulamentos oficiais, sempre identificando jogo, formato, temporada, vigência e fonte.
-8. Distinguir a presença de uma forma na Pokédex da disponibilidade dela em um jogo e da elegibilidade em um regulamento.
+1. Consultar espécies e formas oficiais documentadas.
+2. Identificar formas por código estável, não só pelo nome.
+3. Separar dados globais e dados específicos de jogo.
+4. Permitir contas e coleções privadas.
+5. Separar jogo atual, origem e método real.
+6. Registrar valores de treinamento sem converter sistemas.
+7. Comparar exemplares com perfis personalizados ou de referência.
+8. Exibir elegibilidade da espécie/forma por regulamento, sem prometer legalidade completa.
+9. Explicar resultados com contexto e fontes.
 
-## 3. Contexto de jogos
+## 3. Contextos de jogo
 
-- **Pokémon Scarlet e Pokémon Violet (Geração IX):** referência principal da calculadora de IVs, EVs e naturezas.
-- **Pokémon Champions:** contexto competitivo separado, com recrutamento, transferência e treinamento próprio por Pontos de Vitória. Os valores desse treinamento não serão convertidos em IV/EV de Scarlet/Violet sem equivalência oficial documentada.
-- **Pokémon Legends: Z-A:** contexto próprio de catálogo e mecânicas; não herdar automaticamente regras de Scarlet/Violet.
-- **Outros jogos oficiais:** poderão ser acrescentados com seus próprios registros de jogo e mecânicas.
+### Scarlet e Violet
+Primeiro contexto completo do analisador para IV, EV e natureza. Limites devem ser cadastrados na versão de mecânica e testados.
 
-A próxima geração principal ainda não terá regras cadastradas antes de seu lançamento e da publicação de informações oficiais.
+### Pokémon Champions
+Contexto separado para recrutamento, transferência por HOME e treinamento com Pontos de Vitória. O projeto não converte valores de Champions em IV/EV. A análise numérica só será liberada quando a escala do treinamento estiver documentada. Fontes oficiais: https://champions.pokemon.com/pt-br/pokemon/ e https://champions.pokemon.com/pt-br/gameplay/
 
-## 4. Funcionalidades dentro do escopo
+### Pokémon Legends: Z-A
+Contexto próprio. Só cadastrar dados e regras confirmados; não herdar fórmulas de Scarlet/Violet.
 
-- Cadastro, login e saída de usuários.
-- Pesquisa e filtros na Pokédex.
-- Visualização de espécies e formas oficiais.
-- Consulta de dados da forma por jogo.
-- Cadastro, edição, consulta e exclusão de Pokémon na coleção.
-- Registro de método de obtenção e jogo de origem, quando conhecido.
-- Registro de nível, natureza, habilidade, IVs e EVs quando aplicáveis.
-- Criação e edição de perfis personalizados.
-- Consulta de perfis competitivos de referência.
-- Análise comparativa com recomendações explicáveis.
-- Consulta de regulamentos e verificação da elegibilidade por forma e jogo, quando houver fonte oficial suficiente.
+### Pokémon Ventos e Ondas
+Site oficial anuncia lançamento mundial em 2027 para Nintendo Switch 2: https://windswaves.pokemon.com/pt-br/. Não cadastrar mecânicas presumidas antes de fontes suficientes.
 
-## 5. Catálogo completo e formas
+### Outros jogos
+Podem ser adicionados com contexto, dados e mecânicas documentados.
 
-O catálogo global deverá contemplar a Pokédex Nacional e todas as formas oficiais documentadas. Cada forma pertence a uma espécie.
+## 4. Critério do catálogo
 
-Estatísticas-base, tipos, habilidades e disponibilidade serão registrados por contexto de jogo. Uma forma pode existir no catálogo sem estar presente ou ser obtenível em todos os jogos.
+- ESPECIE é a entrada nacional.
+- FORMA é uma variação oficial documentada.
+- Toda espécie possui uma forma padrão.
+- Formas adicionais precisam de código, categoria, fonte e data.
+- Variações de gênero, região, estação, cosméticas, fusões e batalha precisam de classificação explícita.
+- Uma forma pode existir no catálogo sem aparecer em qualquer jogo.
+- Formas temporárias não são automaticamente registráveis.
+- Contagem é versionada por importação, nunca fixa no código.
 
-Formas puramente visuais também poderão ser catalogadas. Mega Evoluções e outras transformações de batalha serão identificadas como estados/transformações, sem tratá-las automaticamente como capturas independentes.
+A Pokédex oficial consultada apresenta a faixa nacional 1–1025 em 04/11/2026: https://www.pokemon.com/br/pokedex. Isso é uma referência da data, não garantia de que a página contenha todas as formas alternativas.
 
-A lista e a contagem do catálogo deverão acompanhar a fonte oficial e a versão dos dados, sem fixar permanentemente um total no código.
+## 5. MVP
 
-## 6. Modos de análise
+- Cadastro/login/logout.
+- Catálogo de espécies/formas com fonte.
+- Pesquisa e filtros.
+- Detalhe por forma/jogo.
+- CRUD de exemplares.
+- Perfis personalizados.
+- Analisador IV/EV/natureza de Scarlet/Violet.
+- Elegibilidade da espécie/forma quando houver regulamento confirmado.
+- Validações, mensagens de erro e estados vazios.
+- Testes de banco, autenticação e cálculos.
 
-### Atributos por mecânica de jogo
+## 6. Extensões condicionadas à documentação
 
-A primeira calculadora utilizará as mecânicas da Geração IX de Scarlet/Violet para IVs, EVs e natureza. O sistema deve validar limites a partir do contexto de mecânicas selecionado.
+- Treinamento próprio de Champions sem conversão.
+- Dados/mecânicas específicos de Legends: Z-A.
+- Outros jogos e regulamentos.
+- Histórico de contexto/transferências.
 
-Quando um jogo não utilizar ou não tiver confirmado um desses sistemas, o campo correspondente ficará indisponível ou não informado. O programa não deve preencher ausência com zero nem converter sistemas de treinamento diferentes.
-
-### Competitivo
-
-Compara a forma com um regulamento oficial específico de jogo, formato e temporada. O regulamento informa restrições e elegibilidade; não determina por si só uma única distribuição ideal de IVs, EVs ou natureza.
-
-### Personalizado
-
-Permite que o usuário crie um perfil com valores e prioridades que deseja comparar. O perfil pertence ao usuário e pode existir sem regulamento competitivo.
+O banco deve admitir extensão, mas a primeira entrega não simula regras que não foram confirmadas.
 
 ## 7. Fora do escopo inicial
 
-- Simulador de batalhas.
-- Calculadora completa de dano.
-- Montagem e gerenciamento de equipes.
-- Banco completo de golpes e itens segurados.
-- Integração com jogos ou leitura automática de arquivos de save.
-- Marketplace, trocas ou funcionalidades sociais.
-- Histórico detalhado de todas as análises.
+- Legalidade completa de exemplar individual.
+- Simulador de batalha e cálculo de dano.
+- Banco completo de golpes/itens.
+- Gerenciamento de equipes.
+- Integração automática com HOME ou leitura de save.
+- Marketplace e funcionalidades sociais.
+- Histórico completo de transferências.
 - Aplicativo móvel nativo.
-- Conversão automática entre sistemas de treinamento de jogos diferentes.
 
-Essas ideias poderão ser avaliadas em versões futuras, mas não fazem parte da primeira entrega.
+## 8. Premissas técnicas
 
-## 8. Premissas
-
-- O primeiro banco físico será local, usando SQLite.
-- O website será servido por Python/Flask.
-- O usuário precisará estar autenticado para acessar e modificar sua coleção.
-- A análise deverá explicar suas conclusões por regras legíveis.
-- Dados de jogos, formas e regulamentos deverão manter referência de origem e versão.
-- Dados desconhecidos serão marcados como não verificados, e não presumidos.
+Python, Flask, SQLite, SQL, HTML, CSS e JavaScript. Chaves estrangeiras ativas, SQL parametrizado, regras de domínio no backend e fonte/data de verificação para dados importados.
