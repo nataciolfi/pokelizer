@@ -6,7 +6,7 @@
 
 O PokéAnalyzer tem uma ideia consistente e algumas decisões corretas: separar espécie de forma, catálogo global de dados por jogo, coleção por usuário e regulamento de elegibilidade. Porém, a documentação 2.0 ainda promete mais do que o modelo consegue representar.
 
-**O projeto não está pronto para implementação.** A árvore atual do GitHub contém documentação; não foram encontrados código Flask, frontend, banco SQLite, scripts de criação, dados importados, testes automatizados ou arquivo nativo de modelagem. O Figma contém oito wireframes, não uma aplicação funcional.
+**O projeto não está pronto para implementação.** A árvore atual do GitHub contém documentação; não foram encontrados código Flask, frontend, banco SQLite, scripts de criação, dados importados, testes automatizados ou arquivo nativo de modelagem. O projeto possui uma especificação de oito telas, que não representa uma aplicação funcional.
 
 A versão 2.0 deve ser tratada como rascunho histórico. A versão 3.0 proposta corrige as principais inconsistências antes do modelo lógico.
 
@@ -116,7 +116,7 @@ Forma regional ou sazonal pode ser uma forma catalogável. Mega Evolução e out
 
 As telas cobrem login, cadastro, Pokédex, detalhes, coleção, adição, análise e perfil. Ainda faltam estados e especificações para detalhe/edição do exemplar, confirmação de exclusão, lista de perfis, resultados vazios, campos indisponíveis e dados não verificados.
 
-**Correção:** revisar conteúdo e navegação antes do frontend. A inspeção visual de alinhamento, sobreposição e espaçamento do Figma não foi concluída porque o MCP bloqueou novas chamadas pelo limite do plano Starter. Não declarar essa revisão visual concluída.
+**Correção:** revisar conteúdo e navegação antes do frontend. A inspeção visual detalhada de alinhamento, sobreposição e espaçamento das telas ainda não foi concluída. Não declarar essa revisão visual concluída.
 
 ### A15 — Segurança precisa ser testável
 
@@ -196,7 +196,7 @@ Legalidade completa de cada exemplar, simulador/cálculo de dano, movesets e ite
 ## 7. Ordem de execução
 
 1. Aprovar critérios do catálogo e modelo v3.
-2. Completar e conferir o DER no Figma/FigJam.
+2. Construir e conferir o DER no brModelo.
 3. Criar modelo lógico e dicionário de dados.
 4. Revisar normalização e restrições.
 5. Criar SQLite e testes de integridade.
@@ -208,4 +208,4 @@ Legalidade completa de cada exemplar, simulador/cálculo de dano, movesets e ite
 
 ## 8. Limitações desta auditoria
 
-A árvore completa do repositório foi inspecionada. Como não havia código ou banco físico, não foi possível executar análise estática, consultas ou testes de vulnerabilidade. A inspeção visual detalhada do Figma também foi bloqueada pelo limite do plano. As conclusões são sobre os documentos e as funcionalidades especificadas, não bugs de código inexistente.
+A árvore completa do repositório foi inspecionada. Como não havia código ou banco físico, não foi possível executar análise estática, consultas ou testes de vulnerabilidade. A inspeção visual detalhada das telas não foi concluída. As conclusões são sobre os documentos e as funcionalidades especificadas, não bugs de código inexistente.
