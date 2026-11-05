@@ -1,10 +1,7 @@
 # Wireframes de baixa fidelidade — revisão de conteúdo
 
-**Wireframes:** [PokéAnalyzer — Wireframes](https://www.figma.com/design/ElwmtWufS0oyS2KNwLsHFD)
-
-**DER:** [PokéAnalyzer — DER 3.0 (FigJam)](https://www.figma.com/board/2hpHQKy2zeoTFDFJX6EXQ9)  
-**Escopo existente:** oito telas desktop, 1440 × 1000.  
-**Status:** estrutura criada; auditoria visual detalhada e alterações no Figma pendentes por limite de chamadas do plano Starter.
+**Escopo documentado:** oito telas desktop, 1440 × 1000.  
+**Status:** estrutura especificada; revisão visual detalhada e complementação dos estados ainda pendentes.
 
 ## Diagnóstico
 
@@ -83,7 +80,7 @@ Entrar/criar conta → Pokédex ou coleção → detalhe da forma/exemplar → a
 
 ## Critérios de inspeção visual
 
-Hierarquia consistente, rótulos próximos aos campos, navegação uniforme, espaçamento/alinhamento, contraste, foco de teclado, responsividade e ausência de campos de treinamento incompatíveis. A inspeção pixel a pixel do Figma ainda não foi realizada devido ao limite de chamadas.
+Hierarquia consistente, rótulos próximos aos campos, navegação uniforme, espaçamento/alinhamento, contraste, foco de teclado, responsividade e ausência de campos de treinamento incompatíveis. A inspeção visual detalhada das telas ainda não foi realizada.
 
 ## Disciplinas
 
