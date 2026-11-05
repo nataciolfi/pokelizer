@@ -4,7 +4,7 @@
 - [x] Auditar escopo, requisitos, documentos, DER textual e especificação dos wireframes.
 - [x] Registrar contradições.
 - [x] Propor modelo conceitual 3.0.
-- [ ] Conferir visualmente as oito telas Figma.
+- [ ] Conferir visualmente as oito telas especificadas.
 - [ ] Aprovar critérios de inclusão das formas.
 - [ ] Aprovar o limite do MVP.
 
@@ -13,10 +13,8 @@
 - [x] Separar jogo atual, origem e método de obtenção.
 - [x] Separar sistemas de valores de atributo.
 - [x] Separar perfil e regulamento.
-- [x] Criar o primeiro diagrama do DER 3.0 no FigJam (catálogo e jogos).
-- [x] Criar o segundo diagrama do DER 3.0 no FigJam (coleção e valores de atributos).
-- [ ] Criar o terceiro diagrama do DER 3.0 no FigJam (análise e regulamentos).
-- [ ] Conferir entidades associativas, cardinalidades e obrigatoriedade nos três diagramas.
+- [ ] Construir o DER conceitual 3.0 no brModelo com as entidades e relacionamentos documentados.
+- [ ] Conferir entidades associativas, cardinalidades, obrigatoriedade, chaves e restrições no brModelo.
 - [ ] Testar exemplos de Pokémon transferido, recrutado e transformado.
 
 ## Etapa 2 — Modelo lógico
