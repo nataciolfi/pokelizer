@@ -40,7 +40,7 @@ Escolher fonte e licença antes de incorporar imagens oficiais. O wireframe usa 
 Definir exportação/exclusão, retenção e dados indispensáveis. Não guardar senhas em texto puro nem publicar dados reais.
 
 ### D12 — Responsividade
-Decidir se a entrega mínima será desktop e mobile web. A página Figma atual só documenta desktop e não deve ser chamada de responsiva antes de desenhar e inspecionar larguras menores.
+Decidir se a entrega mínima será desktop e mobile web. Os wireframes atuais documentam somente a versão desktop e não devem ser chamados de responsivos antes de projetar e inspecionar larguras menores.
 
 ## Critério de encerramento
 Cada decisão deve ter resposta escolhida, justificativa curta, impacto em entidades/requisitos/telas e data. Não converter pergunta em aberto em suposição silenciosa no código.
