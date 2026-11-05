@@ -44,7 +44,7 @@ As tecnologias ainda são decisões de planejamento; a implementação não come
 
 ## Documentação
 
-- [Wireframes de baixa fidelidade (Figma)](docs/design/wireframes.md)
+- [Especificação dos wireframes](docs/design/wireframes.md)
 
 - [Escopo do projeto](docs/escopo.md)
 - [Requisitos](docs/requisitos.md)
