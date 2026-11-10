@@ -9,7 +9,7 @@ PokéAnalyzer é um projeto educacional com catálogo de espécies e formas Pok�
 
 ## Estado real
 
-O repositório contém documentação e wireframes. **A aplicação, o banco físico e os testes ainda não foram implementados.** O modelo conceitual 2.0 foi auditado e uma revisão 3.0 foi proposta.
+O repositório contém a documentação do projeto e uma primeira base de backend Flask/SQLite na pasta `backend/`. **O frontend, a importação do catálogo e o banco físico definitivo ainda não foram concluídos.** O schema do backend é provisório e deverá ser revisado após a construção do DER no brModelo.
 
 ## Escopo planejado
 
@@ -29,7 +29,7 @@ O repositório contém documentação e wireframes. **A aplicação, o banco fí
 
 ## Tecnologias planejadas
 
-Python, Flask, SQLite, SQL, HTML, CSS e JavaScript. Ainda não formam uma aplicação executável.
+Python, Flask e SQLite já são usados na base inicial do backend. HTML, CSS e JavaScript permanecem planejados para a integração do frontend.
 
 ## Documentação
 
@@ -47,6 +47,13 @@ Python, Flask, SQLite, SQL, HTML, CSS e JavaScript. Ainda não formam uma aplica
 - [Decisões técnicas](docs/decisoes-tecnicas.md)
 - [Plano de etapas](docs/plano-de-etapas.md)
 - [Fontes oficiais](docs/fontes-oficiais.md)
+
+## Backend — Etapa 2
+
+- [Instruções para instalar, executar e testar a API](backend/README.md)
+- [Código Python, DAOs, serviços, rotas Flask e schema provisório](backend/)
+
+A implementação inicial permite cadastro de usuário, autenticação, consulta do catálogo e cadastro/consulta/exclusão de exemplares da coleção. Ela ainda não substitui a revisão do modelo lógico após o DER no brModelo.
 
 ## Fontes oficiais iniciais
 - [Pokédex](https://www.pokemon.com/br/pokedex)
