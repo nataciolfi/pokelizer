@@ -108,7 +108,12 @@ def me():
 @api.get("/pokemon")
 def listar_pokemon():
     busca = request.args.get("busca", "").strip() or None
-    pokemon = PokemonDAO().listar(busca)
+    try:
+        filters = {key: ColecaoService._id_opcional(request.args.get(key), key)
+                   for key in ("tipo", "geracao", "jogo")}
+        pokemon = PokemonDAO().listar(busca, **filters)
+    except ValueError as exc:
+        return jsonify({"erro": str(exc)}), 400
     return jsonify({"itens": [item.to_dict() for item in pokemon], "total": len(pokemon)})
 
 

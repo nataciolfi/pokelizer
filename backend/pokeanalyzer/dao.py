@@ -3,19 +3,19 @@
 import sqlite3
 from typing import Any
 
-from .db import get_db
+from .db import get_db, transaction
 from .models import PokemonCatalogo, PokemonColecao, Usuario
 
 
 class UsuarioDAO:
     def criar(self, nome_usuario: str, email: str, senha_hash: str) -> Usuario:
         connection = get_db()
-        cursor = connection.execute(
-            """INSERT INTO USUARIO (nome_usuario, email, senha_hash)
-               VALUES (?, ?, ?)""",
-            (nome_usuario, email, senha_hash),
-        )
-        connection.commit()
+        with transaction(connection):
+            cursor = connection.execute(
+                """INSERT INTO USUARIO (nome_usuario, email, senha_hash)
+                   VALUES (?, ?, ?)""",
+                (nome_usuario, email, senha_hash),
+            )
         return self.obter_por_id(cursor.lastrowid)  # type: ignore[return-value]
 
     def obter_por_email(self, email: str) -> Usuario | None:
@@ -39,27 +39,33 @@ class PokemonDAO:
     _SELECT = """SELECT dfj.id_dados_forma, e.id_especie, f.id_forma, j.id_jogo,
                       e.numero_nacional, e.nome_pt, f.nome_forma, j.nome AS nome_jogo,
                       dfj.status_presenca, dfj.pode_ser_registrada
-               FROM DADOS_FORMA_JOGO dfj
-               JOIN FORMA f ON f.id_forma = dfj.id_forma
-               JOIN ESPECIE e ON e.id_especie = f.id_especie
-               JOIN JOGO j ON j.id_jogo = dfj.id_jogo"""
+               FROM ESPECIE e
+               LEFT JOIN FORMA f ON f.id_especie = e.id_especie
+               LEFT JOIN DADOS_FORMA_JOGO dfj ON dfj.id_forma = f.id_forma
+               LEFT JOIN JOGO j ON j.id_jogo = dfj.id_jogo"""
 
-    def listar(self, busca: str | None = None) -> list[PokemonCatalogo]:
-        sql = self._SELECT
-        params: tuple[Any, ...] = ()
+    def listar(self, busca: str | None = None, *, tipo: int | None = None,
+               geracao: int | None = None, jogo: int | None = None) -> list[PokemonCatalogo]:
+        conditions, params = [], []
         if busca:
-            sql += " WHERE e.nome_pt LIKE ? OR f.nome_forma LIKE ?"
-            termo = f"%{busca.strip()}%"
-            params = (termo, termo)
+            term = busca.strip()
+            conditions.append("(e.nome_pt LIKE ? OR e.nome_en LIKE ? OR f.nome_forma LIKE ? OR CAST(e.numero_nacional AS TEXT) = ?)")
+            params.extend([f"%{term}%", f"%{term}%", f"%{term}%", term])
+        if tipo is not None:
+            conditions.append("EXISTS (SELECT 1 FROM TIPO_FORMA_JOGO t WHERE t.id_dados_forma=dfj.id_dados_forma AND t.id_tipo=?)")
+            params.append(tipo)
+        if geracao is not None:
+            conditions.append("e.geracao_origem = ?")
+            params.append(geracao)
+        if jogo is not None:
+            conditions.append("dfj.id_jogo = ?")
+            params.append(jogo)
+        sql = self._SELECT + (" WHERE " + " AND ".join(conditions) if conditions else "")
         sql += " ORDER BY e.numero_nacional, f.nome_forma, j.nome"
-        rows = get_db().execute(sql, params).fetchall()
-        return [self._row_to_model(row) for row in rows]
+        return [self._row_to_model(row) for row in get_db().execute(sql, params)]
 
     def obter(self, id_dados_forma: int) -> PokemonCatalogo | None:
-        row = get_db().execute(
-            self._SELECT + " WHERE dfj.id_dados_forma = ?",
-            (id_dados_forma,),
-        ).fetchone()
+        row = get_db().execute(self._SELECT + " WHERE dfj.id_dados_forma = ?", (id_dados_forma,)).fetchone()
         return self._row_to_model(row) if row else None
 
     @staticmethod
@@ -70,15 +76,14 @@ class PokemonDAO:
                WHERE tfj.id_dados_forma = ? ORDER BY tfj.posicao""",
             (row["id_dados_forma"],),
         ).fetchall()
-        data = dict(row)
-        return PokemonCatalogo(**data, tipos=tuple(item["nome_tipo"] for item in tipos_rows))
+        return PokemonCatalogo(**dict(row), tipos=tuple(item["nome_tipo"] for item in tipos_rows))
 
 
 class ColecaoDAO:
     _SELECT = """SELECT pc.id_pokemon_colecao, pc.id_usuario, pc.id_dados_forma_atual,
                       pc.id_jogo_origem, pc.id_metodo_obtencao, pc.id_natureza,
                       pc.id_habilidade_forma, pc.apelido, pc.nivel, pc.data_registro,
-                      pc.observacao, e.nome_pt, f.nome_forma, j_atual.nome AS nome_jogo_atual,
+                      pc.observacao, pc.id_mecanica, pc.id_dados_forma_origem, e.nome_pt, f.nome_forma, j_atual.nome AS nome_jogo_atual,
                       j_origem.nome AS nome_jogo_origem, mo.nome AS nome_metodo,
                       n.nome AS nome_natureza, h.nome AS nome_habilidade
                FROM POKEMON_COLECAO pc
@@ -94,21 +99,21 @@ class ColecaoDAO:
 
     def adicionar(self, dados: dict[str, Any]) -> PokemonColecao:
         connection = get_db()
-        cursor = connection.execute(
-            """INSERT INTO POKEMON_COLECAO (
-                   id_usuario, id_dados_forma_atual, id_jogo_origem,
-                   id_metodo_obtencao, id_natureza, id_habilidade_forma,
-                   apelido, nivel, observacao
-               ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)""",
-            (
-                dados["id_usuario"], dados["id_dados_forma_atual"],
-                dados.get("id_jogo_origem"), dados.get("id_metodo_obtencao"),
-                dados.get("id_natureza"), dados.get("id_habilidade_forma"),
-                dados.get("apelido"), dados.get("nivel"), dados.get("observacao"),
-            ),
-        )
-        connection.commit()
-        return self.obter_do_usuario(cursor.lastrowid, dados["id_usuario"])  # type: ignore[return-value]
+        with transaction(connection):
+            cursor = connection.execute(
+                """INSERT INTO POKEMON_COLECAO (
+                       id_usuario, id_dados_forma_atual, id_jogo_origem,
+                       id_metodo_obtencao, id_natureza, id_habilidade_forma,
+                       apelido, nivel, observacao, id_mecanica, id_dados_forma_origem
+                   ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)""",
+                (dados["id_usuario"], dados["id_dados_forma_atual"],
+                 dados.get("id_jogo_origem"), dados.get("id_metodo_obtencao"),
+                 dados.get("id_natureza"), dados.get("id_habilidade_forma"),
+                 dados.get("apelido"), dados.get("nivel"), dados.get("observacao"),
+                 dados.get("id_mecanica"), dados.get("id_dados_forma_origem")),
+            )
+            pokemon = self.obter_do_usuario(cursor.lastrowid, dados["id_usuario"])
+        return pokemon
 
     def listar_do_usuario(self, id_usuario: int) -> list[PokemonColecao]:
         rows = get_db().execute(
@@ -125,11 +130,12 @@ class ColecaoDAO:
         return PokemonColecao(**dict(row)) if row else None
 
     def excluir_do_usuario(self, id_pokemon: int, id_usuario: int) -> bool:
-        cursor = get_db().execute(
-            "DELETE FROM POKEMON_COLECAO WHERE id_pokemon_colecao = ? AND id_usuario = ?",
-            (id_pokemon, id_usuario),
-        )
-        get_db().commit()
+        connection = get_db()
+        with transaction(connection):
+            cursor = connection.execute(
+                "DELETE FROM POKEMON_COLECAO WHERE id_pokemon_colecao = ? AND id_usuario = ?",
+                (id_pokemon, id_usuario),
+            )
         return cursor.rowcount > 0
 
     def obter_contexto_registro(self, id_dados_forma: int) -> dict[str, Any] | None:
@@ -155,3 +161,30 @@ class ColecaoDAO:
             (id_dados_forma, id_habilidade_forma),
         ).fetchone()
         return row is not None
+
+
+class PerfilDAO:
+    """Visibility checks belong to every profile read, not only HTTP routes."""
+
+    def obter_visivel(self, id_perfil: int, id_usuario: int | None = None):
+        from .models import PerfilAnalise
+        row = get_db().execute(
+            """SELECT * FROM PERFIL_ANALISE WHERE id_perfil=? AND
+               (tipo_perfil='referencia_competitiva' OR
+                (tipo_perfil='personalizado' AND id_usuario=?))""",
+            (id_perfil, id_usuario),
+        ).fetchone()
+        return PerfilAnalise(**dict(row)) if row else None
+
+    def criar_personalizado(self, id_usuario: int, id_dados_forma: int,
+                           id_mecanica: int, nome: str, id_regulamento: int | None = None):
+        connection = get_db()
+        with transaction(connection):
+            cursor = connection.execute(
+                """INSERT INTO PERFIL_ANALISE
+                   (id_usuario,id_dados_forma,id_mecanica,nome_perfil,id_regulamento,tipo_perfil)
+                   VALUES (?,?,?,?,?,'personalizado')""",
+                (id_usuario, id_dados_forma, id_mecanica, nome, id_regulamento),
+            )
+            result = self.obter_visivel(cursor.lastrowid, id_usuario)
+        return result

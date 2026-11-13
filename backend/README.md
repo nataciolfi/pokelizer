@@ -1,87 +1,67 @@
-# PokéAnalyzer — backend inicial (Etapa 2)
+# Backend — Etapa 1
 
-Esta pasta contém uma implementação inicial do backend em Python, POO, SQLite e Flask, preparada para demonstrar cadastro e consulta no banco.
+A estrutura completa do produto está no SQLite. Esta etapa implementa conexão, migrações, persistência inicial e preserva cadastro/login/logout, consultas de catálogo e coleção privada existentes. Edição HTTP de perfis e o comparador explicável continuam planejados. `PerfilService`/`PerfilDAO` já demonstram persistência e leitura privada; não existe endpoint de comparação.
 
-**Importante:** o schema SQLite é um recorte funcional e provisório do modelo conceitual 3.0. Não substitui o DER nem representa aprovação do modelo lógico. Depois que o DER for concluído no brModelo, tabelas, chaves, nulabilidade e restrições deverão ser comparadas e ajustadas.
+## Instalação e banco vazio
 
-## Requisitos
-- Python 3.10 ou superior.
-- pip.
+Python 3.11+ e SQLite 3.37+ são necessários. A partir da raiz do repositório:
 
-## Instalação no Windows (PowerShell)
-Entre na pasta backend e execute:
+```sh
+python -m venv .venv
+. .venv/bin/activate
+pip install -r backend/requirements.txt
+export PYTHONPATH=backend
+export POKEANALYZER_DATABASE="$PWD/backend/instance/pokelizer.sqlite3"
+export POKEANALYZER_SECRET_KEY="$(python -c 'import secrets; print(secrets.token_hex(32))')"
+python -m flask --app pokeanalyzer:create_app db-init
+python -m flask --app pokeanalyzer:create_app db-status
+python backend/run.py
+```
 
-    py -3.13 -m venv .venv
-    .\.venv\Scripts\Activate.ps1
-    python -m pip install --upgrade pip
-    pip install -r requirements.txt
+O app não cria tabelas ao iniciar. `db-init` e `db-upgrade` aplicam arquivos numerados consecutivamente em `migrations/`, verificam SHA-256 das migrações já aplicadas e executam todas as pendências numa transação. Repetir o comando num banco atualizado preserva os dados. A tabela `SCHEMA_MIGRATION` registra versão, arquivo, checksum e data. `schema.sql` é o modelo físico gerado para inspeção/execução num banco vazio; o runner usa as migrações. A fonte do gerador e a verificação de correspondência estão em `tools/build_schema.py`.
 
-Se a política do PowerShell bloquear a ativação:
+Todas as conexões da aplicação ativam `foreign_keys` e `recursive_triggers`. O contexto Flask reutiliza uma conexão por requisição e fecha-a no teardown; alterações não confirmadas são revertidas. DAOs usam `transaction()`, com savepoints quando chamados dentro de outra transação. Rotas não contêm SQL.
 
-    .\.venv\Scripts\python.exe -m pip install -r requirements.txt
+Não existe comando de reset destrutivo. `db-init` recusa um banco legado sem histórico; não usa `CREATE TABLE IF NOT EXISTS` para alterar sua estrutura. Novas versões exigem nova migração, nunca alteração silenciosa de uma migração aplicada.
 
-## Configuração e execução
-Configure uma chave secreta longa:
+## Backup e atualização do backend antigo
 
-    $env:POKEANALYZER_SECRET_KEY = "substitua-por-uma-chave-aleatoria-longa"
-    python run.py
+```sh
+python -m flask --app pokeanalyzer:create_app db-backup /caminho/novo/backup.sqlite3
+python -m flask --app pokeanalyzer:create_app db-upgrade
+python -m flask --app pokeanalyzer:create_app db-import-legacy /caminho/antigo.sqlite3 /caminho/novo.sqlite3
+```
 
-A API ficará em http://127.0.0.1:5000. O SQLite será criado automaticamente em instance/pokelizer.sqlite3.
+Backup e importação recusam destinos existentes. `db-import-legacy` reconhece as 13 tabelas do backend `5bd1357`, mantém IDs, hashes de senha, dados e relacionamentos e valida a cópia inteira num arquivo novo. A origem é aberta apenas para leitura em snapshot consistente. Uma linha incompatível com as regras revisadas interrompe a operação, informa tabela/chave e elimina apenas o destino parcial recém-criado; a origem permanece intacta. O teste preserva conta, espécie, forma, jogo, contexto e exemplar e compara o SHA-256 do arquivo original antes/depois.
 
-A base começa vazia. Para testar o fluxo sem importar o catálogo oficial, rode python scripts/seed_demo.py. O script insere uma ficha fictícia, claramente identificada como demonstração; ela não representa dados oficiais. Depois, consulte GET /api/pokemon e use o id_dados_forma retornado.
+Dados antigos podem exigir curadoria: presença/registro conhecidos sem fonte e data, valores de nível/natureza/habilidade sem mecânica confirmada, efeitos de natureza sem atributo reconhecido ou habilidade de outro contexto. Nenhuma mecânica/fonte é inferida. Nesse caso, mantenha origem e backup, trabalhe numa cópia separada, verifique fontes, corrija os registros indicados e repita a importação para outro destino novo. Compare contagens/IDs e consultas antes de apontar `POKEANALYZER_DATABASE` para a cópia validada. Bancos com tabelas/colunas desconhecidas são recusados para impedir perda silenciosa de dados.
 
-## Rotas implementadas
+## API preservada
 
-| Método | Rota | Autenticação | Função |
-|---|---|---|---|
-| GET | /api/status | Não | Verificar a API. |
-| GET | /api/csrf | Não | Obter token CSRF. |
-| POST | /api/auth/cadastro | CSRF | Criar usuário e iniciar sessão. |
-| POST | /api/auth/login | CSRF | Autenticar usuário. |
-| POST | /api/auth/logout | Sessão + CSRF | Encerrar sessão. |
-| GET | /api/auth/me | Sessão | Consultar o usuário atual. |
-| GET | /api/pokemon?busca=... | Não | Pesquisar espécies/formas. |
-| GET | /api/pokemon/<id> | Não | Consultar uma ficha forma/jogo. |
-| GET | /api/colecao | Sessão | Listar coleção do usuário. |
-| POST | /api/colecao | Sessão + CSRF | Cadastrar exemplar. |
-| GET | /api/colecao/<id> | Sessão | Consultar exemplar próprio. |
-| DELETE | /api/colecao/<id> | Sessão + CSRF | Excluir exemplar próprio. |
+| Método e caminho | Uso |
+|---|---|
+| GET `/api/status`, `/api/csrf` | Status e token CSRF |
+| POST `/api/auth/cadastro`, `/api/auth/login`, `/api/auth/logout` | Conta, sessão e saída |
+| GET `/api/auth/me` | Usuário autenticado; nunca retorna hash |
+| GET `/api/pokemon?busca=...&tipo=ID&geracao=N&jogo=ID` | Nome/número nacional e filtros combináveis |
+| GET `/api/pokemon/ID` | Contexto forma/jogo pelo `id_dados_forma` |
+| GET/POST `/api/colecao` | Listar e registrar exemplares do usuário da sessão |
+| GET/DELETE `/api/colecao/ID` | Consultar/excluir somente exemplar próprio |
 
-O identificador de /api/pokemon/<id> é id_dados_forma: ficha de uma forma em um jogo específico, não apenas o número nacional.
+Busca de geração usa a geração de origem da espécie. Tipo/jogo são filtros dos contextos por jogo. Espécies e formas sem contexto continuam na listagem sem esses filtros, com IDs/contexto nulos e tipos vazios; ausência de dado não é ausência confirmada. Uma forma pode produzir várias linhas, uma por jogo; a identidade global é `id_especie`/`id_forma`.
 
-## Fluxo de cadastro e consulta
-1. Faça GET /api/csrf e guarde o token.
-2. Faça POST /api/auth/cadastro com nome_usuario, email e senha, enviando X-CSRF-Token. O cadastro inicia a sessão.
-3. A resposta contém um novo csrf_token; use-o nas operações seguintes.
-4. Consulte GET /api/pokemon e obtenha um id_dados_forma.
-5. Faça POST /api/colecao com id_dados_forma_atual e, opcionalmente, apelido, nível, origem, método, natureza, habilidade e observação.
-6. Consulte GET /api/colecao.
+Requisições de escrita exigem `X-CSRF-Token`, obtido em `/api/csrf` e renovado ao autenticar. Coleções sempre usam o usuário da sessão, sem aceitar proprietário do corpo JSON. Cadastro usa scrypt do Werkzeug. Configure segredo persistente e cookies seguros antes de publicar com HTTPS; o servidor `run.py` é apenas desenvolvimento local.
 
-Exemplo de corpo JSON:
+Na coleção, `id_mecanica` é opcional quando natureza, habilidade e nível são desconhecidos. Valores conhecidos exigem mecânica compatível e limites confirmados no banco. `id_dados_forma_origem` opcional exige `id_jogo_origem` correspondente. `id_metodo_obtencao` descreve história real e não é restringido pela disponibilidade no jogo atual após uma transferência. Não é uma prova automática de legalidade competitiva.
 
-    {"id_dados_forma_atual": 1, "apelido": "Meu Pokémon", "nivel": 25}
+## Verificação reproduzível
 
-Todas as rotas de escrita exigem X-CSRF-Token. A coleção é filtrada pelo usuário autenticado.
+```sh
+PYTHONPATH=backend python -m pytest backend/tests -q
+python backend/tools/build_schema.py --check
+python docs/uml/check_uml.py
+```
 
-## Dados fictícios de demonstração
-Execute python scripts/seed_demo.py. O script é idempotente e cria apenas um registro fictício. Apague o banco local para removê-lo. Não use essa ficha como informação oficial.
+Fixtures em `tests/fixtures/catalog.sql` usam exclusivamente nomes, URLs e limites sintéticos e bancos temporários do pytest. O loader é repetível. `tests/fixtures/legacy_v0.sql` é o esquema histórico usado apenas para testar importação. O antigo `scripts/seed_demo.py` agora recusa execução para impedir inserção de demonstrações no catálogo real. Inicialização não carrega fatos Pokémon nem fixtures.
 
-## Testes
-Com o ambiente ativado, execute pytest -q. Os testes usam banco temporário e cobrem pesquisa, cadastro, sessão, coleção, isolamento entre usuários, CSRF e validações.
-
-## Organização
-- pokeanalyzer/models.py: modelos de domínio (dataclasses).
-- pokeanalyzer/dao.py: SQL parametrizado e persistência.
-- pokeanalyzer/services.py: regras de negócio, validações e hash de senha.
-- pokeanalyzer/api.py: rotas HTTP.
-- pokeanalyzer/db.py: conexão SQLite e schema.
-- schema.sql: tabelas e restrições provisórias.
-- tests/test_api.py: testes automatizados.
-
-## Limites
-- Não há frontend final nem integração Fetch nesta etapa.
-- O catálogo não vem populado com uma Pokédex completa.
-- Análise IV/EV, perfis, regulamentos e cálculo de atributos não foram implementados.
-- Histórico de transferências não foi implementado.
-- O schema será revisado após o DER no brModelo.
-- Antes de publicar o serviço, configure uma chave exclusiva e habilite cookie seguro em HTTPS.
+Os testes exercitam conexão/reabertura/fechamento, rollback/savepoints, criação limpa, migração repetida, falha atômica, checksum alterado, preservação legada, backup sem sobrescrita, busca/filtros, isolamento entre usuários, autenticação, CSRF, inteiros estritos, história de aquisição e privacidade dos perfis. Os testes de esquema verificam as invariantes do modelo; veja [verificação da etapa](../docs/stage1/verification.md).

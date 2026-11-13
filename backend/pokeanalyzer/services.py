@@ -49,19 +49,12 @@ class ColecaoService:
         self.colecao_dao = colecao_dao or ColecaoDAO()
 
     def adicionar(self, id_usuario: int, dados: dict[str, Any]) -> PokemonColecao:
-        try:
-            id_dados_forma = int(dados["id_dados_forma_atual"])
-        except (KeyError, TypeError, ValueError) as exc:
-            raise ValueError("id_dados_forma_atual é obrigatório e deve ser inteiro.") from exc
-
-        nivel = dados.get("nivel")
-        if nivel is not None:
-            try:
-                nivel = int(nivel)
-            except (TypeError, ValueError) as exc:
-                raise ValueError("O nível deve ser um número inteiro entre 1 e 100.") from exc
-            if not 1 <= nivel <= 100:
-                raise ValueError("O nível deve estar entre 1 e 100.")
+        if not isinstance(dados, dict):
+            raise ValueError("Dados devem ser um objeto JSON.")
+        id_dados_forma = self._id_opcional(dados.get("id_dados_forma_atual"), "id_dados_forma_atual")
+        if id_dados_forma is None:
+            raise ValueError("id_dados_forma_atual é obrigatório.")
+        nivel = self._inteiro_opcional(dados.get("nivel"), "nivel", minimo=0)
 
         apelido = self._texto_opcional(dados.get("apelido"), "apelido", 40)
         observacao = self._texto_opcional(dados.get("observacao"), "observacao", 500)
@@ -72,21 +65,12 @@ class ColecaoService:
         if contexto["status_presenca"] == "ausente" or contexto["pode_ser_registrada"] == "nao":
             raise ValueError("Esta forma não pode ser registrada neste contexto de jogo.")
 
-        if dados.get("id_metodo_obtencao") is not None:
-            try:
-                metodo = int(dados["id_metodo_obtencao"])
-            except (TypeError, ValueError) as exc:
-                raise ValueError("id_metodo_obtencao deve ser inteiro.") from exc
-            if not self.colecao_dao.metodo_disponivel(id_dados_forma, metodo):
-                raise ValueError("O método de obtenção não está cadastrado para esta forma/jogo.")
-        else:
-            metodo = None
+        # The specimen's actual acquisition history is independent of availability
+        # in its CURRENT game, which may have changed after a transfer.
+        metodo = self._id_opcional(dados.get("id_metodo_obtencao"), "id_metodo_obtencao")
 
         if dados.get("id_habilidade_forma") is not None:
-            try:
-                habilidade = int(dados["id_habilidade_forma"])
-            except (TypeError, ValueError) as exc:
-                raise ValueError("id_habilidade_forma deve ser inteiro.") from exc
+            habilidade = self._id_opcional(dados["id_habilidade_forma"], "id_habilidade_forma")
             if not self.colecao_dao.habilidade_compativel(id_dados_forma, habilidade):
                 raise ValueError("A habilidade não está disponível para esta forma/jogo.")
         else:
@@ -94,6 +78,8 @@ class ColecaoService:
 
         valores = {
             "id_usuario": id_usuario,
+            "id_mecanica": self._id_opcional(dados.get("id_mecanica"), "id_mecanica"),
+            "id_dados_forma_origem": self._id_opcional(dados.get("id_dados_forma_origem"), "id_dados_forma_origem"),
             "id_dados_forma_atual": id_dados_forma,
             "id_jogo_origem": self._id_opcional(dados.get("id_jogo_origem"), "id_jogo_origem"),
             "id_metodo_obtencao": metodo,
@@ -110,12 +96,20 @@ class ColecaoService:
 
     @staticmethod
     def _id_opcional(valor: Any, campo: str) -> int | None:
+        return ColecaoService._inteiro_opcional(valor, campo, minimo=1)
+
+    @staticmethod
+    def _inteiro_opcional(valor: Any, campo: str, *, minimo: int) -> int | None:
         if valor is None:
             return None
-        try:
-            return int(valor)
-        except (TypeError, ValueError) as exc:
-            raise ValueError(f"{campo} deve ser inteiro.") from exc
+        if isinstance(valor, bool) or not isinstance(valor, (int, str)):
+            raise ValueError(f"{campo} deve ser inteiro >= {minimo}.")
+        if isinstance(valor, str) and not re.fullmatch(r"[0-9]+", valor):
+            raise ValueError(f"{campo} deve ser inteiro >= {minimo}.")
+        number = int(valor)
+        if not minimo <= number <= 2**63 - 1:
+            raise ValueError(f"{campo} deve ser inteiro entre {minimo} e {2**63 - 1}.")
+        return number
 
     @staticmethod
     def _texto_opcional(valor: Any, campo: str, limite: int) -> str | None:
@@ -127,3 +121,27 @@ class ColecaoService:
         if len(valor) > limite:
             raise ValueError(f"{campo} deve ter no máximo {limite} caracteres.")
         return valor or None
+
+
+class PerfilService:
+    """Initial profile persistence; comparison/calculation is planned for later stages."""
+
+    def __init__(self, perfil_dao=None):
+        from .dao import PerfilDAO
+        self.perfil_dao = perfil_dao or PerfilDAO()
+
+    def criar_personalizado(self, id_usuario: int, dados: dict[str, Any]):
+        if not isinstance(dados, dict):
+            raise ValueError("Dados devem ser um objeto.")
+        fields = {field: ColecaoService._id_opcional(dados.get(field), field)
+                  for field in ("id_dados_forma", "id_mecanica", "id_regulamento")}
+        if fields["id_dados_forma"] is None or fields["id_mecanica"] is None:
+            raise ValueError("Perfil exige forma/jogo e versão da mecânica.")
+        nome = ColecaoService._texto_opcional(dados.get("nome_perfil"), "nome_perfil", 120)
+        if not nome:
+            raise ValueError("nome_perfil é obrigatório.")
+        try:
+            return self.perfil_dao.criar_personalizado(id_usuario, fields["id_dados_forma"],
+                fields["id_mecanica"], nome, fields["id_regulamento"])
+        except sqlite3.IntegrityError as exc:
+            raise ValueError("Perfil incompatível: confira proprietário e contexto de jogo/mecânica/regulamento.") from exc

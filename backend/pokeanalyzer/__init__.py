@@ -6,7 +6,7 @@ from pathlib import Path
 from flask import Flask
 
 from .api import api
-from .db import close_db, init_db
+from .db import close_db, register_cli
 
 
 def create_app(test_config: dict | None = None) -> Flask:
@@ -32,5 +32,5 @@ def create_app(test_config: dict | None = None) -> Flask:
     Path(app.instance_path).mkdir(parents=True, exist_ok=True)
     app.teardown_appcontext(close_db)
     app.register_blueprint(api, url_prefix="/api")
-    init_db(app)
+    register_cli(app)
     return app

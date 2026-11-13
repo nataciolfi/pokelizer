@@ -3,7 +3,8 @@
 import pytest
 
 from pokeanalyzer import create_app
-from pokeanalyzer.db import get_db
+from pokeanalyzer.db import get_db, init_db
+from pathlib import Path
 
 
 @pytest.fixture()
@@ -15,27 +16,10 @@ def app(tmp_path):
         "DATABASE": str(database),
         "SESSION_COOKIE_SECURE": False,
     })
+    init_db(app)
     with app.app_context():
         db = get_db()
-        db.executescript(
-            """
-            INSERT INTO ESPECIE (numero_nacional, nome_pt, nome_en, geracao_origem)
-            VALUES (25, 'Pikachu', 'Pikachu', 1);
-            INSERT INTO FORMA (id_especie, codigo_forma, nome_forma, categoria, forma_padrao)
-            VALUES (1, 'padrao', 'Padrão', 'padrao', 1);
-            INSERT INTO JOGO (nome, categoria, geracao, plataforma)
-            VALUES ('Jogo de teste', 'teste', 9, 'plataforma de teste');
-            INSERT INTO DADOS_FORMA_JOGO (id_forma, id_jogo, status_presenca, pode_ser_registrada)
-            VALUES (1, 1, 'nativa', 'sim');
-            INSERT INTO TIPO (nome_tipo) VALUES ('Elétrico');
-            INSERT INTO TIPO_FORMA_JOGO (id_dados_forma, id_tipo, posicao) VALUES (1, 1, 1);
-            INSERT INTO METODO_OBTENCAO (nome) VALUES ('captura');
-            INSERT INTO METODO_FORMA_JOGO (id_dados_forma, id_metodo) VALUES (1, 1);
-            INSERT INTO HABILIDADE (nome) VALUES ('Estática');
-            INSERT INTO HABILIDADE_FORMA_JOGO (id_dados_forma, id_habilidade, slot)
-            VALUES (1, 1, 'normal');
-            """
-        )
+        db.executescript((Path(__file__).parent / "fixtures" / "catalog.sql").read_text())
         db.commit()
     yield app
 
@@ -64,10 +48,10 @@ def create_user(client, nome="aluno_teste", email="aluno@example.com"):
 
 def test_status_and_catalog_search(client):
     assert client.get("/api/status").get_json()["status"] == "ok"
-    response = client.get("/api/pokemon?busca=Pika")
+    response = client.get("/api/pokemon?busca=species")
     assert response.status_code == 200
     assert response.get_json()["total"] == 1
-    assert response.get_json()["itens"][0]["tipos"] == ["Elétrico"]
+    assert response.get_json()["itens"][0]["tipos"] == ["FIXTURE type A"]
 
 
 def test_register_and_private_collection_crud(client):
@@ -80,6 +64,7 @@ def test_register_and_private_collection_crud(client):
             "id_dados_forma_atual": 1,
             "id_metodo_obtencao": 1,
             "id_habilidade_forma": 1,
+            "id_mecanica": 1,
             "apelido": "Faísca",
             "nivel": 25,
         },
@@ -152,7 +137,7 @@ def test_absent_form_cannot_be_added_to_collection(client, app):
     create_user(client)
     with app.app_context():
         db = get_db()
-        db.execute("UPDATE DADOS_FORMA_JOGO SET status_presenca = 'ausente' WHERE id_dados_forma = 1")
+        db.execute("UPDATE DADOS_FORMA_JOGO SET status_presenca = 'ausente', pode_ser_registrada = 'nao' WHERE id_dados_forma = 1")
         db.commit()
     response = client.post(
         "/api/colecao",
@@ -183,3 +168,67 @@ def test_duplicate_email_is_rejected(client):
         headers={"X-CSRF-Token": get_csrf(client)},
     )
     assert response.status_code == 400
+
+
+def test_global_catalog_without_game_data_and_filters(client, app):
+    with app.app_context():
+        db = get_db()
+        db.execute("INSERT INTO ESPECIE(numero_nacional,nome_pt,geracao_origem) VALUES(99902,'FIXTURE global only',2)")
+        species = db.execute("SELECT last_insert_rowid()").fetchone()[0]
+        db.execute("INSERT INTO FORMA(id_especie,codigo_forma,nome_forma) VALUES(?,'global','FIXTURE no game')", (species,))
+        db.commit()
+    result = client.get("/api/pokemon?busca=99902").get_json()
+    assert result["total"] == 1
+    assert result["itens"][0]["id_dados_forma"] is None
+    assert result["itens"][0]["tipos"] == []
+    assert client.get("/api/pokemon?geracao=2").get_json()["total"] == 1
+    assert client.get("/api/pokemon?jogo=1&tipo=1&geracao=1").get_json()["total"] == 1
+    assert client.get("/api/pokemon?jogo=1&tipo=1&geracao=2").get_json()["total"] == 0
+    assert client.get("/api/pokemon?tipo=1.2").status_code == 400
+    assert client.get(f"/api/pokemon?tipo={2**63}").status_code == 400
+
+
+@pytest.mark.parametrize("value", [True, 1.5, "1.0", "-1", 0, 2**63])
+def test_specimen_integer_fields_do_not_coerce_invalid_json(client, value):
+    create_user(client)
+    response = client.post("/api/colecao", json={"id_dados_forma_atual": value},
+        headers={"X-CSRF-Token": get_csrf(client)})
+    assert response.status_code == 400
+
+
+def test_acquisition_history_survives_transfer_context(client, app):
+    create_user(client)
+    with app.app_context():
+        db = get_db()
+        db.execute("INSERT INTO METODO_OBTENCAO(id_metodo,nome) VALUES(2,'FIXTURE original acquisition only')")
+        db.commit()
+    response = client.post("/api/colecao", json={"id_dados_forma_atual": 1, "id_metodo_obtencao": 2},
+        headers={"X-CSRF-Token": get_csrf(client)})
+    assert response.status_code == 201
+    assert response.get_json()["id_metodo_obtencao"] == 2
+
+
+def test_fixture_loading_is_repeatable(app):
+    with app.app_context():
+        db = get_db()
+        fixture = (Path(__file__).parent / "fixtures" / "catalog.sql").read_text()
+        db.executescript(fixture)
+        db.executescript(fixture)
+        assert db.execute("SELECT count(*) FROM ESPECIE").fetchone()[0] == 1
+        assert db.execute("SELECT count(*) FROM DADOS_FORMA_JOGO").fetchone()[0] == 1
+
+
+def test_profile_repository_enforces_private_reads_and_context(app):
+    from pokeanalyzer.dao import PerfilDAO
+    from pokeanalyzer.services import AuthService, PerfilService
+    with app.app_context():
+        first = AuthService().cadastrar("fixture_one", "one@example.invalid", "fixture_password")
+        second = AuthService().cadastrar("fixture_two", "two@example.invalid", "fixture_password")
+        profile = PerfilService().criar_personalizado(first.id_usuario, {
+            "id_dados_forma": 1, "id_mecanica": 1, "nome_perfil": "FIXTURE private"})
+        assert PerfilDAO().obter_visivel(profile.id_perfil, first.id_usuario) == profile
+        assert PerfilDAO().obter_visivel(profile.id_perfil, second.id_usuario) is None
+        assert PerfilDAO().obter_visivel(profile.id_perfil) is None
+        with pytest.raises(ValueError, match="incompatível"):
+            PerfilService().criar_personalizado(first.id_usuario, {
+                "id_dados_forma": 1, "id_mecanica": 999, "nome_perfil": "FIXTURE invalid"})

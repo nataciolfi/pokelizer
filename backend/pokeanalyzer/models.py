@@ -20,15 +20,15 @@ class Usuario:
 
 @dataclass(frozen=True)
 class PokemonCatalogo:
-    id_dados_forma: int
+    id_dados_forma: int | None
     id_especie: int
-    id_forma: int
-    id_jogo: int
+    id_forma: int | None
+    id_jogo: int | None
     numero_nacional: int
     nome_pt: str
-    nome_forma: str
-    nome_jogo: str
-    status_presenca: str
+    nome_forma: str | None
+    nome_jogo: str | None
+    status_presenca: str | None
     pode_ser_registrada: str | None
     tipos: tuple[str, ...] = ()
 
@@ -52,12 +52,30 @@ class PokemonColecao:
     data_registro: str
     observacao: str | None
     nome_pt: str
-    nome_forma: str
+    nome_forma: str | None
     nome_jogo_atual: str
     nome_jogo_origem: str | None
     nome_metodo: str | None
     nome_natureza: str | None
     nome_habilidade: str | None
+    id_mecanica: int | None = None
+    id_dados_forma_origem: int | None = None
 
     def to_dict(self) -> dict[str, Any]:
         return asdict(self)
+
+
+@dataclass(frozen=True)
+class PerfilAnalise:
+    """Profile identity/context; target values and options stay in related tables."""
+    id_perfil: int
+    id_dados_forma: int
+    id_mecanica: int
+    id_usuario: int | None
+    id_regulamento: int | None
+    nome_perfil: str
+    descricao: str | None
+    tipo_perfil: str
+    fonte_url: str | None
+    data_verificacao: str | None
+    versao_fonte: str | None
