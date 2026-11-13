@@ -1,0 +1,32 @@
+# Decisões de reconciliação da Etapa 1
+
+Data da inspeção: 2026-11-13. A solicitação desta tarefa é a autoridade de produto e de entrega. O documento do professor foi fornecido em seguida em /home/Danilo/Downloads/Nova pasta/atividades/Projeto_Integrado_Etapas_GitHub.docx e foi lido localmente; os requisitos sem dados pessoais estão registrados em [sources](../sources/teacher-requirements.md). Seu texto foi lido via XML do DOCX: Etapa 1 em 09/11/2026 (UML revisado, estrutura criada/funcionando, conexão inicial); Etapa 2 em 13/11/2026 (backend); final em 17/11/2026 (integração frontend). A exigência brModelo detalhada vem da solicitação completa fornecida em Pokelizer_Codex_Stage_1_Prompt.md, não de uma inferência sobre o Word.
+
+## Evidência de branches
+
+| Branch remoto | Commit inspecionado | Conteúdo e decisão |
+|---|---|---|
+| main | f0e570bdd510d12b4c5507fa5d1df7c4e28dacf5 | Documentação e modelo antigo; não há aplicação nem artefatos nativos brModelo. Base de comparação da revisão. |
+| audit/architecture-v3 | 8b73b49c465c2fed5b6005988cd6523218c20a16 | Separação espécie/forma/jogo/mecânica, 25 conceitos e comparação explícita; incorporados com validação adicional. |
+| audit/correcao-completa-v3 | c9fff6f4b499ac9709784d916f8b4580e019905f | História divergente, não sucessora da architecture-v3; propõe estados múltiplos, evolução e outro vocabulário de atributos. Aproveitados isolamento, procedência e validações; não feito merge indiscriminado. |
+| feature/backend-etapa-2 | 5bd13572313bd1b724ca9fca709ddd25c0c9ec47 | Descende da architecture-v3 e acrescenta Flask, DAOs, autenticação, coleção, SQL parcial e testes. Base da branch dedicada stage1/reconciled-architecture. |
+
+O ancestral comum entre as duas auditorias é 95f97fb6bb06481d9815cf9bf3fbd01384e48686. A árvore local inicial estava limpa. Não havia AGENTS.md no checkout ou instrução herdada em /home/Danilo/.agents. O checkout foi criado em /home/Danilo/pokelizer, sem alterar outros projetos. Nenhum banco de usuário estava versionado na árvore inicial. Os arquivos históricos da base e da correção foram preservados em [archive](../archive/), com cabeçalhos de não autoridade e redirecionamentos nos caminhos antigos.
+
+## Decisões substantivas
+
+1. **Produto completo em etapas.** Não há entrega MVP. A Etapa 1 entrega arquitetura, banco, conexão e evidência; não afirma entregar o analisador, CRUD completo, importador oficial ou nova interface. Esses recursos continuam obrigatórios para o produto final.
+2. **Forma/jogo não é versão de mecânica.** DADOS_FORMA_JOGO mantém UNIQUE(forma,jogo). MECANICA_JOGO mantém UNIQUE(jogo,versão); coleções, perfis, sistemas e regulamentos apontam para a versão exata. A alternativa da branch de correção, que duplica fichas por mecânica, foi rejeitada para preservar identidade estável da ficha. A ficha é a informação catalográfica corrente; uma revisão histórica de fichas exigirá migração explícita, não duplicação silenciosa.
+3. **Estado atual no exemplar.** Mantemos o contexto atual em POKEMON_COLECAO e a procedência opcional separada. Não criamos POKEMON_ESTADO_JOGO nem múltiplas cópias simultâneas de um indivíduo em vários jogos: isso é uma proposta da branch divergente, não exigência do produto acordado nesta tarefa. A mudança de contexto mantém o ID individual e exige revalidar/retirar valores incompatíveis em transação; não converte treinamento. A origem não muda automaticamente. Não há promessa de histórico completo de transferências ou módulo de cadeia evolutiva. Transformações temporárias permanecem uma relação própria, sem gerar exemplar.
+4. **Sistemas de atributos normalizados.** Mantemos ATRIBUTO_BATALHA, SISTEMA_ATRIBUTO e MECANICA_SISTEMA_ATRIBUTO em vez do vocabulário alternativo ATRIBUTO_TREINAMENTO/GRUPO_LIMITE_TREINAMENTO. Limites individuais e totais são regras versionadas; atributos permitidos são explícitos. IV não é denominado treinamento. Não há colunas IV/EV universais no exemplar.
+5. **Publicação validada.** Uma espécie pode entrar como rascunho. A transição para completo exige exatamente uma forma padrão e a manutenção desse estado é protegida. Isso resolve o mínimo, além do índice que resolve o máximo. Tipagem tem estado explícito e cobertura primária obrigatória quando confirmada aplicável; rascunhos não são apresentados como dados completos.
+6. **Obtenção possível ≠ procedência real.** METODO_FORMA_JOGO cataloga disponibilidade contextual. O método original do exemplar referencia METODO_OBTENCAO; não exige disponibilidade no jogo atual. Origem desconhecida continua ausente. Não inventamos uma história de obtenção para justificar uma transferência.
+7. **Privacidade é responsabilidade também da aplicação.** O banco exige dono para perfil personalizado. SQLite não implementa autorização por usuário da sessão; DAOs/serviços privados precisam filtrar o proprietário. Não alegamos que uma FK garante privacidade ou compatibilidade entre dois contextos distintos.
+8. **Ausência tem significado.** NULL/ausência de valor não é zero. Aplicabilidade desconhecida e não aplicável têm estados distintos. Limites sem comprovação bloqueiam valores numéricos que dependem deles. Ausência de elegibilidade é não verificado; não é proibido.
+9. **Comparação explicável.** O alvo do perfil é explícito, por campo e versão. Maior não significa melhor, regulamento não produz distribuição ideal, e elegibilidade de forma não certifica legalidade completa. Nenhuma fórmula ou fato Pokémon é semeado por suposição.
+10. **Sem dependência visual antiga.** Wireframes antigos são históricos; a interface será substituída em outra etapa. O modelo suporta campos, filtros, fontes, estados vazios e privados sem impor desenho de tela.
+11. **Preservação nas migrações.** O banco novo usa versão explícita e restrições reais. Banco legado não é recriado no startup. Conversão requer operação própria, backup e validação; inconsistências não são “corrigidas” inventando dados oficiais. Veja os comandos e limitações no [backend](../../backend/README.md).
+
+## Escopo que não foi acrescentado
+
+Não há simulador de batalhas, cálculo de dano, gerenciador de equipes, marketplace ou rede social. Não há importação de saves, integração automática com HOME, nem certificação de legitimidade individual. Itens e golpes não são um catálogo completo nesta arquitetura. O texto de condição de transformação pode mencionar um item confirmado sem criar um subsistema de inventário.

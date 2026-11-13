@@ -1,7 +1,5 @@
-# Modelo conceitual 2.0 — histórico
+# Documento substituído
 
-> **Documento histórico substituído.** A versão 2.0 não deve mais ser usada como referência para o modelo lógico. Consulte [modelo-conceitual-v3.md](modelo-conceitual-v3.md), [DER.md](DER.md) e [auditoria completa](../auditoria-completa.md).
+Este texto histórico foi substituído pela [especificação reconciliada da Etapa 1](../stage1/README.md).
 
-A versão 2.0 estabeleceu a separação inicial entre espécie, forma, dados por jogo, coleção e regulamento. Ela ainda possuía limitações no tratamento de treinamento por jogo, disponibilidade, métodos de obtenção, tipo primário/secundário e acoplamento entre dados de forma e versões de mecânica.
-
-O conteúdo da versão 2.0 foi preservado no histórico do Git. A referência vigente proposta é o modelo conceitual 3.0.
+A versão anterior permanece em [arquivo](../archive/architecture-v3/banco-de-dados/modelo-conceitual.md), somente para rastreabilidade; não define o produto atual.
