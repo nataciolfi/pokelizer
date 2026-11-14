@@ -98,6 +98,14 @@
     "encounter_methods.csv": {
       "sha256": "99327ac41c463b8bcca18d04b56cad3d5532fec70dd7eb869b9ca650a007e291",
       "url": "https://raw.githubusercontent.com/PokeAPI/pokeapi/8a92bfa7dab2f12b84b5d151562f9857c133ff30/data/v2/csv/encounter_methods.csv"
+    },
+    "natures.csv": {
+      "sha256": "3536990f6adeaa1735551a6afe798649d22426e161c937da09d3ae9a5381309c",
+      "url": "https://raw.githubusercontent.com/PokeAPI/pokeapi/8a92bfa7dab2f12b84b5d151562f9857c133ff30/data/v2/csv/natures.csv"
+    },
+    "nature_names.csv": {
+      "sha256": "94d7d6adbfe4c8207f7896dd64dc1490f83d3bf7744beac83e6e03cd459ed70b",
+      "url": "https://raw.githubusercontent.com/PokeAPI/pokeapi/8a92bfa7dab2f12b84b5d151562f9857c133ff30/data/v2/csv/nature_names.csv"
     }
   }
 }

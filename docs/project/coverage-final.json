@@ -6,7 +6,7 @@
     "FORMA": 1579,
     "JOGO": 51,
     "DADOS_FORMA_JOGO": 5072,
-    "MECANICA_JOGO": 0,
+    "MECANICA_JOGO": 2,
     "REGULAMENTO": 0,
     "ELEGIBILIDADE_FORMA_REGULAMENTO": 0
   },
@@ -20,7 +20,7 @@
   "pendencias": [
     "Fichas e presença por jogo",
     "Tipos, habilidades e atributos históricos por jogo",
-    "Versões de mecânica e limites documentados",
+    "Mecânicas e limites fora de Sword/Shield",
     "Regulamentos e elegibilidade com fontes específicas",
     "Perfis de referência competitiva verificados"
   ],

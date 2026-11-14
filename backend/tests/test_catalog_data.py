@@ -71,6 +71,15 @@ def test_catalog_image_mapping_uses_unambiguous_source_identifier(app, client):
     item=next(row for row in result['itens'] if row['codigo_forma']=='bulbasaur')
     assert item['imagem_url'].endswith('/sprites/pokemon/1.png')
     assert 'c0542f7c51215d9672439012838c99f520596cbd' in item['imagem_url']
+    with app.app_context():
+        db=get_db()
+        db.execute("INSERT INTO ESPECIE(numero_nacional,nome_pt) VALUES(99902,'FIXTURE other species')")
+        species=db.execute('SELECT last_insert_rowid()').fetchone()[0]
+        db.execute("INSERT INTO FORMA(id_especie,codigo_forma,nome_forma) VALUES(?,'bulbasaur','FIXTURE different form')",(species,))
+        db.commit()
+    results=client.get('/api/pokemon?busca=bulbasaur').json['itens']
+    unrelated=next(row for row in results if row['numero_nacional']==99902)
+    assert unrelated['imagem_url'] is None
 
 
 def test_real_catalog_to_owned_specimen_and_repeat_import(app, client):
@@ -93,3 +102,56 @@ def test_real_catalog_to_owned_specimen_and_repeat_import(app, client):
     with app.app_context():
         assert importar_catalogo()['fichas_encontro_documentado']==first['fichas_encontro_documentado']
     assert client.get(f'/api/colecao/{identifier}').json['apelido']=='TESTE real'
+
+
+def test_sword_real_context_mechanics_and_explainable_comparison(app, client):
+    from test_api import create_user, get_csrf
+    create_user(client)
+    with app.app_context():
+        importar_catalogo()
+        db=get_db()
+        context=db.execute("""SELECT d.id_dados_forma,m.id_mecanica FROM DADOS_FORMA_JOGO d
+            JOIN FORMA f USING(id_forma) JOIN JOGO j USING(id_jogo) JOIN MECANICA_JOGO m USING(id_jogo)
+            WHERE f.codigo_forma='pikachu' AND j.nome='Sword' AND m.versao='regras-gerais-documentadas'""").fetchone()
+        nature=db.execute("SELECT id_natureza FROM NATUREZA WHERE nome='Timid'").fetchone()[0]
+        systems={row['codigo']:row['id_mecanica_sistema_atributo'] for row in db.execute("""SELECT s.codigo,m.id_mecanica_sistema_atributo FROM MECANICA_SISTEMA_ATRIBUTO m
+            JOIN SISTEMA_ATRIBUTO s USING(id_sistema_atributo) WHERE m.id_mecanica=?""", (context['id_mecanica'],))}
+        attrs={row['codigo']:row['id_atributo'] for row in db.execute('SELECT codigo,id_atributo FROM ATRIBUTO_BATALHA')}
+    def val(system, attribute, value, field='valor'):
+        return {'id_mecanica_sistema_atributo':systems[system],'id_atributo':attrs[attribute],field:value}
+    headers={'X-CSRF-Token':get_csrf(client)}
+    specimen=client.post('/api/colecao',headers=headers,json={'id_dados_forma_atual':context['id_dados_forma'],
+        'id_mecanica':context['id_mecanica'],'id_natureza':nature,'nivel':50,
+        'valores':[val('IV','attack',0),val('EV','speed',252)]})
+    assert specimen.status_code==201, specimen.json
+    profile=client.post('/api/perfis',headers=headers,json={'id_dados_forma':context['id_dados_forma'],
+        'id_mecanica':context['id_mecanica'],'nome_perfil':'TESTE alvo baixo', 'naturezas':[nature],
+        'valores':[val('IV','attack',0,'valor_alvo'),val('EV','speed',4,'valor_alvo')]})
+    assert profile.status_code==201, profile.json
+    result=client.post('/api/analises',headers=headers,json={'id_pokemon_colecao':specimen.json['id_pokemon_colecao'],'id_perfil':profile.json['id_perfil']})
+    assert result.status_code==200
+    attack=next(r for r in result.json['campos'] if r['sistema']=='IV' and r['atributo']=='attack')
+    speed=next(r for r in result.json['campos'] if r['sistema']=='EV' and r['atributo']=='speed')
+    assert attack['real']==0 and attack['estado']=='igual'
+    assert speed['diferenca']==248 and speed['estado']=='acima'
+    assert 'não significa melhor' in result.json['interpretacao']
+    for invalid in [[val('IV','attack',32)], [val('EV','attack',253)],
+                    [val('EV','attack',252),val('EV','defense',252),val('EV','speed',7)]]:
+        failed=client.post('/api/colecao',headers=headers,json={'id_dados_forma_atual':context['id_dados_forma'],
+            'id_mecanica':context['id_mecanica'],'valores':invalid})
+        assert failed.status_code==400
+    assert client.get('/api/colecao').json['total']==1
+
+
+def test_curated_mechanics_conflict_aborts_without_overwrite(app):
+    with app.app_context():
+        importar_catalogo()
+        db=get_db()
+        row=db.execute("""SELECT ms.id_mecanica_sistema_atributo FROM MECANICA_SISTEMA_ATRIBUTO ms
+            JOIN SISTEMA_ATRIBUTO s USING(id_sistema_atributo) JOIN MECANICA_JOGO m USING(id_mecanica)
+            JOIN JOGO j USING(id_jogo) WHERE j.nome='Sword' AND s.codigo='IV'""").fetchone()
+        db.execute('UPDATE MECANICA_SISTEMA_ATRIBUTO SET valor_maximo_atributo=30 WHERE id_mecanica_sistema_atributo=?',(row[0],))
+        db.commit()
+        with pytest.raises(ValueError, match='Conflito de curadoria'):
+            importar_catalogo()
+        assert db.execute('SELECT valor_maximo_atributo FROM MECANICA_SISTEMA_ATRIBUTO WHERE id_mecanica_sistema_atributo=?',(row[0],)).fetchone()[0]==30
