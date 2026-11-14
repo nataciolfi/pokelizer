@@ -31,6 +31,9 @@
     "blue",
     "blue-japan"
   ],
+  "fichas_tipos_com_fonte": 364,
+  "fichas_estatisticas_com_fonte": 364,
+  "habilidades_com_fonte": 970,
   "fichas_encontro_documentado": 5072,
   "observacao": "Cobertura é relativa ao snapshot, não certifica completude oficial atual. Ausência de ficha não indica ausência no jogo."
 }

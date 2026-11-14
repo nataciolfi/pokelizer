@@ -96,6 +96,10 @@ CHECKs, índices e gatilhos: consultar a definição desta tabela em [schema.sql
 | velocidade_base | INTEGER | sim | — | — |
 | fonte_url | TEXT | sim | — | — |
 | data_verificacao | TEXT | sim | — | — |
+| fonte_tipos | TEXT | sim | — | — |
+| data_verificacao_tipos | TEXT | sim | — | — |
+| fonte_estatisticas | TEXT | sim | — | — |
+| data_verificacao_estatisticas | TEXT | sim | — | — |
 
 Chaves: PK(id_dados_forma); UNIQUE(id_forma, id_jogo).
 

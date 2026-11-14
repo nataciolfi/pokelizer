@@ -21,6 +21,8 @@ python -m flask --app pokeanalyzer:create_app run --host 127.0.0.1 --port 5000
 
 `db-init` é explícito e não destrói tabelas. Startup não recria nem semeia o banco. Se o banco já é versionado, a mesma operação só aplica migrações pendentes. Para criar uma demonstração isolada, escolha outro arquivo em `POKEANALYZER_DATABASE`; nunca apague o banco anterior. A carga real e suas limitações estão em [data](data/README.md).
 
+Ao atualizar uma instalação existente, faça backup e execute `python -m flask --app pokeanalyzer:create_app db-upgrade` antes de iniciar esta versão. A migração 002 acrescenta fontes independentes para tipos e estatísticas; registros anteriores permanecem sem essas fontes até serem verificados. A migração 001 continua imutável.
+
 No ambiente da sessão, dependências e ferramentas portáteis foram usadas porque a rede do shell está sem DNS e a `.venv` herdada não tinha os pacotes disponíveis neste runtime; isso está registrado no [relatório](../docs/stage2/README.md). Em outra máquina, use a instalação convencional acima.
 
 ## Banco existente e preservação

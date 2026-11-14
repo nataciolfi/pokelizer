@@ -70,6 +70,8 @@ def importar_catalogo(directory=SNAPSHOT):
         importar_encontros(db, data, manifest)
         from .curated_data import importar_mecanicas_swsh
         importar_mecanicas_swsh(db, data)
+        from .contextual_data import importar_contextos_swsh
+        importar_contextos_swsh(db, data, manifest)
         if db.execute('PRAGMA foreign_key_check').fetchone():
             raise ValueError('Snapshot violou integridade; carga revertida.')
     return cobertura(directory)
@@ -135,5 +137,8 @@ def cobertura(directory=SNAPSHOT):
                       'Perfis de referência competitiva verificados'],
         'fichas_outras_fontes_preservadas': db.execute("SELECT count(*) FROM DADOS_FORMA_JOGO WHERE fonte_url IS NULL OR fonte_url!=?", (manifest['files']['encounters.csv.gz']['url'],)).fetchone()[0],
         'versoes_excluidas_identidade_ambigua': ['red', 'red-japan', 'blue', 'blue-japan'],
+        'fichas_tipos_com_fonte': db.execute("SELECT count(*) FROM DADOS_FORMA_JOGO WHERE fonte_tipos IS NOT NULL").fetchone()[0],
+        'fichas_estatisticas_com_fonte': db.execute("SELECT count(*) FROM DADOS_FORMA_JOGO WHERE fonte_estatisticas IS NOT NULL").fetchone()[0],
+        'habilidades_com_fonte': db.execute("SELECT count(*) FROM HABILIDADE_FORMA_JOGO").fetchone()[0],
         'fichas_encontro_documentado': db.execute("SELECT count(*) FROM DADOS_FORMA_JOGO WHERE fonte_url=?", (manifest['files']['encounters.csv.gz']['url'],)).fetchone()[0],
         'observacao': 'Cobertura é relativa ao snapshot, não certifica completude oficial atual. Ausência de ficha não indica ausência no jogo.'}

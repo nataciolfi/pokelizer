@@ -37,6 +37,9 @@ class PokemonCatalogo:
     fonte_url: str | None = None
     data_verificacao: str | None = None
     fichas: tuple[dict[str, Any], ...] = ()
+    status_tipos: str | None = None
+    fonte_tipos: str | None = None
+    data_verificacao_tipos: str | None = None
     fonte_forma_url: str | None = None
     data_verificacao_forma: str | None = None
 

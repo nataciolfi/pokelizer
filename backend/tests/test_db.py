@@ -16,7 +16,7 @@ def test_clean_init_repeatable_upgrade_and_persistence(tmp_path):
     path = tmp_path / "catalog.sqlite3"
     db = connect_database(path)
     assert db.execute("PRAGMA foreign_keys").fetchone()[0] == 1
-    assert upgrade(db) == [1]
+    assert upgrade(db) == [1, 2]
     with transaction(db):
         db.execute("INSERT INTO USUARIO(nome_usuario,email,senha_hash) VALUES (?,?,?)",
                    ("fixture_user", "fixture@example.invalid", generate_password_hash("password123")))
@@ -170,3 +170,32 @@ def test_successful_new_migration_preserves_existing_rows(tmp_path):
     assert [r[0] for r in db.execute("SELECT version FROM SCHEMA_MIGRATION ORDER BY version")] == [1, 2]
     assert upgrade(db, migrations) == []
     db.close()
+
+
+def test_real_stage1_upgrade_preserves_existing_data_and_evidence_is_unknown(tmp_path):
+    import shutil
+    from pokeanalyzer.db import MIGRATIONS
+    migrations=tmp_path/'migrations'
+    migrations.mkdir()
+    shutil.copyfile(MIGRATIONS/'001_stage1.sql',migrations/'001_stage1.sql')
+    db=connect_database(tmp_path/'old.sqlite3')
+    assert upgrade(db,migrations)==[1]
+    db.executescript("""
+    INSERT INTO USUARIO(id_usuario,nome_usuario,email,senha_hash) VALUES(9,'FIXTURE owner','owner@example.invalid','xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx');
+    INSERT INTO ESPECIE(id_especie,numero_nacional,nome_pt) VALUES(9,99991,'FIXTURE species');
+    INSERT INTO FORMA(id_forma,id_especie,codigo_forma,nome_forma) VALUES(9,9,'fixture','FIXTURE form');
+    INSERT INTO JOGO(id_jogo,nome) VALUES(9,'FIXTURE game');
+    INSERT INTO DADOS_FORMA_JOGO(id_dados_forma,id_forma,id_jogo) VALUES(9,9,9);
+    """)
+    db.commit()
+    checksum=db.execute('SELECT checksum FROM SCHEMA_MIGRATION WHERE version=1').fetchone()[0]
+    shutil.copyfile(MIGRATIONS/'002_catalog_evidence.sql',migrations/'002_catalog_evidence.sql')
+    assert upgrade(db,migrations)==[2]
+    row=db.execute('SELECT * FROM DADOS_FORMA_JOGO WHERE id_dados_forma=9').fetchone()
+    assert row['id_forma']==9 and row['fonte_tipos'] is None and row['fonte_estatisticas'] is None
+    assert db.execute('SELECT nome_usuario FROM USUARIO WHERE id_usuario=9').fetchone()[0]=='FIXTURE owner'
+    assert db.execute('SELECT checksum FROM SCHEMA_MIGRATION WHERE version=1').fetchone()[0]==checksum
+    assert upgrade(db,migrations)==[]
+    with pytest.raises(sqlite3.IntegrityError,match='Fonte e data'):
+        db.execute("UPDATE DADOS_FORMA_JOGO SET fonte_tipos='https://example.invalid/source' WHERE id_dados_forma=9")
+    assert db.execute('PRAGMA foreign_key_check').fetchall()==[]

@@ -56,7 +56,7 @@ class UsuarioDAO:
 class PokemonDAO:
     _SELECT = """SELECT dfj.id_dados_forma, e.id_especie, f.id_forma, j.id_jogo,
                       e.numero_nacional, e.nome_pt, f.nome_forma, j.nome AS nome_jogo,
-                      dfj.status_presenca, dfj.pode_ser_registrada, f.codigo_forma, e.nome_en,
+                      dfj.status_presenca, dfj.pode_ser_registrada, dfj.status_tipos, dfj.fonte_tipos, dfj.data_verificacao_tipos, f.codigo_forma, e.nome_en,
                       dfj.fonte_url, dfj.data_verificacao,
                       f.fonte_url AS fonte_forma_url, f.data_verificacao AS data_verificacao_forma
                FROM ESPECIE e
@@ -97,7 +97,7 @@ class PokemonDAO:
             first = items[0]
             if len(items) > 1:
                 first = replace(first, id_dados_forma=None, id_jogo=None, nome_jogo=None,
-                                status_presenca=None, pode_ser_registrada=None, tipos=())
+                                status_presenca=None, pode_ser_registrada=None, status_tipos=None, fonte_tipos=None, data_verificacao_tipos=None, tipos=())
             result.append(replace(first, fichas=sheets, fonte_url=first.fonte_forma_url,
                                   data_verificacao=first.data_verificacao_forma))
         return result

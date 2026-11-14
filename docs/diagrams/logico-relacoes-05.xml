@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<DIAGRAMA ID="1" TIPO="tpLogico" UniversalUnicID="37D7-6D-4EA6-E5-B86D-67-31">
+<DIAGRAMA ID="1" TIPO="tpLogico" UniversalUnicID="F789-9F-491D-94-33F9-FB-81">
     <LogicoLinha ID="7">
         <DisablePainted Valor="false"/>
         <Tag LinhaMestre="-1"/>
@@ -153,7 +153,7 @@
         <Ligacoes PontaA="33" PontaB="32"/>
         <Pontos>
             <Ponto Left="2606" Top="1126"/>
-            <Ponto Left="2187" Top="1407"/>
+            <Ponto Left="2187" Top="1467"/>
         </Pontos>
         <LogicoCardinalidade ID="35">
             <Bounds Height="100" Left="2452" Top="1028" Width="150"/>
@@ -170,7 +170,7 @@
             <Fonte Estilo="0" Nome="SansSerif" Tamanho="15"/>
         </LogicoCardinalidade>
         <LogicoCardinalidade ID="36">
-            <Bounds Height="100" Left="2197" Top="1309" Width="150"/>
+            <Bounds Height="100" Left="2197" Top="1369" Width="150"/>
             <DisablePainted Valor="false"/>
             <Texto>Cardinalidade_8</Texto>
             <Observacao/>
@@ -1643,7 +1643,7 @@
         </Constraints>
     </Tabela>
     <Tabela ID="33">
-        <Bounds Height="590" Left="2610" Top="1115" Width="540"/>
+        <Bounds Height="710" Left="2610" Top="1115" Width="540"/>
         <DisablePainted Valor="false"/>
         <Texto>DADOS_FORMA_JOGO</Texto>
         <Observacao/>
@@ -1831,6 +1831,46 @@
             </Campo>
             <Campo>
                 <Texto>data_verificacao</Texto>
+                <Tipo>TEXT</Tipo>
+                <Complemento/>
+                <Dicionario/>
+                <Observacao/>
+                <Key Valor="false"/>
+                <Fkey Valor="false"/>
+                <Unique Valor="false"/>
+            </Campo>
+            <Campo>
+                <Texto>fonte_tipos</Texto>
+                <Tipo>TEXT</Tipo>
+                <Complemento/>
+                <Dicionario/>
+                <Observacao/>
+                <Key Valor="false"/>
+                <Fkey Valor="false"/>
+                <Unique Valor="false"/>
+            </Campo>
+            <Campo>
+                <Texto>data_verificacao_tipos</Texto>
+                <Tipo>TEXT</Tipo>
+                <Complemento/>
+                <Dicionario/>
+                <Observacao/>
+                <Key Valor="false"/>
+                <Fkey Valor="false"/>
+                <Unique Valor="false"/>
+            </Campo>
+            <Campo>
+                <Texto>fonte_estatisticas</Texto>
+                <Tipo>TEXT</Tipo>
+                <Complemento/>
+                <Dicionario/>
+                <Observacao/>
+                <Key Valor="false"/>
+                <Fkey Valor="false"/>
+                <Unique Valor="false"/>
+            </Campo>
+            <Campo>
+                <Texto>data_verificacao_estatisticas</Texto>
                 <Tipo>TEXT</Tipo>
                 <Complemento/>
                 <Dicionario/>

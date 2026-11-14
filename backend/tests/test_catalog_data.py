@@ -155,3 +155,48 @@ def test_curated_mechanics_conflict_aborts_without_overwrite(app):
         with pytest.raises(ValueError, match='Conflito de curadoria'):
             importar_catalogo()
         assert db.execute('SELECT valor_maximo_atributo FROM MECANICA_SISTEMA_ATRIBUTO WHERE id_mecanica_sistema_atributo=?',(row[0],)).fetchone()[0]==30
+
+
+def test_history_uses_closest_applicable_change_and_preserves_empty_slot():
+    from pokeanalyzer.contextual_data import _historical_rows
+    current={'1':{'ability_id':'9'}, '2':{'ability_id':'8'}, '3':{'ability_id':'7'}}
+    past={'1':[{'generation_id':'7','ability_id':'4'}, {'generation_id':'9','ability_id':'5'},
+               {'generation_id':'8','ability_id':'6'}],
+          '2':[{'generation_id':'6','ability_id':'3'}],
+          '3':[{'generation_id':'8','ability_id':''}]}
+    assert _historical_rows(current,past,8,'ability_id') == {'1':'6','2':'8','3':''}
+
+
+def test_sword_context_has_independent_sources_and_real_values(app, client):
+    with app.app_context():
+        coverage=importar_catalogo()
+        db=get_db()
+        sword=db.execute("SELECT id_jogo FROM JOGO WHERE nome='Sword'").fetchone()[0]
+        electric=db.execute("SELECT id_tipo FROM TIPO WHERE nome_tipo='Electric'").fetchone()[0]
+    result=client.get('/api/pokemon',query_string={'busca':'pikachu','jogo':sword,'tipo':electric})
+    row=next(x for x in result.json['itens'] if x['codigo_forma']=='pikachu')
+    sheet=row['fichas'][0]
+    assert sheet['tipos']==['Electric']
+    assert sheet['fonte_url'].endswith('/encounters.csv')
+    assert sheet['fonte_tipos'] and sheet['data_verificacao_tipos']
+    detail=client.get('/api/pokemon/'+str(sheet['id_dados_forma'])).json
+    assert [detail[k] for k in ('hp_base','ataque_base','defesa_base','ataque_especial_base','defesa_especial_base','velocidade_base')]==[35,55,40,50,50,90]
+    assert detail['fonte_estatisticas'] and detail['data_verificacao_estatisticas']
+    assert {'Static','Lightning Rod'} <= {x['nome'] for x in detail['habilidades']}
+    assert all(x['fonte_url'] and x['data_verificacao'] for x in detail['habilidades'])
+    assert coverage['fichas_tipos_com_fonte']>0
+
+
+def test_sword_context_reimport_preserves_existing_curated_values(app):
+    with app.app_context():
+        importar_catalogo()
+        db=get_db()
+        sheet=db.execute("""SELECT d.id_dados_forma FROM DADOS_FORMA_JOGO d JOIN FORMA f USING(id_forma)
+            JOIN JOGO j USING(id_jogo) WHERE f.codigo_forma='pikachu' AND j.nome='Sword'""").fetchone()[0]
+        db.execute('UPDATE DADOS_FORMA_JOGO SET hp_base=42 WHERE id_dados_forma=?',(sheet,))
+        ability=db.execute('SELECT id_habilidade_forma FROM HABILIDADE_FORMA_JOGO WHERE id_dados_forma=? LIMIT 1',(sheet,)).fetchone()[0]
+        db.execute("UPDATE HABILIDADE_FORMA_JOGO SET slot='FIXTURE curated' WHERE id_habilidade_forma=?",(ability,))
+        db.commit()
+        importar_catalogo()
+        assert db.execute('SELECT hp_base FROM DADOS_FORMA_JOGO WHERE id_dados_forma=?',(sheet,)).fetchone()[0]==42
+        assert db.execute('SELECT slot FROM HABILIDADE_FORMA_JOGO WHERE id_habilidade_forma=?',(ability,)).fetchone()[0]=='FIXTURE curated'
