@@ -6,10 +6,11 @@ brModelo consistent: 26 entities, 183 fields, 43 relationships; all native/expor
 RUN: /usr/bin/python docs/uml/check_uml.py
 UML: 15 implemented classes and their methods agree with Python; exports match reviewed hashes.
 RUN: /usr/bin/python tools/check_links.py
-249 local delivery links resolve (historical archives excluded).
+251 local delivery links resolve (historical archives excluded).
 RUN: /usr/bin/python -m pytest backend/tests -q
-........................................................................ [100%]
-72 passed in 9.69s
+........................................................................ [ 98%]
+.                                                                        [100%]
+73 passed in 8.45s
 All repeatable Stage 1 checks passed. Visual inspection is documented separately.
 POST /api/auth/cadastro: 201
 POST /api/colecao: 201

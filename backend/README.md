@@ -34,6 +34,8 @@ python -m flask --app pokeanalyzer:create_app db-import-legacy /caminho/antigo.s
 
 Backup e importação recusam destinos existentes. A importação reconhece as 13 tabelas do backend antigo `5bd1357`, mantém IDs/hashes e valida tudo em arquivo novo. Origem aberta somente para leitura; linha incompatível ou coluna desconhecida interrompe sem destruir a origem. Mecânicas/fontes não são inventadas para tornar dados antigos válidos. Preserve backup, revise a cópia e repita para outro destino. Migrações aplicadas têm checksum; nunca edite `001_stage1.sql` em banco existente.
 
+A interface HTML/CSS/JS integrada é servida em `/` e usa Fetch para as rotas abaixo. Consulte o [estado da revisão da interface](../docs/project/frontend.md).
+
 ## Rotas
 
 Todos os caminhos abaixo têm prefixo `/api`.

@@ -60,3 +60,7 @@ Verificação após interface: `python tools/check_stage2.py` passou integralmen
 ## Revisão final de evidência
 
 Corrigida a projeção das fontes: a evidência global da forma não sobrescreve a evidência específica da ficha/jogo. Catálogo global, fichas aninhadas e detalhe mantêm ambas identificadas; regressão cobre fontes/datas diferentes. Token CSRF inválido com caracteres não ASCII agora retorna 403, sem TypeError. Verificação consolidada: **72 testes passaram**, diagramas/SQL/UML/links e demonstração também. Classes/métodos e estrutura SQL permanecem os mesmos; campos de fonte opcionais são projeções de colunas já existentes.
+
+## Continuação em 14/11/2026
+
+Revisão da carga: formas alternativas recebem categoria `nao_verificada`, em vez de herdar `padrao` do SQL sem evidência. Reimportação detecta divergência com categorias já curadas e aborta preservando a base, sem sobrescrever silenciosamente. Regressões verificam as categorias de todas as formas do snapshot e a preservação de curadoria. Verificação consolidada: **73 testes passaram**; demais checks e demonstração passaram. README agora aponta a interface já escrita e seu QA pendente.

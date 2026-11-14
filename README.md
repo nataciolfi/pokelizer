@@ -1,6 +1,6 @@
 # Pokelizer
 
-Catálogo Pokémon, coleção privada e comparação explicável de exemplares com perfis, em Python/POO, Flask e SQLite. A Etapa 2 implementa o backend; o projeto final mantém a obrigação de interface nova HTML/CSS/JavaScript com Fetch e catálogo contextual completo.
+Catálogo Pokémon, coleção privada e comparação explicável de exemplares com perfis, em Python/POO, Flask e SQLite. A Etapa 2 implementa o backend. A nova interface já está integrada no código, com [QA de navegador ainda pendente](docs/project/frontend.md); o projeto final mantém a obrigação de interface nova HTML/CSS/JavaScript com Fetch e catálogo contextual completo.
 
 A entrega é desenvolvida na branch `stage2/functional-delivery`, sobre a reconciliação `91875bd`. A `main` ainda contém material antigo. Consulte o [relatório da Etapa 2](docs/stage2/README.md) e o [registro de continuidade](docs/project/progress.md) para distinguir implementado, verificado e pendente.
 

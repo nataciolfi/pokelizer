@@ -45,12 +45,13 @@ def importar_catalogo(directory=SNAPSHOT):
             species = db.execute('SELECT id_especie FROM ESPECIE WHERE numero_nacional=?', (int(p['species_id']),)).fetchone()[0]
             code = r['identifier']
             default = int(p['is_default'] == '1' and r['is_default'] == '1')
+            category = 'padrao' if default else 'nao_verificada'
             existing = db.execute('SELECT * FROM FORMA WHERE id_especie=? AND codigo_forma=?', (species, code)).fetchone()
-            if existing and (existing['fonte_url'] != source or existing['forma_padrao'] != default):
+            if existing and (existing['fonte_url'] != source or existing['forma_padrao'] != default or existing['categoria'] != category):
                 raise ValueError(f'Conflito em forma {code}; importação revertida.')
             if not existing:
-                db.execute('INSERT INTO FORMA(id_especie,codigo_forma,nome_forma,forma_padrao,estado_forma,fonte_url,data_verificacao) VALUES(?,?,?,?,?,?,?)',
-                    (species, code, code, default, 'temporario' if r['is_battle_only']=='1' else 'nao_verificado', source, date))
+                db.execute('INSERT INTO FORMA(id_especie,codigo_forma,nome_forma,forma_padrao,estado_forma,fonte_url,data_verificacao,categoria) VALUES(?,?,?,?,?,?,?,?)',
+                    (species, code, code, default, 'temporario' if r['is_battle_only']=='1' else 'nao_verificado', source, date, category))
         for r in data['versions.csv']:
             name = game_names.get(r['id'], r['identifier'])
             existing = db.execute('SELECT * FROM JOGO WHERE nome=? COLLATE NOCASE', (name,)).fetchone()
