@@ -1,0 +1,39 @@
+RUN: /usr/bin/python backend/tools/build_schema.py --check
+RUN: /usr/bin/python tools/document_model.py --check
+Dicionário e cardinalidades conferem com o SQL.
+RUN: /usr/bin/python docs/diagrams/tooling/check_models.py
+brModelo consistent: 26 entities, 183 fields, 43 relationships; all native/export hashes intact.
+RUN: /usr/bin/python docs/uml/check_uml.py
+UML: 15 implemented classes and their methods agree with Python; exports match reviewed hashes.
+RUN: /usr/bin/python tools/check_links.py
+245 local delivery links resolve (historical archives excluded).
+RUN: /usr/bin/python -m pytest backend/tests -q
+.....................................................................    [100%]
+69 passed in 7.60s
+All repeatable Stage 1 checks passed. Visual inspection is documented separately.
+POST /api/auth/cadastro: 201
+POST /api/colecao: 201
+GET /api/colecao/1: 200
+PATCH /api/colecao/1: 200
+POST /api/perfis: 201
+POST /api/analises: 200
+[
+  {
+    "alvo": 2,
+    "atributo": "fixture-attack",
+    "diferenca": -2,
+    "estado": "abaixo",
+    "estado_alvo": "conhecido",
+    "estado_real": "conhecido",
+    "id_atributo": 1,
+    "id_mecanica_sistema_atributo": 1,
+    "real": 0,
+    "sistema": "fixture-system"
+  }
+]
+POST /api/colecao: 400
+GET /api/pokemon?busca=fixture-standard: 200
+DELETE /api/colecao/1: 200
+DELETE /api/perfis/1: 200
+Demonstração concluída. Banco FIXTURE temporário removido; nenhum dado pessoal ou fato Pokémon inventado.
+Stage 2 repeatable checks passed. Consult visual-review.md and coverage.json for their separate scope.

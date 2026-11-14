@@ -1,0 +1,25 @@
+POST /api/auth/cadastro: 201
+POST /api/colecao: 201
+GET /api/colecao/1: 200
+PATCH /api/colecao/1: 200
+POST /api/perfis: 201
+POST /api/analises: 200
+[
+  {
+    "alvo": 2,
+    "atributo": "fixture-attack",
+    "diferenca": -2,
+    "estado": "abaixo",
+    "estado_alvo": "conhecido",
+    "estado_real": "conhecido",
+    "id_atributo": 1,
+    "id_mecanica_sistema_atributo": 1,
+    "real": 0,
+    "sistema": "fixture-system"
+  }
+]
+POST /api/colecao: 400
+GET /api/pokemon?busca=fixture-standard: 200
+DELETE /api/colecao/1: 200
+DELETE /api/perfis/1: 200
+Demonstração concluída. Banco FIXTURE temporário removido; nenhum dado pessoal ou fato Pokémon inventado.

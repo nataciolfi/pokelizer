@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<DIAGRAMA ID="1" TIPO="tpConceitual" UniversalUnicID="129F-29-2D28-7E-AE58-FA-5D">
+<DIAGRAMA ID="1" TIPO="tpConceitual" UniversalUnicID="B682-A1-EB3E-5-5B73-41-CF">
     <Ligacao ID="7">
         <DisablePainted Valor="false"/>
         <Tag LinhaMestre="-1"/>
@@ -2157,7 +2157,7 @@
     <Relacionamento ID="53">
         <Bounds Height="60" Left="705" Top="220" Width="180"/>
         <DisablePainted Valor="false"/>
-        <Texto>R25 associa</Texto>
+        <Texto>R25 usa mecânica</Texto>
         <Observacao/>
         <Dicionario/>
         <Fonte Estilo="0" Nome="SansSerif" Tamanho="15"/>
@@ -2635,7 +2635,7 @@
     <Relacionamento ID="107">
         <Bounds Height="60" Left="2305" Top="220" Width="180"/>
         <DisablePainted Valor="false"/>
-        <Texto>R26 associa</Texto>
+        <Texto>R26 sob regra</Texto>
         <Observacao/>
         <Dicionario/>
         <Fonte Estilo="0" Nome="SansSerif" Tamanho="15"/>
@@ -3011,7 +3011,7 @@
     <Relacionamento ID="149">
         <Bounds Height="60" Left="705" Top="1120" Width="180"/>
         <DisablePainted Valor="false"/>
-        <Texto>R27 associa</Texto>
+        <Texto>R27 pertence a</Texto>
         <Observacao/>
         <Dicionario/>
         <Fonte Estilo="0" Nome="SansSerif" Tamanho="15"/>
@@ -3506,7 +3506,7 @@
     <Relacionamento ID="205">
         <Bounds Height="60" Left="2305" Top="1120" Width="180"/>
         <DisablePainted Valor="false"/>
-        <Texto>R28 associa</Texto>
+        <Texto>R28 usa mecânica</Texto>
         <Observacao/>
         <Dicionario/>
         <Fonte Estilo="0" Nome="SansSerif" Tamanho="15"/>

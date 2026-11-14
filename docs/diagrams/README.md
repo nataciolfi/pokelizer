@@ -1,16 +1,28 @@
-# Modelos brModelo — Etapa 1
+# Modelos brModelo — Etapas 1 e 2
 
 Os arquivos desta pasta foram criados **com os objetos nativos, o gravador e o exportador de imagens do brModelo 3.3.2**, distribuído pelo [site oficial](https://brmodelo.com/download.html). A automação em Java organiza os objetos; não desenha os símbolos nem fabrica o formato de arquivo. A classe `ImageGenerate` do próprio brModelo renderiza os PNG. Os `.brM3` são arquivos binários nativos, reabertos pelo carregador do brModelo durante a geração; os `.xml` são a segunda opção de gravação editável oferecida pelo próprio programa.
 
 A ferramenta foi obtida em 13/11/2026 e executada em Java 21, sem instalar pacotes no sistema. Versão, URL, SHA-256 do JAR, SHA-256 do SQL e hashes de todos os arquivos estão em [manifest.json](manifest.json). O código-fonte público consultado é [chcandido/brModelo](https://github.com/chcandido/brModelo). Nenhum JAR de terceiro está versionado neste repositório.
 
-Os metadados públicos `autor` e `data` do invólucro nativo `GuardaPadraoBrM` são definidos como `Pokelizer project` e vazio. A distribuição preenche esses campos com o nome do autor da ferramenta e uma data histórica fixa, mesmo quando o modelo é novo. Após a gravação oficial, a automação altera somente esses dois campos públicos e regrava o mesmo objeto com a serialização Java nativa; o conteúdo do diagrama é preservado. A atribuição da ferramenta permanece nos links oficiais desta documentação. Todos os 24 arquivos foram novamente reabertos pelo carregador oficial após essa limpeza; XML e PNG conservaram seus hashes. Veja a [revisão visual e de metadados](visual-review.md).
+Os metadados públicos `autor` e `data` do invólucro nativo `GuardaPadraoBrM` são definidos como `Pokelizer project` e vazio. A distribuição preenche esses campos com o nome do autor da ferramenta e uma data histórica fixa, mesmo quando o modelo é novo. Após a gravação oficial, a automação altera somente esses dois campos públicos e regrava o mesmo objeto com a serialização Java nativa; o conteúdo do diagrama é preservado. A atribuição da ferramenta permanece nos links oficiais desta documentação. Todos os 34 arquivos foram novamente reabertos pelo carregador oficial após essa limpeza; XML e PNG conservaram seus hashes. Veja a [revisão visual e de metadados](visual-review.md).
 
 ## Abrir e revisar
 
 Abra [conceitual.brM3](conceitual.brM3) e [logico.brM3](logico.brM3) em **Arquivo → Abrir** no brModelo. Os arquivos completos contêm **26 entidades/tabelas, 183 atributos/campos e 43 relações**. [Conceitual PNG](conceitual.png) e [lógico PNG](logico.png) são as visões gerais.
 
-As visões gerais são grandes. Para apresentação e impressão, use também as folhas ampliadas abaixo: cada painel mostra uma relação, seus dois participantes com todos os atributos/campos, cardinalidades, colunas vinculadas e ações referenciais. Uma entidade reaparece em várias folhas como vista do mesmo objeto de negócio; isso não representa novas tabelas. Cada folha tem também seu próprio `.brM3` editável e XML, com o mesmo nome base do PNG.
+## Visões principais para apresentar
+
+Comece pelos domínios abaixo: entidades relacionadas próximas, nomes de relações por papel e linhas sem cruzamentos nas visões conceituais. São recortes nativos editáveis para navegação; omitem atributos e algumas relações externas. O modelo integral e as pranchas R preservam todos os campos, chaves e vínculos. Cada imagem abaixo tem `.brM3` e `.xml` com o mesmo nome-base.
+
+| Domínio | Conceitual | Lógico |
+|---|---|---|
+| Catálogo global/fichas | [PNG](conceitual-visao-catalogo.png) · [brM3](conceitual-visao-catalogo.brM3) | [PNG](logico-visao-catalogo.png) · [brM3](logico-visao-catalogo.brM3) |
+| Propriedade/coleção | [PNG](conceitual-visao-colecao.png) · [brM3](conceitual-visao-colecao.brM3) | [PNG](logico-visao-colecao.png) · [brM3](logico-visao-colecao.brM3) |
+| Mecânicas/atributos | [PNG](conceitual-visao-atributos.png) · [brM3](conceitual-visao-atributos.brM3) | [PNG](logico-visao-atributos.png) · [brM3](logico-visao-atributos.brM3) |
+| Perfis/alvos | [PNG](conceitual-visao-perfis.png) · [brM3](conceitual-visao-perfis.brM3) | [PNG](logico-visao-perfis.png) · [brM3](logico-visao-perfis.brM3) |
+| Regulamentos/elegibilidade | [PNG](conceitual-visao-regulamentos.png) · [brM3](conceitual-visao-regulamentos.brM3) | [PNG](logico-visao-regulamentos.png) · [brM3](logico-visao-regulamentos.brM3) |
+
+Os completos foram reordenados por proximidade de domínio e recebem nomes como “da espécie”, “estado atual”, “tem origem” e “sob limites”. Continuam grandes e densos: não imprimir a visão integral reduzida como único material de leitura. As visões gerais são grandes. Para apresentação e impressão, use também as folhas ampliadas abaixo: cada painel mostra uma relação, seus dois participantes com todos os atributos/campos, cardinalidades, colunas vinculadas e ações referenciais. Uma entidade reaparece em várias folhas como vista do mesmo objeto de negócio; isso não representa novas tabelas. Cada folha tem também seu próprio `.brM3` editável e XML, com o mesmo nome base do PNG.
 
 | Folha | Relações | Conceitual | Lógico |
 |---|---|---|---|

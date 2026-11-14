@@ -1,5 +1,8 @@
 # Matriz de rastreabilidade
 
+> Registro histórico da Etapa 1 em `91875bd`. Implementações e verificações posteriores estão em [Etapa 2](../stage2/README.md) e [progress.md](../project/progress.md). Estados “futuro/pendente” abaixo descrevem aquela entrega.
+
+
 Autoridades: [documento do professor](../sources/teacher-requirements.md), solicitação integral da tarefa de Etapa 1 e decisões reconciliadas. **P** = professor/documento; **E** = exigência escolar detalhada na tarefa; **A** = produto acordado; **T** = salvaguarda técnica. “Modelado” significa suporte físico, não endpoint ou fluxo pronto. Os nomes de serviços futuros abaixo representam responsabilidades, não classes já implementadas; classes reais estão no [UML](../uml/README.md).
 
 | ID e descrição | Fonte | Entidades/relações | Responsabilidade Python pretendida | API/fluxo pretendido | Aceitação observável | Estado da Etapa 1 |

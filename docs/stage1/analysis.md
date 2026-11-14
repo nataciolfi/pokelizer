@@ -1,5 +1,8 @@
 # Contrato do analisador explicável (implementação posterior)
 
+> Registro histórico da Etapa 1 em `91875bd`. Implementações e verificações posteriores estão em [Etapa 2](../stage2/README.md) e [progress.md](../project/progress.md). Estados “futuro/pendente” abaixo descrevem aquela entrega.
+
+
 O analisador obrigatório do produto ainda não é uma classe implementada nesta etapa. Este contrato orienta os modelos, perfis e futuras APIs; não é resultado calculado pelo backend atual.
 
 Antes de comparar, autorizar o acesso ao exemplar e ao perfil personalizado, verificar forma/jogo e versão exata de mecânica, sistemas e atributos permitidos e evidência dos limites. Um regulamento opcional deve usar a mesma mecânica; elegibilidade continua separada da comparação. Nunca apresentar contexto incompatível como resultado numérico.

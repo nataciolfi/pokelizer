@@ -176,6 +176,12 @@ def excluir_colecao(id_pokemon: int):
     return jsonify({"mensagem": "Registro removido."})
 
 
+@api.before_request
+def validar_consulta():
+    if request.endpoint != "api.listar_pokemon" and request.args:
+        raise ValueError("Esta rota não aceita parâmetros de consulta.")
+
+
 @api.errorhandler(ValueError)
 def validation_error(exc):
     return jsonify({"erro": str(exc)}), 400

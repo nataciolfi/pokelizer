@@ -1,7 +1,7 @@
 """Check the actual brModelo XML exports, native/export hashes and current SQL metadata."""
 from pathlib import Path
 import ast, collections, hashlib, json, xml.etree.ElementTree as ET
-from export_models import ROOT, OUT, SCHEMA, metadata
+from export_models import ROOT, OUT, SCHEMA, metadata, relationship_name
 
 def val(node, name):
     item=node.find(name)
@@ -67,7 +67,7 @@ def verify():
         assert lids[line.find('Ligacoes').get('PontaA')]==f['parent'] and lids[line.find('Ligacoes').get('PontaB')]==f['child']
         cards=line.findall('LogicoCardinalidade')
         assert val(cards[0],'Card')==('0' if f['required'] else '1') and val(cards[1],'Card')=='3'
-        rel=next(r for r in crels.values() if r.findtext('Texto')=='R'+str(i)+' associa')
+        rel=next(r for r in crels.values() if r.findtext('Texto')=='R'+str(i)+' '+relationship_name(f))
         ends=[]
         for link in conceptual.findall('Ligacao'):
             e=link.find('Ligacoes')

@@ -27,6 +27,22 @@ def metadata():
             fks.append({'child':name,'parent':group[0][2],'columns':cols,'targets':[r[4] for r in group], 'required':bool(required),'delete':group[0][6],'update':group[0][5]})
     return tables,fks
 
+
+def relationship_name(f):
+    role = {
+        'id_dados_forma_atual':'estado atual', 'id_dados_forma_origem':'tem origem',
+        'id_dados_forma_destino':'tem destino', 'id_jogo_origem':'veio do jogo',
+        'atributo_aumentado':'aumenta', 'atributo_reduzido':'reduz',
+        'id_usuario':'pertence a', 'id_forma':'descreve forma', 'id_especie':'da espécie',
+        'id_jogo':'no jogo', 'id_tipo':'tipifica', 'id_dados_forma':'da ficha',
+        'id_habilidade':'usa habilidade', 'id_metodo':'usa método', 'id_metodo_obtencao':'obtido por',
+        'id_mecanica':'usa mecânica', 'id_sistema_atributo':'usa sistema',
+        'id_mecanica_sistema_atributo':'sob limites', 'id_atributo':'mede atributo',
+        'id_natureza':'usa natureza', 'id_perfil':'do perfil',
+        'id_regulamento':'sob regra', 'id_pokemon_colecao':'do exemplar',
+        'id_habilidade_forma':'usa habilidade'}
+    return role.get(f['columns'][0], 'referencia')
+
 def main():
     tables,fks=metadata();OUT.mkdir(exist_ok=True)
     data=OUT/'tooling/model-input.tsv'
@@ -38,13 +54,15 @@ def main():
                 f.write('\t'.join(map(str,('C',name,col['name'],col['type'],col['notnull'],col['pk'],int(col['name'] in fkcols))))+'\n')
             for i,cols in enumerate(table['unique']): f.write('\t'.join(('U',name,str(i),','.join(cols)))+'\n')
         for i,fk in enumerate(fks,1):
-            f.write('\t'.join(map(str,('F',i,fk['child'],fk['parent'],','.join(fk['columns']),','.join(fk['targets']),int(fk['required']),fk['delete'],fk['update'])))+'\n')
+            f.write('\t'.join(map(str,('F',i,fk['child'],fk['parent'],','.join(fk['columns']),','.join(fk['targets']),int(fk['required']),fk['delete'],fk['update'],relationship_name(fk))))+'\n')
     jar=Path(os.environ['BRMODELO_JAR']).resolve()
     javac=os.environ.get('JAVAC','javac');java=os.environ.get('JAVA','java')
     source=OUT/'tooling/ExportModels.java'
     with tempfile.TemporaryDirectory(prefix='pokelizer-brmodelo-') as build:
         subprocess.run([javac,'-cp',str(jar),'-d',build,str(source)],check=True)
-        result=subprocess.run([java,'-Djava.awt.headless=true','-XX:-UsePerfData','-Xmx1500m','-cp',str(jar)+os.pathsep+build,'ExportModels',str(data),str(OUT)],cwd=build,check=True,capture_output=True,text=True)
+        result=subprocess.run([java,'-Djava.awt.headless=true','-XX:-UsePerfData','-Xmx1500m','-cp',str(jar)+os.pathsep+build,'ExportModels',str(data),str(OUT)],cwd=build,capture_output=True,text=True)
+        if result.returncode:
+            raise RuntimeError(result.stdout + result.stderr)
     (OUT/'tooling/reopen-verification.txt').write_text(result.stdout)
     manifest={'native_wrapper_metadata':{'autor':'Pokelizer project','data':'','method':'Public GuardaPadraoBrM fields; native diagram payload preserved'},'schema_sha256':hashlib.sha256(SCHEMA.read_bytes()).hexdigest(),'brmodelo_version':'3.3.2 (official distribution 3.32)','brmodelo_url':'https://brmodelo.com/brModelo.jar','brmodelo_jar_sha256':hashlib.sha256(jar.read_bytes()).hexdigest(),'tables':tables,'relationships':fks,'artifacts':{p.name:hashlib.sha256(p.read_bytes()).hexdigest() for p in sorted(OUT.glob('*')) if p.suffix in ('.brM3','.xml','.png')}}
     (OUT/'manifest.json').write_text(json.dumps(manifest,ensure_ascii=False,indent=2)+'\n')

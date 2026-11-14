@@ -1,5 +1,8 @@
 # Verificação da entrega
 
+> Registro histórico da Etapa 1 em `91875bd`. Implementações e verificações posteriores estão em [Etapa 2](../stage2/README.md) e [progress.md](../project/progress.md). Estados “futuro/pendente” abaixo descrevem aquela entrega.
+
+
 Ambiente da execução em 2026-11-13: Python 3.13, SQLite 3.46.1. Instalação isolada nesta máquina em /home/Danilo/tools/python; em um clone normal instalar backend/requirements.txt em venv e usar somente PYTHONPATH=backend.
 
 ## Comandos executados

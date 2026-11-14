@@ -23,7 +23,7 @@ public class ExportModels {
  }
  static class Col { String name,type;boolean nn,pk,fk;Col(String[] s){name=s[2];type=s[3];nn=s[4].equals("1");pk=!s[5].equals("0");fk=s[6].equals("1");} }
  static class Tab {String name;List<Col> cols=new ArrayList<>();List<String[]> uniques=new ArrayList<>();Tab(String n){name=n;} }
- static class Fk {int id;String child,parent,del,upd;String[] cols,targets;boolean required;Fk(String[]s){id=Integer.parseInt(s[1]);child=s[2];parent=s[3];cols=s[4].split(",");targets=s[5].split(",");required=s[6].equals("1");del=s[7];upd=s[8];}}
+ static class Fk {int id;String child,parent,del,upd,label;String[] cols,targets;boolean required;Fk(String[]s){id=Integer.parseInt(s[1]);child=s[2];parent=s[3];cols=s[4].split(",");targets=s[5].split(",");required=s[6].equals("1");del=s[7];upd=s[8];label=s[9];}}
  static LinkedHashMap<String,Tab> tabs=new LinkedHashMap<>();static List<Fk> fks=new ArrayList<>();static Path out;
  static boolean FULL=false;
  static Font FONT=new Font("SansSerif",Font.PLAIN,15),TITLE=new Font("SansSerif",Font.BOLD,17);
@@ -52,12 +52,18 @@ public class ExportModels {
    l.setInteligente(false);l.getPontos().get(0).setCentro(new Point(x+28,a.getTop()+12));l.getPontos().get(1).setCentro(new Point(x,e.getTop()+25));l.reSetBounds();}
   return e;
  }
+ static int edgeIndex=0;
+ static Map<Forma,Integer> portIndex=new IdentityHashMap<>();
  static void route(SuperLinha l,Forma source,Forma dest,boolean diamond){
-  // Orthogonal native polyline in inter-column and inter-row gutters.
+  int n=edgeIndex++,sp=portIndex.getOrDefault(source,0),dp=portIndex.getOrDefault(dest,0);
+  portIndex.put(source,sp+1);portIndex.put(dest,dp+1);
+  int sy=source.getTop()+8+(sp%6)*7,dy=dest.getTop()+8+(dp%6)*7;
+  int sx=source.getLeftWidth(),dx=dest.getLeft();
+  if(dest.getLeft()<source.getLeft()){sx=source.getLeft();dx=dest.getLeftWidth();}
+  int gx=sx+(sx==source.getLeft()?-1:1)*(12+(n%9)*6);
+  int hx=dx+(dx==dest.getLeft()?-1:1)*(12+(n%7)*6);
+  int gy=Math.min(source.getTop(),dest.getTop())-18-(n%10)*5;
   while(l.getPontos().size()<6)l.InserirPonto(l.getPontos().size()-1);
-  int sx=source.getLeftWidth(),sy=source.getTop()+25;
-  int dx=diamond?dest.getLeft():dest.getLeftWidth(),dy=dest.getTop()+25;
-  int gx=sx+15,hx=diamond?dx-10:dx+25,gy=source.getTop()-25;
   Point[] pts={new Point(sx,sy),new Point(gx,sy),new Point(gx,gy),new Point(hx,gy),new Point(hx,dy),new Point(dx,dy)};
   for(int i=0;i<6;i++)l.getPontos().get(i).setCentro(pts[i]);l.setInteligente(false);l.reSetBounds();
  }
@@ -67,7 +73,7 @@ public class ExportModels {
   if(logical){Tabela c=(Tabela)child,p=(Tabela)parent;LogicoLinha l=new LogicoLinha(d);l.setInteligente(false);l.SuperInicie(0,center(p),center(c));l.getPontaA().SetEm(p);l.getPontaB().SetEm(c);p.PosicionePonto(l.getPontaA());c.PosicionePonto(l.getPontaB());l.getCardA().setCard(f.required?TiposCard.C11:TiposCard.C01);l.getCardB().setCard(TiposCard.C0N);l.PrepareCardinalidade();if(FULL)route(l,p,c,false);
    Constraint fk=new Constraint(c);fk.setTipo(Constraint.CONSTRAINT_TIPO.tpFK);fk.setNome("FK_"+f.id);Constraint origin=candidate(p,f.targets);for(int i=0;i<f.cols.length;i++)fk.Add(field(p,f.targets[i]),field(c,f.cols[i]),l,origin);fk.setObservacao("DELETE "+f.del+"; UPDATE "+f.upd);fk.setDdlOnDelete(f.del);fk.setDdlOnUpdate(f.upd);fk.setValidado(true);
    text(d,"R"+f.id,diamondX,diamondY,65,22);
-  }else{Relacionamento r=new Relacionamento(d);r.setTexto("R"+f.id+" associa");r.setFont(FONT);r.SetBounds(diamondX,diamondY,180,60);r.Reenquadre();Ligacao lc=connect(d,child,r,f.required?TiposCard.C11:TiposCard.C01);Ligacao lp=connect(d,parent,r,TiposCard.C0N);if(FULL){route(lc,child,r,true);route(lp,parent,r,true);}}
+  }else{Relacionamento r=new Relacionamento(d);r.setTexto("R"+f.id+" "+f.label);r.setFont(FONT);r.SetBounds(diamondX,diamondY,180,60);r.Reenquadre();Ligacao lc=connect(d,child,r,f.required?TiposCard.C11:TiposCard.C01);Ligacao lp=connect(d,parent,r,TiposCard.C0N);if(FULL){route(lc,child,r,true);route(lp,parent,r,true);}}
  }
  static void sanitizeNativeMetadata(Path path)throws Exception{
   GuardaPadraoBrM wrapper;
@@ -99,7 +105,7 @@ public class ExportModels {
  }
  static void save(Diagrama d,String name)throws Exception{
   // brModelo copies parent types while linking; restore physical nullability after all links.
-  d.isCarregando=true;for(FormaElementar shape:d.getListaDeItens())if(shape instanceof Tabela){Tabela table=(Tabela)shape;for(Col c:tabs.get(table.getTexto()).cols){field(table,c.name).setTipo(c.type);}}
+  d.isCarregando=true;for(FormaElementar shape:d.getListaDeItens())if(shape instanceof Tabela){Tabela table=(Tabela)shape;for(Col c:tabs.get(table.getTexto()).cols){if(table.getCampos().stream().anyMatch(v->v.getTexto().equals(c.name)))field(table,c.name).setTipo(c.type);}}
   d.isCarregando=false;d.ClearSelect(false);
   if(!d.Salvar(out.resolve(name+".brM3").toString()))throw new Exception("native save failed "+name);
   sanitizeNativeMetadata(out.resolve(name+".brM3"));
@@ -113,7 +119,12 @@ public class ExportModels {
  static void full(boolean logical)throws Exception{
   FULL=true;Diagrama d=diagram(logical);text(d,"POKELIZER · "+(logical?"MODELO LÓGICO":"MODELO CONCEITUAL")+" · visão completa; relações ampliadas nas folhas R",35,10,2700,45);
   text(d,"Símbolos nativos: identificador preenchido; atributo opcional tracejado; chaves por ícones. R = vínculo descrito nas folhas. Regras condicionais: docs/stage1.",35,55,2800,40);
-  Map<String,Forma> forms=new LinkedHashMap<>();int i=0;for(String name:tabs.keySet()){forms.put(name,entity(d,name,50+(i%5)*760,140+(i/5)*700,logical));i++;}
+  Map<String,Forma> forms=new LinkedHashMap<>();int i=0;for(String name:Arrays.asList("ESPECIE","FORMA","DADOS_FORMA_JOGO","JOGO","MECANICA_JOGO",
+   "TIPO","TIPO_FORMA_JOGO","HABILIDADE_FORMA_JOGO","HABILIDADE","METODO_OBTENCAO",
+   "TRANSFORMACAO_FORMA","METODO_FORMA_JOGO","POKEMON_COLECAO","USUARIO","NATUREZA",
+   "SISTEMA_ATRIBUTO","MECANICA_SISTEMA_ATRIBUTO","VALOR_ATRIBUTO_POKEMON","ATRIBUTO_BATALHA","MECANICA_ATRIBUTO",
+   "ELEGIBILIDADE_FORMA_REGULAMENTO","REGULAMENTO","PERFIL_ANALISE","VALOR_PERFIL_ANALISE","PERFIL_NATUREZA","PERFIL_HABILIDADE")){
+   forms.put(name,entity(d,name,50+(i%5)*760,140+(i/5)*660,logical));i++;}
   Map<String,Integer> local=new HashMap<>();for(Fk f:fks){Forma c=forms.get(f.child),p=forms.get(f.parent);int n=local.getOrDefault(f.child,0);local.put(f.child,n+1);relation(d,c,p,f,logical,c.getLeft()+565,c.getTop()+85+n*75);}
   // Put opaque boxes and attributes after connectors, preventing lines crossing labels.
   List<FormaElementar> list=d.getListaDeItens();list.sort(Comparator.comparingInt(f->f instanceof SuperLinha?0:1));save(d,logical?"logico":"conceitual");
@@ -132,7 +143,64 @@ public class ExportModels {
    List<FormaElementar> list=d.getListaDeItens();list.sort(Comparator.comparingInt(f->f instanceof SuperLinha?0:1));save(d,(logical?"logico":"conceitual")+String.format("-relacoes-%02d",page++));
   }
  }
+ static Point border(Forma f,Point target){
+  Point mid=center(f);double dx=target.x-mid.x,dy=target.y-mid.y;
+  double rx=f.getWidth()/2.0,ry=f.getHeight()/2.0;
+  double scale=f instanceof Relacionamento?1.0/(Math.abs(dx)/rx+Math.abs(dy)/ry):Math.min(dx==0?1e9:rx/Math.abs(dx),dy==0?1e9:ry/Math.abs(dy));
+  return new Point((int)(mid.x+dx*scale),(int)(mid.y+dy*scale));
+ }
+ static void overviewLink(Diagrama d,Forma a,Forma b,TiposCard card){
+  Ligacao l=connect(d,a,b,card);
+  l.getPontos().get(0).setCentro(border(a,center(b)));
+  l.getPontos().get(l.getPontos().size()-1).setCentro(border(b,center(a)));
+  l.reSetBounds();l.PrepareCardinalidade();
+ }
+ static void overview(boolean logical,String name,String title,String[][] levels)throws Exception{
+  FULL=false;Diagrama d=diagram(logical);
+  text(d,"POKELIZER · "+title+" · "+(logical?"LÓGICO":"CONCEITUAL"),35,10,2700,40);
+  text(d,"Visão de navegação: identidades e relações do domínio. Campos completos no modelo integral e nas pranchas R. Mesmos objetos, sem novas tabelas.",35,60,2800,40);
+  Map<String,Forma> forms=new LinkedHashMap<>();
+  for(int row=0;row<levels.length;row++)for(int col=0;col<levels[row].length;col++){
+   String key=levels[row][col];if(key.isEmpty())continue;
+   Forma f;
+   if(logical){Tabela t=new Tabela(d);t.setTexto(key);t.setFont(FONT);t.setAutosize(false);t.setGradiente(false);t.setAlfa(0);t.SetBounds(60+col*1040,170+row*730,540,140);
+    for(Col c:tabs.get(key).cols)if(c.pk){Campo field=new Campo(t);field.setTexto(c.name);field.setTipo(c.type);field.SetKey(true);}
+    f=t;
+   }else{Entidade e=new Entidade(d);e.setTexto(key);e.setFont(TITLE);e.SetBounds(60+col*1040,170+row*730,540,65);f=e;}
+   forms.put(key,f);
+  }
+  int n=0;for(Fk fk:fks){if(!forms.containsKey(fk.child)||!forms.containsKey(fk.parent))continue;
+   Forma c=forms.get(fk.child),p=forms.get(fk.parent);
+   int colC=(c.getLeft()-60)/1040,colP=(p.getLeft()-60)/1040;
+   boolean topC=c.getTop()==170,topP=p.getTop()==170;
+   int x,y;
+   if(topC==topP){x=60+Math.min(colC,colP)*1040+670;y=c.getTop()+2;
+    if(Math.abs(colC-colP)>1){x=1265;y=1200;}}
+   else {x=60+Math.min(colC,colP)*1040+(colC==colP?165:670);y=535;}
+   if(name.equals("colecao")&&fk.cols[0].equals("id_dados_forma_origem")){x=1570;y=535;}
+   if(name.equals("colecao")&&fk.cols[0].equals("id_dados_forma_atual")){x=1150;y=535;}
+   if(logical){LogicoLinha l=new LogicoLinha(d);l.setInteligente(false);l.SuperInicie(0,center(p),center(c));
+    l.getPontaA().SetEm(p);l.getPontaB().SetEm(c);p.PosicionePonto(l.getPontaA());c.PosicionePonto(l.getPontaB());
+    l.getCardA().setCard(fk.required?TiposCard.C11:TiposCard.C01);l.getCardB().setCard(TiposCard.C0N);
+    Point middle=new Point(x+105,y+30);
+    while(l.getPontos().size()<3)l.InserirPonto(l.getPontos().size()-1);
+    l.getPontos().get(0).setCentro(border(p,middle));l.getPontos().get(1).setCentro(middle);l.getPontos().get(2).setCentro(border(c,middle));
+    l.reSetBounds();l.PrepareCardinalidade();
+    text(d,"R"+fk.id+" "+fk.label+"; pai 0..N",x,y,320,30);
+   }else{Relacionamento r=new Relacionamento(d);r.setTexto("R"+fk.id+" "+fk.label);r.setFont(FONT);r.SetBounds(x,y,210,60);r.Reenquadre();
+    overviewLink(d,c,r,fk.required?TiposCard.C11:TiposCard.C01);overviewLink(d,p,r,TiposCard.C0N);}
+  }
+  List<FormaElementar> list=d.getListaDeItens();list.sort(Comparator.comparingInt(f->f instanceof SuperLinha?0:1));
+  save(d,(logical?"logico":"conceitual")+"-visao-"+name);
+ }
+ static void domains(boolean logical)throws Exception{
+  overview(logical,"catalogo","Catálogo: identidade global e ficha por jogo",new String[][]{{"ESPECIE","FORMA"},{"JOGO","DADOS_FORMA_JOGO"}});
+  overview(logical,"colecao","Coleção: propriedade e contexto atual",new String[][]{{"USUARIO","POKEMON_COLECAO"},{"MECANICA_JOGO","DADOS_FORMA_JOGO"}});
+  overview(logical,"atributos","Atributos: regra versionada, sistema e valor",new String[][]{{"SISTEMA_ATRIBUTO","MECANICA_SISTEMA_ATRIBUTO","MECANICA_JOGO"},{"ATRIBUTO_BATALHA","MECANICA_ATRIBUTO","VALOR_ATRIBUTO_POKEMON"}});
+  overview(logical,"perfis","Perfis: dono, contexto e alvos",new String[][]{{"USUARIO","PERFIL_ANALISE","MECANICA_JOGO"},{"DADOS_FORMA_JOGO","VALOR_PERFIL_ANALISE","PERFIL_NATUREZA"}});
+  overview(logical,"regulamentos","Regulamentos: elegibilidade da forma",new String[][]{{"MECANICA_JOGO","REGULAMENTO"},{"DADOS_FORMA_JOGO","ELEGIBILIDADE_FORMA_REGULAMENTO"}});
+ }
  public static void main(String[]args)throws Exception{Thread.setDefaultUncaughtExceptionHandler((t,e)->{e.printStackTrace();System.exit(1);});if(args[0].equals("--sanitize-existing")){sanitizeExisting(Paths.get(args[1]));System.exit(0);}
  out=Paths.get(args[1]);for(String line:Files.readAllLines(Paths.get(args[0]))){String[]s=line.split("\t",-1);switch(s[0]){case "T":tabs.put(s[1],new Tab(s[1]));break;case "C":tabs.get(s[1]).cols.add(new Col(s));break;case "U":tabs.get(s[1]).uniques.add(s[3].split(","));break;case "F":fks.add(new Fk(s));}}
- full(false);full(true);atlas(false);atlas(true);System.exit(0);}
+ full(false);full(true);atlas(false);atlas(true);domains(false);domains(true);System.exit(0);}
 }

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<DIAGRAMA ID="1" TIPO="tpConceitual" UniversalUnicID="AA8E-E6-77DB-4C-7BAB-A8-60">
+<DIAGRAMA ID="1" TIPO="tpConceitual" UniversalUnicID="6761-81-A838-14-741B-51-65">
     <Ligacao ID="7">
         <DisablePainted Valor="false"/>
         <Tag LinhaMestre="-1"/>
@@ -1562,7 +1562,7 @@
     <Relacionamento ID="33">
         <Bounds Height="60" Left="705" Top="220" Width="180"/>
         <DisablePainted Valor="false"/>
-        <Texto>R37 associa</Texto>
+        <Texto>R37 do perfil</Texto>
         <Observacao/>
         <Dicionario/>
         <Fonte Estilo="0" Nome="SansSerif" Tamanho="15"/>
@@ -1819,7 +1819,7 @@
     <Relacionamento ID="61">
         <Bounds Height="60" Left="2305" Top="220" Width="180"/>
         <DisablePainted Valor="false"/>
-        <Texto>R38 associa</Texto>
+        <Texto>R38 usa habilidade</Texto>
         <Observacao/>
         <Dicionario/>
         <Fonte Estilo="0" Nome="SansSerif" Tamanho="15"/>
@@ -2144,7 +2144,7 @@
     <Relacionamento ID="97">
         <Bounds Height="60" Left="705" Top="1120" Width="180"/>
         <DisablePainted Valor="false"/>
-        <Texto>R39 associa</Texto>
+        <Texto>R39 do perfil</Texto>
         <Observacao/>
         <Dicionario/>
         <Fonte Estilo="0" Nome="SansSerif" Tamanho="15"/>
@@ -2656,7 +2656,7 @@
     <Relacionamento ID="155">
         <Bounds Height="60" Left="2305" Top="1120" Width="180"/>
         <DisablePainted Valor="false"/>
-        <Texto>R40 associa</Texto>
+        <Texto>R40 da ficha</Texto>
         <Observacao/>
         <Dicionario/>
         <Fonte Estilo="0" Nome="SansSerif" Tamanho="15"/>

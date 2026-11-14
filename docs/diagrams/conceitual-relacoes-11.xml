@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<DIAGRAMA ID="1" TIPO="tpConceitual" UniversalUnicID="143-80-1740-E3-CDEA-7A-A5">
+<DIAGRAMA ID="1" TIPO="tpConceitual" UniversalUnicID="D216-47-65AC-C8-C519-97-17">
     <Ligacao ID="7">
         <DisablePainted Valor="false"/>
         <Tag LinhaMestre="-1"/>
@@ -1808,7 +1808,7 @@
     <Relacionamento ID="43">
         <Bounds Height="60" Left="705" Top="220" Width="180"/>
         <DisablePainted Valor="false"/>
-        <Texto>R41 associa</Texto>
+        <Texto>R41 sob regra</Texto>
         <Observacao/>
         <Dicionario/>
         <Fonte Estilo="0" Nome="SansSerif" Tamanho="15"/>
@@ -2371,7 +2371,7 @@
     <Relacionamento ID="107">
         <Bounds Height="60" Left="2305" Top="220" Width="180"/>
         <DisablePainted Valor="false"/>
-        <Texto>R42 associa</Texto>
+        <Texto>R42 tem destino</Texto>
         <Observacao/>
         <Dicionario/>
         <Fonte Estilo="0" Nome="SansSerif" Tamanho="15"/>
@@ -2934,7 +2934,7 @@
     <Relacionamento ID="171">
         <Bounds Height="60" Left="705" Top="1120" Width="180"/>
         <DisablePainted Valor="false"/>
-        <Texto>R43 associa</Texto>
+        <Texto>R43 tem origem</Texto>
         <Observacao/>
         <Dicionario/>
         <Fonte Estilo="0" Nome="SansSerif" Tamanho="15"/>

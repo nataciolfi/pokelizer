@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<DIAGRAMA ID="1" TIPO="tpConceitual" UniversalUnicID="17F8-28-7379-EB-3EE5-2D-4D">
+<DIAGRAMA ID="1" TIPO="tpConceitual" UniversalUnicID="BBF1-CA-F934-1D-3FD9-13-C4">
     <Ligacao ID="7">
         <DisablePainted Valor="false"/>
         <Tag LinhaMestre="-1"/>
@@ -1919,7 +1919,7 @@
     <Relacionamento ID="43">
         <Bounds Height="60" Left="705" Top="220" Width="180"/>
         <DisablePainted Valor="false"/>
-        <Texto>R1 associa</Texto>
+        <Texto>R1 da espécie</Texto>
         <Observacao/>
         <Dicionario/>
         <Fonte Estilo="0" Nome="SansSerif" Tamanho="15"/>
@@ -2448,7 +2448,7 @@
     <Relacionamento ID="103">
         <Bounds Height="60" Left="2305" Top="220" Width="180"/>
         <DisablePainted Valor="false"/>
-        <Texto>R2 associa</Texto>
+        <Texto>R2 no jogo</Texto>
         <Observacao/>
         <Dicionario/>
         <Fonte Estilo="0" Nome="SansSerif" Tamanho="15"/>
@@ -3011,7 +3011,7 @@
     <Relacionamento ID="167">
         <Bounds Height="60" Left="705" Top="1120" Width="180"/>
         <DisablePainted Valor="false"/>
-        <Texto>R3 associa</Texto>
+        <Texto>R3 descreve forma</Texto>
         <Observacao/>
         <Dicionario/>
         <Fonte Estilo="0" Nome="SansSerif" Tamanho="15"/>
@@ -3200,7 +3200,7 @@
     <Relacionamento ID="187">
         <Bounds Height="60" Left="2305" Top="1120" Width="180"/>
         <DisablePainted Valor="false"/>
-        <Texto>R4 associa</Texto>
+        <Texto>R4 tipifica</Texto>
         <Observacao/>
         <Dicionario/>
         <Fonte Estilo="0" Nome="SansSerif" Tamanho="15"/>

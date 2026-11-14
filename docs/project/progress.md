@@ -36,3 +36,13 @@ Implementar e testar serviços/DAOs/rotas da Etapa 2. Antes de retomar, ler este
 - `PYTHONPATH=/home/Danilo/tools/python:backend python -m pytest backend/tests -q`: **69 passaram**. Inclui preservação de dados privados e conflitos na carga real. Esquema/migrações 001 não foram alterados.
 
 Próximo passo em andamento: regenerar/revisar diagramas e UML. Depois documentar demonstração limpa e executar verificação completa. Interface Fetch e cobertura factual por jogo continuam obrigatórias. Não confundir cobertura global do snapshot com cobertura de fichas/mecânicas/regulamentos.
+
+## Verificação consolidada da Etapa 2
+
+`python tools/check_stage2.py` com PYTHONPATH portátil: **69 testes passaram** (7,60 s); SQL gerado, dicionário, 26 entidades/183 campos/43 relações brModelo, 15 classes UML e 245 links locais conferidos. Demonstração HTTP completa concluída em banco temporário. Saída em `docs/stage2/verification-result.txt`.
+
+CLI em banco vazio: `db-init` → `[1]`, `db-upgrade` → nenhuma migração, carga offline → 1.025 espécies, 1.579 formas, 51 jogos. Fichas/mecânicas/regulamentos reais: **zero**, sem alegação de cobertura contextual. `docs/stage2/coverage.json` e `backend/data/README.md` detalham fontes e lacunas. Banco anterior preservado.
+
+Revisão visual: abertas imagens integrais, dez visões por domínio, 22 pranchas por contato e amostras a 100%, além de UML. Recortes iniciais com sobreposição foram corrigidos; completos reordenados por domínio continuam densos e acompanham visões legíveis e pranchas. 34 brM3 reabertos oficialmente. Roteiro/instalação/API em `docs/stage2/README.md` e `backend/README.md`.
+
+Próximo passo: interface nova HTML/CSS/JS com Fetch no Flask e QA de navegador. Skill Sites lida para fluxo local; nenhuma hospedagem criada. Permanecem curadoria contextual real, colaboração/aceite do professor e anexos Classroom. Commits locais serão publicados em branch dedicada pelo conector GitHub, pois o shell não resolve DNS.

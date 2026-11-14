@@ -1,5 +1,8 @@
 # Relatório de conclusão técnica da Etapa 1
 
+> Registro histórico da Etapa 1 em `91875bd`. Implementações e verificações posteriores estão em [Etapa 2](../stage2/README.md) e [progress.md](../project/progress.md). Estados “futuro/pendente” abaixo descrevem aquela entrega.
+
+
 Branch de revisão: `stage1/reconciled-architecture`. Não houve merge em main, force-push, remoção de branches ou alteração de outros projetos. A árvore inicial estava limpa. O histórico novo separa reconciliação de requisitos, implementação física/Python e entrega/verificação dos modelos.
 
 ## Implementado
