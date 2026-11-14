@@ -31,6 +31,11 @@ class PokemonCatalogo:
     status_presenca: str | None
     pode_ser_registrada: str | None
     tipos: tuple[str, ...] = ()
+    codigo_forma: str | None = None
+    nome_en: str | None = None
+    fonte_url: str | None = None
+    data_verificacao: str | None = None
+    fichas: tuple[dict[str, Any], ...] = ()
 
     def to_dict(self) -> dict[str, Any]:
         data = asdict(self)
@@ -60,6 +65,7 @@ class PokemonColecao:
     nome_habilidade: str | None
     id_mecanica: int | None = None
     id_dados_forma_origem: int | None = None
+    valores: tuple[dict[str, Any], ...] = ()
 
     def to_dict(self) -> dict[str, Any]:
         return asdict(self)
@@ -79,3 +85,9 @@ class PerfilAnalise:
     fonte_url: str | None
     data_verificacao: str | None
     versao_fonte: str | None
+    valores: tuple[dict[str, Any], ...] = ()
+    naturezas: tuple[int, ...] = ()
+    habilidades: tuple[int, ...] = ()
+
+    def to_dict(self) -> dict[str, Any]:
+        return asdict(self)

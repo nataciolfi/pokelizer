@@ -1,0 +1,40 @@
+{
+  "commit": "8a92bfa7dab2f12b84b5d151562f9857c133ff30",
+  "source_url": "https://github.com/PokeAPI/pokeapi/tree/8a92bfa7dab2f12b84b5d151562f9857c133ff30/data/v2/csv",
+  "retrieved_at": "2026-11-13",
+  "license": "LICENSE.md",
+  "files": {
+    "LICENSE.md": {
+      "sha256": "1c04595dc662981c20956ae4251dfa7b62b475c345eddf98bc9b904cb2373f2c",
+      "url": "https://raw.githubusercontent.com/PokeAPI/pokeapi/8a92bfa7dab2f12b84b5d151562f9857c133ff30/LICENSE.md"
+    },
+    "pokemon.csv": {
+      "sha256": "16c81c33188b0eac403aa2f759fcbe9e42c611f722d263f5b5a6a5bff9f8ce6b",
+      "url": "https://raw.githubusercontent.com/PokeAPI/pokeapi/8a92bfa7dab2f12b84b5d151562f9857c133ff30/data/v2/csv/pokemon.csv"
+    },
+    "pokemon_forms.csv": {
+      "sha256": "99bf8f7ad4dc1f2e291357a090cef6a575623ec3cbf9030d0e33656e6e608ae2",
+      "url": "https://raw.githubusercontent.com/PokeAPI/pokeapi/8a92bfa7dab2f12b84b5d151562f9857c133ff30/data/v2/csv/pokemon_forms.csv"
+    },
+    "pokemon_species.csv": {
+      "sha256": "e66e2eeb25fd3836b0ebab6bf87bbf01960aa3c0555e2bac495fa8393c5e0c45",
+      "url": "https://raw.githubusercontent.com/PokeAPI/pokeapi/8a92bfa7dab2f12b84b5d151562f9857c133ff30/data/v2/csv/pokemon_species.csv"
+    },
+    "pokemon_species_names.csv": {
+      "sha256": "5a86cc021d01109949999e7fa1459414221ba8918469151251e33ffa19eeb88c",
+      "url": "https://raw.githubusercontent.com/PokeAPI/pokeapi/8a92bfa7dab2f12b84b5d151562f9857c133ff30/data/v2/csv/pokemon_species_names.csv"
+    },
+    "version_groups.csv": {
+      "sha256": "28da8d89d8eb4966941f81a9e62b3990510ed4d76dd774158246551a8e7707a7",
+      "url": "https://raw.githubusercontent.com/PokeAPI/pokeapi/8a92bfa7dab2f12b84b5d151562f9857c133ff30/data/v2/csv/version_groups.csv"
+    },
+    "version_names.csv": {
+      "sha256": "65119d0f5d4a9bc332327a7897b5c29889803a7fb44599efc2d62c5de29bf7c3",
+      "url": "https://raw.githubusercontent.com/PokeAPI/pokeapi/8a92bfa7dab2f12b84b5d151562f9857c133ff30/data/v2/csv/version_names.csv"
+    },
+    "versions.csv": {
+      "sha256": "70083465865a6a69a9aad2be3fc3915078c6ff740f14a090b1367d8ec9cfc3cd",
+      "url": "https://raw.githubusercontent.com/PokeAPI/pokeapi/8a92bfa7dab2f12b84b5d151562f9857c133ff30/data/v2/csv/versions.csv"
+    }
+  }
+}

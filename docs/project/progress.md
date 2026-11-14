@@ -24,3 +24,15 @@ Confirmar conta do professor usando o contato do documento original, convidar em
 ## Próximo passo
 
 Implementar e testar serviços/DAOs/rotas da Etapa 2. Antes de retomar, ler este arquivo e conferir Git/árvore real. Nenhuma entrega foi declarada pronta.
+
+## Implementado e testado nesta sessão
+
+- Backend: PATCH privado da coleção; valores incluídos/consultados/substituídos na transação do exemplar; rollback de pai/filhos; mudança de contexto exige valores explícitos.
+- CRUD de perfis personalizados, preferências de natureza/habilidade, alvos e autorização no DAO/serviço. Referências compartilhadas são somente leitura.
+- Comparação com contexto exato, estados por campo, ausência/zero/desconhecido/não aplicável, diferenças sem pontuação; elegibilidade de forma com fonte e escopo limitado.
+- Busca por codigo_forma/número/nome; listagem agrupada por identidade, fichas por jogo aninhadas e filtros no mesmo contexto; detalhe global e contextual.
+- Corpos JSON e campos inválidos rejeitados; endpoints de opções e regras para clientes.
+- Snapshot real PokéAPI fixado em `8a92bfa7dab2f12b84b5d151562f9857c133ff30`, fontes e SHA-256; importação transacional repetível sem sobrescrever conflitos, relatório de cobertura e downloader para novo destino.
+- `PYTHONPATH=/home/Danilo/tools/python:backend python -m pytest backend/tests -q`: **69 passaram**. Inclui preservação de dados privados e conflitos na carga real. Esquema/migrações 001 não foram alterados.
+
+Próximo passo em andamento: regenerar/revisar diagramas e UML. Depois documentar demonstração limpa e executar verificação completa. Interface Fetch e cobertura factual por jogo continuam obrigatórias. Não confundir cobertura global do snapshot com cobertura de fichas/mecânicas/regulamentos.

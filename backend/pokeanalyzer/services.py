@@ -6,7 +6,8 @@ from typing import Any
 
 from werkzeug.security import check_password_hash, generate_password_hash
 
-from .dao import ColecaoDAO, UsuarioDAO
+from .dao import ColecaoDAO, UsuarioDAO, PerfilDAO, ValorDAO, ContextoDAO, RegulamentoDAO
+from .db import get_db, transaction
 from .models import PokemonColecao, Usuario
 
 
@@ -48,7 +49,46 @@ class ColecaoService:
     def __init__(self, colecao_dao: ColecaoDAO | None = None):
         self.colecao_dao = colecao_dao or ColecaoDAO()
 
+    CAMPOS = {"id_dados_forma_atual", "id_mecanica", "id_dados_forma_origem", "id_jogo_origem",
+              "id_metodo_obtencao", "id_natureza", "id_habilidade_forma", "apelido", "nivel", "observacao", "valores"}
+
     def adicionar(self, id_usuario: int, dados: dict[str, Any]) -> PokemonColecao:
+        validar_campos(dados, self.CAMPOS)
+        values = validar_valores(dados.get("valores", []), "valor")
+        try:
+            with transaction(get_db()):
+                pokemon = self.colecao_dao.adicionar(self._preparar(id_usuario, dados))
+                ValorDAO().substituir("pokemon", pokemon.id_pokemon_colecao, values)
+                return self.colecao_dao.obter_do_usuario(pokemon.id_pokemon_colecao, id_usuario)
+        except sqlite3.IntegrityError as exc:
+            raise ValueError(f"Cadastro incompatível com as regras do banco: {exc}") from exc
+
+    def editar(self, id_usuario, id_pokemon, dados):
+        validar_campos(dados, self.CAMPOS)
+        if not dados:
+            raise ValueError("Informe ao menos um campo para editar.")
+        try:
+            with transaction(get_db()):
+                current = self.colecao_dao.obter_do_usuario(id_pokemon, id_usuario)
+                if not current:
+                    raise LookupError("Registro não encontrado.")
+                merged = {k: current.to_dict().get(k) for k in self.CAMPOS - {"valores"}}
+                merged.update(dados)
+                changed = any(merged[k] != getattr(current, k) for k in ("id_mecanica", "id_dados_forma_atual"))
+                if changed and current.valores and "valores" not in dados:
+                    raise ValueError("Mudança de contexto exige valores explícitos, inclusive [] para removê-los.")
+                # Remove children before changing a context; transaction restores all on failure.
+                if "valores" in dados:
+                    values = validar_valores(dados["valores"], "valor")
+                    ValorDAO().substituir("pokemon", id_pokemon, [])
+                self.colecao_dao.atualizar_do_usuario(id_pokemon, id_usuario, self._preparar(id_usuario, merged))
+                if "valores" in dados:
+                    ValorDAO().substituir("pokemon", id_pokemon, values)
+                return self.colecao_dao.obter_do_usuario(id_pokemon, id_usuario)
+        except sqlite3.IntegrityError as exc:
+            raise ValueError(f"Edição incompatível com as regras do banco: {exc}") from exc
+
+    def _preparar(self, id_usuario: int, dados: dict[str, Any]):
         if not isinstance(dados, dict):
             raise ValueError("Dados devem ser um objeto JSON.")
         id_dados_forma = self._id_opcional(dados.get("id_dados_forma_atual"), "id_dados_forma_atual")
@@ -89,10 +129,7 @@ class ColecaoService:
             "nivel": nivel,
             "observacao": observacao,
         }
-        try:
-            return self.colecao_dao.adicionar(valores)
-        except sqlite3.IntegrityError as exc:
-            raise ValueError("Não foi possível cadastrar: confira se todos os IDs relacionados existem.") from exc
+        return valores
 
     @staticmethod
     def _id_opcional(valor: Any, campo: str) -> int | None:
@@ -123,25 +160,147 @@ class ColecaoService:
         return valor or None
 
 
+def validar_campos(dados, permitidos):
+    if not isinstance(dados, dict):
+        raise ValueError("O corpo deve ser um objeto JSON.")
+    extra = set(dados) - permitidos
+    if extra:
+        raise ValueError("Campos não reconhecidos ou não suportados: " + ", ".join(sorted(extra)))
+
+
+def validar_valores(valores, campo):
+    if not isinstance(valores, list):
+        raise ValueError("valores deve ser uma lista; [] remove todos os valores.")
+    result, keys = [], set()
+    for value in valores:
+        validar_campos(value, {"id_mecanica_sistema_atributo", "id_atributo", "estado", campo, "motivo"})
+        ids = {k: ColecaoService._id_opcional(value.get(k), k) for k in ("id_mecanica_sistema_atributo", "id_atributo")}
+        if None in ids.values():
+            raise ValueError("Cada valor exige sistema da mecânica e atributo.")
+        key = tuple(ids.values())
+        if key in keys:
+            raise ValueError("Atributo duplicado no mesmo sistema.")
+        keys.add(key)
+        estado = value.get("estado", "conhecido")
+        if estado not in ("conhecido", "desconhecido", "nao_aplicavel"):
+            raise ValueError("Estado de atributo inválido.")
+        number = ColecaoService._inteiro_opcional(value.get(campo), campo, minimo=0)
+        if (estado == "conhecido") != (number is not None):
+            raise ValueError("Conhecido exige número; desconhecido/não aplicável exige valor nulo.")
+        result.append(ids | {"estado": estado, campo: number,
+            "motivo": ColecaoService._texto_opcional(value.get("motivo"), "motivo", 500)})
+    return result
+
+
 class PerfilService:
-    """Initial profile persistence; comparison/calculation is planned for later stages."""
+    CAMPOS = {"id_dados_forma", "id_mecanica", "id_regulamento", "nome_perfil", "descricao", "valores", "naturezas", "habilidades"}
 
     def __init__(self, perfil_dao=None):
-        from .dao import PerfilDAO
         self.perfil_dao = perfil_dao or PerfilDAO()
 
-    def criar_personalizado(self, id_usuario: int, dados: dict[str, Any]):
-        if not isinstance(dados, dict):
-            raise ValueError("Dados devem ser um objeto.")
-        fields = {field: ColecaoService._id_opcional(dados.get(field), field)
-                  for field in ("id_dados_forma", "id_mecanica", "id_regulamento")}
+    def _preparar(self, dados):
+        fields = {f: ColecaoService._id_opcional(dados.get(f), f) for f in ("id_dados_forma", "id_mecanica", "id_regulamento")}
         if fields["id_dados_forma"] is None or fields["id_mecanica"] is None:
             raise ValueError("Perfil exige forma/jogo e versão da mecânica.")
-        nome = ColecaoService._texto_opcional(dados.get("nome_perfil"), "nome_perfil", 120)
-        if not nome:
+        name = ColecaoService._texto_opcional(dados.get("nome_perfil"), "nome_perfil", 120)
+        if not name:
             raise ValueError("nome_perfil é obrigatório.")
+        fields.update(nome_perfil=name, descricao=ColecaoService._texto_opcional(dados.get("descricao"), "descricao", 2000))
+        return fields
+
+    @staticmethod
+    def _opcoes(dados, key):
+        options = dados.get(key, [])
+        if not isinstance(options, list):
+            raise ValueError(f"{key} deve ser uma lista de IDs.")
+        ids = [ColecaoService._id_opcional(v, key) for v in options]
+        if None in ids or len(set(ids)) != len(ids):
+            raise ValueError(f"{key} exige IDs únicos e não nulos.")
+        return ids
+
+    def criar_personalizado(self, id_usuario, dados):
+        validar_campos(dados, self.CAMPOS)
+        fields = self._preparar(dados)
+        values = validar_valores(dados.get("valores", []), "valor_alvo")
+        natures, abilities = self._opcoes(dados, "naturezas"), self._opcoes(dados, "habilidades")
         try:
-            return self.perfil_dao.criar_personalizado(id_usuario, fields["id_dados_forma"],
-                fields["id_mecanica"], nome, fields["id_regulamento"])
+            with transaction(get_db()):
+                profile = self.perfil_dao.criar_personalizado(id_usuario, fields["id_dados_forma"], fields["id_mecanica"], fields["nome_perfil"], fields["id_regulamento"])
+                self.perfil_dao.atualizar_personalizado(profile.id_perfil, id_usuario, fields)
+                ValorDAO().substituir("perfil", profile.id_perfil, values)
+                self.perfil_dao.substituir_opcoes(profile.id_perfil, natures, abilities)
+                return self.perfil_dao.obter_visivel(profile.id_perfil, id_usuario)
         except sqlite3.IntegrityError as exc:
-            raise ValueError("Perfil incompatível: confira proprietário e contexto de jogo/mecânica/regulamento.") from exc
+            raise ValueError(f"Perfil incompatível com as regras do banco: {exc}") from exc
+
+    def editar(self, id_usuario, id_perfil, dados):
+        validar_campos(dados, self.CAMPOS)
+        if not dados:
+            raise ValueError("Informe ao menos um campo para editar.")
+        try:
+            with transaction(get_db()):
+                current = self.perfil_dao.obter_visivel(id_perfil, id_usuario)
+                if not current or current.tipo_perfil != "personalizado" or current.id_usuario != id_usuario:
+                    raise LookupError("Perfil não encontrado.")
+                merged = current.to_dict() | dados
+                changed = any(merged[k] != getattr(current, k) for k in ("id_dados_forma", "id_mecanica"))
+                if changed and not {"valores", "naturezas", "habilidades"} <= dados.keys():
+                    raise ValueError("Mudança de contexto exige valores, naturezas e habilidades explícitos.")
+                values = validar_valores(dados["valores"] if "valores" in dados else list(current.valores), "valor_alvo")
+                options = {k: self._opcoes({k: dados[k] if k in dados else list(getattr(current, k))}, k) for k in ("naturezas", "habilidades")}
+                ValorDAO().substituir("perfil", id_perfil, [])
+                self.perfil_dao.substituir_opcoes(id_perfil, [], [])
+                self.perfil_dao.atualizar_personalizado(id_perfil, id_usuario, self._preparar(merged))
+                ValorDAO().substituir("perfil", id_perfil, values)
+                self.perfil_dao.substituir_opcoes(id_perfil, options["naturezas"], options["habilidades"])
+                return self.perfil_dao.obter_visivel(id_perfil, id_usuario)
+        except sqlite3.IntegrityError as exc:
+            raise ValueError(f"Perfil incompatível com as regras do banco: {exc}") from exc
+
+
+class ComparacaoService:
+    def comparar(self, id_usuario, id_pokemon, id_perfil):
+        with transaction(get_db()):
+            specimen = ColecaoDAO().obter_do_usuario(id_pokemon, id_usuario)
+            profile = PerfilDAO().obter_visivel(id_perfil, id_usuario)
+            if not specimen or not profile:
+                raise LookupError("Exemplar ou perfil não encontrado.")
+            if (specimen.id_dados_forma_atual, specimen.id_mecanica) != (profile.id_dados_forma, profile.id_mecanica):
+                raise ValueError("Exemplar e perfil exigem a mesma forma/jogo e versão exata de mecânica.")
+            mechanic = ContextoDAO().mecanica(profile.id_mecanica)
+            actual = {(v["id_mecanica_sistema_atributo"], v["id_atributo"]): v for v in specimen.valores}
+            targets = {(v["id_mecanica_sistema_atributo"], v["id_atributo"]): v for v in profile.valores}
+            rows = []
+            for system in mechanic["sistemas"]:
+                for attr in system["atributos"]:
+                    key = (system["id_mecanica_sistema_atributo"], attr["id_atributo"])
+                    a, t = actual.get(key), targets.get(key)
+                    real, target = a.get("valor") if a else None, t.get("valor_alvo") if t else None
+                    difference = None
+                    statuses = (system["aplicabilidade"], attr["aplicabilidade"])
+                    if "nao_aplicavel" in statuses:
+                        state = "nao_aplicavel"
+                    elif "nao_verificado" in statuses:
+                        state = "nao_verificado"
+                    elif not t:
+                        state = "nao_comparado"
+                    elif target is None or real is None:
+                        state = "sem_dado"
+                    else:
+                        difference = real - target
+                        state = "igual" if difference == 0 else "abaixo" if difference < 0 else "acima"
+                    rows.append({"id_mecanica_sistema_atributo": key[0], "sistema": system["codigo"],
+                        "id_atributo": key[1], "atributo": attr["codigo"], "real": real, "alvo": target,
+                        "estado_real": a["estado"] if a else "ausente", "estado_alvo": t["estado"] if t else "ausente",
+                        "diferenca": difference, "estado": state})
+            categorical = []
+            for field, options, flag in (("id_natureza", profile.naturezas, "usa_natureza"),
+                                          ("id_habilidade_forma", profile.habilidades, "usa_habilidade")):
+                real = getattr(specimen, field)
+                state = "nao_aplicavel" if mechanic[flag] == "nao" else "nao_verificado" if mechanic[flag] == "nao_verificado" else "nao_comparado" if not options else "sem_dado" if real is None else "preferida" if real in options else "nao_preferida"
+                categorical.append({"campo": field, "real": real, "opcoes": list(options), "estado": state})
+            eligibility = RegulamentoDAO().elegibilidade(profile.id_regulamento, profile.id_dados_forma) if profile.id_regulamento else None
+            return {"id_pokemon_colecao": id_pokemon, "perfil": profile.to_dict(), "mecanica": mechanic,
+                "campos": rows, "preferencias": categorical, "elegibilidade": eligibility,
+                "interpretacao": "Diferença em relação ao alvo explícito. Acima ou abaixo não significa melhor ou pior.",
+                "legalidade_completa_verificada": False}

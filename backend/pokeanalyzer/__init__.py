@@ -33,4 +33,21 @@ def create_app(test_config: dict | None = None) -> Flask:
     app.teardown_appcontext(close_db)
     app.register_blueprint(api, url_prefix="/api")
     register_cli(app)
+
+    import click
+    from .catalog_data import importar_catalogo, cobertura
+    import json
+
+    @app.cli.command("catalog-import")
+    def catalog_import():
+        """Import pinned real identities, atomically and without overwriting conflicts."""
+        try:
+            click.echo(json.dumps(importar_catalogo(), ensure_ascii=False, indent=2))
+        except (ValueError, OSError) as exc:
+            raise click.ClickException(str(exc)) from exc
+
+    @app.cli.command("catalog-coverage")
+    def catalog_coverage():
+        """Report current database coverage relative to the pinned upstream snapshot."""
+        click.echo(json.dumps(cobertura(), ensure_ascii=False, indent=2))
     return app
