@@ -3,7 +3,7 @@
 import os
 from pathlib import Path
 
-from flask import Flask
+from flask import Flask, render_template
 
 from .api import api
 from .db import close_db, register_cli
@@ -32,6 +32,10 @@ def create_app(test_config: dict | None = None) -> Flask:
     Path(app.instance_path).mkdir(parents=True, exist_ok=True)
     app.teardown_appcontext(close_db)
     app.register_blueprint(api, url_prefix="/api")
+
+    @app.get("/")
+    def index():
+        return render_template("index.html")
     register_cli(app)
 
     import click

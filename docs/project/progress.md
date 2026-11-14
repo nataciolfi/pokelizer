@@ -46,3 +46,13 @@ CLI em banco vazio: `db-init` → `[1]`, `db-upgrade` → nenhuma migração, ca
 Revisão visual: abertas imagens integrais, dez visões por domínio, 22 pranchas por contato e amostras a 100%, além de UML. Recortes iniciais com sobreposição foram corrigidos; completos reordenados por domínio continuam densos e acompanham visões legíveis e pranchas. 34 brM3 reabertos oficialmente. Roteiro/instalação/API em `docs/stage2/README.md` e `backend/README.md`.
 
 Próximo passo: interface nova HTML/CSS/JS com Fetch no Flask e QA de navegador. Skill Sites lida para fluxo local; nenhuma hospedagem criada. Permanecem curadoria contextual real, colaboração/aceite do professor e anexos Classroom. Commits locais serão publicados em branch dedicada pelo conector GitHub, pois o shell não resolve DNS.
+
+## Interface após consolidação do backend
+
+Nova interface em `backend/pokeanalyzer/templates/index.html` e `static/app.css`/`app.js`, servida na raiz do Flask. Fluxos Fetch implementados: catálogo/filtros/detalhes, conta, coleção/origem/valores, perfis/preferências, análise e elegibilidade. Sem dependências externas de UI; design novo, responsivo por CSS, acessibilidade básica de labels/foco/dialog/live regions. Há endpoint público de cobertura e teste de entrega do template/assets.
+
+**Bloqueio de QA visual da interface:** abrir servidor local falhou por `PermissionError: Operation not permitted` em socket.bind; Brave headless encerrou com `setsockopt: Operation not permitted`. Os testes HTTP do Flask não equivalem a QA de navegador. Não declarar interface definitiva/ponta a ponta pronta. Roteiro para concluir em ambiente sem esse bloqueio: `docs/project/frontend.md`.
+
+Próximo passo: repetir verificação consolidada, publicar commits/artefatos em branch dedicada sem alterar main, registrar hashes remotos. Cobertura factual por jogo e QA real no navegador permanecem pendentes, além de convite/aceitação do professor e anexos Classroom.
+
+Verificação após interface: `python tools/check_stage2.py` passou integralmente: **70 testes**, SQL/dicionário/brModelo/UML, links locais e demonstração. `git diff --check` sem erros. Esse resultado comprova backend/entrega de assets, não a execução do JavaScript no navegador, que permanece bloqueada.

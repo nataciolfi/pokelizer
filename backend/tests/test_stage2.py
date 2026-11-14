@@ -189,3 +189,16 @@ def test_unknown_value_without_attribute_rule_is_still_reported(client, rules, a
     result=write(client,'post','/api/analises',{'id_pokemon_colecao':s['id_pokemon_colecao'],'id_perfil':p['id_perfil']})
     row=next(r for r in result.json['campos'] if r['id_atributo']==3)
     assert row['estado']=='nao_verificado' and row['estado_real']=='desconhecido'
+
+
+def test_application_serves_integrated_interface_and_coverage(client):
+    page=client.get('/')
+    assert page.status_code==200
+    assert b'<html lang="pt-BR">' in page.data
+    assert b'/static/app.js' in page.data and b'/static/app.css' in page.data
+    assert client.get('/static/app.js').status_code==200
+    assert client.get('/static/app.css').status_code==200
+    coverage=client.get('/api/catalogo/cobertura')
+    assert coverage.status_code==200
+    assert coverage.json['contagens_banco']['ESPECIE']==1
+    assert coverage.json['cobertura_snapshot']['especies_importadas']==0

@@ -282,3 +282,9 @@ def listar_regulamentos():
 @api.get("/regulamentos/<int:id_regulamento>/formas/<int:id_dados_forma>")
 def elegibilidade(id_regulamento, id_dados_forma):
     return jsonify(RegulamentoDAO().elegibilidade(id_regulamento, id_dados_forma))
+
+
+@api.get("/catalogo/cobertura")
+def cobertura_catalogo():
+    from .catalog_data import cobertura
+    return jsonify(cobertura())
