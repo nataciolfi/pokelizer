@@ -1,0 +1,157 @@
+@startuml
+!pragma layout smetana
+skinparam backgroundColor white
+skinparam shadowing false
+skinparam dpi 140
+skinparam packageStyle rectangle
+skinparam classAttributeIconSize 0
+skinparam defaultFontName SansSerif
+skinparam defaultFontSize 13
+skinparam linetype ortho
+title Pokelizer — Python classes implemented in Stage 1
+
+package "models.py — immutable dataclasses" as Models {
+class Usuario <<dataclass>> {
+  +id_usuario: int
+  +nome_usuario: str
+  +email: str
+  +data_cadastro: str
+  +senha_hash: str | None
+  +to_public_dict(): dict
+}
+class PokemonCatalogo <<dataclass>> {
+  +id_especie: int
+  +id_forma: int | None
+  +id_dados_forma: int | None
+  +id_jogo: int | None
+  +numero_nacional: int
+  +nome_pt: str
+  +tipos: tuple[str, ...]
+  +to_dict(): dict
+}
+class PokemonColecao <<dataclass>> {
+  +id_pokemon_colecao: int
+  +id_usuario: int
+  +id_dados_forma_atual: int
+  +id_mecanica: int | None
+  +id_jogo_origem: int | None
+  +id_dados_forma_origem: int | None
+  +id_metodo_obtencao: int | None
+  +id_natureza: int | None
+  +id_habilidade_forma: int | None
+  +nivel: int | None
+  +to_dict(): dict
+}
+class PerfilAnalise <<dataclass>> {
+  +id_perfil: int
+  +id_usuario: int | None
+  +id_dados_forma: int
+  +id_mecanica: int
+  +id_regulamento: int | None
+  +nome_perfil: str
+  +tipo_perfil: str
+  +fonte_url: str | None
+  +versao_fonte: str | None
+}
+}
+
+package "dao.py — SQL repositories" as Repositories {
+class UsuarioDAO {
+  +criar(nome_usuario, email, senha_hash): Usuario
+  +obter_por_email(email): Usuario | None
+  +obter_por_id(id_usuario): Usuario | None
+}
+class PokemonDAO {
+  +listar(busca=None, tipo=None, geracao=None, jogo=None): list
+  +obter(id_dados_forma): PokemonCatalogo | None
+  -_row_to_model(row): PokemonCatalogo
+}
+class ColecaoDAO {
+  +adicionar(dados): PokemonColecao
+  +listar_do_usuario(id_usuario): list
+  +obter_do_usuario(id_pokemon, id_usuario): PokemonColecao | None
+  +excluir_do_usuario(id_pokemon, id_usuario): bool
+  +obter_contexto_registro(id_dados_forma): dict | None
+  +habilidade_compativel(id_dados_forma, id_habilidade_forma): bool
+  +metodo_disponivel(id_dados_forma, id_metodo): bool
+}
+class PerfilDAO {
+  +obter_visivel(id_perfil, id_usuario=None): PerfilAnalise | None
+  +criar_personalizado(id_usuario, id_dados_forma, id_mecanica, nome, id_regulamento=None): PerfilAnalise
+}
+}
+
+package "services.py — validation and use cases" as Services {
+class AuthService {
+  +usuario_dao: UsuarioDAO
+  +cadastrar(nome_usuario, email, senha): Usuario
+  +autenticar(email, senha): Usuario | None
+}
+class ColecaoService {
+  +colecao_dao: ColecaoDAO
+  +adicionar(id_usuario, dados): PokemonColecao
+  -_id_opcional(valor, campo): int | None
+  -_inteiro_opcional(valor, campo, minimo): int | None
+  -_texto_opcional(valor, campo, limite): str | None
+}
+class PerfilService {
+  +perfil_dao: PerfilDAO
+  +criar_personalizado(id_usuario, dados): PerfilAnalise
+}
+}
+
+package "Infrastructure (modules, not classes)" as Infrastructure {
+class "db.py" as DB <<module>> {
+  +connect_database(database): sqlite3.Connection
+  +get_db(): sqlite3.Connection
+  +close_db(error=None): None
+  +transaction(connection): contextmanager
+  +upgrade(connection, migrations): list[int]
+  +init_db(app): None
+  +backup_database(connection, destination): None
+  +import_legacy(source, destination): None
+  +register_cli(app): None
+}
+class "api.py" as API <<Flask Blueprint>> {
+  +api: Blueprint
+  +csrf_required(view): Callable
+  +login_required(view): Callable
+  +auth / catalog / collection HTTP handlers
+}
+}
+
+package "Planned — NOT implemented in Stage 1" as Planned #FFF4DB {
+class ComparacaoService <<planned>> #FFF4DB {
+  +compare compatible specimen and profile
+  +explain partial results and unknown values
+}
+}
+
+AuthService --> "1" UsuarioDAO : injected / default
+ColecaoService --> "1" ColecaoDAO : injected / default
+PerfilService --> "1" PerfilDAO : injected / default
+UsuarioDAO ..> Usuario : returns
+PokemonDAO ..> PokemonCatalogo : returns
+ColecaoDAO ..> PokemonColecao : returns
+PerfilDAO ..> PerfilAnalise : returns
+Repositories ..> DB : connection / transaction
+API ..> Services : dispatch use cases
+API ..> Repositories : read projections
+note bottom of DB
+  Request context owns one connection.
+  Teardown closes it and rolls back pending work.
+  db-init / db-upgrade are explicit commands.
+end note
+note bottom of PerfilDAO
+  Custom profiles: owner-scoped reads.
+  Public reference profiles: sourced SQL records.
+  Profile HTTP editing is planned.
+end note
+legend left
+  Solid packages: implemented Python objects.
+  <<module>> and <<Flask Blueprint>> are not classes.
+  Dataclasses contain identity/context projections, not the whole SQL model.
+  SQL entities, cardinalities and keys: separate brModelo deliverables.
+  Amber package: planned class, absent from Python code.
+endlegend
+@enduml

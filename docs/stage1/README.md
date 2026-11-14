@@ -19,6 +19,7 @@ Não inclui simulador de batalhas, equipes, marketplace, rede social ou certific
 7. [UML de classes implementadas](../uml/README.md).
 8. [Contrato futuro do analisador](analysis.md) e [fontes/estados desconhecidos](sources.md).
 9. [Verificação reproduzível e limitações](verification.md) e [submissão manual](submission.md).
+10. [Relatório de conclusão técnica e inventário final](completion.md).
 
 Os textos em [archive](../archive/) preservam as propostas anteriores, inclusive a branch divergente de correção. Não são especificação vigente. Os caminhos de documentos antigos apontam para este índice para evitar versões concorrentes.
 

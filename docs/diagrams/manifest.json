@@ -1,0 +1,2378 @@
+{
+  "schema_sha256": "54ca87ef7693f498639d12338e48c0e11c846f960964ca2c2e16cb184f8f8b2e",
+  "brmodelo_version": "3.3.2 (official distribution 3.32)",
+  "brmodelo_url": "https://brmodelo.com/brModelo.jar",
+  "brmodelo_jar_sha256": "2d225ea142395c803b71dd1ef1be63ec48b75029e1bc464cd9074a9112b39954",
+  "tables": {
+    "USUARIO": {
+      "fields": [
+        {
+          "cid": 0,
+          "name": "id_usuario",
+          "type": "INTEGER",
+          "notnull": 0,
+          "default": null,
+          "pk": 1
+        },
+        {
+          "cid": 1,
+          "name": "nome_usuario",
+          "type": "TEXT",
+          "notnull": 1,
+          "default": null,
+          "pk": 0
+        },
+        {
+          "cid": 2,
+          "name": "email",
+          "type": "TEXT",
+          "notnull": 1,
+          "default": null,
+          "pk": 0
+        },
+        {
+          "cid": 3,
+          "name": "senha_hash",
+          "type": "TEXT",
+          "notnull": 1,
+          "default": null,
+          "pk": 0
+        },
+        {
+          "cid": 4,
+          "name": "data_cadastro",
+          "type": "TEXT",
+          "notnull": 1,
+          "default": "CURRENT_TIMESTAMP",
+          "pk": 0
+        }
+      ],
+      "unique": [
+        [
+          "email"
+        ],
+        [
+          "nome_usuario"
+        ]
+      ]
+    },
+    "ESPECIE": {
+      "fields": [
+        {
+          "cid": 0,
+          "name": "id_especie",
+          "type": "INTEGER",
+          "notnull": 0,
+          "default": null,
+          "pk": 1
+        },
+        {
+          "cid": 1,
+          "name": "numero_nacional",
+          "type": "INTEGER",
+          "notnull": 1,
+          "default": null,
+          "pk": 0
+        },
+        {
+          "cid": 2,
+          "name": "nome_pt",
+          "type": "TEXT",
+          "notnull": 1,
+          "default": null,
+          "pk": 0
+        },
+        {
+          "cid": 3,
+          "name": "nome_en",
+          "type": "TEXT",
+          "notnull": 0,
+          "default": null,
+          "pk": 0
+        },
+        {
+          "cid": 4,
+          "name": "geracao_origem",
+          "type": "INTEGER",
+          "notnull": 0,
+          "default": null,
+          "pk": 0
+        },
+        {
+          "cid": 5,
+          "name": "status_catalogo",
+          "type": "TEXT",
+          "notnull": 1,
+          "default": "'rascunho'",
+          "pk": 0
+        },
+        {
+          "cid": 6,
+          "name": "fonte_url",
+          "type": "TEXT",
+          "notnull": 0,
+          "default": null,
+          "pk": 0
+        },
+        {
+          "cid": 7,
+          "name": "data_verificacao",
+          "type": "TEXT",
+          "notnull": 0,
+          "default": null,
+          "pk": 0
+        }
+      ],
+      "unique": [
+        [
+          "numero_nacional"
+        ]
+      ]
+    },
+    "FORMA": {
+      "fields": [
+        {
+          "cid": 0,
+          "name": "id_forma",
+          "type": "INTEGER",
+          "notnull": 0,
+          "default": null,
+          "pk": 1
+        },
+        {
+          "cid": 1,
+          "name": "id_especie",
+          "type": "INTEGER",
+          "notnull": 1,
+          "default": null,
+          "pk": 0
+        },
+        {
+          "cid": 2,
+          "name": "codigo_forma",
+          "type": "TEXT",
+          "notnull": 1,
+          "default": null,
+          "pk": 0
+        },
+        {
+          "cid": 3,
+          "name": "nome_forma",
+          "type": "TEXT",
+          "notnull": 1,
+          "default": null,
+          "pk": 0
+        },
+        {
+          "cid": 4,
+          "name": "categoria",
+          "type": "TEXT",
+          "notnull": 1,
+          "default": "'padrao'",
+          "pk": 0
+        },
+        {
+          "cid": 5,
+          "name": "estado_forma",
+          "type": "TEXT",
+          "notnull": 0,
+          "default": null,
+          "pk": 0
+        },
+        {
+          "cid": 6,
+          "name": "descricao",
+          "type": "TEXT",
+          "notnull": 0,
+          "default": null,
+          "pk": 0
+        },
+        {
+          "cid": 7,
+          "name": "forma_padrao",
+          "type": "INTEGER",
+          "notnull": 1,
+          "default": "0",
+          "pk": 0
+        },
+        {
+          "cid": 8,
+          "name": "fonte_url",
+          "type": "TEXT",
+          "notnull": 0,
+          "default": null,
+          "pk": 0
+        },
+        {
+          "cid": 9,
+          "name": "data_verificacao",
+          "type": "TEXT",
+          "notnull": 0,
+          "default": null,
+          "pk": 0
+        }
+      ],
+      "unique": [
+        [
+          "id_especie",
+          "codigo_forma"
+        ]
+      ]
+    },
+    "JOGO": {
+      "fields": [
+        {
+          "cid": 0,
+          "name": "id_jogo",
+          "type": "INTEGER",
+          "notnull": 0,
+          "default": null,
+          "pk": 1
+        },
+        {
+          "cid": 1,
+          "name": "nome",
+          "type": "TEXT",
+          "notnull": 1,
+          "default": null,
+          "pk": 0
+        },
+        {
+          "cid": 2,
+          "name": "categoria",
+          "type": "TEXT",
+          "notnull": 0,
+          "default": null,
+          "pk": 0
+        },
+        {
+          "cid": 3,
+          "name": "geracao",
+          "type": "INTEGER",
+          "notnull": 0,
+          "default": null,
+          "pk": 0
+        },
+        {
+          "cid": 4,
+          "name": "plataforma",
+          "type": "TEXT",
+          "notnull": 0,
+          "default": null,
+          "pk": 0
+        },
+        {
+          "cid": 5,
+          "name": "data_lancamento",
+          "type": "TEXT",
+          "notnull": 0,
+          "default": null,
+          "pk": 0
+        },
+        {
+          "cid": 6,
+          "name": "fonte_url",
+          "type": "TEXT",
+          "notnull": 0,
+          "default": null,
+          "pk": 0
+        },
+        {
+          "cid": 7,
+          "name": "data_verificacao",
+          "type": "TEXT",
+          "notnull": 0,
+          "default": null,
+          "pk": 0
+        }
+      ],
+      "unique": [
+        [
+          "nome"
+        ]
+      ]
+    },
+    "DADOS_FORMA_JOGO": {
+      "fields": [
+        {
+          "cid": 0,
+          "name": "id_dados_forma",
+          "type": "INTEGER",
+          "notnull": 0,
+          "default": null,
+          "pk": 1
+        },
+        {
+          "cid": 1,
+          "name": "id_forma",
+          "type": "INTEGER",
+          "notnull": 1,
+          "default": null,
+          "pk": 0
+        },
+        {
+          "cid": 2,
+          "name": "id_jogo",
+          "type": "INTEGER",
+          "notnull": 1,
+          "default": null,
+          "pk": 0
+        },
+        {
+          "cid": 3,
+          "name": "status_presenca",
+          "type": "TEXT",
+          "notnull": 1,
+          "default": "'nao_verificada'",
+          "pk": 0
+        },
+        {
+          "cid": 4,
+          "name": "pode_ser_registrada",
+          "type": "TEXT",
+          "notnull": 0,
+          "default": null,
+          "pk": 0
+        },
+        {
+          "cid": 5,
+          "name": "motivo_registro",
+          "type": "TEXT",
+          "notnull": 0,
+          "default": null,
+          "pk": 0
+        },
+        {
+          "cid": 6,
+          "name": "status_tipos",
+          "type": "TEXT",
+          "notnull": 1,
+          "default": "'nao_verificado'",
+          "pk": 0
+        },
+        {
+          "cid": 7,
+          "name": "altura_m",
+          "type": "REAL",
+          "notnull": 0,
+          "default": null,
+          "pk": 0
+        },
+        {
+          "cid": 8,
+          "name": "peso_kg",
+          "type": "REAL",
+          "notnull": 0,
+          "default": null,
+          "pk": 0
+        },
+        {
+          "cid": 9,
+          "name": "hp_base",
+          "type": "INTEGER",
+          "notnull": 0,
+          "default": null,
+          "pk": 0
+        },
+        {
+          "cid": 10,
+          "name": "ataque_base",
+          "type": "INTEGER",
+          "notnull": 0,
+          "default": null,
+          "pk": 0
+        },
+        {
+          "cid": 11,
+          "name": "defesa_base",
+          "type": "INTEGER",
+          "notnull": 0,
+          "default": null,
+          "pk": 0
+        },
+        {
+          "cid": 12,
+          "name": "ataque_especial_base",
+          "type": "INTEGER",
+          "notnull": 0,
+          "default": null,
+          "pk": 0
+        },
+        {
+          "cid": 13,
+          "name": "defesa_especial_base",
+          "type": "INTEGER",
+          "notnull": 0,
+          "default": null,
+          "pk": 0
+        },
+        {
+          "cid": 14,
+          "name": "velocidade_base",
+          "type": "INTEGER",
+          "notnull": 0,
+          "default": null,
+          "pk": 0
+        },
+        {
+          "cid": 15,
+          "name": "fonte_url",
+          "type": "TEXT",
+          "notnull": 0,
+          "default": null,
+          "pk": 0
+        },
+        {
+          "cid": 16,
+          "name": "data_verificacao",
+          "type": "TEXT",
+          "notnull": 0,
+          "default": null,
+          "pk": 0
+        }
+      ],
+      "unique": [
+        [
+          "id_forma",
+          "id_jogo"
+        ]
+      ]
+    },
+    "TIPO": {
+      "fields": [
+        {
+          "cid": 0,
+          "name": "id_tipo",
+          "type": "INTEGER",
+          "notnull": 0,
+          "default": null,
+          "pk": 1
+        },
+        {
+          "cid": 1,
+          "name": "nome_tipo",
+          "type": "TEXT",
+          "notnull": 1,
+          "default": null,
+          "pk": 0
+        }
+      ],
+      "unique": [
+        [
+          "nome_tipo"
+        ]
+      ]
+    },
+    "TIPO_FORMA_JOGO": {
+      "fields": [
+        {
+          "cid": 0,
+          "name": "id_dados_forma",
+          "type": "INTEGER",
+          "notnull": 1,
+          "default": null,
+          "pk": 1
+        },
+        {
+          "cid": 1,
+          "name": "id_tipo",
+          "type": "INTEGER",
+          "notnull": 1,
+          "default": null,
+          "pk": 2
+        },
+        {
+          "cid": 2,
+          "name": "posicao",
+          "type": "INTEGER",
+          "notnull": 1,
+          "default": null,
+          "pk": 0
+        }
+      ],
+      "unique": [
+        [
+          "id_dados_forma",
+          "posicao"
+        ],
+        [
+          "id_dados_forma",
+          "id_tipo"
+        ]
+      ]
+    },
+    "HABILIDADE": {
+      "fields": [
+        {
+          "cid": 0,
+          "name": "id_habilidade",
+          "type": "INTEGER",
+          "notnull": 0,
+          "default": null,
+          "pk": 1
+        },
+        {
+          "cid": 1,
+          "name": "nome",
+          "type": "TEXT",
+          "notnull": 1,
+          "default": null,
+          "pk": 0
+        },
+        {
+          "cid": 2,
+          "name": "descricao",
+          "type": "TEXT",
+          "notnull": 0,
+          "default": null,
+          "pk": 0
+        }
+      ],
+      "unique": [
+        [
+          "nome"
+        ]
+      ]
+    },
+    "HABILIDADE_FORMA_JOGO": {
+      "fields": [
+        {
+          "cid": 0,
+          "name": "id_habilidade_forma",
+          "type": "INTEGER",
+          "notnull": 0,
+          "default": null,
+          "pk": 1
+        },
+        {
+          "cid": 1,
+          "name": "id_dados_forma",
+          "type": "INTEGER",
+          "notnull": 1,
+          "default": null,
+          "pk": 0
+        },
+        {
+          "cid": 2,
+          "name": "id_habilidade",
+          "type": "INTEGER",
+          "notnull": 1,
+          "default": null,
+          "pk": 0
+        },
+        {
+          "cid": 3,
+          "name": "slot",
+          "type": "TEXT",
+          "notnull": 1,
+          "default": null,
+          "pk": 0
+        },
+        {
+          "cid": 4,
+          "name": "condicao",
+          "type": "TEXT",
+          "notnull": 0,
+          "default": null,
+          "pk": 0
+        },
+        {
+          "cid": 5,
+          "name": "fonte_url",
+          "type": "TEXT",
+          "notnull": 1,
+          "default": null,
+          "pk": 0
+        },
+        {
+          "cid": 6,
+          "name": "data_verificacao",
+          "type": "TEXT",
+          "notnull": 1,
+          "default": null,
+          "pk": 0
+        }
+      ],
+      "unique": [
+        [
+          "id_habilidade_forma",
+          "id_dados_forma"
+        ],
+        [
+          "id_dados_forma",
+          "slot"
+        ],
+        [
+          "id_dados_forma",
+          "id_habilidade",
+          "slot"
+        ]
+      ]
+    },
+    "METODO_OBTENCAO": {
+      "fields": [
+        {
+          "cid": 0,
+          "name": "id_metodo",
+          "type": "INTEGER",
+          "notnull": 0,
+          "default": null,
+          "pk": 1
+        },
+        {
+          "cid": 1,
+          "name": "nome",
+          "type": "TEXT",
+          "notnull": 1,
+          "default": null,
+          "pk": 0
+        },
+        {
+          "cid": 2,
+          "name": "descricao",
+          "type": "TEXT",
+          "notnull": 0,
+          "default": null,
+          "pk": 0
+        }
+      ],
+      "unique": [
+        [
+          "nome"
+        ]
+      ]
+    },
+    "METODO_FORMA_JOGO": {
+      "fields": [
+        {
+          "cid": 0,
+          "name": "id_dados_forma",
+          "type": "INTEGER",
+          "notnull": 1,
+          "default": null,
+          "pk": 1
+        },
+        {
+          "cid": 1,
+          "name": "id_metodo",
+          "type": "INTEGER",
+          "notnull": 1,
+          "default": null,
+          "pk": 2
+        },
+        {
+          "cid": 2,
+          "name": "condicao",
+          "type": "TEXT",
+          "notnull": 0,
+          "default": null,
+          "pk": 0
+        },
+        {
+          "cid": 3,
+          "name": "fonte_url",
+          "type": "TEXT",
+          "notnull": 1,
+          "default": null,
+          "pk": 0
+        },
+        {
+          "cid": 4,
+          "name": "data_verificacao",
+          "type": "TEXT",
+          "notnull": 1,
+          "default": null,
+          "pk": 0
+        }
+      ],
+      "unique": [
+        [
+          "id_dados_forma",
+          "id_metodo"
+        ]
+      ]
+    },
+    "ATRIBUTO_BATALHA": {
+      "fields": [
+        {
+          "cid": 0,
+          "name": "id_atributo",
+          "type": "INTEGER",
+          "notnull": 0,
+          "default": null,
+          "pk": 1
+        },
+        {
+          "cid": 1,
+          "name": "codigo",
+          "type": "TEXT",
+          "notnull": 1,
+          "default": null,
+          "pk": 0
+        },
+        {
+          "cid": 2,
+          "name": "nome",
+          "type": "TEXT",
+          "notnull": 1,
+          "default": null,
+          "pk": 0
+        }
+      ],
+      "unique": [
+        [
+          "codigo"
+        ]
+      ]
+    },
+    "NATUREZA": {
+      "fields": [
+        {
+          "cid": 0,
+          "name": "id_natureza",
+          "type": "INTEGER",
+          "notnull": 0,
+          "default": null,
+          "pk": 1
+        },
+        {
+          "cid": 1,
+          "name": "nome",
+          "type": "TEXT",
+          "notnull": 1,
+          "default": null,
+          "pk": 0
+        },
+        {
+          "cid": 2,
+          "name": "atributo_aumentado",
+          "type": "TEXT",
+          "notnull": 0,
+          "default": null,
+          "pk": 0
+        },
+        {
+          "cid": 3,
+          "name": "atributo_reduzido",
+          "type": "TEXT",
+          "notnull": 0,
+          "default": null,
+          "pk": 0
+        },
+        {
+          "cid": 4,
+          "name": "estado_efeito",
+          "type": "TEXT",
+          "notnull": 1,
+          "default": "'nao_verificado'",
+          "pk": 0
+        },
+        {
+          "cid": 5,
+          "name": "fonte_url",
+          "type": "TEXT",
+          "notnull": 0,
+          "default": null,
+          "pk": 0
+        },
+        {
+          "cid": 6,
+          "name": "data_verificacao",
+          "type": "TEXT",
+          "notnull": 0,
+          "default": null,
+          "pk": 0
+        }
+      ],
+      "unique": [
+        [
+          "nome"
+        ]
+      ]
+    },
+    "MECANICA_JOGO": {
+      "fields": [
+        {
+          "cid": 0,
+          "name": "id_mecanica",
+          "type": "INTEGER",
+          "notnull": 0,
+          "default": null,
+          "pk": 1
+        },
+        {
+          "cid": 1,
+          "name": "id_jogo",
+          "type": "INTEGER",
+          "notnull": 1,
+          "default": null,
+          "pk": 0
+        },
+        {
+          "cid": 2,
+          "name": "versao",
+          "type": "TEXT",
+          "notnull": 1,
+          "default": null,
+          "pk": 0
+        },
+        {
+          "cid": 3,
+          "name": "usa_natureza",
+          "type": "TEXT",
+          "notnull": 1,
+          "default": "'nao_verificado'",
+          "pk": 0
+        },
+        {
+          "cid": 4,
+          "name": "usa_habilidade",
+          "type": "TEXT",
+          "notnull": 1,
+          "default": "'nao_verificado'",
+          "pk": 0
+        },
+        {
+          "cid": 5,
+          "name": "usa_nivel",
+          "type": "TEXT",
+          "notnull": 1,
+          "default": "'nao_verificado'",
+          "pk": 0
+        },
+        {
+          "cid": 6,
+          "name": "nivel_minimo",
+          "type": "INTEGER",
+          "notnull": 0,
+          "default": null,
+          "pk": 0
+        },
+        {
+          "cid": 7,
+          "name": "nivel_maximo",
+          "type": "INTEGER",
+          "notnull": 0,
+          "default": null,
+          "pk": 0
+        },
+        {
+          "cid": 8,
+          "name": "data_inicio",
+          "type": "TEXT",
+          "notnull": 0,
+          "default": null,
+          "pk": 0
+        },
+        {
+          "cid": 9,
+          "name": "data_fim",
+          "type": "TEXT",
+          "notnull": 0,
+          "default": null,
+          "pk": 0
+        },
+        {
+          "cid": 10,
+          "name": "fonte_url",
+          "type": "TEXT",
+          "notnull": 0,
+          "default": null,
+          "pk": 0
+        },
+        {
+          "cid": 11,
+          "name": "data_verificacao",
+          "type": "TEXT",
+          "notnull": 0,
+          "default": null,
+          "pk": 0
+        }
+      ],
+      "unique": [
+        [
+          "id_jogo",
+          "versao"
+        ]
+      ]
+    },
+    "SISTEMA_ATRIBUTO": {
+      "fields": [
+        {
+          "cid": 0,
+          "name": "id_sistema_atributo",
+          "type": "INTEGER",
+          "notnull": 0,
+          "default": null,
+          "pk": 1
+        },
+        {
+          "cid": 1,
+          "name": "codigo",
+          "type": "TEXT",
+          "notnull": 1,
+          "default": null,
+          "pk": 0
+        },
+        {
+          "cid": 2,
+          "name": "nome",
+          "type": "TEXT",
+          "notnull": 1,
+          "default": null,
+          "pk": 0
+        },
+        {
+          "cid": 3,
+          "name": "descricao",
+          "type": "TEXT",
+          "notnull": 0,
+          "default": null,
+          "pk": 0
+        }
+      ],
+      "unique": [
+        [
+          "codigo"
+        ]
+      ]
+    },
+    "MECANICA_SISTEMA_ATRIBUTO": {
+      "fields": [
+        {
+          "cid": 0,
+          "name": "id_mecanica_sistema_atributo",
+          "type": "INTEGER",
+          "notnull": 0,
+          "default": null,
+          "pk": 1
+        },
+        {
+          "cid": 1,
+          "name": "id_mecanica",
+          "type": "INTEGER",
+          "notnull": 1,
+          "default": null,
+          "pk": 0
+        },
+        {
+          "cid": 2,
+          "name": "id_sistema_atributo",
+          "type": "INTEGER",
+          "notnull": 1,
+          "default": null,
+          "pk": 0
+        },
+        {
+          "cid": 3,
+          "name": "aplicabilidade",
+          "type": "TEXT",
+          "notnull": 1,
+          "default": "'nao_verificado'",
+          "pk": 0
+        },
+        {
+          "cid": 4,
+          "name": "unidade",
+          "type": "TEXT",
+          "notnull": 0,
+          "default": null,
+          "pk": 0
+        },
+        {
+          "cid": 5,
+          "name": "valor_minimo",
+          "type": "INTEGER",
+          "notnull": 0,
+          "default": null,
+          "pk": 0
+        },
+        {
+          "cid": 6,
+          "name": "valor_maximo_atributo",
+          "type": "INTEGER",
+          "notnull": 0,
+          "default": null,
+          "pk": 0
+        },
+        {
+          "cid": 7,
+          "name": "valor_maximo_total",
+          "type": "INTEGER",
+          "notnull": 0,
+          "default": null,
+          "pk": 0
+        },
+        {
+          "cid": 8,
+          "name": "limite_total_status",
+          "type": "TEXT",
+          "notnull": 1,
+          "default": "'nao_verificado'",
+          "pk": 0
+        },
+        {
+          "cid": 9,
+          "name": "fonte_url",
+          "type": "TEXT",
+          "notnull": 0,
+          "default": null,
+          "pk": 0
+        },
+        {
+          "cid": 10,
+          "name": "data_verificacao",
+          "type": "TEXT",
+          "notnull": 0,
+          "default": null,
+          "pk": 0
+        }
+      ],
+      "unique": [
+        [
+          "id_mecanica",
+          "id_sistema_atributo"
+        ]
+      ]
+    },
+    "MECANICA_ATRIBUTO": {
+      "fields": [
+        {
+          "cid": 0,
+          "name": "id_mecanica_sistema_atributo",
+          "type": "INTEGER",
+          "notnull": 1,
+          "default": null,
+          "pk": 1
+        },
+        {
+          "cid": 1,
+          "name": "id_atributo",
+          "type": "INTEGER",
+          "notnull": 1,
+          "default": null,
+          "pk": 2
+        },
+        {
+          "cid": 2,
+          "name": "aplicabilidade",
+          "type": "TEXT",
+          "notnull": 1,
+          "default": null,
+          "pk": 0
+        },
+        {
+          "cid": 3,
+          "name": "fonte_url",
+          "type": "TEXT",
+          "notnull": 0,
+          "default": null,
+          "pk": 0
+        },
+        {
+          "cid": 4,
+          "name": "data_verificacao",
+          "type": "TEXT",
+          "notnull": 0,
+          "default": null,
+          "pk": 0
+        }
+      ],
+      "unique": [
+        [
+          "id_mecanica_sistema_atributo",
+          "id_atributo"
+        ]
+      ]
+    },
+    "POKEMON_COLECAO": {
+      "fields": [
+        {
+          "cid": 0,
+          "name": "id_pokemon_colecao",
+          "type": "INTEGER",
+          "notnull": 0,
+          "default": null,
+          "pk": 1
+        },
+        {
+          "cid": 1,
+          "name": "id_usuario",
+          "type": "INTEGER",
+          "notnull": 1,
+          "default": null,
+          "pk": 0
+        },
+        {
+          "cid": 2,
+          "name": "id_dados_forma_atual",
+          "type": "INTEGER",
+          "notnull": 1,
+          "default": null,
+          "pk": 0
+        },
+        {
+          "cid": 3,
+          "name": "id_mecanica",
+          "type": "INTEGER",
+          "notnull": 0,
+          "default": null,
+          "pk": 0
+        },
+        {
+          "cid": 4,
+          "name": "id_jogo_origem",
+          "type": "INTEGER",
+          "notnull": 0,
+          "default": null,
+          "pk": 0
+        },
+        {
+          "cid": 5,
+          "name": "id_dados_forma_origem",
+          "type": "INTEGER",
+          "notnull": 0,
+          "default": null,
+          "pk": 0
+        },
+        {
+          "cid": 6,
+          "name": "id_metodo_obtencao",
+          "type": "INTEGER",
+          "notnull": 0,
+          "default": null,
+          "pk": 0
+        },
+        {
+          "cid": 7,
+          "name": "id_natureza",
+          "type": "INTEGER",
+          "notnull": 0,
+          "default": null,
+          "pk": 0
+        },
+        {
+          "cid": 8,
+          "name": "id_habilidade_forma",
+          "type": "INTEGER",
+          "notnull": 0,
+          "default": null,
+          "pk": 0
+        },
+        {
+          "cid": 9,
+          "name": "apelido",
+          "type": "TEXT",
+          "notnull": 0,
+          "default": null,
+          "pk": 0
+        },
+        {
+          "cid": 10,
+          "name": "nivel",
+          "type": "INTEGER",
+          "notnull": 0,
+          "default": null,
+          "pk": 0
+        },
+        {
+          "cid": 11,
+          "name": "data_registro",
+          "type": "TEXT",
+          "notnull": 1,
+          "default": "CURRENT_TIMESTAMP",
+          "pk": 0
+        },
+        {
+          "cid": 12,
+          "name": "observacao",
+          "type": "TEXT",
+          "notnull": 0,
+          "default": null,
+          "pk": 0
+        }
+      ],
+      "unique": []
+    },
+    "REGULAMENTO": {
+      "fields": [
+        {
+          "cid": 0,
+          "name": "id_regulamento",
+          "type": "INTEGER",
+          "notnull": 0,
+          "default": null,
+          "pk": 1
+        },
+        {
+          "cid": 1,
+          "name": "id_mecanica",
+          "type": "INTEGER",
+          "notnull": 1,
+          "default": null,
+          "pk": 0
+        },
+        {
+          "cid": 2,
+          "name": "codigo",
+          "type": "TEXT",
+          "notnull": 1,
+          "default": null,
+          "pk": 0
+        },
+        {
+          "cid": 3,
+          "name": "versao",
+          "type": "TEXT",
+          "notnull": 1,
+          "default": null,
+          "pk": 0
+        },
+        {
+          "cid": 4,
+          "name": "nome",
+          "type": "TEXT",
+          "notnull": 1,
+          "default": null,
+          "pk": 0
+        },
+        {
+          "cid": 5,
+          "name": "formato",
+          "type": "TEXT",
+          "notnull": 1,
+          "default": null,
+          "pk": 0
+        },
+        {
+          "cid": 6,
+          "name": "temporada",
+          "type": "TEXT",
+          "notnull": 1,
+          "default": null,
+          "pk": 0
+        },
+        {
+          "cid": 7,
+          "name": "data_inicio",
+          "type": "TEXT",
+          "notnull": 0,
+          "default": null,
+          "pk": 0
+        },
+        {
+          "cid": 8,
+          "name": "data_fim",
+          "type": "TEXT",
+          "notnull": 0,
+          "default": null,
+          "pk": 0
+        },
+        {
+          "cid": 9,
+          "name": "fonte_url",
+          "type": "TEXT",
+          "notnull": 1,
+          "default": null,
+          "pk": 0
+        },
+        {
+          "cid": 10,
+          "name": "data_verificacao",
+          "type": "TEXT",
+          "notnull": 1,
+          "default": null,
+          "pk": 0
+        }
+      ],
+      "unique": [
+        [
+          "id_mecanica",
+          "codigo",
+          "versao",
+          "formato",
+          "temporada"
+        ]
+      ]
+    },
+    "PERFIL_ANALISE": {
+      "fields": [
+        {
+          "cid": 0,
+          "name": "id_perfil",
+          "type": "INTEGER",
+          "notnull": 0,
+          "default": null,
+          "pk": 1
+        },
+        {
+          "cid": 1,
+          "name": "id_dados_forma",
+          "type": "INTEGER",
+          "notnull": 1,
+          "default": null,
+          "pk": 0
+        },
+        {
+          "cid": 2,
+          "name": "id_mecanica",
+          "type": "INTEGER",
+          "notnull": 1,
+          "default": null,
+          "pk": 0
+        },
+        {
+          "cid": 3,
+          "name": "id_usuario",
+          "type": "INTEGER",
+          "notnull": 0,
+          "default": null,
+          "pk": 0
+        },
+        {
+          "cid": 4,
+          "name": "id_regulamento",
+          "type": "INTEGER",
+          "notnull": 0,
+          "default": null,
+          "pk": 0
+        },
+        {
+          "cid": 5,
+          "name": "nome_perfil",
+          "type": "TEXT",
+          "notnull": 1,
+          "default": null,
+          "pk": 0
+        },
+        {
+          "cid": 6,
+          "name": "descricao",
+          "type": "TEXT",
+          "notnull": 0,
+          "default": null,
+          "pk": 0
+        },
+        {
+          "cid": 7,
+          "name": "tipo_perfil",
+          "type": "TEXT",
+          "notnull": 1,
+          "default": null,
+          "pk": 0
+        },
+        {
+          "cid": 8,
+          "name": "fonte_url",
+          "type": "TEXT",
+          "notnull": 0,
+          "default": null,
+          "pk": 0
+        },
+        {
+          "cid": 9,
+          "name": "data_verificacao",
+          "type": "TEXT",
+          "notnull": 0,
+          "default": null,
+          "pk": 0
+        },
+        {
+          "cid": 10,
+          "name": "versao_fonte",
+          "type": "TEXT",
+          "notnull": 0,
+          "default": null,
+          "pk": 0
+        }
+      ],
+      "unique": []
+    },
+    "VALOR_ATRIBUTO_POKEMON": {
+      "fields": [
+        {
+          "cid": 0,
+          "name": "id_valor_atributo",
+          "type": "INTEGER",
+          "notnull": 0,
+          "default": null,
+          "pk": 1
+        },
+        {
+          "cid": 1,
+          "name": "id_pokemon_colecao",
+          "type": "INTEGER",
+          "notnull": 1,
+          "default": null,
+          "pk": 0
+        },
+        {
+          "cid": 2,
+          "name": "id_mecanica_sistema_atributo",
+          "type": "INTEGER",
+          "notnull": 1,
+          "default": null,
+          "pk": 0
+        },
+        {
+          "cid": 3,
+          "name": "id_atributo",
+          "type": "INTEGER",
+          "notnull": 1,
+          "default": null,
+          "pk": 0
+        },
+        {
+          "cid": 4,
+          "name": "estado",
+          "type": "TEXT",
+          "notnull": 1,
+          "default": "'conhecido'",
+          "pk": 0
+        },
+        {
+          "cid": 5,
+          "name": "valor",
+          "type": "INTEGER",
+          "notnull": 0,
+          "default": null,
+          "pk": 0
+        },
+        {
+          "cid": 6,
+          "name": "motivo",
+          "type": "TEXT",
+          "notnull": 0,
+          "default": null,
+          "pk": 0
+        }
+      ],
+      "unique": [
+        [
+          "id_pokemon_colecao",
+          "id_mecanica_sistema_atributo",
+          "id_atributo"
+        ]
+      ]
+    },
+    "VALOR_PERFIL_ANALISE": {
+      "fields": [
+        {
+          "cid": 0,
+          "name": "id_valor_perfil",
+          "type": "INTEGER",
+          "notnull": 0,
+          "default": null,
+          "pk": 1
+        },
+        {
+          "cid": 1,
+          "name": "id_perfil",
+          "type": "INTEGER",
+          "notnull": 1,
+          "default": null,
+          "pk": 0
+        },
+        {
+          "cid": 2,
+          "name": "id_mecanica_sistema_atributo",
+          "type": "INTEGER",
+          "notnull": 1,
+          "default": null,
+          "pk": 0
+        },
+        {
+          "cid": 3,
+          "name": "id_atributo",
+          "type": "INTEGER",
+          "notnull": 1,
+          "default": null,
+          "pk": 0
+        },
+        {
+          "cid": 4,
+          "name": "estado",
+          "type": "TEXT",
+          "notnull": 1,
+          "default": "'conhecido'",
+          "pk": 0
+        },
+        {
+          "cid": 5,
+          "name": "valor_alvo",
+          "type": "INTEGER",
+          "notnull": 0,
+          "default": null,
+          "pk": 0
+        },
+        {
+          "cid": 6,
+          "name": "motivo",
+          "type": "TEXT",
+          "notnull": 0,
+          "default": null,
+          "pk": 0
+        }
+      ],
+      "unique": [
+        [
+          "id_perfil",
+          "id_mecanica_sistema_atributo",
+          "id_atributo"
+        ]
+      ]
+    },
+    "PERFIL_NATUREZA": {
+      "fields": [
+        {
+          "cid": 0,
+          "name": "id_perfil",
+          "type": "INTEGER",
+          "notnull": 1,
+          "default": null,
+          "pk": 1
+        },
+        {
+          "cid": 1,
+          "name": "id_natureza",
+          "type": "INTEGER",
+          "notnull": 1,
+          "default": null,
+          "pk": 2
+        }
+      ],
+      "unique": [
+        [
+          "id_perfil",
+          "id_natureza"
+        ]
+      ]
+    },
+    "PERFIL_HABILIDADE": {
+      "fields": [
+        {
+          "cid": 0,
+          "name": "id_perfil",
+          "type": "INTEGER",
+          "notnull": 1,
+          "default": null,
+          "pk": 1
+        },
+        {
+          "cid": 1,
+          "name": "id_habilidade_forma",
+          "type": "INTEGER",
+          "notnull": 1,
+          "default": null,
+          "pk": 2
+        }
+      ],
+      "unique": [
+        [
+          "id_perfil",
+          "id_habilidade_forma"
+        ]
+      ]
+    },
+    "ELEGIBILIDADE_FORMA_REGULAMENTO": {
+      "fields": [
+        {
+          "cid": 0,
+          "name": "id_elegibilidade",
+          "type": "INTEGER",
+          "notnull": 0,
+          "default": null,
+          "pk": 1
+        },
+        {
+          "cid": 1,
+          "name": "id_regulamento",
+          "type": "INTEGER",
+          "notnull": 1,
+          "default": null,
+          "pk": 0
+        },
+        {
+          "cid": 2,
+          "name": "id_dados_forma",
+          "type": "INTEGER",
+          "notnull": 1,
+          "default": null,
+          "pk": 0
+        },
+        {
+          "cid": 3,
+          "name": "status",
+          "type": "TEXT",
+          "notnull": 1,
+          "default": "'nao_verificado'",
+          "pk": 0
+        },
+        {
+          "cid": 4,
+          "name": "condicao",
+          "type": "TEXT",
+          "notnull": 0,
+          "default": null,
+          "pk": 0
+        },
+        {
+          "cid": 5,
+          "name": "fonte_url",
+          "type": "TEXT",
+          "notnull": 0,
+          "default": null,
+          "pk": 0
+        },
+        {
+          "cid": 6,
+          "name": "data_verificacao",
+          "type": "TEXT",
+          "notnull": 0,
+          "default": null,
+          "pk": 0
+        }
+      ],
+      "unique": [
+        [
+          "id_regulamento",
+          "id_dados_forma"
+        ]
+      ]
+    },
+    "TRANSFORMACAO_FORMA": {
+      "fields": [
+        {
+          "cid": 0,
+          "name": "id_transformacao",
+          "type": "INTEGER",
+          "notnull": 0,
+          "default": null,
+          "pk": 1
+        },
+        {
+          "cid": 1,
+          "name": "id_dados_forma_origem",
+          "type": "INTEGER",
+          "notnull": 1,
+          "default": null,
+          "pk": 0
+        },
+        {
+          "cid": 2,
+          "name": "id_dados_forma_destino",
+          "type": "INTEGER",
+          "notnull": 1,
+          "default": null,
+          "pk": 0
+        },
+        {
+          "cid": 3,
+          "name": "tipo_transformacao",
+          "type": "TEXT",
+          "notnull": 1,
+          "default": null,
+          "pk": 0
+        },
+        {
+          "cid": 4,
+          "name": "temporaria",
+          "type": "INTEGER",
+          "notnull": 1,
+          "default": null,
+          "pk": 0
+        },
+        {
+          "cid": 5,
+          "name": "condicao",
+          "type": "TEXT",
+          "notnull": 1,
+          "default": null,
+          "pk": 0
+        },
+        {
+          "cid": 6,
+          "name": "item_requerido",
+          "type": "TEXT",
+          "notnull": 0,
+          "default": null,
+          "pk": 0
+        },
+        {
+          "cid": 7,
+          "name": "observacao",
+          "type": "TEXT",
+          "notnull": 0,
+          "default": null,
+          "pk": 0
+        },
+        {
+          "cid": 8,
+          "name": "fonte_url",
+          "type": "TEXT",
+          "notnull": 1,
+          "default": null,
+          "pk": 0
+        },
+        {
+          "cid": 9,
+          "name": "data_verificacao",
+          "type": "TEXT",
+          "notnull": 1,
+          "default": null,
+          "pk": 0
+        }
+      ],
+      "unique": [
+        [
+          "id_dados_forma_origem",
+          "id_dados_forma_destino",
+          "tipo_transformacao",
+          "condicao"
+        ]
+      ]
+    }
+  },
+  "relationships": [
+    {
+      "child": "FORMA",
+      "parent": "ESPECIE",
+      "columns": [
+        "id_especie"
+      ],
+      "targets": [
+        "id_especie"
+      ],
+      "required": true,
+      "delete": "RESTRICT",
+      "update": "RESTRICT"
+    },
+    {
+      "child": "DADOS_FORMA_JOGO",
+      "parent": "JOGO",
+      "columns": [
+        "id_jogo"
+      ],
+      "targets": [
+        "id_jogo"
+      ],
+      "required": true,
+      "delete": "RESTRICT",
+      "update": "RESTRICT"
+    },
+    {
+      "child": "DADOS_FORMA_JOGO",
+      "parent": "FORMA",
+      "columns": [
+        "id_forma"
+      ],
+      "targets": [
+        "id_forma"
+      ],
+      "required": true,
+      "delete": "RESTRICT",
+      "update": "RESTRICT"
+    },
+    {
+      "child": "TIPO_FORMA_JOGO",
+      "parent": "TIPO",
+      "columns": [
+        "id_tipo"
+      ],
+      "targets": [
+        "id_tipo"
+      ],
+      "required": true,
+      "delete": "RESTRICT",
+      "update": "RESTRICT"
+    },
+    {
+      "child": "TIPO_FORMA_JOGO",
+      "parent": "DADOS_FORMA_JOGO",
+      "columns": [
+        "id_dados_forma"
+      ],
+      "targets": [
+        "id_dados_forma"
+      ],
+      "required": true,
+      "delete": "CASCADE",
+      "update": "RESTRICT"
+    },
+    {
+      "child": "HABILIDADE_FORMA_JOGO",
+      "parent": "HABILIDADE",
+      "columns": [
+        "id_habilidade"
+      ],
+      "targets": [
+        "id_habilidade"
+      ],
+      "required": true,
+      "delete": "RESTRICT",
+      "update": "RESTRICT"
+    },
+    {
+      "child": "HABILIDADE_FORMA_JOGO",
+      "parent": "DADOS_FORMA_JOGO",
+      "columns": [
+        "id_dados_forma"
+      ],
+      "targets": [
+        "id_dados_forma"
+      ],
+      "required": true,
+      "delete": "CASCADE",
+      "update": "RESTRICT"
+    },
+    {
+      "child": "METODO_FORMA_JOGO",
+      "parent": "METODO_OBTENCAO",
+      "columns": [
+        "id_metodo"
+      ],
+      "targets": [
+        "id_metodo"
+      ],
+      "required": true,
+      "delete": "RESTRICT",
+      "update": "RESTRICT"
+    },
+    {
+      "child": "METODO_FORMA_JOGO",
+      "parent": "DADOS_FORMA_JOGO",
+      "columns": [
+        "id_dados_forma"
+      ],
+      "targets": [
+        "id_dados_forma"
+      ],
+      "required": true,
+      "delete": "CASCADE",
+      "update": "RESTRICT"
+    },
+    {
+      "child": "NATUREZA",
+      "parent": "ATRIBUTO_BATALHA",
+      "columns": [
+        "atributo_reduzido"
+      ],
+      "targets": [
+        "codigo"
+      ],
+      "required": false,
+      "delete": "RESTRICT",
+      "update": "RESTRICT"
+    },
+    {
+      "child": "NATUREZA",
+      "parent": "ATRIBUTO_BATALHA",
+      "columns": [
+        "atributo_aumentado"
+      ],
+      "targets": [
+        "codigo"
+      ],
+      "required": false,
+      "delete": "RESTRICT",
+      "update": "RESTRICT"
+    },
+    {
+      "child": "MECANICA_JOGO",
+      "parent": "JOGO",
+      "columns": [
+        "id_jogo"
+      ],
+      "targets": [
+        "id_jogo"
+      ],
+      "required": true,
+      "delete": "RESTRICT",
+      "update": "RESTRICT"
+    },
+    {
+      "child": "MECANICA_SISTEMA_ATRIBUTO",
+      "parent": "SISTEMA_ATRIBUTO",
+      "columns": [
+        "id_sistema_atributo"
+      ],
+      "targets": [
+        "id_sistema_atributo"
+      ],
+      "required": true,
+      "delete": "RESTRICT",
+      "update": "RESTRICT"
+    },
+    {
+      "child": "MECANICA_SISTEMA_ATRIBUTO",
+      "parent": "MECANICA_JOGO",
+      "columns": [
+        "id_mecanica"
+      ],
+      "targets": [
+        "id_mecanica"
+      ],
+      "required": true,
+      "delete": "RESTRICT",
+      "update": "RESTRICT"
+    },
+    {
+      "child": "MECANICA_ATRIBUTO",
+      "parent": "ATRIBUTO_BATALHA",
+      "columns": [
+        "id_atributo"
+      ],
+      "targets": [
+        "id_atributo"
+      ],
+      "required": true,
+      "delete": "RESTRICT",
+      "update": "RESTRICT"
+    },
+    {
+      "child": "MECANICA_ATRIBUTO",
+      "parent": "MECANICA_SISTEMA_ATRIBUTO",
+      "columns": [
+        "id_mecanica_sistema_atributo"
+      ],
+      "targets": [
+        "id_mecanica_sistema_atributo"
+      ],
+      "required": true,
+      "delete": "CASCADE",
+      "update": "RESTRICT"
+    },
+    {
+      "child": "POKEMON_COLECAO",
+      "parent": "HABILIDADE_FORMA_JOGO",
+      "columns": [
+        "id_habilidade_forma",
+        "id_dados_forma_atual"
+      ],
+      "targets": [
+        "id_habilidade_forma",
+        "id_dados_forma"
+      ],
+      "required": false,
+      "delete": "RESTRICT",
+      "update": "RESTRICT"
+    },
+    {
+      "child": "POKEMON_COLECAO",
+      "parent": "NATUREZA",
+      "columns": [
+        "id_natureza"
+      ],
+      "targets": [
+        "id_natureza"
+      ],
+      "required": false,
+      "delete": "RESTRICT",
+      "update": "RESTRICT"
+    },
+    {
+      "child": "POKEMON_COLECAO",
+      "parent": "METODO_OBTENCAO",
+      "columns": [
+        "id_metodo_obtencao"
+      ],
+      "targets": [
+        "id_metodo"
+      ],
+      "required": false,
+      "delete": "RESTRICT",
+      "update": "RESTRICT"
+    },
+    {
+      "child": "POKEMON_COLECAO",
+      "parent": "DADOS_FORMA_JOGO",
+      "columns": [
+        "id_dados_forma_origem"
+      ],
+      "targets": [
+        "id_dados_forma"
+      ],
+      "required": false,
+      "delete": "RESTRICT",
+      "update": "RESTRICT"
+    },
+    {
+      "child": "POKEMON_COLECAO",
+      "parent": "JOGO",
+      "columns": [
+        "id_jogo_origem"
+      ],
+      "targets": [
+        "id_jogo"
+      ],
+      "required": false,
+      "delete": "RESTRICT",
+      "update": "RESTRICT"
+    },
+    {
+      "child": "POKEMON_COLECAO",
+      "parent": "MECANICA_JOGO",
+      "columns": [
+        "id_mecanica"
+      ],
+      "targets": [
+        "id_mecanica"
+      ],
+      "required": false,
+      "delete": "RESTRICT",
+      "update": "RESTRICT"
+    },
+    {
+      "child": "POKEMON_COLECAO",
+      "parent": "DADOS_FORMA_JOGO",
+      "columns": [
+        "id_dados_forma_atual"
+      ],
+      "targets": [
+        "id_dados_forma"
+      ],
+      "required": true,
+      "delete": "RESTRICT",
+      "update": "RESTRICT"
+    },
+    {
+      "child": "POKEMON_COLECAO",
+      "parent": "USUARIO",
+      "columns": [
+        "id_usuario"
+      ],
+      "targets": [
+        "id_usuario"
+      ],
+      "required": true,
+      "delete": "CASCADE",
+      "update": "RESTRICT"
+    },
+    {
+      "child": "REGULAMENTO",
+      "parent": "MECANICA_JOGO",
+      "columns": [
+        "id_mecanica"
+      ],
+      "targets": [
+        "id_mecanica"
+      ],
+      "required": true,
+      "delete": "RESTRICT",
+      "update": "RESTRICT"
+    },
+    {
+      "child": "PERFIL_ANALISE",
+      "parent": "REGULAMENTO",
+      "columns": [
+        "id_regulamento"
+      ],
+      "targets": [
+        "id_regulamento"
+      ],
+      "required": false,
+      "delete": "RESTRICT",
+      "update": "RESTRICT"
+    },
+    {
+      "child": "PERFIL_ANALISE",
+      "parent": "USUARIO",
+      "columns": [
+        "id_usuario"
+      ],
+      "targets": [
+        "id_usuario"
+      ],
+      "required": false,
+      "delete": "CASCADE",
+      "update": "RESTRICT"
+    },
+    {
+      "child": "PERFIL_ANALISE",
+      "parent": "MECANICA_JOGO",
+      "columns": [
+        "id_mecanica"
+      ],
+      "targets": [
+        "id_mecanica"
+      ],
+      "required": true,
+      "delete": "RESTRICT",
+      "update": "RESTRICT"
+    },
+    {
+      "child": "PERFIL_ANALISE",
+      "parent": "DADOS_FORMA_JOGO",
+      "columns": [
+        "id_dados_forma"
+      ],
+      "targets": [
+        "id_dados_forma"
+      ],
+      "required": true,
+      "delete": "RESTRICT",
+      "update": "RESTRICT"
+    },
+    {
+      "child": "VALOR_ATRIBUTO_POKEMON",
+      "parent": "ATRIBUTO_BATALHA",
+      "columns": [
+        "id_atributo"
+      ],
+      "targets": [
+        "id_atributo"
+      ],
+      "required": true,
+      "delete": "RESTRICT",
+      "update": "RESTRICT"
+    },
+    {
+      "child": "VALOR_ATRIBUTO_POKEMON",
+      "parent": "MECANICA_SISTEMA_ATRIBUTO",
+      "columns": [
+        "id_mecanica_sistema_atributo"
+      ],
+      "targets": [
+        "id_mecanica_sistema_atributo"
+      ],
+      "required": true,
+      "delete": "RESTRICT",
+      "update": "RESTRICT"
+    },
+    {
+      "child": "VALOR_ATRIBUTO_POKEMON",
+      "parent": "POKEMON_COLECAO",
+      "columns": [
+        "id_pokemon_colecao"
+      ],
+      "targets": [
+        "id_pokemon_colecao"
+      ],
+      "required": true,
+      "delete": "CASCADE",
+      "update": "RESTRICT"
+    },
+    {
+      "child": "VALOR_PERFIL_ANALISE",
+      "parent": "ATRIBUTO_BATALHA",
+      "columns": [
+        "id_atributo"
+      ],
+      "targets": [
+        "id_atributo"
+      ],
+      "required": true,
+      "delete": "RESTRICT",
+      "update": "RESTRICT"
+    },
+    {
+      "child": "VALOR_PERFIL_ANALISE",
+      "parent": "MECANICA_SISTEMA_ATRIBUTO",
+      "columns": [
+        "id_mecanica_sistema_atributo"
+      ],
+      "targets": [
+        "id_mecanica_sistema_atributo"
+      ],
+      "required": true,
+      "delete": "RESTRICT",
+      "update": "RESTRICT"
+    },
+    {
+      "child": "VALOR_PERFIL_ANALISE",
+      "parent": "PERFIL_ANALISE",
+      "columns": [
+        "id_perfil"
+      ],
+      "targets": [
+        "id_perfil"
+      ],
+      "required": true,
+      "delete": "CASCADE",
+      "update": "RESTRICT"
+    },
+    {
+      "child": "PERFIL_NATUREZA",
+      "parent": "NATUREZA",
+      "columns": [
+        "id_natureza"
+      ],
+      "targets": [
+        "id_natureza"
+      ],
+      "required": true,
+      "delete": "RESTRICT",
+      "update": "RESTRICT"
+    },
+    {
+      "child": "PERFIL_NATUREZA",
+      "parent": "PERFIL_ANALISE",
+      "columns": [
+        "id_perfil"
+      ],
+      "targets": [
+        "id_perfil"
+      ],
+      "required": true,
+      "delete": "CASCADE",
+      "update": "RESTRICT"
+    },
+    {
+      "child": "PERFIL_HABILIDADE",
+      "parent": "HABILIDADE_FORMA_JOGO",
+      "columns": [
+        "id_habilidade_forma"
+      ],
+      "targets": [
+        "id_habilidade_forma"
+      ],
+      "required": true,
+      "delete": "RESTRICT",
+      "update": "RESTRICT"
+    },
+    {
+      "child": "PERFIL_HABILIDADE",
+      "parent": "PERFIL_ANALISE",
+      "columns": [
+        "id_perfil"
+      ],
+      "targets": [
+        "id_perfil"
+      ],
+      "required": true,
+      "delete": "CASCADE",
+      "update": "RESTRICT"
+    },
+    {
+      "child": "ELEGIBILIDADE_FORMA_REGULAMENTO",
+      "parent": "DADOS_FORMA_JOGO",
+      "columns": [
+        "id_dados_forma"
+      ],
+      "targets": [
+        "id_dados_forma"
+      ],
+      "required": true,
+      "delete": "RESTRICT",
+      "update": "RESTRICT"
+    },
+    {
+      "child": "ELEGIBILIDADE_FORMA_REGULAMENTO",
+      "parent": "REGULAMENTO",
+      "columns": [
+        "id_regulamento"
+      ],
+      "targets": [
+        "id_regulamento"
+      ],
+      "required": true,
+      "delete": "RESTRICT",
+      "update": "RESTRICT"
+    },
+    {
+      "child": "TRANSFORMACAO_FORMA",
+      "parent": "DADOS_FORMA_JOGO",
+      "columns": [
+        "id_dados_forma_destino"
+      ],
+      "targets": [
+        "id_dados_forma"
+      ],
+      "required": true,
+      "delete": "RESTRICT",
+      "update": "RESTRICT"
+    },
+    {
+      "child": "TRANSFORMACAO_FORMA",
+      "parent": "DADOS_FORMA_JOGO",
+      "columns": [
+        "id_dados_forma_origem"
+      ],
+      "targets": [
+        "id_dados_forma"
+      ],
+      "required": true,
+      "delete": "RESTRICT",
+      "update": "RESTRICT"
+    }
+  ],
+  "artifacts": {
+    "conceitual-relacoes-01.brM3": "43cd3f5e53281384a8f65b8eeabc0311c7e025a289d6fe7214575afabae76ea7",
+    "conceitual-relacoes-01.png": "55ffca43714097380fa655b269e207bc89017a55e64206b16a846933b3b379a1",
+    "conceitual-relacoes-01.xml": "6d41c9fdd12dff813cae70b78d71fc0ff8f4c811854f20f0981688246202dbd5",
+    "conceitual-relacoes-02.brM3": "c892b5da80da324ddb6432cc8f1c4b1e4b3449ba70af77670160a4cec8e66314",
+    "conceitual-relacoes-02.png": "9389c64c7074e66e3bebc9f377a531461dce2476a3845fe0491d2e7847e5abfe",
+    "conceitual-relacoes-02.xml": "0f0618419e69f6b39ea72dca6a9569cbfac38edc3acf14f0a30e06f68b56efef",
+    "conceitual-relacoes-03.brM3": "b56d2671831e639d6af99c67ac5406f4171807d7c34266b478a627979100248d",
+    "conceitual-relacoes-03.png": "9c7fcd50ab40d2253289fb59640b4085e911d522de99350d9ec404ccbb029e71",
+    "conceitual-relacoes-03.xml": "5e7421b9ccf78248c6eceec9705c79482f8284d05fc24dd49135a8b846dec6e3",
+    "conceitual-relacoes-04.brM3": "98ce9825d97ea901d4e60a9ee7ddb00bef7b17602a6dc79fe3605f8ab54547b4",
+    "conceitual-relacoes-04.png": "121cc249f7497bff7d04b0fd07bb485801953a25bdcb0b4a702c55c01340ae7e",
+    "conceitual-relacoes-04.xml": "eb508c08da94da7f5dd98a10ccd16b572c307ed88e4187736d42c560ae0bfc2a",
+    "conceitual-relacoes-05.brM3": "b39cddac54775879adaf72ce9d072797e6368809a2b6720648eae25154084eff",
+    "conceitual-relacoes-05.png": "b7437c72004c9e389b9f44b3295ff08f0bf2fcad8927d0d15337c324c43a2dfc",
+    "conceitual-relacoes-05.xml": "74896eba7b3a377f772232eb19d0c24b0a55c74fd7320483f60d848fff5d0411",
+    "conceitual-relacoes-06.brM3": "900a997d037d756c70421bac34746060d9938e04baa3a18c4a5a5bc1c5bf4c67",
+    "conceitual-relacoes-06.png": "cf728a1b2dd1e582a5cb8ba49fc896b791beda0e28185838066ee8082f77f37b",
+    "conceitual-relacoes-06.xml": "8d394d731583bd4902e2d3c4c6f9c451cc348b14c6a5ec9dddc42c2c54555a6e",
+    "conceitual-relacoes-07.brM3": "0d10632a2be8958e4d4b6aeab51c690d07a48493031c6fea513b2eb1b57cde47",
+    "conceitual-relacoes-07.png": "d6bbc9df389986e22f9d436cac98613d2116fae1e19054ab366221fe4e0d71e2",
+    "conceitual-relacoes-07.xml": "712b4dd4dfa2104afc553b53fb949ac76dd8250ee052e0910af7b3528c3abcf1",
+    "conceitual-relacoes-08.brM3": "e3751ff167628b2129a41d8562cc55c5db6a304bf7e54547df65c4d69cf20e67",
+    "conceitual-relacoes-08.png": "021dbc7f82752a8c8207a2c04815619bcbfe6df8071af544c4146b9749b6582c",
+    "conceitual-relacoes-08.xml": "006158ca5a5eb867fbd9b5d0503eba655e1a636d5f7362950b409908d1874a7e",
+    "conceitual-relacoes-09.brM3": "df0cfa57dfb90889fc16ba87a4529ceb7ab87a1b6d26984c47bba1969a797f84",
+    "conceitual-relacoes-09.png": "c0d349f9c2238838749f28700ffd5a16c1d22765177178d1fab9b8598d8f5d47",
+    "conceitual-relacoes-09.xml": "f622c1b9a9cfd6ed8c9faae004081a2e0f746d7394665c050805b0ea47994201",
+    "conceitual-relacoes-10.brM3": "99bf3cdbac06bcb10d77dc7e25c50719f013007c09a15bddf5acbd9c285e8cd7",
+    "conceitual-relacoes-10.png": "14dc1d1f6bc4d69e80df75978c69e83a624db694a30d09df522104babedaa29e",
+    "conceitual-relacoes-10.xml": "33608488eb273a1b0632e84876e4957bb17c6aeef4b5b56804f9f6be35964fd8",
+    "conceitual-relacoes-11.brM3": "181b4d797c967757e9b250969341f81f69fa41993e0e1c8e194d353df07b2376",
+    "conceitual-relacoes-11.png": "5d41b672014aa4d4c2a92c87947c7ea3acd9c872a8f1783023a0c39b9a53b6bd",
+    "conceitual-relacoes-11.xml": "eab1b9da656764ee9b284c4be433e65ab9e03c9337348a7247e18a23e2d51390",
+    "conceitual.brM3": "3ebed505cbe3020dfd7b80f8a42b91dc33a5099ce678886ec106b71ff81f5d02",
+    "conceitual.png": "477472b98f1211652323083472347a2087cddd26e1bb14ac464b50159b9b4c18",
+    "conceitual.xml": "e9ba715688f51e16fef356cd246cb0842b3476a58f12f3672cc2cdfc75e02e4f",
+    "logico-relacoes-01.brM3": "0e097acb8739581977f16ba8f65a90e179f4c0db6cff7550fc56343a3f8743f7",
+    "logico-relacoes-01.png": "27e3c7b1e34c9186c3d98aa5d661a9e63de26fea19b90b9c3260cd8e77e2dd30",
+    "logico-relacoes-01.xml": "2b9a0783ec214cf736a573a2e0615112e749f8ec6d7dca02bd052272208a8ff4",
+    "logico-relacoes-02.brM3": "551c0293e4cd8c64081daf934ca2980a821461251c8689b47d3f6211f9f80f49",
+    "logico-relacoes-02.png": "2f22fb89057e3b62c624f1ed38601dc2d2153c80c098a4516b574e31d414331c",
+    "logico-relacoes-02.xml": "b36eeb04fdfb0b41a29f63ed5ee9f3c0f1d2db79d79436ce137bc1d0036e5608",
+    "logico-relacoes-03.brM3": "86e4b12e5887e3f1f4d4033360cb819ce6efbea19f0813521b68e1e9a740adff",
+    "logico-relacoes-03.png": "5f200a6064ffd59646e130de94118e44f26ed3601db5294ad8cd05deba849171",
+    "logico-relacoes-03.xml": "0b7b645b1311d6978753d4eda9c3a2c6a0e3144dfdfeeb670ed43b77e210b7ad",
+    "logico-relacoes-04.brM3": "25167f37183b187c32431e492ae9544b0bcf918b35267432de47a96d6d157648",
+    "logico-relacoes-04.png": "cefa835261c6f23efd050b4276e28117b7674868a25cf95287b7d87281a25a05",
+    "logico-relacoes-04.xml": "da69a4a91295725951f3cd4ba8328c24a23b324098d7fa51d53da0515bc07211",
+    "logico-relacoes-05.brM3": "671d5ac4900d675074a4970a3a3fba95a563262b4cac6ce985a7595eb1be2f3f",
+    "logico-relacoes-05.png": "44419a72d4986bc79e784f774e2a7dab4971f0250d2181d783e70abc3dbebc68",
+    "logico-relacoes-05.xml": "9b04037469c2713c0426e507dce7b8c3236c6375a4dd426e465a13dd1ca2935d",
+    "logico-relacoes-06.brM3": "5404b4c87596ce815956effef806ecae285e0e8096dde1f00de70d98288e0a75",
+    "logico-relacoes-06.png": "45c35e6b45e2ff73309fb49b6be392ff1b28a257d8969d6309007955f6d19faf",
+    "logico-relacoes-06.xml": "235c77c6998957b29a3f038e64bca3da23604aac08f76d9e71a44b2bd5e23760",
+    "logico-relacoes-07.brM3": "791714a73b147a956ab844a1a05b445ec1993bf22bb170bce6f386d540e77d03",
+    "logico-relacoes-07.png": "1391cfd746d0c599b1ab620f0f2bb9c0fcffc369ef4d83996e3cc8298f454b29",
+    "logico-relacoes-07.xml": "4984c82acee5ae53b0334777f9a7bc9f4735e06dd1475010745d4670412344e7",
+    "logico-relacoes-08.brM3": "d9d0a0823ad2a1a8677cec4a15c5d26572daa79fcf0f1022ca6f60ab9ea85c6e",
+    "logico-relacoes-08.png": "e66b47cbb270ae1060490e217e8d2e9fb4af4736594c2f5836f5d24b0c46df02",
+    "logico-relacoes-08.xml": "50ae77d33390a29b04e0ee021190902926250f456815670d9f2d004a603002e4",
+    "logico-relacoes-09.brM3": "bf39fe688efa78e8bad4b86657916fd3b9075d278adb56da62870c47a27df27e",
+    "logico-relacoes-09.png": "63644e08cee18ffa51b60a4df13e74398f8d5b1a05a58057ed6cfd8693c3a89f",
+    "logico-relacoes-09.xml": "1f7fd38bcb8a164ff8d6c5d4c1974738778e584c9be02b9584c56f8727ce7d76",
+    "logico-relacoes-10.brM3": "77f752f5702241f9c2970bd8e204570db6da71bb745ff4d6ff9c0d397e0571f8",
+    "logico-relacoes-10.png": "937e7679c81ac463b56c6b3069b76595d50c1f8276954b39c6ea9d8c1b4409c0",
+    "logico-relacoes-10.xml": "229be7b07779091cb14783d4b56eaeda8118c94e6bc5fe825ced8e8ae5ce1955",
+    "logico-relacoes-11.brM3": "e7946be4abae91163464d107c330bee1ddfcd48fa85e018e2078b70d01fb26f9",
+    "logico-relacoes-11.png": "2c93d73e4242605f0e46a913b2983cac7fa7f21aa68283450cec47b7ed6568ac",
+    "logico-relacoes-11.xml": "5623ed769f75ac7276ae9a46b37c81eb7020c39da7439662f30202ce15a17f9d",
+    "logico.brM3": "a02dc0ceedc3805346d023baf4077b567b7b8f83ca9e79fde5b9452c7db05fc1",
+    "logico.png": "fbad554e5fe38cb0e6ceed387b9d8e7fd1e9a1f9d93f46bd675e4cc6faf8aaee",
+    "logico.xml": "2545f074e49c3ea9ffdb47fcaf6ab2e33da73cb077633f4b20ccc4fec332218a"
+  },
+  "native_wrapper_metadata": {
+    "autor": "Pokelizer project",
+    "data": "",
+    "method": "Public GuardaPadraoBrM fields; native diagram payload preserved"
+  }
+}

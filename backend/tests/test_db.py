@@ -33,11 +33,12 @@ def test_migration_failure_rolls_back_whole_upgrade(tmp_path):
     (migrations / "001_initial.sql").write_text("CREATE TABLE fixture(id INTEGER PRIMARY KEY) STRICT;\nINSERT INTO fixture VALUES(1);\n")
     db = connect_database(tmp_path / "rollback.sqlite3")
     upgrade(db, migrations)
-    (migrations / "002_failure.sql").write_text("INSERT INTO fixture VALUES(2);\nINSERT INTO fixture VALUES(1);\n")
+    (migrations / "002_failure.sql").write_text("CREATE TABLE migration_marker(id INTEGER PRIMARY KEY) STRICT;\nINSERT INTO fixture VALUES(2);\nINSERT INTO fixture VALUES(1);\n")
     with pytest.raises(sqlite3.IntegrityError):
         upgrade(db, migrations)
     assert [row[0] for row in db.execute("SELECT id FROM fixture")] == [1]
     assert db.execute("SELECT COUNT(*) FROM SCHEMA_MIGRATION").fetchone()[0] == 1
+    assert db.execute("SELECT name FROM sqlite_master WHERE name='migration_marker'").fetchone() is None
     db.close()
 
 
@@ -152,3 +153,20 @@ def test_upgrade_enables_integrity_on_raw_sqlite_connection():
     with pytest.raises(sqlite3.IntegrityError):
         raw.execute("INSERT INTO FORMA(id_especie,codigo_forma,nome_forma) VALUES(999,'fixture','FIXTURE orphan')")
     raw.close()
+
+
+def test_successful_new_migration_preserves_existing_rows(tmp_path):
+    migrations = tmp_path / "migrations"
+    migrations.mkdir()
+    (migrations / "001_initial.sql").write_text("CREATE TABLE fixture(id INTEGER PRIMARY KEY, name TEXT NOT NULL) STRICT;\nINSERT INTO fixture VALUES(17,'preserved');\n")
+    path = tmp_path / "versioned.sqlite3"
+    db = connect_database(path)
+    assert upgrade(db, migrations) == [1]
+    (migrations / "002_add_notes.sql").write_text("ALTER TABLE fixture ADD COLUMN notes TEXT;\n")
+    assert upgrade(db, migrations) == [2]
+    db.close()
+    db = connect_database(path)
+    assert tuple(db.execute("SELECT id,name,notes FROM fixture").fetchone()) == (17, "preserved", None)
+    assert [r[0] for r in db.execute("SELECT version FROM SCHEMA_MIGRATION ORDER BY version")] == [1, 2]
+    assert upgrade(db, migrations) == []
+    db.close()

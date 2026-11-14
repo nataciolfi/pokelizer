@@ -4,12 +4,12 @@ Autoridades: [documento do professor](../sources/teacher-requirements.md), solic
 
 | ID e descrição | Fonte | Entidades/relações | Responsabilidade Python pretendida | API/fluxo pretendido | Aceitação observável | Estado da Etapa 1 |
 |---|---|---|---|---|---|---|
-| ESC01 Conceitual brModelo editável e imagem | E | Todos os conceitos e cardinalidades | Validador de consistência de artefatos | Professor abre modelo e exportação | Arquivo nativo abre no brModelo; atributos/cardinalidades legíveis | Ver inventário de artefatos e verificação visual |
-| ESC02 Lógico brModelo editável e imagem | E | Tabelas, campos, PK/FK | Validador compara SQL e modelo | Revisão do banco | Todas as tabelas/campos/chaves presentes e relações correspondentes | Ver inventário e checklist |
+| ESC01 Conceitual brModelo editável e imagem | E | Todos os conceitos e cardinalidades | Validador de consistência de artefatos | Professor abre modelo e exportação | Arquivo nativo abre no brModelo; atributos/cardinalidades legíveis | Entregue: brM3, XML editável e PNG do brModelo; 26 entidades, 183 atributos, 43 relações |
+| ESC02 Lógico brModelo editável e imagem | E | Tabelas, campos, PK/FK | Validador compara SQL e modelo | Revisão do banco | Todas as tabelas/campos/chaves presentes e relações correspondentes | Entregue: brM3, XML editável e PNG; consistência SQL verificada |
 | ESC03 Físico executável | E/P | Esquema completo | Executor de migrações | CLI db-init | SQL cria banco vazio com FK e restrições | Implementado; testes SQL |
 | ESC04 UML revisado | P/E | Classes reais distintas das entidades | Dataclasses, DAO, serviços, conexão | Revisão UML | Métodos/classes identificados no código e diagrama editável/exportado | Implementado; conferir checklist |
 | ESC05 Estrutura funcionando e conexão inicial | P/E | Banco e relações | get_db, close_db, transação | CLI + aplicação Flask | Python persiste, consulta JOIN e fecha; rollback funciona | Implementado; testes de integração |
-| ESC06 Código e entregáveis no GitHub | P/E | Não aplicável | Não aplicável | Clone branch de entrega | Commits e arquivos disponíveis sem merge automático | Branch dedicada; ver relatório final |
+| ESC06 Código e entregáveis no GitHub | P/E | Não aplicável | Não aplicável | Clone branch de entrega | Commits e arquivos disponíveis sem merge automático | Publicado na branch dedicada; ver relatório final |
 | ESC07 Professor colaborador | P | Não aplicável | Não aplicável | Settings → Collaborators | Conta correspondente a o e-mail do documento original com acesso confirmado | Ação manual; não enviar convite nesta tarefa |
 | ESC08 Anexar banco/modelos ao Classroom | E | Não aplicável | Não aplicável | Submissão escolar | Arquivos anexados e comprovante de envio | Ação manual; não submeter nesta tarefa |
 | RF01 Cadastro de conta e hash seguro | A | USUARIO | AuthService, UsuarioDAO, Werkzeug scrypt | POST /api/auth/cadastro | Senha pura nunca armazenada/retornada; duplicatas falham | Implementado; testes API |
