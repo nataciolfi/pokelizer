@@ -5,10 +5,10 @@
     "ESPECIE": 1025,
     "FORMA": 1579,
     "JOGO": 51,
-    "DADOS_FORMA_JOGO": 5072,
+    "DADOS_FORMA_JOGO": 5074,
     "MECANICA_JOGO": 2,
     "REGULAMENTO": 2,
-    "ELEGIBILIDADE_FORMA_REGULAMENTO": 353
+    "ELEGIBILIDADE_FORMA_REGULAMENTO": 355
   },
   "cobertura_snapshot": {
     "especies_importadas": 1025,
@@ -22,18 +22,20 @@
     "Tipos, habilidades e atributos históricos fora das fichas Sword/Shield importadas",
     "Mecânicas e limites fora de Sword/Shield",
     "Outros regulamentos, formas e elegibilidades com fontes específicas",
-    "Perfis de referência competitiva verificados"
+    "Outros perfis de referência competitiva verificados"
   ],
   "fichas_outras_fontes_preservadas": 0,
+  "fichas_dragapult_guia_vgc": 2,
+  "perfis_referencia_guia_vgc": 2,
   "versoes_excluidas_identidade_ambigua": [
     "red",
     "red-japan",
     "blue",
     "blue-japan"
   ],
-  "fichas_tipos_com_fonte": 364,
-  "fichas_estatisticas_com_fonte": 364,
-  "habilidades_com_fonte": 970,
+  "fichas_tipos_com_fonte": 366,
+  "fichas_estatisticas_com_fonte": 366,
+  "habilidades_com_fonte": 976,
   "fichas_encontro_documentado": 5072,
   "observacao": "Cobertura é relativa ao snapshot, não certifica completude oficial atual. Ausência de ficha não indica ausência no jogo."
 }

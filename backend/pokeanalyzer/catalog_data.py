@@ -68,12 +68,15 @@ def importar_catalogo(directory=SNAPSHOT):
                 db.execute('INSERT INTO JOGO(nome,geracao,fonte_url,data_verificacao) VALUES(?,?,?,?)',
                     (name, int(groups[r['version_group_id']]['generation_id']), source, date))
         importar_encontros(db, data, manifest)
-        from .curated_data import importar_mecanicas_swsh
+        from .curated_data import importar_mecanicas_swsh, importar_dragapult
         importar_mecanicas_swsh(db, data)
+        importar_dragapult(db)
         from .contextual_data import importar_contextos_swsh
         importar_contextos_swsh(db, data, manifest)
         from .curated_data import importar_regulamento_swsh
         importar_regulamento_swsh(db, data, manifest)
+        from .curated_data import importar_perfis_dragapult
+        importar_perfis_dragapult(db)
         if db.execute('PRAGMA foreign_key_check').fetchone():
             raise ValueError('Snapshot violou integridade; carga revertida.')
     return cobertura(directory)
@@ -123,6 +126,7 @@ def importar_encontros(db, data, manifest):
                    (cursor.lastrowid,method[0],source,date))
 
 def cobertura(directory=SNAPSHOT):
+    from .curated_data import DRAGAPULT_SOURCE
     manifest, data = ler_snapshot(directory)
     db = get_db()
     counts = {t: db.execute(f'SELECT count(*) FROM {t}').fetchone()[0] for t in
@@ -136,8 +140,10 @@ def cobertura(directory=SNAPSHOT):
         'nomes_exibidos': 'Inglês da fonte, sem tradução portuguesa confirmada; códigos de forma preservados.',
         'pendencias': ['Fichas e presença por jogo', 'Tipos, habilidades e atributos históricos fora das fichas Sword/Shield importadas',
                       'Mecânicas e limites fora de Sword/Shield', 'Outros regulamentos, formas e elegibilidades com fontes específicas',
-                      'Perfis de referência competitiva verificados'],
-        'fichas_outras_fontes_preservadas': db.execute("SELECT count(*) FROM DADOS_FORMA_JOGO WHERE fonte_url IS NULL OR fonte_url!=?", (manifest['files']['encounters.csv.gz']['url'],)).fetchone()[0],
+                      'Outros perfis de referência competitiva verificados'],
+        'fichas_outras_fontes_preservadas': db.execute("SELECT count(*) FROM DADOS_FORMA_JOGO WHERE fonte_url IS NULL OR fonte_url NOT IN (?,?)", (manifest['files']['encounters.csv.gz']['url'],DRAGAPULT_SOURCE)).fetchone()[0],
+        'fichas_dragapult_guia_vgc': db.execute('SELECT count(*) FROM DADOS_FORMA_JOGO WHERE fonte_url=?',(DRAGAPULT_SOURCE,)).fetchone()[0],
+        'perfis_referencia_guia_vgc': db.execute("SELECT count(*) FROM PERFIL_ANALISE WHERE tipo_perfil='referencia_competitiva' AND fonte_url=?",(DRAGAPULT_SOURCE,)).fetchone()[0],
         'versoes_excluidas_identidade_ambigua': ['red', 'red-japan', 'blue', 'blue-japan'],
         'fichas_tipos_com_fonte': db.execute("SELECT count(*) FROM DADOS_FORMA_JOGO WHERE fonte_tipos IS NOT NULL").fetchone()[0],
         'fichas_estatisticas_com_fonte': db.execute("SELECT count(*) FROM DADOS_FORMA_JOGO WHERE fonte_estatisticas IS NOT NULL").fetchone()[0],

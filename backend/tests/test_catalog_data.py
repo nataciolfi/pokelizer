@@ -226,3 +226,32 @@ def test_official_series_14_eligibility_is_conditional_and_contextual(app, clien
         with pytest.raises(ValueError,match='Conflito de curadoria'):
             importar_catalogo()
         assert db.execute('SELECT status FROM ELEGIBILIDADE_FORMA_REGULAMENTO WHERE id_regulamento=? AND id_dados_forma=?',(rule,sheet)).fetchone()[0]=='proibido'
+
+
+def test_reference_dragapult_targets_are_sourced_and_no_other_values_inferred(app, client):
+    from test_api import create_user, get_csrf
+    create_user(client)
+    with app.app_context():
+        report=importar_catalogo()
+        db=get_db()
+        row=db.execute("""SELECT d.id_dados_forma,m.id_mecanica,p.id_perfil FROM DADOS_FORMA_JOGO d
+            JOIN FORMA f USING(id_forma) JOIN JOGO j USING(id_jogo) JOIN MECANICA_JOGO m USING(id_jogo)
+            JOIN PERFIL_ANALISE p ON p.id_dados_forma=d.id_dados_forma AND p.id_mecanica=m.id_mecanica
+            WHERE f.codigo_forma='dragapult' AND j.nome='Sword' AND p.tipo_perfil='referencia_competitiva'""").fetchone()
+        values=db.execute("""SELECT a.codigo,v.valor_alvo FROM VALOR_PERFIL_ANALISE v JOIN ATRIBUTO_BATALHA a USING(id_atributo)
+            WHERE id_perfil=?""",(row['id_perfil'],)).fetchall()
+        assert dict(values)=={'hp':4,'attack':252,'speed':252}
+        assert report['perfis_referencia_guia_vgc']==2
+        assert importar_catalogo()['perfis_referencia_guia_vgc']==2
+    profiles=client.get('/api/perfis').json['itens']
+    ref=next(p for p in profiles if p['id_perfil']==row['id_perfil'])
+    assert ref['fonte_url']=='https://www.vgcguide.com/ev-training'
+    assert not ref['naturezas'] and not ref['habilidades']
+    specimen=client.post('/api/colecao',headers={'X-CSRF-Token':get_csrf(client)},json={
+        'id_dados_forma_atual':row['id_dados_forma'],'id_mecanica':row['id_mecanica']})
+    assert specimen.status_code==201
+    result=client.post('/api/analises',headers={'X-CSRF-Token':get_csrf(client)},json={
+        'id_pokemon_colecao':specimen.json['id_pokemon_colecao'],'id_perfil':row['id_perfil']})
+    assert result.status_code==200
+    hp=next(x for x in result.json['campos'] if x['sistema']=='EV' and x['atributo']=='hp')
+    assert hp['alvo']==4 and hp['real'] is None and hp['estado']=='sem_dado'

@@ -1,6 +1,6 @@
 """PokéAPI data at a pinned generation, limited to independently confirmed Sw/Sh sheets."""
 from collections import defaultdict
-from .curated_data import _obter_ou_inserir, DATE
+from .curated_data import _obter_ou_inserir, DATE, DRAGAPULT_SOURCE
 
 
 def _historical_rows(current, past, generation, value_field):
@@ -48,7 +48,7 @@ def importar_contextos_swsh(db, data, manifest):
     attrs = {'1':'hp_base','2':'ataque_base','3':'defesa_base','4':'ataque_especial_base','5':'defesa_especial_base','6':'velocidade_base'}
     sheets = db.execute("""SELECT d.*,e.numero_nacional,f.codigo_forma FROM DADOS_FORMA_JOGO d
         JOIN FORMA f USING(id_forma) JOIN ESPECIE e USING(id_especie) JOIN JOGO j USING(id_jogo)
-        WHERE j.nome IN ('Sword','Shield') AND d.fonte_url=?""", (encounter_source,)).fetchall()
+        WHERE j.nome IN ('Sword','Shield') AND d.fonte_url IN (?,?)""", (encounter_source,DRAGAPULT_SOURCE)).fetchall()
     for sheet in sheets:
         pid = by_form.get((sheet['numero_nacional'],sheet['codigo_forma']))
         if pid is None:
