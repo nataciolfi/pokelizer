@@ -56,3 +56,7 @@ Nova interface em `backend/pokeanalyzer/templates/index.html` e `static/app.css`
 Próximo passo: repetir verificação consolidada, publicar commits/artefatos em branch dedicada sem alterar main, registrar hashes remotos. Cobertura factual por jogo e QA real no navegador permanecem pendentes, além de convite/aceitação do professor e anexos Classroom.
 
 Verificação após interface: `python tools/check_stage2.py` passou integralmente: **70 testes**, SQL/dicionário/brModelo/UML, links locais e demonstração. `git diff --check` sem erros. Esse resultado comprova backend/entrega de assets, não a execução do JavaScript no navegador, que permanece bloqueada.
+
+## Revisão final de evidência
+
+Corrigida a projeção das fontes: a evidência global da forma não sobrescreve a evidência específica da ficha/jogo. Catálogo global, fichas aninhadas e detalhe mantêm ambas identificadas; regressão cobre fontes/datas diferentes. Token CSRF inválido com caracteres não ASCII agora retorna 403, sem TypeError. Verificação consolidada: **72 testes passaram**, diagramas/SQL/UML/links e demonstração também. Classes/métodos e estrutura SQL permanecem os mesmos; campos de fonte opcionais são projeções de colunas já existentes.

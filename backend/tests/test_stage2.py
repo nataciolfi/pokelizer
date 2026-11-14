@@ -202,3 +202,26 @@ def test_application_serves_integrated_interface_and_coverage(client):
     assert coverage.status_code==200
     assert coverage.json['contagens_banco']['ESPECIE']==1
     assert coverage.json['cobertura_snapshot']['especies_importadas']==0
+
+
+def test_global_and_game_sheet_evidence_remain_distinct(client, app):
+    with app.app_context():
+        db=get_db()
+        db.execute("UPDATE FORMA SET fonte_url='https://example.invalid/global-form',data_verificacao='2026-11-12' WHERE id_forma=1")
+        db.commit()
+    sheet=client.get('/api/pokemon/1').json
+    assert sheet['fonte_url']=='https://example.invalid/fixture'
+    assert sheet['data_verificacao']=='2026-11-13'
+    assert sheet['fonte_forma_url']=='https://example.invalid/global-form'
+    global_item=client.get('/api/pokemon').json['itens'][0]
+    assert global_item['fonte_url']=='https://example.invalid/global-form'
+    assert global_item['fichas'][0]['fonte_url']=='https://example.invalid/fixture'
+    detail=client.get('/api/formas/1').json
+    assert detail['fonte_url']=='https://example.invalid/global-form'
+    assert detail['fichas'][0]['fonte_url']=='https://example.invalid/fixture'
+
+
+def test_non_ascii_invalid_csrf_is_rejected_without_server_error(client):
+    create_user(client)
+    response=client.post('/api/colecao',json={'id_dados_forma_atual':1},headers={'X-CSRF-Token':'inválido'})
+    assert response.status_code==403

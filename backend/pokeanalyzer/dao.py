@@ -39,7 +39,8 @@ class PokemonDAO:
     _SELECT = """SELECT dfj.id_dados_forma, e.id_especie, f.id_forma, j.id_jogo,
                       e.numero_nacional, e.nome_pt, f.nome_forma, j.nome AS nome_jogo,
                       dfj.status_presenca, dfj.pode_ser_registrada, f.codigo_forma, e.nome_en,
-                      f.fonte_url, f.data_verificacao
+                      dfj.fonte_url, dfj.data_verificacao,
+                      f.fonte_url AS fonte_forma_url, f.data_verificacao AS data_verificacao_forma
                FROM ESPECIE e
                LEFT JOIN FORMA f ON f.id_especie = e.id_especie
                LEFT JOIN DADOS_FORMA_JOGO dfj ON dfj.id_forma = f.id_forma
@@ -79,7 +80,8 @@ class PokemonDAO:
             if len(items) > 1:
                 first = replace(first, id_dados_forma=None, id_jogo=None, nome_jogo=None,
                                 status_presenca=None, pode_ser_registrada=None, tipos=())
-            result.append(replace(first, fichas=sheets))
+            result.append(replace(first, fichas=sheets, fonte_url=first.fonte_forma_url,
+                                  data_verificacao=first.data_verificacao_forma))
         return result
 
     def obter_forma(self, id_forma):

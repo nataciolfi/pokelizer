@@ -33,7 +33,7 @@ def csrf_required(view: Callable):
     def wrapped(*args, **kwargs):
         expected = session.get("csrf_token")
         supplied = request.headers.get("X-CSRF-Token", "")
-        if not expected or not secrets.compare_digest(expected, supplied):
+        if not expected or not secrets.compare_digest(expected.encode("utf-8"), supplied.encode("utf-8")):
             return jsonify({"erro": "Token CSRF ausente ou inválido."}), 403
         return view(*args, **kwargs)
     return wrapped

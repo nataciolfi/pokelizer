@@ -8,8 +8,8 @@ UML: 15 implemented classes and their methods agree with Python; exports match r
 RUN: /usr/bin/python tools/check_links.py
 249 local delivery links resolve (historical archives excluded).
 RUN: /usr/bin/python -m pytest backend/tests -q
-......................................................................   [100%]
-70 passed in 8.10s
+........................................................................ [100%]
+72 passed in 9.69s
 All repeatable Stage 1 checks passed. Visual inspection is documented separately.
 POST /api/auth/cadastro: 201
 POST /api/colecao: 201

@@ -36,6 +36,8 @@ class PokemonCatalogo:
     fonte_url: str | None = None
     data_verificacao: str | None = None
     fichas: tuple[dict[str, Any], ...] = ()
+    fonte_forma_url: str | None = None
+    data_verificacao_forma: str | None = None
 
     def to_dict(self) -> dict[str, Any]:
         data = asdict(self)
