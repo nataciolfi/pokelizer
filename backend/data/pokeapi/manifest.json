@@ -106,6 +106,16 @@
     "nature_names.csv": {
       "sha256": "94d7d6adbfe4c8207f7896dd64dc1490f83d3bf7744beac83e6e03cd459ed70b",
       "url": "https://raw.githubusercontent.com/PokeAPI/pokeapi/8a92bfa7dab2f12b84b5d151562f9857c133ff30/data/v2/csv/nature_names.csv"
+    },
+    "pokemon_dex_numbers.csv": {
+      "sha256": "b8fe3353eec2b0ba4fc37e07e94ffa9f33ce96a7f9856c643a18b3ad518cd393",
+      "url": "https://raw.githubusercontent.com/PokeAPI/pokeapi/8a92bfa7dab2f12b84b5d151562f9857c133ff30/data/v2/csv/pokemon_dex_numbers.csv",
+      "retrieved_at": "2026-11-14"
+    },
+    "pokedexes.csv": {
+      "sha256": "aa6570e15092f80750431a59a8712410cc114d74ffffb75b3334df64b33b3d07",
+      "url": "https://raw.githubusercontent.com/PokeAPI/pokeapi/8a92bfa7dab2f12b84b5d151562f9857c133ff30/data/v2/csv/pokedexes.csv",
+      "retrieved_at": "2026-11-14"
     }
   }
 }

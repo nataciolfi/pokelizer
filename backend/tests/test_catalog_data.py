@@ -200,3 +200,29 @@ def test_sword_context_reimport_preserves_existing_curated_values(app):
         importar_catalogo()
         assert db.execute('SELECT hp_base FROM DADOS_FORMA_JOGO WHERE id_dados_forma=?',(sheet,)).fetchone()[0]==42
         assert db.execute('SELECT slot FROM HABILIDADE_FORMA_JOGO WHERE id_habilidade_forma=?',(ability,)).fetchone()[0]=='FIXTURE curated'
+
+
+def test_official_series_14_eligibility_is_conditional_and_contextual(app, client):
+    with app.app_context():
+        report=importar_catalogo()
+        db=get_db()
+        sheet=db.execute("""SELECT d.id_dados_forma FROM DADOS_FORMA_JOGO d JOIN FORMA f USING(id_forma)
+            JOIN JOGO j USING(id_jogo) WHERE f.codigo_forma='pikachu' AND j.nome='Sword'""").fetchone()[0]
+        rule=db.execute("""SELECT r.id_regulamento FROM REGULAMENTO r JOIN MECANICA_JOGO m USING(id_mecanica)
+            JOIN JOGO j USING(id_jogo) WHERE j.nome='Sword' AND r.codigo='ranked-battles-series-14'""").fetchone()[0]
+        shield_rule=db.execute("""SELECT r.id_regulamento FROM REGULAMENTO r JOIN MECANICA_JOGO m USING(id_mecanica)
+            JOIN JOGO j USING(id_jogo) WHERE j.nome='Shield' AND r.codigo='ranked-battles-series-14'""").fetchone()[0]
+        assert report['contagens_banco']['REGULAMENTO']==2
+    result=client.get(f'/api/regulamentos/{rule}/formas/{sheet}')
+    assert result.status_code==200
+    assert result.json['status']=='condicional' and 'battle-ready' in result.json['condicao']
+    assert 'pokemon.com' in result.json['fonte_url'] and result.json['legalidade_completa_verificada'] is False
+    assert client.get(f'/api/regulamentos/{shield_rule}/formas/{sheet}').status_code==400
+    with app.app_context():
+        assert importar_catalogo()['contagens_banco']['REGULAMENTO']==2
+        db=get_db()
+        db.execute("UPDATE ELEGIBILIDADE_FORMA_REGULAMENTO SET status='proibido' WHERE id_regulamento=? AND id_dados_forma=?",(rule,sheet))
+        db.commit()
+        with pytest.raises(ValueError,match='Conflito de curadoria'):
+            importar_catalogo()
+        assert db.execute('SELECT status FROM ELEGIBILIDADE_FORMA_REGULAMENTO WHERE id_regulamento=? AND id_dados_forma=?',(rule,sheet)).fetchone()[0]=='proibido'

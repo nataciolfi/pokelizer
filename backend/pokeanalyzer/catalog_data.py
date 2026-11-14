@@ -72,6 +72,8 @@ def importar_catalogo(directory=SNAPSHOT):
         importar_mecanicas_swsh(db, data)
         from .contextual_data import importar_contextos_swsh
         importar_contextos_swsh(db, data, manifest)
+        from .curated_data import importar_regulamento_swsh
+        importar_regulamento_swsh(db, data, manifest)
         if db.execute('PRAGMA foreign_key_check').fetchone():
             raise ValueError('Snapshot violou integridade; carga revertida.')
     return cobertura(directory)
@@ -132,8 +134,8 @@ def cobertura(directory=SNAPSHOT):
         'cobertura_snapshot': {'especies_importadas': matched['especies'], 'especies_fonte': len(data['pokemon_species.csv']),
                               'formas_importadas': matched['formas'], 'formas_fonte': len(data['pokemon_forms.csv'])},
         'nomes_exibidos': 'Inglês da fonte, sem tradução portuguesa confirmada; códigos de forma preservados.',
-        'pendencias': ['Fichas e presença por jogo', 'Tipos, habilidades e atributos históricos por jogo',
-                      'Mecânicas e limites fora de Sword/Shield', 'Regulamentos e elegibilidade com fontes específicas',
+        'pendencias': ['Fichas e presença por jogo', 'Tipos, habilidades e atributos históricos fora das fichas Sword/Shield importadas',
+                      'Mecânicas e limites fora de Sword/Shield', 'Outros regulamentos, formas e elegibilidades com fontes específicas',
                       'Perfis de referência competitiva verificados'],
         'fichas_outras_fontes_preservadas': db.execute("SELECT count(*) FROM DADOS_FORMA_JOGO WHERE fonte_url IS NULL OR fonte_url!=?", (manifest['files']['encounters.csv.gz']['url'],)).fetchone()[0],
         'versoes_excluidas_identidade_ambigua': ['red', 'red-japan', 'blue', 'blue-japan'],
