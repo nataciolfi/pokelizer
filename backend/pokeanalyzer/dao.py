@@ -1,10 +1,26 @@
 """DAOs: toda consulta SQL fica concentrada nesta camada."""
 
 import sqlite3
+import csv
+from functools import lru_cache
+from pathlib import Path
 from typing import Any
 
 from .db import get_db, transaction
 from .models import PokemonCatalogo, PokemonColecao, Usuario
+
+
+@lru_cache(maxsize=1)
+def _imagens_formas():
+    """PokéAPI sprite IDs map to Pokémon, not arbitrary shared forms."""
+    path = Path(__file__).resolve().parents[1] / 'data/pokeapi/pokemon_forms.csv'
+    with path.open(encoding='utf-8', newline='') as source:
+        rows = list(csv.DictReader(source))
+    counts = {}
+    for row in rows:
+        counts[row['pokemon_id']] = counts.get(row['pokemon_id'], 0) + 1
+    return {row['identifier']: 'https://raw.githubusercontent.com/PokeAPI/sprites/c0542f7c51215d9672439012838c99f520596cbd/sprites/pokemon/' + row['pokemon_id'] + '.png'
+            for row in rows if counts[row['pokemon_id']] == 1 and row['is_default'] == '1'}
 
 
 class UsuarioDAO:
@@ -104,7 +120,8 @@ class PokemonDAO:
                WHERE tfj.id_dados_forma = ? ORDER BY tfj.posicao""",
             (row["id_dados_forma"],),
         ).fetchall()
-        return PokemonCatalogo(**dict(row), tipos=tuple(item["nome_tipo"] for item in tipos_rows))
+        return PokemonCatalogo(**dict(row), tipos=tuple(item["nome_tipo"] for item in tipos_rows),
+                              imagem_url=_imagens_formas().get(row["codigo_forma"]))
 
 
 class ColecaoDAO:

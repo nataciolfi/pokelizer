@@ -1,4 +1,4 @@
-from test_api import app
+from test_api import app, client
 from pokeanalyzer.catalog_data import importar_catalogo, ler_snapshot
 from pokeanalyzer.db import get_db
 import pytest
@@ -17,7 +17,13 @@ def test_real_snapshot_repeatable_preserves_private_data_and_reports_unknowns(ap
         assert c['formas_importadas']==c['formas_fonte']>c['especies_fonte']
         assert db.execute('SELECT nome_usuario FROM USUARIO').fetchone()[0]=='FIXTURE preserved'
         assert db.execute("SELECT count(*) FROM ESPECIE WHERE nome_en='Pikachu'").fetchone()[0]==1
-        assert db.execute('SELECT count(*) FROM DADOS_FORMA_JOGO').fetchone()[0]==1 # only fixture, no invented game data
+        assert first['fichas_encontro_documentado'] >= 5000
+        assert first['fichas_outras_fontes_preservadas'] == 1
+        assert db.execute("""SELECT count(*) FROM DADOS_FORMA_JOGO d JOIN FORMA f USING(id_forma)
+          JOIN JOGO j USING(id_jogo) WHERE f.codigo_forma='pikachu' AND j.nome='Gold'
+          AND d.status_presenca='nativa' AND d.pode_ser_registrada='sim' AND d.fonte_url LIKE '%encounters.csv'""").fetchone()[0] == 1
+        assert db.execute("""SELECT count(*) FROM DADOS_FORMA_JOGO d JOIN JOGO j USING(id_jogo)
+          WHERE j.nome IN ('Red','Blue') AND d.fonte_url LIKE '%encounters.csv'""").fetchone()[0] == 0
         assert db.execute("SELECT count(*) FROM FORMA WHERE fonte_url=? AND forma_padrao=0 AND categoria!='nao_verificada'",(first['fonte_url'],)).fetchone()[0]==0
         assert not db.execute('PRAGMA foreign_key_check').fetchall()
 
@@ -44,3 +50,46 @@ def test_curated_form_category_is_not_silently_replaced(app):
         with pytest.raises(ValueError,match='Conflito em forma'):
             importar_catalogo()
         assert db.execute('SELECT categoria FROM FORMA WHERE id_forma=?',(form,)).fetchone()[0]=='FIXTURE curated category'
+
+
+def test_context_import_preserves_curated_rows(app):
+    with app.app_context():
+        importar_catalogo()
+        db=get_db()
+        row=db.execute("""SELECT d.id_dados_forma FROM DADOS_FORMA_JOGO d JOIN FORMA f USING(id_forma)
+            JOIN JOGO j USING(id_jogo) WHERE f.codigo_forma='pikachu' AND j.nome='Gold'""").fetchone()
+        db.execute("UPDATE DADOS_FORMA_JOGO SET motivo_registro='FIXTURE curated note' WHERE id_dados_forma=?",(row[0],))
+        db.commit()
+        importar_catalogo()
+        assert db.execute('SELECT motivo_registro FROM DADOS_FORMA_JOGO WHERE id_dados_forma=?',(row[0],)).fetchone()[0]=='FIXTURE curated note'
+
+
+def test_catalog_image_mapping_uses_unambiguous_source_identifier(app, client):
+    with app.app_context():
+        importar_catalogo()
+    result=client.get('/api/pokemon?busca=bulbasaur').json
+    item=next(row for row in result['itens'] if row['codigo_forma']=='bulbasaur')
+    assert item['imagem_url'].endswith('/sprites/pokemon/1.png')
+    assert 'c0542f7c51215d9672439012838c99f520596cbd' in item['imagem_url']
+
+
+def test_real_catalog_to_owned_specimen_and_repeat_import(app, client):
+    from test_api import create_user, get_csrf
+    create_user(client)
+    with app.app_context():
+        first = importar_catalogo()
+        db = get_db()
+        gold = db.execute("SELECT id_jogo FROM JOGO WHERE nome='Gold'").fetchone()[0]
+    result = client.get('/api/pokemon', query_string={'busca':'pikachu','jogo':gold})
+    assert result.status_code == 200
+    row = next(x for x in result.json['itens'] if x['codigo_forma']=='pikachu')
+    assert len(row['fichas']) == 1
+    sheet = row['fichas'][0]
+    assert sheet['status_presenca'] == 'nativa'
+    assert sheet['fonte_url'].endswith('/encounters.csv')
+    added = client.post('/api/colecao', json={'id_dados_forma_atual':sheet['id_dados_forma'], 'apelido':'TESTE real'}, headers={'X-CSRF-Token':get_csrf(client)})
+    assert added.status_code == 201
+    identifier=added.json['id_pokemon_colecao']
+    with app.app_context():
+        assert importar_catalogo()['fichas_encontro_documentado']==first['fichas_encontro_documentado']
+    assert client.get(f'/api/colecao/{identifier}').json['apelido']=='TESTE real'

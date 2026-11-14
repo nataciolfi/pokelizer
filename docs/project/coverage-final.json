@@ -1,0 +1,36 @@
+{
+  "snapshot_commit": "8a92bfa7dab2f12b84b5d151562f9857c133ff30",
+  "fonte_url": "https://github.com/PokeAPI/pokeapi/tree/8a92bfa7dab2f12b84b5d151562f9857c133ff30/data/v2/csv",
+  "contagens_banco": {
+    "ESPECIE": 1025,
+    "FORMA": 1579,
+    "JOGO": 51,
+    "DADOS_FORMA_JOGO": 5072,
+    "MECANICA_JOGO": 0,
+    "REGULAMENTO": 0,
+    "ELEGIBILIDADE_FORMA_REGULAMENTO": 0
+  },
+  "cobertura_snapshot": {
+    "especies_importadas": 1025,
+    "especies_fonte": 1025,
+    "formas_importadas": 1579,
+    "formas_fonte": 1579
+  },
+  "nomes_exibidos": "Inglês da fonte, sem tradução portuguesa confirmada; códigos de forma preservados.",
+  "pendencias": [
+    "Fichas e presença por jogo",
+    "Tipos, habilidades e atributos históricos por jogo",
+    "Versões de mecânica e limites documentados",
+    "Regulamentos e elegibilidade com fontes específicas",
+    "Perfis de referência competitiva verificados"
+  ],
+  "fichas_outras_fontes_preservadas": 0,
+  "versoes_excluidas_identidade_ambigua": [
+    "red",
+    "red-japan",
+    "blue",
+    "blue-japan"
+  ],
+  "fichas_encontro_documentado": 5072,
+  "observacao": "Cobertura é relativa ao snapshot, não certifica completude oficial atual. Ausência de ficha não indica ausência no jogo."
+}

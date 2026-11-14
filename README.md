@@ -15,7 +15,7 @@ A entrega é desenvolvida na branch `stage2/functional-delivery`, sobre a reconc
 ## Executar
 
 ```bash
-git clone --branch stage2/functional-delivery https://github.com/nataciolfi/pokelizer.git
+git clone --branch final/complete-project https://github.com/nataciolfi/pokelizer.git
 cd pokelizer
 python3 -m venv .venv
 . .venv/bin/activate
@@ -38,6 +38,6 @@ PYTHONPATH=backend python tools/demonstrate_stage2.py
 
 O conjunto inclui as regressões da base, isolamento entre usuários, CRUD, transações e limites, análise, busca/catálogo, carga real, SQL e consistência dos modelos/UML. A revisão visual das imagens é registrada separadamente em [visual-review.md](docs/diagrams/visual-review.md).
 
-A carga global verificada contém **1.025 espécies, 1.579 formas e 51 jogos** do snapshot PokéAPI. Fichas e regras por jogo ainda precisam de fontes específicas; essa cobertura não é apresentada como concluída. A demonstração contextual usa fatos sintéticos identificados como `FIXTURE`. Zero, ausência, desconhecimento e sistemas não aplicáveis permanecem distintos. Elegibilidade de forma não comprova legalidade completa do exemplar.
+A carga verificada contém **1.025 espécies, 1.579 formas, 51 jogos e 5.072 fichas** de encontros selvagens com fonte identificada. A cobertura por jogo é parcial; mecânicas, tipos, habilidades e regulamentos ainda precisam de fontes específicas. A demonstração contextual usa fatos sintéticos identificados como `FIXTURE`. Zero, ausência, desconhecimento e sistemas não aplicáveis permanecem distintos. Elegibilidade de forma não comprova legalidade completa do exemplar.
 
 O documento do professor fixa Etapa 1 em 09/11, Etapa 2 em 13/11 e final em 17/11/2026. O usuário informou três dias para regularização; a diferença deve ser confirmada com o professor. Convite do colaborador e envio ao Classroom são ações manuais descritas no [roteiro](docs/stage2/README.md).

@@ -31,6 +31,7 @@ class PokemonCatalogo:
     status_presenca: str | None
     pode_ser_registrada: str | None
     tipos: tuple[str, ...] = ()
+    imagem_url: str | None = None
     codigo_forma: str | None = None
     nome_en: str | None = None
     fonte_url: str | None = None

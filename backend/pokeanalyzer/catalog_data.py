@@ -1,6 +1,8 @@
 """Pinned upstream identities. Game mechanics are never inferred from global rows."""
 import csv
 import hashlib
+import gzip
+from collections import Counter
 import json
 from pathlib import Path
 from .db import get_db, transaction
@@ -15,7 +17,12 @@ def ler_snapshot(directory=SNAPSHOT):
         raw = (directory / name).read_bytes()
         if hashlib.sha256(raw).hexdigest() != meta['sha256']:
             raise ValueError(f'Snapshot alterado: {name}. Nenhum dado importado.')
-        if name.endswith('.csv'):
+        if name.endswith('.csv.gz'):
+            raw = gzip.decompress(raw)
+            if hashlib.sha256(raw).hexdigest() != meta['raw_sha256']:
+                raise ValueError(f'Conteúdo descompactado alterado: {name}.')
+            tables[name.removesuffix('.gz')] = list(csv.DictReader(raw.decode('utf-8').splitlines()))
+        elif name.endswith('.csv'):
             tables[name] = list(csv.DictReader(raw.decode('utf-8').splitlines()))
     return manifest, tables
 
@@ -60,10 +67,54 @@ def importar_catalogo(directory=SNAPSHOT):
             if not existing:
                 db.execute('INSERT INTO JOGO(nome,geracao,fonte_url,data_verificacao) VALUES(?,?,?,?)',
                     (name, int(groups[r['version_group_id']]['generation_id']), source, date))
+        importar_encontros(db, data, manifest)
         if db.execute('PRAGMA foreign_key_check').fetchone():
             raise ValueError('Snapshot violou integridade; carga revertida.')
     return cobertura(directory)
 
+
+
+def importar_encontros(db, data, manifest):
+    """Only unambiguous, independently registrable wild encounters, not game indices."""
+    forms_by_pokemon = {}
+    for row in data['pokemon_forms.csv']:
+        forms_by_pokemon.setdefault(row['pokemon_id'], []).append(row)
+    one_form = {pid: rows[0] for pid, rows in forms_by_pokemon.items()
+                if len(rows) == 1 and rows[0]['is_default'] == '1' and rows[0]['is_battle_only'] == '0'}
+    pokemon = {r['id']: r for r in data['pokemon.csv']}
+    names = {r['version_id']: r['name'] for r in data['version_names.csv'] if r['local_language_id'] == '9'}
+    versions = {v['id']: names.get(v['id'], v['identifier']) for v in data['versions.csv']}
+    name_counts = Counter(name.casefold() for name in versions.values())
+    versions = {vid: name for vid, name in versions.items() if name_counts[name.casefold()] == 1}
+    source = manifest['files']['encounters.csv.gz']['url']
+    date = manifest['files']['encounters.csv.gz']['retrieved_at']
+    # Explicit wild methods only: gifts, NPC trades, bonus discs and snag events
+    # also occur in encounters.csv and must not be described as wild capture.
+    wild_method_ids = {str(n) for n in (*range(1,18), 22, 23, 24)}
+    wild_slots = {r['id']: r['version_group_id'] for r in data['encounter_slots.csv'] if r['encounter_method_id'] in wild_method_ids}
+    version_groups = {r['id']: r['version_group_id'] for r in data['versions.csv']}
+    # Absence of a matching encounter never implies absence in the game.
+    pairs = sorted({(r['pokemon_id'], r['version_id']) for r in data['encounters.csv']
+                    if r['pokemon_id'] in one_form and r['version_id'] in versions and r['encounter_slot_id'] in wild_slots and wild_slots[r['encounter_slot_id']] == version_groups[r['version_id']]},
+                   key=lambda p: (int(p[1]), int(p[0])))
+    method = db.execute("SELECT id_metodo FROM METODO_OBTENCAO WHERE nome=? COLLATE NOCASE", ('Encontro selvagem',)).fetchone()
+    if not method:
+        db.execute("INSERT INTO METODO_OBTENCAO(nome,descricao) VALUES(?,?)", ('Encontro selvagem','Encontro selvagem documentado na fonte; condições variam por local.'))
+        method = db.execute("SELECT last_insert_rowid()").fetchone()
+    for pid, vid in pairs:
+        row = one_form[pid]
+        existing_form = db.execute("SELECT f.id_forma FROM FORMA f JOIN ESPECIE e USING(id_especie) WHERE e.numero_nacional=? AND f.codigo_forma=?", (int(pokemon[pid]['species_id']), row['identifier'])).fetchone()
+        game = db.execute("SELECT id_jogo FROM JOGO WHERE nome=? COLLATE NOCASE", (versions[vid],)).fetchone()
+        if not existing_form or not game:
+            raise ValueError('Forma ou jogo da fonte não encontrado; carga revertida.')
+        current = db.execute("SELECT * FROM DADOS_FORMA_JOGO WHERE id_forma=? AND id_jogo=?", (existing_form[0],game[0])).fetchone()
+        if current:
+            # Curated or conflicting facts are never replaced. They remain visible in the coverage report.
+            continue
+        cursor = db.execute("""INSERT INTO DADOS_FORMA_JOGO(id_forma,id_jogo,status_presenca,pode_ser_registrada,fonte_url,data_verificacao)
+                                VALUES(?,?,'nativa','sim',?,?)""", (existing_form[0],game[0],source,date))
+        db.execute("INSERT INTO METODO_FORMA_JOGO(id_dados_forma,id_metodo,fonte_url,data_verificacao) VALUES(?,?,?,?)",
+                   (cursor.lastrowid,method[0],source,date))
 
 def cobertura(directory=SNAPSHOT):
     manifest, data = ler_snapshot(directory)
@@ -80,4 +131,7 @@ def cobertura(directory=SNAPSHOT):
         'pendencias': ['Fichas e presença por jogo', 'Tipos, habilidades e atributos históricos por jogo',
                       'Versões de mecânica e limites documentados', 'Regulamentos e elegibilidade com fontes específicas',
                       'Perfis de referência competitiva verificados'],
+        'fichas_outras_fontes_preservadas': db.execute("SELECT count(*) FROM DADOS_FORMA_JOGO WHERE fonte_url IS NULL OR fonte_url!=?", (manifest['files']['encounters.csv.gz']['url'],)).fetchone()[0],
+        'versoes_excluidas_identidade_ambigua': ['red', 'red-japan', 'blue', 'blue-japan'],
+        'fichas_encontro_documentado': db.execute("SELECT count(*) FROM DADOS_FORMA_JOGO WHERE fonte_url=?", (manifest['files']['encounters.csv.gz']['url'],)).fetchone()[0],
         'observacao': 'Cobertura é relativa ao snapshot, não certifica completude oficial atual. Ausência de ficha não indica ausência no jogo.'}

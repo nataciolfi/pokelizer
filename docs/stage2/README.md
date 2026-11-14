@@ -1,5 +1,7 @@
 # Etapa 2 — backend e regularização da Etapa 1
 
+> Registro histórico da entrega em `1f5d84e`. Para a retomada e a cobertura contextual mais recente, consulte [progress.md](../project/progress.md) e [coverage-final.json](../project/coverage-final.json).
+
 Base auditada: `91875bd`, branch `stage1/reconciled-architecture`. A árvore estava limpa e as branches remotas não tinham avanços posteriores. A `main` continua histórica; esta entrega é desenvolvida em `stage2/functional-delivery`.
 
 O documento do professor pede classes, DAOs, Flask e cadastro/consulta no banco, sem exigir frontend finalizado nesta etapa. Indica 13/11/2026 para Etapa 2 e 17/11 para a final. O pedido informa três dias para regularização: confirmar o prazo com o professor sem alterar o documento. O escopo final permanece integral.
