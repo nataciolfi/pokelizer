@@ -64,3 +64,13 @@ Corrigida a projeção das fontes: a evidência global da forma não sobrescreve
 ## Continuação em 14/11/2026
 
 Revisão da carga: formas alternativas recebem categoria `nao_verificada`, em vez de herdar `padrao` do SQL sem evidência. Reimportação detecta divergência com categorias já curadas e aborta preservando a base, sem sobrescrever silenciosamente. Regressões verificam as categorias de todas as formas do snapshot e a preservação de curadoria. Verificação consolidada: **73 testes passaram**; demais checks e demonstração passaram. README agora aponta a interface já escrita e seu QA pendente.
+
+## Publicação e ponto de retomada
+
+Branch remota: `stage2/functional-delivery`, disponível no GitHub. O conector publicou a mesma árvore de cada commit local; cada blob binário e cada árvore foram comparados por SHA. O histórico remoto usa metadados do conector, por isso os hashes de commit diferem dos primeiros commits locais. Mapeamento em `docs/project/published-commits.json`; árvores e conteúdo são idênticos. O checkpoint de código/curadoria publicado é `5706f6c98edcc72f9b88900bd5a0b0fe07ef81bd`; esta nota de continuidade é um commit documental posterior.
+
+Para evitar divergência na retomada, o checkout será alinhado ao histórico remoto conferido, preservando o histórico inicial sob a tag local `stage2-session-history-2026-11-14`. Ler o Git real e este arquivo antes de continuar. `main`, branches anteriores e banco pessoal não foram alterados. Os artefatos para Classroom são uma exportação dos arquivos versionados, fora do repositório, sem banco pessoal, .git ou .venv.
+
+Estado final verificado: backend funcional com **73 testes**, checks de SQL/dicionário/brModelo/UML/links e demonstração passados. Não há migração nova: 001 permanece imutável. Diagramas nativos e pranchas revisados visualmente, UML com 15 classes reais. Dados reais: 1.025 espécies/1.579 formas/51 jogos do snapshot; fichas/mecânicas/regulamentos/referências competitivas reais permanecem pendentes de curadoria e fontes específicas. Interface Fetch já escrita, porém QA visual/ponta a ponta bloqueado pelas permissões de socket/IPC deste ambiente.
+
+**Próximo trabalho obrigatório:** completar cobertura contextual com fontes e relatório; testar a interface em navegador num ambiente que permita servidor local e corrigir o que for encontrado. Roteiro em `docs/project/frontend.md`. A entrega final do projeto não foi declarada pronta. Confirmar prazo de regularização, conta/acesso/aceite do professor e envio/anexos Classroom manualmente, conforme `docs/stage2/README.md`. Nenhum convite, submissão Classroom, merge em main ou hospedagem foi realizado.

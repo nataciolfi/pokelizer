@@ -1,0 +1,30 @@
+{
+  "branch": "stage2/functional-delivery",
+  "base": "91875bd47bf83adb49f05734995b4a6b8e25b5e2",
+  "commits": [
+    {
+      "local": "a3010c9d3fda526921bbbfb00d4786390293f118",
+      "remote": "ff44072b60df3b845e5d43b8e2732976cb2e2c3e"
+    },
+    {
+      "local": "6d464b8cd0f0226d69aeb1443b5c5ce89a051410",
+      "remote": "8f03c160dfdf63d185dc0ec9c4b40dae5e2e8322"
+    },
+    {
+      "local": "ba2c9ca53a870be5f0faa8a78009badeeb5aa429",
+      "remote": "7013567e6c5aa7ef068e81bb16f1b4a311819e82"
+    },
+    {
+      "local": "58a19c370fb465cb6d23a6e16d86b6d0dea97694",
+      "remote": "09d397774be7cbaa412c432b40380679f03ef996"
+    },
+    {
+      "local": "21c12fc5a4cb0fb0ccf1785de2334a2cbae6c880",
+      "remote": "1d7181d89b525316f1f3d2ebe15ce8381506355a"
+    },
+    {
+      "local": "2644837f5c20ffe7ae4ba179f8d0b5a0e49110d5",
+      "remote": "5706f6c98edcc72f9b88900bd5a0b0fe07ef81bd"
+    }
+  ]
+}

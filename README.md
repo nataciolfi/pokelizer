@@ -15,6 +15,8 @@ A entrega é desenvolvida na branch `stage2/functional-delivery`, sobre a reconc
 ## Executar
 
 ```bash
+git clone --branch stage2/functional-delivery https://github.com/nataciolfi/pokelizer.git
+cd pokelizer
 python3 -m venv .venv
 . .venv/bin/activate
 python -m pip install -r backend/requirements.txt
