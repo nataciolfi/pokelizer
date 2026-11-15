@@ -104,6 +104,8 @@ class ColecaoService:
             raise ValueError("A ficha de forma/jogo informada não existe.")
         if contexto["status_presenca"] == "ausente" or contexto["pode_ser_registrada"] == "nao":
             raise ValueError("Esta forma não pode ser registrada neste contexto de jogo.")
+        if contexto["status_presenca"] not in ("nativa", "transferivel") or contexto["pode_ser_registrada"] != "sim":
+            raise ValueError("A presença e o registro independente desta forma ainda não foram confirmados neste jogo.")
 
         # The specimen's actual acquisition history is independent of availability
         # in its CURRENT game, which may have changed after a transfer.

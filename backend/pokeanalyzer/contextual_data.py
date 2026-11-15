@@ -1,6 +1,17 @@
-"""PokéAPI data at a pinned generation, limited to independently confirmed Sw/Sh sheets."""
-from collections import defaultdict
-from .curated_data import _obter_ou_inserir, DATE, DRAGAPULT_SOURCE
+"""Generation histories for independently sourced, unambiguous game sheets."""
+from collections import Counter, defaultdict
+from .curated_data import _obter_ou_inserir, DRAGAPULT_SOURCE
+
+CONTEXT_DATE = '2026-11-15'
+# Groups with the six-stat system and/or abilities. Generation I has one
+# Special stat; Let's Go and Legends: Arceus have no abilities in battle.
+STANDARD_GROUPS = {
+    'gold-silver', 'crystal', 'ruby-sapphire', 'emerald', 'firered-leafgreen',
+    'diamond-pearl', 'platinum', 'heartgold-soulsilver', 'black-white',
+    'black-2-white-2', 'x-y', 'omega-ruby-alpha-sapphire', 'sun-moon',
+    'ultra-sun-ultra-moon', 'sword-shield', 'the-isle-of-armor', 'the-crown-tundra',
+}
+TYPE_ONLY_GROUPS = {'red-green-japan', 'blue-japan', 'red-blue', 'yellow'}
 
 
 def _historical_rows(current, past, generation, value_field):
@@ -15,10 +26,15 @@ def _historical_rows(current, past, generation, value_field):
     return effective
 
 
-def importar_contextos_swsh(db, data, manifest):
+def importar_contextos_por_geracao(db, data, manifest):
     """Never overwrite existing curated values, types, abilities or their provenance."""
     source = manifest['source_url']
     encounter_source = manifest['files']['encounters.csv.gz']['url']
+    names = {r['version_id']:r['name'] for r in data['version_names.csv'] if r['local_language_id']=='9'}
+    versions = [(names.get(v['id'],v['identifier']),v['version_group_id']) for v in data['versions.csv']]
+    counts = Counter(name.casefold() for name, _ in versions)
+    groups = {r['id']:r for r in data['version_groups.csv']}
+    versions = {name.casefold():groups[group] for name,group in versions if counts[name.casefold()]==1}
     pokemon = {r['id']:r for r in data['pokemon.csv']}
     by_form = {(int(pokemon[f['pokemon_id']]['species_id']), f['identifier']):f['pokemon_id']
                for f in data['pokemon_forms.csv']}
@@ -46,15 +62,19 @@ def importar_contextos_swsh(db, data, manifest):
     ability_names = {r['ability_id']:r['name'] for r in data['ability_names.csv'] if r['local_language_id']=='9'}
     ability_codes = {r['id']:r['identifier'] for r in data['abilities.csv']}
     attrs = {'1':'hp_base','2':'ataque_base','3':'defesa_base','4':'ataque_especial_base','5':'defesa_especial_base','6':'velocidade_base'}
-    sheets = db.execute("""SELECT d.*,e.numero_nacional,f.codigo_forma FROM DADOS_FORMA_JOGO d
+    sheets = db.execute("""SELECT d.*,e.numero_nacional,f.codigo_forma,j.nome AS nome_jogo_fonte FROM DADOS_FORMA_JOGO d
         JOIN FORMA f USING(id_forma) JOIN ESPECIE e USING(id_especie) JOIN JOGO j USING(id_jogo)
-        WHERE j.nome IN ('Sword','Shield') AND d.fonte_url IN (?,?)""", (encounter_source,DRAGAPULT_SOURCE)).fetchall()
+        WHERE d.fonte_url IN (?,?)""", (encounter_source,DRAGAPULT_SOURCE)).fetchall()
     for sheet in sheets:
+        group = versions.get(sheet['nome_jogo_fonte'].casefold())
+        if not group or group['identifier'] not in STANDARD_GROUPS | TYPE_ONLY_GROUPS:
+            continue
+        generation = int(group['generation_id'])
         pid = by_form.get((sheet['numero_nacional'],sheet['codigo_forma']))
         if pid is None:
             raise ValueError('Forma contextual não corresponde ao snapshot; carga revertida.')
         selected_types = current_types[pid]
-        eligible = [g for g in past_types[pid] if g >= 8]
+        eligible = [g for g in past_types[pid] if g >= generation]
         if eligible:
             selected_types = {r['slot']:r for r in past_types[pid][min(eligible)]}
         has_types = db.execute('SELECT 1 FROM TIPO_FORMA_JOGO WHERE id_dados_forma=? LIMIT 1',(sheet['id_dados_forma'],)).fetchone()
@@ -65,14 +85,20 @@ def importar_contextos_swsh(db, data, manifest):
                     raise ValueError('Tipo ou slot inesperado no snapshot; carga revertida.')
                 kind = _obter_ou_inserir(db,'TIPO',{'nome_tipo':name},{},[])
                 db.execute('INSERT INTO TIPO_FORMA_JOGO(id_dados_forma,id_tipo,posicao) VALUES(?,?,?)',(sheet['id_dados_forma'],kind['id_tipo'],int(slot)))
-            db.execute("UPDATE DADOS_FORMA_JOGO SET status_tipos='aplicavel',fonte_tipos=?,data_verificacao_tipos=? WHERE id_dados_forma=?",(source,DATE,sheet['id_dados_forma']))
-        stats = _historical_rows(current_stats[pid],past_stats[pid],8,'base_stat')
+            db.execute("UPDATE DADOS_FORMA_JOGO SET status_tipos='aplicavel',fonte_tipos=?,data_verificacao_tipos=? WHERE id_dados_forma=?",(source,CONTEXT_DATE,sheet['id_dados_forma']))
+        # Do not map Generation I's unified Special stat into two different fields.
+        if group['identifier'] not in STANDARD_GROUPS:
+            continue
+        stats = _historical_rows(current_stats[pid],past_stats[pid],generation,'base_stat')
         if all(sheet[column] is None for column in attrs.values()) and sheet['fonte_estatisticas'] is None and set(stats)==set(attrs):
             db.execute('UPDATE DADOS_FORMA_JOGO SET '+','.join(column+'=?' for column in attrs.values())+',fonte_estatisticas=?,data_verificacao_estatisticas=? WHERE id_dados_forma=?',
-                tuple(int(stats[n]) for n in attrs)+(source,DATE,sheet['id_dados_forma']))
+                tuple(int(stats[n]) for n in attrs)+(source,CONTEXT_DATE,sheet['id_dados_forma']))
+        # Generations I and II have no abilities; omission here does not mean zero.
+        if generation < 3:
+            continue
         has_abilities = db.execute('SELECT 1 FROM HABILIDADE_FORMA_JOGO WHERE id_dados_forma=? LIMIT 1',(sheet['id_dados_forma'],)).fetchone()
         if not has_abilities:
-            abilities = _historical_rows(current_abilities[pid],past_abilities[pid],8,'ability_id')
+            abilities = _historical_rows(current_abilities[pid],past_abilities[pid],generation,'ability_id')
             for slot, ability_id in sorted(abilities.items()):
                 if not ability_id:
                     continue
@@ -80,5 +106,6 @@ def importar_contextos_swsh(db, data, manifest):
                 if not name:
                     raise ValueError('Habilidade sem nome na fonte; carga revertida.')
                 ability = _obter_ou_inserir(db,'HABILIDADE',{'nome':name},{},[])
-                db.execute('''INSERT INTO HABILIDADE_FORMA_JOGO(id_dados_forma,id_habilidade,slot,fonte_url,data_verificacao)
-                    VALUES(?,?,?,?,?)''',(sheet['id_dados_forma'],ability['id_habilidade'],'slot-'+slot,source,DATE))
+                db.execute('''INSERT INTO HABILIDADE_FORMA_JOGO(id_dados_forma,id_habilidade,slot,condicao,fonte_url,data_verificacao)
+                    VALUES(?,?,?,?,?,?)''',(sheet['id_dados_forma'],ability['id_habilidade'],'slot-'+slot,
+                    'Habilidade potencial na geração; obtenção nesta versão não comprovada.',source,CONTEXT_DATE))

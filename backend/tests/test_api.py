@@ -147,6 +147,20 @@ def test_absent_form_cannot_be_added_to_collection(client, app):
     assert response.status_code == 400
 
 
+@pytest.mark.parametrize('presence,registrable', [('nativa', None), ('nao_verificada', 'sim')])
+def test_unverified_form_context_is_rejected_with_clear_reason(client, app, presence, registrable):
+    create_user(client)
+    with app.app_context():
+        db=get_db()
+        db.execute('UPDATE DADOS_FORMA_JOGO SET status_presenca=?,pode_ser_registrada=? WHERE id_dados_forma=1',
+                   (presence,registrable))
+        db.commit()
+    response=client.post('/api/colecao',json={'id_dados_forma_atual':1},headers={'X-CSRF-Token':get_csrf(client)})
+    assert response.status_code==400
+    assert 'ainda não foram confirmados' in response.json['erro']
+    assert client.get('/api/colecao').json['total']==0
+
+
 def test_login_after_logout(client):
     create_user(client, "login_user", "login@example.com")
     client.post("/api/auth/logout", headers={"X-CSRF-Token": get_csrf(client)})

@@ -71,8 +71,8 @@ def importar_catalogo(directory=SNAPSHOT):
         from .curated_data import importar_mecanicas_swsh, importar_dragapult
         importar_mecanicas_swsh(db, data)
         importar_dragapult(db)
-        from .contextual_data import importar_contextos_swsh
-        importar_contextos_swsh(db, data, manifest)
+        from .contextual_data import importar_contextos_por_geracao
+        importar_contextos_por_geracao(db, data, manifest)
         from .curated_data import importar_regulamento_swsh
         importar_regulamento_swsh(db, data, manifest)
         from .curated_data import importar_perfis_dragapult
@@ -134,11 +134,23 @@ def cobertura(directory=SNAPSHOT):
     matched = {
         'especies': db.execute('SELECT count(*) FROM ESPECIE WHERE fonte_url=?', (manifest['source_url'],)).fetchone()[0],
         'formas': db.execute('SELECT count(*) FROM FORMA WHERE fonte_url=?', (manifest['source_url'],)).fetchone()[0]}
+    games = [dict(row) for row in db.execute("""SELECT j.nome,j.geracao,
+        COUNT(d.id_dados_forma) AS fichas,
+        SUM(CASE WHEN d.fonte_tipos IS NOT NULL THEN 1 ELSE 0 END) AS tipos_com_fonte,
+        SUM(CASE WHEN d.fonte_estatisticas IS NOT NULL AND d.hp_base IS NOT NULL AND d.ataque_base IS NOT NULL
+            AND d.defesa_base IS NOT NULL AND d.ataque_especial_base IS NOT NULL
+            AND d.defesa_especial_base IS NOT NULL AND d.velocidade_base IS NOT NULL THEN 1 ELSE 0 END) AS seis_estatisticas_com_fonte,
+        SUM(CASE WHEN d.id_dados_forma IS NOT NULL AND d.fonte_tipos IS NULL THEN 1 ELSE 0 END) AS tipos_sem_fonte,
+        SUM(CASE WHEN d.id_dados_forma IS NOT NULL AND d.fonte_estatisticas IS NULL THEN 1 ELSE 0 END) AS estatisticas_sem_fonte,
+        SUM(CASE WHEN EXISTS (SELECT 1 FROM HABILIDADE_FORMA_JOGO h
+            WHERE h.id_dados_forma=d.id_dados_forma AND h.fonte_url IS NOT NULL) THEN 1 ELSE 0 END) AS fichas_com_alguma_habilidade_com_fonte
+        FROM JOGO j LEFT JOIN DADOS_FORMA_JOGO d USING(id_jogo)
+        GROUP BY j.id_jogo ORDER BY j.geracao,j.nome""")]
     return {'snapshot_commit': manifest['commit'], 'fonte_url': manifest['source_url'], 'contagens_banco': counts,
         'cobertura_snapshot': {'especies_importadas': matched['especies'], 'especies_fonte': len(data['pokemon_species.csv']),
                               'formas_importadas': matched['formas'], 'formas_fonte': len(data['pokemon_forms.csv'])},
         'nomes_exibidos': 'Inglês da fonte, sem tradução portuguesa confirmada; códigos de forma preservados.',
-        'pendencias': ['Fichas e presença por jogo', 'Tipos, habilidades e atributos históricos fora das fichas Sword/Shield importadas',
+        'pendencias': ['Fichas e presença por jogo', 'Tipos, habilidades e atributos históricos para contextos ainda não importados',
                       'Mecânicas e limites fora de Sword/Shield', 'Outros regulamentos, formas e elegibilidades com fontes específicas',
                       'Outros perfis de referência competitiva verificados'],
         'fichas_outras_fontes_preservadas': db.execute("SELECT count(*) FROM DADOS_FORMA_JOGO WHERE fonte_url IS NULL OR fonte_url NOT IN (?,?)", (manifest['files']['encounters.csv.gz']['url'],DRAGAPULT_SOURCE)).fetchone()[0],
@@ -148,5 +160,11 @@ def cobertura(directory=SNAPSHOT):
         'fichas_tipos_com_fonte': db.execute("SELECT count(*) FROM DADOS_FORMA_JOGO WHERE fonte_tipos IS NOT NULL").fetchone()[0],
         'fichas_estatisticas_com_fonte': db.execute("SELECT count(*) FROM DADOS_FORMA_JOGO WHERE fonte_estatisticas IS NOT NULL").fetchone()[0],
         'habilidades_com_fonte': db.execute("SELECT count(*) FROM HABILIDADE_FORMA_JOGO").fetchone()[0],
+        'cobertura_por_jogo': games,
+        'interpretacao_cobertura': {
+            'sem_fonte': 'Não verificado; ausência de ficha ou vínculo não comprova ausência no jogo.',
+            'seis_estatisticas': 'Fonte e seis valores preenchidos; a primeira geração usa Especial único, não representado aqui.',
+            'habilidades': 'Contagem de fichas com pelo menos um vínculo; não comprova obtenção por evento ou método.',
+            'nao_aplicavel': 'Habilidades não se aplicam às gerações I e II; consulte a fonte na ficha.'},
         'fichas_encontro_documentado': db.execute("SELECT count(*) FROM DADOS_FORMA_JOGO WHERE fonte_url=?", (manifest['files']['encounters.csv.gz']['url'],)).fetchone()[0],
         'observacao': 'Cobertura é relativa ao snapshot, não certifica completude oficial atual. Ausência de ficha não indica ausência no jogo.'}

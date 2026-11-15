@@ -19,7 +19,7 @@
   "nomes_exibidos": "Inglês da fonte, sem tradução portuguesa confirmada; códigos de forma preservados.",
   "pendencias": [
     "Fichas e presença por jogo",
-    "Tipos, habilidades e atributos históricos fora das fichas Sword/Shield importadas",
+    "Tipos, habilidades e atributos históricos para contextos ainda não importados",
     "Mecânicas e limites fora de Sword/Shield",
     "Outros regulamentos, formas e elegibilidades com fontes específicas",
     "Outros perfis de referência competitiva verificados"
@@ -33,9 +33,527 @@
     "blue",
     "blue-japan"
   ],
-  "fichas_tipos_com_fonte": 366,
-  "fichas_estatisticas_com_fonte": 366,
-  "habilidades_com_fonte": 976,
+  "fichas_tipos_com_fonte": 5074,
+  "fichas_estatisticas_com_fonte": 4903,
+  "habilidades_com_fonte": 9956,
+  "cobertura_por_jogo": [
+    {
+      "nome": "Blue",
+      "geracao": 1,
+      "fichas": 0,
+      "tipos_com_fonte": 0,
+      "seis_estatisticas_com_fonte": 0,
+      "tipos_sem_fonte": 0,
+      "estatisticas_sem_fonte": 0,
+      "fichas_com_alguma_habilidade_com_fonte": 0
+    },
+    {
+      "nome": "Green",
+      "geracao": 1,
+      "fichas": 86,
+      "tipos_com_fonte": 86,
+      "seis_estatisticas_com_fonte": 0,
+      "tipos_sem_fonte": 0,
+      "estatisticas_sem_fonte": 86,
+      "fichas_com_alguma_habilidade_com_fonte": 0
+    },
+    {
+      "nome": "Red",
+      "geracao": 1,
+      "fichas": 0,
+      "tipos_com_fonte": 0,
+      "seis_estatisticas_com_fonte": 0,
+      "tipos_sem_fonte": 0,
+      "estatisticas_sem_fonte": 0,
+      "fichas_com_alguma_habilidade_com_fonte": 0
+    },
+    {
+      "nome": "Yellow",
+      "geracao": 1,
+      "fichas": 85,
+      "tipos_com_fonte": 85,
+      "seis_estatisticas_com_fonte": 0,
+      "tipos_sem_fonte": 0,
+      "estatisticas_sem_fonte": 85,
+      "fichas_com_alguma_habilidade_com_fonte": 0
+    },
+    {
+      "nome": "Crystal",
+      "geracao": 2,
+      "fichas": 143,
+      "tipos_com_fonte": 143,
+      "seis_estatisticas_com_fonte": 143,
+      "tipos_sem_fonte": 0,
+      "estatisticas_sem_fonte": 0,
+      "fichas_com_alguma_habilidade_com_fonte": 0
+    },
+    {
+      "nome": "Gold",
+      "geracao": 2,
+      "fichas": 131,
+      "tipos_com_fonte": 131,
+      "seis_estatisticas_com_fonte": 131,
+      "tipos_sem_fonte": 0,
+      "estatisticas_sem_fonte": 0,
+      "fichas_com_alguma_habilidade_com_fonte": 0
+    },
+    {
+      "nome": "Silver",
+      "geracao": 2,
+      "fichas": 131,
+      "tipos_com_fonte": 131,
+      "seis_estatisticas_com_fonte": 131,
+      "tipos_sem_fonte": 0,
+      "estatisticas_sem_fonte": 0,
+      "fichas_com_alguma_habilidade_com_fonte": 0
+    },
+    {
+      "nome": "Colosseum",
+      "geracao": 3,
+      "fichas": 0,
+      "tipos_com_fonte": 0,
+      "seis_estatisticas_com_fonte": 0,
+      "tipos_sem_fonte": 0,
+      "estatisticas_sem_fonte": 0,
+      "fichas_com_alguma_habilidade_com_fonte": 0
+    },
+    {
+      "nome": "Emerald",
+      "geracao": 3,
+      "fichas": 129,
+      "tipos_com_fonte": 129,
+      "seis_estatisticas_com_fonte": 129,
+      "tipos_sem_fonte": 0,
+      "estatisticas_sem_fonte": 0,
+      "fichas_com_alguma_habilidade_com_fonte": 129
+    },
+    {
+      "nome": "FireRed",
+      "geracao": 3,
+      "fichas": 112,
+      "tipos_com_fonte": 112,
+      "seis_estatisticas_com_fonte": 112,
+      "tipos_sem_fonte": 0,
+      "estatisticas_sem_fonte": 0,
+      "fichas_com_alguma_habilidade_com_fonte": 112
+    },
+    {
+      "nome": "LeafGreen",
+      "geracao": 3,
+      "fichas": 112,
+      "tipos_com_fonte": 112,
+      "seis_estatisticas_com_fonte": 112,
+      "tipos_sem_fonte": 0,
+      "estatisticas_sem_fonte": 0,
+      "fichas_com_alguma_habilidade_com_fonte": 112
+    },
+    {
+      "nome": "Ruby",
+      "geracao": 3,
+      "fichas": 109,
+      "tipos_com_fonte": 109,
+      "seis_estatisticas_com_fonte": 109,
+      "tipos_sem_fonte": 0,
+      "estatisticas_sem_fonte": 0,
+      "fichas_com_alguma_habilidade_com_fonte": 109
+    },
+    {
+      "nome": "Sapphire",
+      "geracao": 3,
+      "fichas": 109,
+      "tipos_com_fonte": 109,
+      "seis_estatisticas_com_fonte": 109,
+      "tipos_sem_fonte": 0,
+      "estatisticas_sem_fonte": 0,
+      "fichas_com_alguma_habilidade_com_fonte": 109
+    },
+    {
+      "nome": "XD",
+      "geracao": 3,
+      "fichas": 0,
+      "tipos_com_fonte": 0,
+      "seis_estatisticas_com_fonte": 0,
+      "tipos_sem_fonte": 0,
+      "estatisticas_sem_fonte": 0,
+      "fichas_com_alguma_habilidade_com_fonte": 0
+    },
+    {
+      "nome": "Diamond",
+      "geracao": 4,
+      "fichas": 241,
+      "tipos_com_fonte": 241,
+      "seis_estatisticas_com_fonte": 241,
+      "tipos_sem_fonte": 0,
+      "estatisticas_sem_fonte": 0,
+      "fichas_com_alguma_habilidade_com_fonte": 241
+    },
+    {
+      "nome": "HeartGold",
+      "geracao": 4,
+      "fichas": 243,
+      "tipos_com_fonte": 243,
+      "seis_estatisticas_com_fonte": 243,
+      "tipos_sem_fonte": 0,
+      "estatisticas_sem_fonte": 0,
+      "fichas_com_alguma_habilidade_com_fonte": 243
+    },
+    {
+      "nome": "Pearl",
+      "geracao": 4,
+      "fichas": 242,
+      "tipos_com_fonte": 242,
+      "seis_estatisticas_com_fonte": 242,
+      "tipos_sem_fonte": 0,
+      "estatisticas_sem_fonte": 0,
+      "fichas_com_alguma_habilidade_com_fonte": 242
+    },
+    {
+      "nome": "Platinum",
+      "geracao": 4,
+      "fichas": 248,
+      "tipos_com_fonte": 248,
+      "seis_estatisticas_com_fonte": 248,
+      "tipos_sem_fonte": 0,
+      "estatisticas_sem_fonte": 0,
+      "fichas_com_alguma_habilidade_com_fonte": 248
+    },
+    {
+      "nome": "SoulSilver",
+      "geracao": 4,
+      "fichas": 243,
+      "tipos_com_fonte": 243,
+      "seis_estatisticas_com_fonte": 243,
+      "tipos_sem_fonte": 0,
+      "estatisticas_sem_fonte": 0,
+      "fichas_com_alguma_habilidade_com_fonte": 243
+    },
+    {
+      "nome": "Black",
+      "geracao": 5,
+      "fichas": 210,
+      "tipos_com_fonte": 210,
+      "seis_estatisticas_com_fonte": 210,
+      "tipos_sem_fonte": 0,
+      "estatisticas_sem_fonte": 0,
+      "fichas_com_alguma_habilidade_com_fonte": 210
+    },
+    {
+      "nome": "Black 2",
+      "geracao": 5,
+      "fichas": 235,
+      "tipos_com_fonte": 235,
+      "seis_estatisticas_com_fonte": 235,
+      "tipos_sem_fonte": 0,
+      "estatisticas_sem_fonte": 0,
+      "fichas_com_alguma_habilidade_com_fonte": 235
+    },
+    {
+      "nome": "White",
+      "geracao": 5,
+      "fichas": 210,
+      "tipos_com_fonte": 210,
+      "seis_estatisticas_com_fonte": 210,
+      "tipos_sem_fonte": 0,
+      "estatisticas_sem_fonte": 0,
+      "fichas_com_alguma_habilidade_com_fonte": 210
+    },
+    {
+      "nome": "White 2",
+      "geracao": 5,
+      "fichas": 235,
+      "tipos_com_fonte": 235,
+      "seis_estatisticas_com_fonte": 235,
+      "tipos_sem_fonte": 0,
+      "estatisticas_sem_fonte": 0,
+      "fichas_com_alguma_habilidade_com_fonte": 235
+    },
+    {
+      "nome": "Alpha Sapphire",
+      "geracao": 6,
+      "fichas": 38,
+      "tipos_com_fonte": 38,
+      "seis_estatisticas_com_fonte": 38,
+      "tipos_sem_fonte": 0,
+      "estatisticas_sem_fonte": 0,
+      "fichas_com_alguma_habilidade_com_fonte": 38
+    },
+    {
+      "nome": "Omega Ruby",
+      "geracao": 6,
+      "fichas": 38,
+      "tipos_com_fonte": 38,
+      "seis_estatisticas_com_fonte": 38,
+      "tipos_sem_fonte": 0,
+      "estatisticas_sem_fonte": 0,
+      "fichas_com_alguma_habilidade_com_fonte": 38
+    },
+    {
+      "nome": "X",
+      "geracao": 6,
+      "fichas": 303,
+      "tipos_com_fonte": 303,
+      "seis_estatisticas_com_fonte": 303,
+      "tipos_sem_fonte": 0,
+      "estatisticas_sem_fonte": 0,
+      "fichas_com_alguma_habilidade_com_fonte": 303
+    },
+    {
+      "nome": "Y",
+      "geracao": 6,
+      "fichas": 301,
+      "tipos_com_fonte": 301,
+      "seis_estatisticas_com_fonte": 301,
+      "tipos_sem_fonte": 0,
+      "estatisticas_sem_fonte": 0,
+      "fichas_com_alguma_habilidade_com_fonte": 301
+    },
+    {
+      "nome": "Let’s Go, Eevee!",
+      "geracao": 7,
+      "fichas": 0,
+      "tipos_com_fonte": 0,
+      "seis_estatisticas_com_fonte": 0,
+      "tipos_sem_fonte": 0,
+      "estatisticas_sem_fonte": 0,
+      "fichas_com_alguma_habilidade_com_fonte": 0
+    },
+    {
+      "nome": "Let’s Go, Pikachu!",
+      "geracao": 7,
+      "fichas": 0,
+      "tipos_com_fonte": 0,
+      "seis_estatisticas_com_fonte": 0,
+      "tipos_sem_fonte": 0,
+      "estatisticas_sem_fonte": 0,
+      "fichas_com_alguma_habilidade_com_fonte": 0
+    },
+    {
+      "nome": "Moon",
+      "geracao": 7,
+      "fichas": 145,
+      "tipos_com_fonte": 145,
+      "seis_estatisticas_com_fonte": 145,
+      "tipos_sem_fonte": 0,
+      "estatisticas_sem_fonte": 0,
+      "fichas_com_alguma_habilidade_com_fonte": 145
+    },
+    {
+      "nome": "Sun",
+      "geracao": 7,
+      "fichas": 145,
+      "tipos_com_fonte": 145,
+      "seis_estatisticas_com_fonte": 145,
+      "tipos_sem_fonte": 0,
+      "estatisticas_sem_fonte": 0,
+      "fichas_com_alguma_habilidade_com_fonte": 145
+    },
+    {
+      "nome": "Ultra Moon",
+      "geracao": 7,
+      "fichas": 181,
+      "tipos_com_fonte": 181,
+      "seis_estatisticas_com_fonte": 181,
+      "tipos_sem_fonte": 0,
+      "estatisticas_sem_fonte": 0,
+      "fichas_com_alguma_habilidade_com_fonte": 181
+    },
+    {
+      "nome": "Ultra Sun",
+      "geracao": 7,
+      "fichas": 181,
+      "tipos_com_fonte": 181,
+      "seis_estatisticas_com_fonte": 181,
+      "tipos_sem_fonte": 0,
+      "estatisticas_sem_fonte": 0,
+      "fichas_com_alguma_habilidade_com_fonte": 181
+    },
+    {
+      "nome": "Brilliant Diamond",
+      "geracao": 8,
+      "fichas": 0,
+      "tipos_com_fonte": 0,
+      "seis_estatisticas_com_fonte": 0,
+      "tipos_sem_fonte": 0,
+      "estatisticas_sem_fonte": 0,
+      "fichas_com_alguma_habilidade_com_fonte": 0
+    },
+    {
+      "nome": "Legends: Arceus",
+      "geracao": 8,
+      "fichas": 0,
+      "tipos_com_fonte": 0,
+      "seis_estatisticas_com_fonte": 0,
+      "tipos_sem_fonte": 0,
+      "estatisticas_sem_fonte": 0,
+      "fichas_com_alguma_habilidade_com_fonte": 0
+    },
+    {
+      "nome": "Shield",
+      "geracao": 8,
+      "fichas": 182,
+      "tipos_com_fonte": 182,
+      "seis_estatisticas_com_fonte": 182,
+      "tipos_sem_fonte": 0,
+      "estatisticas_sem_fonte": 0,
+      "fichas_com_alguma_habilidade_com_fonte": 182
+    },
+    {
+      "nome": "Shield: The Crown Tundra",
+      "geracao": 8,
+      "fichas": 29,
+      "tipos_com_fonte": 29,
+      "seis_estatisticas_com_fonte": 29,
+      "tipos_sem_fonte": 0,
+      "estatisticas_sem_fonte": 0,
+      "fichas_com_alguma_habilidade_com_fonte": 29
+    },
+    {
+      "nome": "Shield: The Isle of Armor",
+      "geracao": 8,
+      "fichas": 32,
+      "tipos_com_fonte": 32,
+      "seis_estatisticas_com_fonte": 32,
+      "tipos_sem_fonte": 0,
+      "estatisticas_sem_fonte": 0,
+      "fichas_com_alguma_habilidade_com_fonte": 32
+    },
+    {
+      "nome": "Shining Pearl",
+      "geracao": 8,
+      "fichas": 0,
+      "tipos_com_fonte": 0,
+      "seis_estatisticas_com_fonte": 0,
+      "tipos_sem_fonte": 0,
+      "estatisticas_sem_fonte": 0,
+      "fichas_com_alguma_habilidade_com_fonte": 0
+    },
+    {
+      "nome": "Sword",
+      "geracao": 8,
+      "fichas": 184,
+      "tipos_com_fonte": 184,
+      "seis_estatisticas_com_fonte": 184,
+      "tipos_sem_fonte": 0,
+      "estatisticas_sem_fonte": 0,
+      "fichas_com_alguma_habilidade_com_fonte": 184
+    },
+    {
+      "nome": "Sword: The Crown Tundra",
+      "geracao": 8,
+      "fichas": 29,
+      "tipos_com_fonte": 29,
+      "seis_estatisticas_com_fonte": 29,
+      "tipos_sem_fonte": 0,
+      "estatisticas_sem_fonte": 0,
+      "fichas_com_alguma_habilidade_com_fonte": 29
+    },
+    {
+      "nome": "Sword: The Isle of Armor",
+      "geracao": 8,
+      "fichas": 32,
+      "tipos_com_fonte": 32,
+      "seis_estatisticas_com_fonte": 32,
+      "tipos_sem_fonte": 0,
+      "estatisticas_sem_fonte": 0,
+      "fichas_com_alguma_habilidade_com_fonte": 32
+    },
+    {
+      "nome": "Champions",
+      "geracao": 9,
+      "fichas": 0,
+      "tipos_com_fonte": 0,
+      "seis_estatisticas_com_fonte": 0,
+      "tipos_sem_fonte": 0,
+      "estatisticas_sem_fonte": 0,
+      "fichas_com_alguma_habilidade_com_fonte": 0
+    },
+    {
+      "nome": "Legends: Z-A",
+      "geracao": 9,
+      "fichas": 0,
+      "tipos_com_fonte": 0,
+      "seis_estatisticas_com_fonte": 0,
+      "tipos_sem_fonte": 0,
+      "estatisticas_sem_fonte": 0,
+      "fichas_com_alguma_habilidade_com_fonte": 0
+    },
+    {
+      "nome": "Mega Dimension",
+      "geracao": 9,
+      "fichas": 0,
+      "tipos_com_fonte": 0,
+      "seis_estatisticas_com_fonte": 0,
+      "tipos_sem_fonte": 0,
+      "estatisticas_sem_fonte": 0,
+      "fichas_com_alguma_habilidade_com_fonte": 0
+    },
+    {
+      "nome": "Scarlet",
+      "geracao": 9,
+      "fichas": 0,
+      "tipos_com_fonte": 0,
+      "seis_estatisticas_com_fonte": 0,
+      "tipos_sem_fonte": 0,
+      "estatisticas_sem_fonte": 0,
+      "fichas_com_alguma_habilidade_com_fonte": 0
+    },
+    {
+      "nome": "Scarlet: The Indigo Disk",
+      "geracao": 9,
+      "fichas": 0,
+      "tipos_com_fonte": 0,
+      "seis_estatisticas_com_fonte": 0,
+      "tipos_sem_fonte": 0,
+      "estatisticas_sem_fonte": 0,
+      "fichas_com_alguma_habilidade_com_fonte": 0
+    },
+    {
+      "nome": "Scarlet: The Teal Mask",
+      "geracao": 9,
+      "fichas": 0,
+      "tipos_com_fonte": 0,
+      "seis_estatisticas_com_fonte": 0,
+      "tipos_sem_fonte": 0,
+      "estatisticas_sem_fonte": 0,
+      "fichas_com_alguma_habilidade_com_fonte": 0
+    },
+    {
+      "nome": "Violet",
+      "geracao": 9,
+      "fichas": 0,
+      "tipos_com_fonte": 0,
+      "seis_estatisticas_com_fonte": 0,
+      "tipos_sem_fonte": 0,
+      "estatisticas_sem_fonte": 0,
+      "fichas_com_alguma_habilidade_com_fonte": 0
+    },
+    {
+      "nome": "Violet: The Indigo Disk",
+      "geracao": 9,
+      "fichas": 0,
+      "tipos_com_fonte": 0,
+      "seis_estatisticas_com_fonte": 0,
+      "tipos_sem_fonte": 0,
+      "estatisticas_sem_fonte": 0,
+      "fichas_com_alguma_habilidade_com_fonte": 0
+    },
+    {
+      "nome": "Violet: The Teal Mask",
+      "geracao": 9,
+      "fichas": 0,
+      "tipos_com_fonte": 0,
+      "seis_estatisticas_com_fonte": 0,
+      "tipos_sem_fonte": 0,
+      "estatisticas_sem_fonte": 0,
+      "fichas_com_alguma_habilidade_com_fonte": 0
+    }
+  ],
+  "interpretacao_cobertura": {
+    "sem_fonte": "Não verificado; ausência de ficha ou vínculo não comprova ausência no jogo.",
+    "seis_estatisticas": "Fonte e seis valores preenchidos; a primeira geração usa Especial único, não representado aqui.",
+    "habilidades": "Contagem de fichas com pelo menos um vínculo; não comprova obtenção por evento ou método.",
+    "nao_aplicavel": "Habilidades não se aplicam às gerações I e II; consulte a fonte na ficha."
+  },
   "fichas_encontro_documentado": 5072,
   "observacao": "Cobertura é relativa ao snapshot, não certifica completude oficial atual. Ausência de ficha não indica ausência no jogo."
 }

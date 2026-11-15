@@ -167,6 +167,74 @@ def test_history_uses_closest_applicable_change_and_preserves_empty_slot():
     assert _historical_rows(current,past,8,'ability_id') == {'1':'6','2':'8','3':''}
 
 
+def test_real_historical_contexts_preserve_generation_differences(app, client):
+    with app.app_context():
+        report=importar_catalogo()
+        db=get_db()
+        def sheet(form, game):
+            return db.execute("""SELECT d.id_dados_forma FROM DADOS_FORMA_JOGO d JOIN FORMA f USING(id_forma)
+                JOIN JOGO j USING(id_jogo) WHERE f.codigo_forma=? AND j.nome=?""",(form,game)).fetchone()[0]
+        clefairy_gold,clefairy_x=sheet('clefairy','Gold'),sheet('clefairy','X')
+        magnemite_yellow,magnemite_gold=sheet('magnemite','Yellow'),sheet('magnemite','Gold')
+        pikachu_gold,gengar_diamond=sheet('pikachu','Gold'),sheet('gengar','Diamond')
+        pikachu_diamond,pikachu_x=sheet('pikachu','Diamond'),sheet('pikachu','X')
+        poochyena_ruby=sheet('poochyena','Ruby')
+        assert report['fichas_tipos_com_fonte'] >= 5000
+        assert report['fichas_estatisticas_com_fonte'] >= 4800
+        coverage={g['nome']:g for g in report['cobertura_por_jogo']}
+        assert coverage['Yellow']['tipos_com_fonte']==coverage['Yellow']['fichas']>0
+        assert coverage['Yellow']['seis_estatisticas_com_fonte']==0
+        assert coverage['Gold']['fichas_com_alguma_habilidade_com_fonte']==0
+        assert coverage['Diamond']['fichas_com_alguma_habilidade_com_fonte']>0
+    def details(identifier):
+        response=client.get(f'/api/pokemon/{identifier}')
+        assert response.status_code==200
+        return response.json
+    assert details(clefairy_gold)['tipos']==['Normal']
+    assert details(clefairy_x)['tipos']==['Fairy']
+    yellow=details(magnemite_yellow)
+    assert yellow['tipos']==['Electric']
+    assert yellow['hp_base'] is None and yellow['ataque_especial_base'] is None
+    assert yellow['estado_sistema_estatisticas']=='especial_unico' and yellow['fonte_sistema_estatisticas']
+    assert yellow['estado_sistema_habilidades']=='nao_aplicavel'
+    assert yellow['fonte_sistema_habilidades'] and not yellow['habilidades']
+    assert details(magnemite_gold)['tipos']==['Electric','Steel']
+    pika=details(pikachu_gold)
+    assert [pika[k] for k in ('hp_base','ataque_base','defesa_base','ataque_especial_base','defesa_especial_base','velocidade_base')]==[35,55,30,50,40,90]
+    assert pika['estado_sistema_habilidades']=='nao_aplicavel' and not pika['habilidades']
+    gengar=details(gengar_diamond)
+    assert [h['nome'] for h in gengar['habilidades']]==['Levitate']
+    assert gengar['habilidades'][0]['condicao'] and gengar['habilidades'][0]['fonte_url']
+    assert [h['nome'] for h in details(poochyena_ruby)['habilidades']]==['Run Away']
+    assert [h['nome'] for h in details(pikachu_diamond)['habilidades']]==['Static']
+    assert {h['nome'] for h in details(pikachu_x)['habilidades']}=={'Static','Lightning Rod'}
+
+
+def test_history_reimport_preserves_existing_specimen_and_partial_curation(app, client, monkeypatch):
+    from test_api import create_user, get_csrf
+    import pokeanalyzer.contextual_data as contextual
+    # Represent an existing versioned database created before historical enrichment.
+    with app.app_context(), monkeypatch.context() as patch:
+        patch.setattr(contextual, 'importar_contextos_por_geracao', lambda *_: None)
+        importar_catalogo()
+        db=get_db()
+        sheet=db.execute("""SELECT d.id_dados_forma FROM DADOS_FORMA_JOGO d JOIN FORMA f USING(id_forma)
+            JOIN JOGO j USING(id_jogo) WHERE f.codigo_forma='pikachu' AND j.nome='Gold'""").fetchone()[0]
+        db.execute('UPDATE DADOS_FORMA_JOGO SET hp_base=42 WHERE id_dados_forma=?',(sheet,))
+        db.commit()
+    create_user(client)
+    added=client.post('/api/colecao',json={'id_dados_forma_atual':sheet,'apelido':'FIXTURE preservado'},
+                      headers={'X-CSRF-Token':get_csrf(client)})
+    assert added.status_code==201
+    with app.app_context():
+        importar_catalogo()
+        db=get_db()
+        row=db.execute('SELECT hp_base,ataque_base,fonte_estatisticas FROM DADOS_FORMA_JOGO WHERE id_dados_forma=?',(sheet,)).fetchone()
+        assert tuple(row)==(42,None,None)  # Existing partial curation is not replaced or completed silently.
+    assert client.get('/api/colecao/'+str(added.json['id_pokemon_colecao'])).json['apelido']=='FIXTURE preservado'
+    assert client.get('/api/pokemon/'+str(sheet)).json['tipos']==['Electric']
+
+
 def test_sword_context_has_independent_sources_and_real_values(app, client):
     with app.app_context():
         coverage=importar_catalogo()
