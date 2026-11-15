@@ -241,7 +241,7 @@ def test_historical_real_mechanics_have_distinct_ev_limits_and_contexts(app, cli
     with app.app_context():
         report=importar_catalogo()
         db=get_db()
-        assert report['contagens_banco']['MECANICA_JOGO']==25  # 22 selected historical, 2 SwSh, 1 FIXTURE
+        assert report['contagens_banco']['MECANICA_JOGO']==34  # 22 historical, 9 early, 2 SwSh, 1 FIXTURE
         contexts={}
         for game in ('ruby','x'):
             row=db.execute("""SELECT d.id_dados_forma,m.id_mecanica,ms.id_mecanica_sistema_atributo,
@@ -256,7 +256,7 @@ def test_historical_real_mechanics_have_distinct_ev_limits_and_contexts(app, cli
         assert contexts['x']['valor_maximo_atributo']==252
         assert all(c['valor_maximo_total']==510 and c['fonte_url'].endswith('/Effort_values') for c in contexts.values())
         assert not db.execute("""SELECT 1 FROM MECANICA_JOGO m JOIN JOGO j USING(id_jogo)
-                               WHERE j.codigo_versao_pokeapi IN ('lets-go-pikachu','legends-arceus','red')""").fetchall()
+                               WHERE j.codigo_versao_pokeapi IN ('lets-go-pikachu','legends-arceus')""").fetchall()
     headers={'X-CSRF-Token':get_csrf(client)}
     def value(context,number,field='valor'):
         return {'id_mecanica_sistema_atributo':context['id_mecanica_sistema_atributo'],'id_atributo':attr,field:number}
@@ -294,6 +294,40 @@ def test_historical_mechanics_conflict_preserves_curation(app):
         with pytest.raises(ValueError,match='Conflito de curadoria'):
             importar_catalogo()
         assert db.execute('SELECT valor_maximo_atributo FROM MECANICA_SISTEMA_ATRIBUTO WHERE id_mecanica_sistema_atributo=?',(row[0],)).fetchone()[0]==254
+
+
+def test_early_real_games_allow_level_without_inventing_modern_systems(app, client):
+    from test_api import create_user, get_csrf
+    create_user(client)
+    with app.app_context():
+        importar_catalogo()
+        db=get_db()
+        contexts={}
+        for game,form in [('yellow','magnemite'),('gold','pikachu')]:
+            row=db.execute("""SELECT d.id_dados_forma,m.id_mecanica,m.usa_natureza,m.usa_habilidade,
+                    m.nivel_minimo,m.nivel_maximo FROM DADOS_FORMA_JOGO d
+                JOIN FORMA f USING(id_forma) JOIN JOGO j USING(id_jogo) JOIN MECANICA_JOGO m USING(id_jogo)
+                WHERE f.codigo_forma=? AND j.codigo_versao_pokeapi=?""",(form,game)).fetchone()
+            contexts[game]=dict(row)
+            assert row['usa_natureza']==row['usa_habilidade']=='nao'
+            assert (row['nivel_minimo'],row['nivel_maximo'])==(1,100)
+            assert not db.execute('SELECT 1 FROM MECANICA_SISTEMA_ATRIBUTO WHERE id_mecanica=?',(row['id_mecanica'],)).fetchall()
+        nature=db.execute("SELECT id_natureza FROM NATUREZA WHERE nome='Timid'").fetchone()[0]
+    headers={'X-CSRF-Token':get_csrf(client)}
+    yellow=contexts['yellow']
+    body={'id_dados_forma_atual':yellow['id_dados_forma'],'id_mecanica':yellow['id_mecanica'],'nivel':50}
+    specimen=client.post('/api/colecao',headers=headers,json=body)
+    assert specimen.status_code==201,specimen.json
+    assert client.get('/api/colecao/'+str(specimen.json['id_pokemon_colecao'])).json['nivel']==50
+    assert client.post('/api/colecao',headers=headers,json=body|{'nivel':101}).status_code==400
+    assert client.post('/api/colecao',headers=headers,json=body|{'id_natureza':nature}).status_code==400
+    profile=client.post('/api/perfis',headers=headers,json={'id_dados_forma':yellow['id_dados_forma'],
+        'id_mecanica':yellow['id_mecanica'],'nome_perfil':'FIXTURE regras antigas'})
+    assert profile.status_code==201,profile.json
+    result=client.post('/api/analises',headers=headers,json={'id_pokemon_colecao':specimen.json['id_pokemon_colecao'],
+                                                           'id_perfil':profile.json['id_perfil']})
+    assert result.status_code==200 and not result.json['campos']
+    assert all(row['estado']=='nao_aplicavel' for row in result.json['preferencias'])
 
 
 def test_history_reimport_preserves_existing_specimen_and_partial_curation(app, client, monkeypatch):

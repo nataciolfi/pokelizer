@@ -18,6 +18,10 @@ HISTORICAL_GAMES = {
     'x':6, 'y':6, 'omega-ruby':6, 'alpha-sapphire':6,
     'sun':7, 'moon':7, 'ultra-sun':7, 'ultra-moon':7,
 }
+EARLY_GAMES = {
+    'red':1, 'blue':1, 'red-japan':1, 'blue-japan':1, 'green-japan':1, 'yellow':1,
+    'gold':2, 'silver':2, 'crystal':2,
+}
 STATS = {1: ('hp', 'HP'), 2: ('attack', 'Ataque'), 3: ('defense', 'Defesa'),
          4: ('special-attack', 'Ataque especial'), 5: ('special-defense', 'Defesa especial'), 6: ('speed', 'Velocidade')}
 
@@ -104,6 +108,24 @@ def importar_mecanicas_historicas(db, data):
                 _obter_ou_inserir(db,'MECANICA_ATRIBUTO',
                     {'id_mecanica_sistema_atributo':system['id_mecanica_sistema_atributo'],'id_atributo':attr},
                     {'aplicabilidade':'aplicavel','fonte_url':source,'data_verificacao':HISTORICAL_DATE},['aplicabilidade'])
+
+
+def importar_mecanicas_anteriores(db, data):
+    """Levels and absent nature/abilities only; DV/Stat Exp require separate modeling."""
+    groups={r['id']:r for r in data['version_groups.csv']}
+    versions={r['identifier']:r for r in data['versions.csv']}
+    for code,generation in EARLY_GAMES.items():
+        version=versions.get(code)
+        if not version or int(groups[version['version_group_id']]['generation_id'])!=generation:
+            raise ValueError(f'Versão antiga {code} não corresponde à fonte; carga revertida.')
+        game=db.execute('SELECT id_jogo FROM JOGO WHERE codigo_versao_pokeapi=?',(code,)).fetchone()
+        if not game:
+            raise ValueError(f'Jogo {code} não identificado; carga revertida.')
+        values={'usa_natureza':'nao','usa_habilidade':'nao','usa_nivel':'sim',
+                'nivel_minimo':1,'nivel_maximo':100,'fonte_url':ABILITY_SOURCE,'data_verificacao':HISTORICAL_DATE}
+        _obter_ou_inserir(db,'MECANICA_JOGO',
+            {'id_jogo':game[0],'versao':'regras-parciais-documentadas'},values,
+            ['usa_natureza','usa_habilidade','usa_nivel','nivel_minimo','nivel_maximo'])
 
 
 def importar_regulamento_swsh(db, data, manifest):

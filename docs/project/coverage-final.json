@@ -6,7 +6,7 @@
     "FORMA": 1579,
     "JOGO": 53,
     "DADOS_FORMA_JOGO": 5332,
-    "MECANICA_JOGO": 24,
+    "MECANICA_JOGO": 33,
     "REGULAMENTO": 2,
     "ELEGIBILIDADE_FORMA_REGULAMENTO": 355
   },
@@ -32,6 +32,7 @@
   "jogos_legados_identidade_ambigua": 0,
   "fichas_tipos_com_fonte": 5332,
   "fichas_estatisticas_com_fonte": 4903,
+  "mecanicas_sem_sistemas_registrados": 9,
   "habilidades_com_fonte": 9956,
   "cobertura_por_jogo": [
     {
@@ -44,7 +45,8 @@
       "tipos_sem_fonte": 0,
       "estatisticas_sem_fonte": 86,
       "fichas_com_alguma_habilidade_com_fonte": 0,
-      "mecanicas": 0
+      "mecanicas": 1,
+      "mecanicas_sem_sistemas_registrados": 1
     },
     {
       "nome": "Blue (blue-japan)",
@@ -56,7 +58,8 @@
       "tipos_sem_fonte": 0,
       "estatisticas_sem_fonte": 0,
       "fichas_com_alguma_habilidade_com_fonte": 0,
-      "mecanicas": 0
+      "mecanicas": 1,
+      "mecanicas_sem_sistemas_registrados": 1
     },
     {
       "nome": "Green",
@@ -68,7 +71,8 @@
       "tipos_sem_fonte": 0,
       "estatisticas_sem_fonte": 86,
       "fichas_com_alguma_habilidade_com_fonte": 0,
-      "mecanicas": 0
+      "mecanicas": 1,
+      "mecanicas_sem_sistemas_registrados": 1
     },
     {
       "nome": "Red (red)",
@@ -80,7 +84,8 @@
       "tipos_sem_fonte": 0,
       "estatisticas_sem_fonte": 86,
       "fichas_com_alguma_habilidade_com_fonte": 0,
-      "mecanicas": 0
+      "mecanicas": 1,
+      "mecanicas_sem_sistemas_registrados": 1
     },
     {
       "nome": "Red (red-japan)",
@@ -92,7 +97,8 @@
       "tipos_sem_fonte": 0,
       "estatisticas_sem_fonte": 86,
       "fichas_com_alguma_habilidade_com_fonte": 0,
-      "mecanicas": 0
+      "mecanicas": 1,
+      "mecanicas_sem_sistemas_registrados": 1
     },
     {
       "nome": "Yellow",
@@ -104,7 +110,8 @@
       "tipos_sem_fonte": 0,
       "estatisticas_sem_fonte": 85,
       "fichas_com_alguma_habilidade_com_fonte": 0,
-      "mecanicas": 0
+      "mecanicas": 1,
+      "mecanicas_sem_sistemas_registrados": 1
     },
     {
       "nome": "Crystal",
@@ -116,7 +123,8 @@
       "tipos_sem_fonte": 0,
       "estatisticas_sem_fonte": 0,
       "fichas_com_alguma_habilidade_com_fonte": 0,
-      "mecanicas": 0
+      "mecanicas": 1,
+      "mecanicas_sem_sistemas_registrados": 1
     },
     {
       "nome": "Gold",
@@ -128,7 +136,8 @@
       "tipos_sem_fonte": 0,
       "estatisticas_sem_fonte": 0,
       "fichas_com_alguma_habilidade_com_fonte": 0,
-      "mecanicas": 0
+      "mecanicas": 1,
+      "mecanicas_sem_sistemas_registrados": 1
     },
     {
       "nome": "Silver",
@@ -140,7 +149,8 @@
       "tipos_sem_fonte": 0,
       "estatisticas_sem_fonte": 0,
       "fichas_com_alguma_habilidade_com_fonte": 0,
-      "mecanicas": 0
+      "mecanicas": 1,
+      "mecanicas_sem_sistemas_registrados": 1
     },
     {
       "nome": "Colosseum",
@@ -152,7 +162,8 @@
       "tipos_sem_fonte": 0,
       "estatisticas_sem_fonte": 0,
       "fichas_com_alguma_habilidade_com_fonte": 0,
-      "mecanicas": 0
+      "mecanicas": 0,
+      "mecanicas_sem_sistemas_registrados": 0
     },
     {
       "nome": "Emerald",
@@ -164,7 +175,8 @@
       "tipos_sem_fonte": 0,
       "estatisticas_sem_fonte": 0,
       "fichas_com_alguma_habilidade_com_fonte": 129,
-      "mecanicas": 1
+      "mecanicas": 1,
+      "mecanicas_sem_sistemas_registrados": 0
     },
     {
       "nome": "FireRed",
@@ -176,7 +188,8 @@
       "tipos_sem_fonte": 0,
       "estatisticas_sem_fonte": 0,
       "fichas_com_alguma_habilidade_com_fonte": 112,
-      "mecanicas": 1
+      "mecanicas": 1,
+      "mecanicas_sem_sistemas_registrados": 0
     },
     {
       "nome": "LeafGreen",
@@ -188,7 +201,8 @@
       "tipos_sem_fonte": 0,
       "estatisticas_sem_fonte": 0,
       "fichas_com_alguma_habilidade_com_fonte": 112,
-      "mecanicas": 1
+      "mecanicas": 1,
+      "mecanicas_sem_sistemas_registrados": 0
     },
     {
       "nome": "Ruby",
@@ -200,7 +214,8 @@
       "tipos_sem_fonte": 0,
       "estatisticas_sem_fonte": 0,
       "fichas_com_alguma_habilidade_com_fonte": 109,
-      "mecanicas": 1
+      "mecanicas": 1,
+      "mecanicas_sem_sistemas_registrados": 0
     },
     {
       "nome": "Sapphire",
@@ -212,7 +227,8 @@
       "tipos_sem_fonte": 0,
       "estatisticas_sem_fonte": 0,
       "fichas_com_alguma_habilidade_com_fonte": 109,
-      "mecanicas": 1
+      "mecanicas": 1,
+      "mecanicas_sem_sistemas_registrados": 0
     },
     {
       "nome": "XD",
@@ -224,7 +240,8 @@
       "tipos_sem_fonte": 0,
       "estatisticas_sem_fonte": 0,
       "fichas_com_alguma_habilidade_com_fonte": 0,
-      "mecanicas": 0
+      "mecanicas": 0,
+      "mecanicas_sem_sistemas_registrados": 0
     },
     {
       "nome": "Diamond",
@@ -236,7 +253,8 @@
       "tipos_sem_fonte": 0,
       "estatisticas_sem_fonte": 0,
       "fichas_com_alguma_habilidade_com_fonte": 241,
-      "mecanicas": 1
+      "mecanicas": 1,
+      "mecanicas_sem_sistemas_registrados": 0
     },
     {
       "nome": "HeartGold",
@@ -248,7 +266,8 @@
       "tipos_sem_fonte": 0,
       "estatisticas_sem_fonte": 0,
       "fichas_com_alguma_habilidade_com_fonte": 243,
-      "mecanicas": 1
+      "mecanicas": 1,
+      "mecanicas_sem_sistemas_registrados": 0
     },
     {
       "nome": "Pearl",
@@ -260,7 +279,8 @@
       "tipos_sem_fonte": 0,
       "estatisticas_sem_fonte": 0,
       "fichas_com_alguma_habilidade_com_fonte": 242,
-      "mecanicas": 1
+      "mecanicas": 1,
+      "mecanicas_sem_sistemas_registrados": 0
     },
     {
       "nome": "Platinum",
@@ -272,7 +292,8 @@
       "tipos_sem_fonte": 0,
       "estatisticas_sem_fonte": 0,
       "fichas_com_alguma_habilidade_com_fonte": 248,
-      "mecanicas": 1
+      "mecanicas": 1,
+      "mecanicas_sem_sistemas_registrados": 0
     },
     {
       "nome": "SoulSilver",
@@ -284,7 +305,8 @@
       "tipos_sem_fonte": 0,
       "estatisticas_sem_fonte": 0,
       "fichas_com_alguma_habilidade_com_fonte": 243,
-      "mecanicas": 1
+      "mecanicas": 1,
+      "mecanicas_sem_sistemas_registrados": 0
     },
     {
       "nome": "Black",
@@ -296,7 +318,8 @@
       "tipos_sem_fonte": 0,
       "estatisticas_sem_fonte": 0,
       "fichas_com_alguma_habilidade_com_fonte": 210,
-      "mecanicas": 1
+      "mecanicas": 1,
+      "mecanicas_sem_sistemas_registrados": 0
     },
     {
       "nome": "Black 2",
@@ -308,7 +331,8 @@
       "tipos_sem_fonte": 0,
       "estatisticas_sem_fonte": 0,
       "fichas_com_alguma_habilidade_com_fonte": 235,
-      "mecanicas": 1
+      "mecanicas": 1,
+      "mecanicas_sem_sistemas_registrados": 0
     },
     {
       "nome": "White",
@@ -320,7 +344,8 @@
       "tipos_sem_fonte": 0,
       "estatisticas_sem_fonte": 0,
       "fichas_com_alguma_habilidade_com_fonte": 210,
-      "mecanicas": 1
+      "mecanicas": 1,
+      "mecanicas_sem_sistemas_registrados": 0
     },
     {
       "nome": "White 2",
@@ -332,7 +357,8 @@
       "tipos_sem_fonte": 0,
       "estatisticas_sem_fonte": 0,
       "fichas_com_alguma_habilidade_com_fonte": 235,
-      "mecanicas": 1
+      "mecanicas": 1,
+      "mecanicas_sem_sistemas_registrados": 0
     },
     {
       "nome": "Alpha Sapphire",
@@ -344,7 +370,8 @@
       "tipos_sem_fonte": 0,
       "estatisticas_sem_fonte": 0,
       "fichas_com_alguma_habilidade_com_fonte": 38,
-      "mecanicas": 1
+      "mecanicas": 1,
+      "mecanicas_sem_sistemas_registrados": 0
     },
     {
       "nome": "Omega Ruby",
@@ -356,7 +383,8 @@
       "tipos_sem_fonte": 0,
       "estatisticas_sem_fonte": 0,
       "fichas_com_alguma_habilidade_com_fonte": 38,
-      "mecanicas": 1
+      "mecanicas": 1,
+      "mecanicas_sem_sistemas_registrados": 0
     },
     {
       "nome": "X",
@@ -368,7 +396,8 @@
       "tipos_sem_fonte": 0,
       "estatisticas_sem_fonte": 0,
       "fichas_com_alguma_habilidade_com_fonte": 303,
-      "mecanicas": 1
+      "mecanicas": 1,
+      "mecanicas_sem_sistemas_registrados": 0
     },
     {
       "nome": "Y",
@@ -380,7 +409,8 @@
       "tipos_sem_fonte": 0,
       "estatisticas_sem_fonte": 0,
       "fichas_com_alguma_habilidade_com_fonte": 301,
-      "mecanicas": 1
+      "mecanicas": 1,
+      "mecanicas_sem_sistemas_registrados": 0
     },
     {
       "nome": "Let’s Go, Eevee!",
@@ -392,7 +422,8 @@
       "tipos_sem_fonte": 0,
       "estatisticas_sem_fonte": 0,
       "fichas_com_alguma_habilidade_com_fonte": 0,
-      "mecanicas": 0
+      "mecanicas": 0,
+      "mecanicas_sem_sistemas_registrados": 0
     },
     {
       "nome": "Let’s Go, Pikachu!",
@@ -404,7 +435,8 @@
       "tipos_sem_fonte": 0,
       "estatisticas_sem_fonte": 0,
       "fichas_com_alguma_habilidade_com_fonte": 0,
-      "mecanicas": 0
+      "mecanicas": 0,
+      "mecanicas_sem_sistemas_registrados": 0
     },
     {
       "nome": "Moon",
@@ -416,7 +448,8 @@
       "tipos_sem_fonte": 0,
       "estatisticas_sem_fonte": 0,
       "fichas_com_alguma_habilidade_com_fonte": 145,
-      "mecanicas": 1
+      "mecanicas": 1,
+      "mecanicas_sem_sistemas_registrados": 0
     },
     {
       "nome": "Sun",
@@ -428,7 +461,8 @@
       "tipos_sem_fonte": 0,
       "estatisticas_sem_fonte": 0,
       "fichas_com_alguma_habilidade_com_fonte": 145,
-      "mecanicas": 1
+      "mecanicas": 1,
+      "mecanicas_sem_sistemas_registrados": 0
     },
     {
       "nome": "Ultra Moon",
@@ -440,7 +474,8 @@
       "tipos_sem_fonte": 0,
       "estatisticas_sem_fonte": 0,
       "fichas_com_alguma_habilidade_com_fonte": 181,
-      "mecanicas": 1
+      "mecanicas": 1,
+      "mecanicas_sem_sistemas_registrados": 0
     },
     {
       "nome": "Ultra Sun",
@@ -452,7 +487,8 @@
       "tipos_sem_fonte": 0,
       "estatisticas_sem_fonte": 0,
       "fichas_com_alguma_habilidade_com_fonte": 181,
-      "mecanicas": 1
+      "mecanicas": 1,
+      "mecanicas_sem_sistemas_registrados": 0
     },
     {
       "nome": "Brilliant Diamond",
@@ -464,7 +500,8 @@
       "tipos_sem_fonte": 0,
       "estatisticas_sem_fonte": 0,
       "fichas_com_alguma_habilidade_com_fonte": 0,
-      "mecanicas": 0
+      "mecanicas": 0,
+      "mecanicas_sem_sistemas_registrados": 0
     },
     {
       "nome": "Legends: Arceus",
@@ -476,7 +513,8 @@
       "tipos_sem_fonte": 0,
       "estatisticas_sem_fonte": 0,
       "fichas_com_alguma_habilidade_com_fonte": 0,
-      "mecanicas": 0
+      "mecanicas": 0,
+      "mecanicas_sem_sistemas_registrados": 0
     },
     {
       "nome": "Shield",
@@ -488,7 +526,8 @@
       "tipos_sem_fonte": 0,
       "estatisticas_sem_fonte": 0,
       "fichas_com_alguma_habilidade_com_fonte": 182,
-      "mecanicas": 1
+      "mecanicas": 1,
+      "mecanicas_sem_sistemas_registrados": 0
     },
     {
       "nome": "Shield: The Crown Tundra",
@@ -500,7 +539,8 @@
       "tipos_sem_fonte": 0,
       "estatisticas_sem_fonte": 0,
       "fichas_com_alguma_habilidade_com_fonte": 29,
-      "mecanicas": 0
+      "mecanicas": 0,
+      "mecanicas_sem_sistemas_registrados": 0
     },
     {
       "nome": "Shield: The Isle of Armor",
@@ -512,7 +552,8 @@
       "tipos_sem_fonte": 0,
       "estatisticas_sem_fonte": 0,
       "fichas_com_alguma_habilidade_com_fonte": 32,
-      "mecanicas": 0
+      "mecanicas": 0,
+      "mecanicas_sem_sistemas_registrados": 0
     },
     {
       "nome": "Shining Pearl",
@@ -524,7 +565,8 @@
       "tipos_sem_fonte": 0,
       "estatisticas_sem_fonte": 0,
       "fichas_com_alguma_habilidade_com_fonte": 0,
-      "mecanicas": 0
+      "mecanicas": 0,
+      "mecanicas_sem_sistemas_registrados": 0
     },
     {
       "nome": "Sword",
@@ -536,7 +578,8 @@
       "tipos_sem_fonte": 0,
       "estatisticas_sem_fonte": 0,
       "fichas_com_alguma_habilidade_com_fonte": 184,
-      "mecanicas": 1
+      "mecanicas": 1,
+      "mecanicas_sem_sistemas_registrados": 0
     },
     {
       "nome": "Sword: The Crown Tundra",
@@ -548,7 +591,8 @@
       "tipos_sem_fonte": 0,
       "estatisticas_sem_fonte": 0,
       "fichas_com_alguma_habilidade_com_fonte": 29,
-      "mecanicas": 0
+      "mecanicas": 0,
+      "mecanicas_sem_sistemas_registrados": 0
     },
     {
       "nome": "Sword: The Isle of Armor",
@@ -560,7 +604,8 @@
       "tipos_sem_fonte": 0,
       "estatisticas_sem_fonte": 0,
       "fichas_com_alguma_habilidade_com_fonte": 32,
-      "mecanicas": 0
+      "mecanicas": 0,
+      "mecanicas_sem_sistemas_registrados": 0
     },
     {
       "nome": "Champions",
@@ -572,7 +617,8 @@
       "tipos_sem_fonte": 0,
       "estatisticas_sem_fonte": 0,
       "fichas_com_alguma_habilidade_com_fonte": 0,
-      "mecanicas": 0
+      "mecanicas": 0,
+      "mecanicas_sem_sistemas_registrados": 0
     },
     {
       "nome": "Legends: Z-A",
@@ -584,7 +630,8 @@
       "tipos_sem_fonte": 0,
       "estatisticas_sem_fonte": 0,
       "fichas_com_alguma_habilidade_com_fonte": 0,
-      "mecanicas": 0
+      "mecanicas": 0,
+      "mecanicas_sem_sistemas_registrados": 0
     },
     {
       "nome": "Mega Dimension",
@@ -596,7 +643,8 @@
       "tipos_sem_fonte": 0,
       "estatisticas_sem_fonte": 0,
       "fichas_com_alguma_habilidade_com_fonte": 0,
-      "mecanicas": 0
+      "mecanicas": 0,
+      "mecanicas_sem_sistemas_registrados": 0
     },
     {
       "nome": "Scarlet",
@@ -608,7 +656,8 @@
       "tipos_sem_fonte": 0,
       "estatisticas_sem_fonte": 0,
       "fichas_com_alguma_habilidade_com_fonte": 0,
-      "mecanicas": 0
+      "mecanicas": 0,
+      "mecanicas_sem_sistemas_registrados": 0
     },
     {
       "nome": "Scarlet: The Indigo Disk",
@@ -620,7 +669,8 @@
       "tipos_sem_fonte": 0,
       "estatisticas_sem_fonte": 0,
       "fichas_com_alguma_habilidade_com_fonte": 0,
-      "mecanicas": 0
+      "mecanicas": 0,
+      "mecanicas_sem_sistemas_registrados": 0
     },
     {
       "nome": "Scarlet: The Teal Mask",
@@ -632,7 +682,8 @@
       "tipos_sem_fonte": 0,
       "estatisticas_sem_fonte": 0,
       "fichas_com_alguma_habilidade_com_fonte": 0,
-      "mecanicas": 0
+      "mecanicas": 0,
+      "mecanicas_sem_sistemas_registrados": 0
     },
     {
       "nome": "Violet",
@@ -644,7 +695,8 @@
       "tipos_sem_fonte": 0,
       "estatisticas_sem_fonte": 0,
       "fichas_com_alguma_habilidade_com_fonte": 0,
-      "mecanicas": 0
+      "mecanicas": 0,
+      "mecanicas_sem_sistemas_registrados": 0
     },
     {
       "nome": "Violet: The Indigo Disk",
@@ -656,7 +708,8 @@
       "tipos_sem_fonte": 0,
       "estatisticas_sem_fonte": 0,
       "fichas_com_alguma_habilidade_com_fonte": 0,
-      "mecanicas": 0
+      "mecanicas": 0,
+      "mecanicas_sem_sistemas_registrados": 0
     },
     {
       "nome": "Violet: The Teal Mask",
@@ -668,7 +721,8 @@
       "tipos_sem_fonte": 0,
       "estatisticas_sem_fonte": 0,
       "fichas_com_alguma_habilidade_com_fonte": 0,
-      "mecanicas": 0
+      "mecanicas": 0,
+      "mecanicas_sem_sistemas_registrados": 0
     }
   ],
   "interpretacao_cobertura": {

@@ -80,9 +80,10 @@ def importar_catalogo(directory=SNAPSHOT):
                 db.execute('INSERT INTO JOGO(nome,geracao,fonte_url,data_verificacao,codigo_versao_pokeapi) VALUES(?,?,?,?,?)',
                     (display, generation, source, date, r['identifier']))
         importar_encontros(db, data, manifest)
-        from .curated_data import importar_mecanicas_swsh, importar_mecanicas_historicas, importar_dragapult
+        from .curated_data import importar_mecanicas_swsh, importar_mecanicas_historicas, importar_mecanicas_anteriores, importar_dragapult
         importar_mecanicas_swsh(db, data)
         importar_mecanicas_historicas(db, data)
+        importar_mecanicas_anteriores(db, data)
         importar_dragapult(db)
         from .contextual_data import importar_contextos_por_geracao
         importar_contextos_por_geracao(db, data, manifest)
@@ -154,7 +155,9 @@ def cobertura(directory=SNAPSHOT):
         SUM(CASE WHEN d.id_dados_forma IS NOT NULL AND d.fonte_estatisticas IS NULL THEN 1 ELSE 0 END) AS estatisticas_sem_fonte,
         SUM(CASE WHEN EXISTS (SELECT 1 FROM HABILIDADE_FORMA_JOGO h
             WHERE h.id_dados_forma=d.id_dados_forma AND h.fonte_url IS NOT NULL) THEN 1 ELSE 0 END) AS fichas_com_alguma_habilidade_com_fonte,
-        (SELECT COUNT(*) FROM MECANICA_JOGO m WHERE m.id_jogo=j.id_jogo) AS mecanicas
+        (SELECT COUNT(*) FROM MECANICA_JOGO m WHERE m.id_jogo=j.id_jogo) AS mecanicas,
+        (SELECT COUNT(*) FROM MECANICA_JOGO m WHERE m.id_jogo=j.id_jogo AND NOT EXISTS
+            (SELECT 1 FROM MECANICA_SISTEMA_ATRIBUTO s WHERE s.id_mecanica=m.id_mecanica)) AS mecanicas_sem_sistemas_registrados
         FROM JOGO j LEFT JOIN DADOS_FORMA_JOGO d USING(id_jogo)
         GROUP BY j.id_jogo ORDER BY j.geracao,j.nome""")]
     return {'snapshot_commit': manifest['commit'], 'fonte_url': manifest['source_url'], 'contagens_banco': counts,
@@ -173,6 +176,7 @@ def cobertura(directory=SNAPSHOT):
         'jogos_legados_identidade_ambigua': db.execute("SELECT count(*) FROM JOGO WHERE codigo_versao_pokeapi IS NULL AND nome COLLATE NOCASE IN ('Red','Blue')").fetchone()[0],
         'fichas_tipos_com_fonte': db.execute("SELECT count(*) FROM DADOS_FORMA_JOGO WHERE fonte_tipos IS NOT NULL").fetchone()[0],
         'fichas_estatisticas_com_fonte': db.execute("SELECT count(*) FROM DADOS_FORMA_JOGO WHERE fonte_estatisticas IS NOT NULL").fetchone()[0],
+        'mecanicas_sem_sistemas_registrados': db.execute("SELECT count(*) FROM MECANICA_JOGO m WHERE NOT EXISTS (SELECT 1 FROM MECANICA_SISTEMA_ATRIBUTO s WHERE s.id_mecanica=m.id_mecanica)").fetchone()[0],
         'habilidades_com_fonte': db.execute("SELECT count(*) FROM HABILIDADE_FORMA_JOGO").fetchone()[0],
         'cobertura_por_jogo': games,
         'interpretacao_cobertura': {
