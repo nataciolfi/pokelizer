@@ -235,6 +235,67 @@ def test_distinct_red_blue_versions_report_first_generation_rules(app, client):
         assert detail['tipos']==['Electric']
 
 
+def test_historical_real_mechanics_have_distinct_ev_limits_and_contexts(app, client):
+    from test_api import create_user, get_csrf
+    create_user(client)
+    with app.app_context():
+        report=importar_catalogo()
+        db=get_db()
+        assert report['contagens_banco']['MECANICA_JOGO']==25  # 22 selected historical, 2 SwSh, 1 FIXTURE
+        contexts={}
+        for game in ('ruby','x'):
+            row=db.execute("""SELECT d.id_dados_forma,m.id_mecanica,ms.id_mecanica_sistema_atributo,
+                    ms.valor_maximo_atributo,ms.valor_maximo_total,ms.fonte_url
+                FROM DADOS_FORMA_JOGO d JOIN FORMA f USING(id_forma) JOIN JOGO j USING(id_jogo)
+                JOIN MECANICA_JOGO m USING(id_jogo) JOIN MECANICA_SISTEMA_ATRIBUTO ms USING(id_mecanica)
+                JOIN SISTEMA_ATRIBUTO s USING(id_sistema_atributo)
+                WHERE f.codigo_forma='pikachu' AND j.codigo_versao_pokeapi=? AND s.codigo='EV'""",(game,)).fetchone()
+            contexts[game]=dict(row)
+        attr=db.execute("SELECT id_atributo FROM ATRIBUTO_BATALHA WHERE codigo='attack'").fetchone()[0]
+        assert contexts['ruby']['valor_maximo_atributo']==255
+        assert contexts['x']['valor_maximo_atributo']==252
+        assert all(c['valor_maximo_total']==510 and c['fonte_url'].endswith('/Effort_values') for c in contexts.values())
+        assert not db.execute("""SELECT 1 FROM MECANICA_JOGO m JOIN JOGO j USING(id_jogo)
+                               WHERE j.codigo_versao_pokeapi IN ('lets-go-pikachu','legends-arceus','red')""").fetchall()
+    headers={'X-CSRF-Token':get_csrf(client)}
+    def value(context,number,field='valor'):
+        return {'id_mecanica_sistema_atributo':context['id_mecanica_sistema_atributo'],'id_atributo':attr,field:number}
+    ruby,x=contexts['ruby'],contexts['x']
+    specimen=client.post('/api/colecao',headers=headers,json={'id_dados_forma_atual':ruby['id_dados_forma'],
+        'id_mecanica':ruby['id_mecanica'],'valores':[value(ruby,255)]})
+    assert specimen.status_code==201, specimen.json
+    for context,number in ((ruby,256),(x,253)):
+        rejected=client.post('/api/colecao',headers=headers,json={'id_dados_forma_atual':context['id_dados_forma'],
+            'id_mecanica':context['id_mecanica'],'valores':[value(context,number)]})
+        assert rejected.status_code==400
+    profile=client.post('/api/perfis',headers=headers,json={'id_dados_forma':ruby['id_dados_forma'],
+        'id_mecanica':ruby['id_mecanica'],'nome_perfil':'FIXTURE alvo 252','valores':[value(ruby,252,'valor_alvo')]})
+    assert profile.status_code==201, profile.json
+    compared=client.post('/api/analises',headers=headers,json={'id_pokemon_colecao':specimen.json['id_pokemon_colecao'],
+                                                             'id_perfil':profile.json['id_perfil']})
+    attack=next(v for v in compared.json['campos'] if v['sistema']=='EV' and v['atributo']=='attack')
+    assert attack['real']==255 and attack['alvo']==252 and attack['diferenca']==3 and attack['estado']=='acima'
+    assert 'não significa melhor' in compared.json['interpretacao']
+    wrong=client.post('/api/perfis',headers=headers,json={'id_dados_forma':ruby['id_dados_forma'],
+        'id_mecanica':x['id_mecanica'],'nome_perfil':'FIXTURE contexto incompatível'})
+    assert wrong.status_code==400
+
+
+def test_historical_mechanics_conflict_preserves_curation(app):
+    with app.app_context():
+        importar_catalogo()
+        db=get_db()
+        row=db.execute("""SELECT ms.id_mecanica_sistema_atributo FROM MECANICA_SISTEMA_ATRIBUTO ms
+            JOIN MECANICA_JOGO m USING(id_mecanica) JOIN JOGO j USING(id_jogo)
+            JOIN SISTEMA_ATRIBUTO s USING(id_sistema_atributo)
+            WHERE j.codigo_versao_pokeapi='ruby' AND s.codigo='EV'""").fetchone()
+        db.execute('UPDATE MECANICA_SISTEMA_ATRIBUTO SET valor_maximo_atributo=254 WHERE id_mecanica_sistema_atributo=?',(row[0],))
+        db.commit()
+        with pytest.raises(ValueError,match='Conflito de curadoria'):
+            importar_catalogo()
+        assert db.execute('SELECT valor_maximo_atributo FROM MECANICA_SISTEMA_ATRIBUTO WHERE id_mecanica_sistema_atributo=?',(row[0],)).fetchone()[0]==254
+
+
 def test_history_reimport_preserves_existing_specimen_and_partial_curation(app, client, monkeypatch):
     from test_api import create_user, get_csrf
     import pokeanalyzer.contextual_data as contextual

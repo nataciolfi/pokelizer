@@ -6,7 +6,7 @@
     "FORMA": 1579,
     "JOGO": 53,
     "DADOS_FORMA_JOGO": 5332,
-    "MECANICA_JOGO": 2,
+    "MECANICA_JOGO": 24,
     "REGULAMENTO": 2,
     "ELEGIBILIDADE_FORMA_REGULAMENTO": 355
   },
@@ -22,7 +22,7 @@
   "pendencias": [
     "Fichas e presença por jogo",
     "Tipos, habilidades e atributos históricos para contextos ainda não importados",
-    "Mecânicas e limites fora de Sword/Shield",
+    "Mecânicas e limites para versões ainda não contempladas",
     "Outros regulamentos, formas e elegibilidades com fontes específicas",
     "Outros perfis de referência competitiva verificados"
   ],
@@ -43,7 +43,8 @@
       "seis_estatisticas_com_fonte": 0,
       "tipos_sem_fonte": 0,
       "estatisticas_sem_fonte": 86,
-      "fichas_com_alguma_habilidade_com_fonte": 0
+      "fichas_com_alguma_habilidade_com_fonte": 0,
+      "mecanicas": 0
     },
     {
       "nome": "Blue (blue-japan)",
@@ -54,7 +55,8 @@
       "seis_estatisticas_com_fonte": 0,
       "tipos_sem_fonte": 0,
       "estatisticas_sem_fonte": 0,
-      "fichas_com_alguma_habilidade_com_fonte": 0
+      "fichas_com_alguma_habilidade_com_fonte": 0,
+      "mecanicas": 0
     },
     {
       "nome": "Green",
@@ -65,7 +67,8 @@
       "seis_estatisticas_com_fonte": 0,
       "tipos_sem_fonte": 0,
       "estatisticas_sem_fonte": 86,
-      "fichas_com_alguma_habilidade_com_fonte": 0
+      "fichas_com_alguma_habilidade_com_fonte": 0,
+      "mecanicas": 0
     },
     {
       "nome": "Red (red)",
@@ -76,7 +79,8 @@
       "seis_estatisticas_com_fonte": 0,
       "tipos_sem_fonte": 0,
       "estatisticas_sem_fonte": 86,
-      "fichas_com_alguma_habilidade_com_fonte": 0
+      "fichas_com_alguma_habilidade_com_fonte": 0,
+      "mecanicas": 0
     },
     {
       "nome": "Red (red-japan)",
@@ -87,7 +91,8 @@
       "seis_estatisticas_com_fonte": 0,
       "tipos_sem_fonte": 0,
       "estatisticas_sem_fonte": 86,
-      "fichas_com_alguma_habilidade_com_fonte": 0
+      "fichas_com_alguma_habilidade_com_fonte": 0,
+      "mecanicas": 0
     },
     {
       "nome": "Yellow",
@@ -98,7 +103,8 @@
       "seis_estatisticas_com_fonte": 0,
       "tipos_sem_fonte": 0,
       "estatisticas_sem_fonte": 85,
-      "fichas_com_alguma_habilidade_com_fonte": 0
+      "fichas_com_alguma_habilidade_com_fonte": 0,
+      "mecanicas": 0
     },
     {
       "nome": "Crystal",
@@ -109,7 +115,8 @@
       "seis_estatisticas_com_fonte": 143,
       "tipos_sem_fonte": 0,
       "estatisticas_sem_fonte": 0,
-      "fichas_com_alguma_habilidade_com_fonte": 0
+      "fichas_com_alguma_habilidade_com_fonte": 0,
+      "mecanicas": 0
     },
     {
       "nome": "Gold",
@@ -120,7 +127,8 @@
       "seis_estatisticas_com_fonte": 131,
       "tipos_sem_fonte": 0,
       "estatisticas_sem_fonte": 0,
-      "fichas_com_alguma_habilidade_com_fonte": 0
+      "fichas_com_alguma_habilidade_com_fonte": 0,
+      "mecanicas": 0
     },
     {
       "nome": "Silver",
@@ -131,7 +139,8 @@
       "seis_estatisticas_com_fonte": 131,
       "tipos_sem_fonte": 0,
       "estatisticas_sem_fonte": 0,
-      "fichas_com_alguma_habilidade_com_fonte": 0
+      "fichas_com_alguma_habilidade_com_fonte": 0,
+      "mecanicas": 0
     },
     {
       "nome": "Colosseum",
@@ -142,7 +151,8 @@
       "seis_estatisticas_com_fonte": 0,
       "tipos_sem_fonte": 0,
       "estatisticas_sem_fonte": 0,
-      "fichas_com_alguma_habilidade_com_fonte": 0
+      "fichas_com_alguma_habilidade_com_fonte": 0,
+      "mecanicas": 0
     },
     {
       "nome": "Emerald",
@@ -153,7 +163,8 @@
       "seis_estatisticas_com_fonte": 129,
       "tipos_sem_fonte": 0,
       "estatisticas_sem_fonte": 0,
-      "fichas_com_alguma_habilidade_com_fonte": 129
+      "fichas_com_alguma_habilidade_com_fonte": 129,
+      "mecanicas": 1
     },
     {
       "nome": "FireRed",
@@ -164,7 +175,8 @@
       "seis_estatisticas_com_fonte": 112,
       "tipos_sem_fonte": 0,
       "estatisticas_sem_fonte": 0,
-      "fichas_com_alguma_habilidade_com_fonte": 112
+      "fichas_com_alguma_habilidade_com_fonte": 112,
+      "mecanicas": 1
     },
     {
       "nome": "LeafGreen",
@@ -175,7 +187,8 @@
       "seis_estatisticas_com_fonte": 112,
       "tipos_sem_fonte": 0,
       "estatisticas_sem_fonte": 0,
-      "fichas_com_alguma_habilidade_com_fonte": 112
+      "fichas_com_alguma_habilidade_com_fonte": 112,
+      "mecanicas": 1
     },
     {
       "nome": "Ruby",
@@ -186,7 +199,8 @@
       "seis_estatisticas_com_fonte": 109,
       "tipos_sem_fonte": 0,
       "estatisticas_sem_fonte": 0,
-      "fichas_com_alguma_habilidade_com_fonte": 109
+      "fichas_com_alguma_habilidade_com_fonte": 109,
+      "mecanicas": 1
     },
     {
       "nome": "Sapphire",
@@ -197,7 +211,8 @@
       "seis_estatisticas_com_fonte": 109,
       "tipos_sem_fonte": 0,
       "estatisticas_sem_fonte": 0,
-      "fichas_com_alguma_habilidade_com_fonte": 109
+      "fichas_com_alguma_habilidade_com_fonte": 109,
+      "mecanicas": 1
     },
     {
       "nome": "XD",
@@ -208,7 +223,8 @@
       "seis_estatisticas_com_fonte": 0,
       "tipos_sem_fonte": 0,
       "estatisticas_sem_fonte": 0,
-      "fichas_com_alguma_habilidade_com_fonte": 0
+      "fichas_com_alguma_habilidade_com_fonte": 0,
+      "mecanicas": 0
     },
     {
       "nome": "Diamond",
@@ -219,7 +235,8 @@
       "seis_estatisticas_com_fonte": 241,
       "tipos_sem_fonte": 0,
       "estatisticas_sem_fonte": 0,
-      "fichas_com_alguma_habilidade_com_fonte": 241
+      "fichas_com_alguma_habilidade_com_fonte": 241,
+      "mecanicas": 1
     },
     {
       "nome": "HeartGold",
@@ -230,7 +247,8 @@
       "seis_estatisticas_com_fonte": 243,
       "tipos_sem_fonte": 0,
       "estatisticas_sem_fonte": 0,
-      "fichas_com_alguma_habilidade_com_fonte": 243
+      "fichas_com_alguma_habilidade_com_fonte": 243,
+      "mecanicas": 1
     },
     {
       "nome": "Pearl",
@@ -241,7 +259,8 @@
       "seis_estatisticas_com_fonte": 242,
       "tipos_sem_fonte": 0,
       "estatisticas_sem_fonte": 0,
-      "fichas_com_alguma_habilidade_com_fonte": 242
+      "fichas_com_alguma_habilidade_com_fonte": 242,
+      "mecanicas": 1
     },
     {
       "nome": "Platinum",
@@ -252,7 +271,8 @@
       "seis_estatisticas_com_fonte": 248,
       "tipos_sem_fonte": 0,
       "estatisticas_sem_fonte": 0,
-      "fichas_com_alguma_habilidade_com_fonte": 248
+      "fichas_com_alguma_habilidade_com_fonte": 248,
+      "mecanicas": 1
     },
     {
       "nome": "SoulSilver",
@@ -263,7 +283,8 @@
       "seis_estatisticas_com_fonte": 243,
       "tipos_sem_fonte": 0,
       "estatisticas_sem_fonte": 0,
-      "fichas_com_alguma_habilidade_com_fonte": 243
+      "fichas_com_alguma_habilidade_com_fonte": 243,
+      "mecanicas": 1
     },
     {
       "nome": "Black",
@@ -274,7 +295,8 @@
       "seis_estatisticas_com_fonte": 210,
       "tipos_sem_fonte": 0,
       "estatisticas_sem_fonte": 0,
-      "fichas_com_alguma_habilidade_com_fonte": 210
+      "fichas_com_alguma_habilidade_com_fonte": 210,
+      "mecanicas": 1
     },
     {
       "nome": "Black 2",
@@ -285,7 +307,8 @@
       "seis_estatisticas_com_fonte": 235,
       "tipos_sem_fonte": 0,
       "estatisticas_sem_fonte": 0,
-      "fichas_com_alguma_habilidade_com_fonte": 235
+      "fichas_com_alguma_habilidade_com_fonte": 235,
+      "mecanicas": 1
     },
     {
       "nome": "White",
@@ -296,7 +319,8 @@
       "seis_estatisticas_com_fonte": 210,
       "tipos_sem_fonte": 0,
       "estatisticas_sem_fonte": 0,
-      "fichas_com_alguma_habilidade_com_fonte": 210
+      "fichas_com_alguma_habilidade_com_fonte": 210,
+      "mecanicas": 1
     },
     {
       "nome": "White 2",
@@ -307,7 +331,8 @@
       "seis_estatisticas_com_fonte": 235,
       "tipos_sem_fonte": 0,
       "estatisticas_sem_fonte": 0,
-      "fichas_com_alguma_habilidade_com_fonte": 235
+      "fichas_com_alguma_habilidade_com_fonte": 235,
+      "mecanicas": 1
     },
     {
       "nome": "Alpha Sapphire",
@@ -318,7 +343,8 @@
       "seis_estatisticas_com_fonte": 38,
       "tipos_sem_fonte": 0,
       "estatisticas_sem_fonte": 0,
-      "fichas_com_alguma_habilidade_com_fonte": 38
+      "fichas_com_alguma_habilidade_com_fonte": 38,
+      "mecanicas": 1
     },
     {
       "nome": "Omega Ruby",
@@ -329,7 +355,8 @@
       "seis_estatisticas_com_fonte": 38,
       "tipos_sem_fonte": 0,
       "estatisticas_sem_fonte": 0,
-      "fichas_com_alguma_habilidade_com_fonte": 38
+      "fichas_com_alguma_habilidade_com_fonte": 38,
+      "mecanicas": 1
     },
     {
       "nome": "X",
@@ -340,7 +367,8 @@
       "seis_estatisticas_com_fonte": 303,
       "tipos_sem_fonte": 0,
       "estatisticas_sem_fonte": 0,
-      "fichas_com_alguma_habilidade_com_fonte": 303
+      "fichas_com_alguma_habilidade_com_fonte": 303,
+      "mecanicas": 1
     },
     {
       "nome": "Y",
@@ -351,7 +379,8 @@
       "seis_estatisticas_com_fonte": 301,
       "tipos_sem_fonte": 0,
       "estatisticas_sem_fonte": 0,
-      "fichas_com_alguma_habilidade_com_fonte": 301
+      "fichas_com_alguma_habilidade_com_fonte": 301,
+      "mecanicas": 1
     },
     {
       "nome": "Let’s Go, Eevee!",
@@ -362,7 +391,8 @@
       "seis_estatisticas_com_fonte": 0,
       "tipos_sem_fonte": 0,
       "estatisticas_sem_fonte": 0,
-      "fichas_com_alguma_habilidade_com_fonte": 0
+      "fichas_com_alguma_habilidade_com_fonte": 0,
+      "mecanicas": 0
     },
     {
       "nome": "Let’s Go, Pikachu!",
@@ -373,7 +403,8 @@
       "seis_estatisticas_com_fonte": 0,
       "tipos_sem_fonte": 0,
       "estatisticas_sem_fonte": 0,
-      "fichas_com_alguma_habilidade_com_fonte": 0
+      "fichas_com_alguma_habilidade_com_fonte": 0,
+      "mecanicas": 0
     },
     {
       "nome": "Moon",
@@ -384,7 +415,8 @@
       "seis_estatisticas_com_fonte": 145,
       "tipos_sem_fonte": 0,
       "estatisticas_sem_fonte": 0,
-      "fichas_com_alguma_habilidade_com_fonte": 145
+      "fichas_com_alguma_habilidade_com_fonte": 145,
+      "mecanicas": 1
     },
     {
       "nome": "Sun",
@@ -395,7 +427,8 @@
       "seis_estatisticas_com_fonte": 145,
       "tipos_sem_fonte": 0,
       "estatisticas_sem_fonte": 0,
-      "fichas_com_alguma_habilidade_com_fonte": 145
+      "fichas_com_alguma_habilidade_com_fonte": 145,
+      "mecanicas": 1
     },
     {
       "nome": "Ultra Moon",
@@ -406,7 +439,8 @@
       "seis_estatisticas_com_fonte": 181,
       "tipos_sem_fonte": 0,
       "estatisticas_sem_fonte": 0,
-      "fichas_com_alguma_habilidade_com_fonte": 181
+      "fichas_com_alguma_habilidade_com_fonte": 181,
+      "mecanicas": 1
     },
     {
       "nome": "Ultra Sun",
@@ -417,7 +451,8 @@
       "seis_estatisticas_com_fonte": 181,
       "tipos_sem_fonte": 0,
       "estatisticas_sem_fonte": 0,
-      "fichas_com_alguma_habilidade_com_fonte": 181
+      "fichas_com_alguma_habilidade_com_fonte": 181,
+      "mecanicas": 1
     },
     {
       "nome": "Brilliant Diamond",
@@ -428,7 +463,8 @@
       "seis_estatisticas_com_fonte": 0,
       "tipos_sem_fonte": 0,
       "estatisticas_sem_fonte": 0,
-      "fichas_com_alguma_habilidade_com_fonte": 0
+      "fichas_com_alguma_habilidade_com_fonte": 0,
+      "mecanicas": 0
     },
     {
       "nome": "Legends: Arceus",
@@ -439,7 +475,8 @@
       "seis_estatisticas_com_fonte": 0,
       "tipos_sem_fonte": 0,
       "estatisticas_sem_fonte": 0,
-      "fichas_com_alguma_habilidade_com_fonte": 0
+      "fichas_com_alguma_habilidade_com_fonte": 0,
+      "mecanicas": 0
     },
     {
       "nome": "Shield",
@@ -450,7 +487,8 @@
       "seis_estatisticas_com_fonte": 182,
       "tipos_sem_fonte": 0,
       "estatisticas_sem_fonte": 0,
-      "fichas_com_alguma_habilidade_com_fonte": 182
+      "fichas_com_alguma_habilidade_com_fonte": 182,
+      "mecanicas": 1
     },
     {
       "nome": "Shield: The Crown Tundra",
@@ -461,7 +499,8 @@
       "seis_estatisticas_com_fonte": 29,
       "tipos_sem_fonte": 0,
       "estatisticas_sem_fonte": 0,
-      "fichas_com_alguma_habilidade_com_fonte": 29
+      "fichas_com_alguma_habilidade_com_fonte": 29,
+      "mecanicas": 0
     },
     {
       "nome": "Shield: The Isle of Armor",
@@ -472,7 +511,8 @@
       "seis_estatisticas_com_fonte": 32,
       "tipos_sem_fonte": 0,
       "estatisticas_sem_fonte": 0,
-      "fichas_com_alguma_habilidade_com_fonte": 32
+      "fichas_com_alguma_habilidade_com_fonte": 32,
+      "mecanicas": 0
     },
     {
       "nome": "Shining Pearl",
@@ -483,7 +523,8 @@
       "seis_estatisticas_com_fonte": 0,
       "tipos_sem_fonte": 0,
       "estatisticas_sem_fonte": 0,
-      "fichas_com_alguma_habilidade_com_fonte": 0
+      "fichas_com_alguma_habilidade_com_fonte": 0,
+      "mecanicas": 0
     },
     {
       "nome": "Sword",
@@ -494,7 +535,8 @@
       "seis_estatisticas_com_fonte": 184,
       "tipos_sem_fonte": 0,
       "estatisticas_sem_fonte": 0,
-      "fichas_com_alguma_habilidade_com_fonte": 184
+      "fichas_com_alguma_habilidade_com_fonte": 184,
+      "mecanicas": 1
     },
     {
       "nome": "Sword: The Crown Tundra",
@@ -505,7 +547,8 @@
       "seis_estatisticas_com_fonte": 29,
       "tipos_sem_fonte": 0,
       "estatisticas_sem_fonte": 0,
-      "fichas_com_alguma_habilidade_com_fonte": 29
+      "fichas_com_alguma_habilidade_com_fonte": 29,
+      "mecanicas": 0
     },
     {
       "nome": "Sword: The Isle of Armor",
@@ -516,7 +559,8 @@
       "seis_estatisticas_com_fonte": 32,
       "tipos_sem_fonte": 0,
       "estatisticas_sem_fonte": 0,
-      "fichas_com_alguma_habilidade_com_fonte": 32
+      "fichas_com_alguma_habilidade_com_fonte": 32,
+      "mecanicas": 0
     },
     {
       "nome": "Champions",
@@ -527,7 +571,8 @@
       "seis_estatisticas_com_fonte": 0,
       "tipos_sem_fonte": 0,
       "estatisticas_sem_fonte": 0,
-      "fichas_com_alguma_habilidade_com_fonte": 0
+      "fichas_com_alguma_habilidade_com_fonte": 0,
+      "mecanicas": 0
     },
     {
       "nome": "Legends: Z-A",
@@ -538,7 +583,8 @@
       "seis_estatisticas_com_fonte": 0,
       "tipos_sem_fonte": 0,
       "estatisticas_sem_fonte": 0,
-      "fichas_com_alguma_habilidade_com_fonte": 0
+      "fichas_com_alguma_habilidade_com_fonte": 0,
+      "mecanicas": 0
     },
     {
       "nome": "Mega Dimension",
@@ -549,7 +595,8 @@
       "seis_estatisticas_com_fonte": 0,
       "tipos_sem_fonte": 0,
       "estatisticas_sem_fonte": 0,
-      "fichas_com_alguma_habilidade_com_fonte": 0
+      "fichas_com_alguma_habilidade_com_fonte": 0,
+      "mecanicas": 0
     },
     {
       "nome": "Scarlet",
@@ -560,7 +607,8 @@
       "seis_estatisticas_com_fonte": 0,
       "tipos_sem_fonte": 0,
       "estatisticas_sem_fonte": 0,
-      "fichas_com_alguma_habilidade_com_fonte": 0
+      "fichas_com_alguma_habilidade_com_fonte": 0,
+      "mecanicas": 0
     },
     {
       "nome": "Scarlet: The Indigo Disk",
@@ -571,7 +619,8 @@
       "seis_estatisticas_com_fonte": 0,
       "tipos_sem_fonte": 0,
       "estatisticas_sem_fonte": 0,
-      "fichas_com_alguma_habilidade_com_fonte": 0
+      "fichas_com_alguma_habilidade_com_fonte": 0,
+      "mecanicas": 0
     },
     {
       "nome": "Scarlet: The Teal Mask",
@@ -582,7 +631,8 @@
       "seis_estatisticas_com_fonte": 0,
       "tipos_sem_fonte": 0,
       "estatisticas_sem_fonte": 0,
-      "fichas_com_alguma_habilidade_com_fonte": 0
+      "fichas_com_alguma_habilidade_com_fonte": 0,
+      "mecanicas": 0
     },
     {
       "nome": "Violet",
@@ -593,7 +643,8 @@
       "seis_estatisticas_com_fonte": 0,
       "tipos_sem_fonte": 0,
       "estatisticas_sem_fonte": 0,
-      "fichas_com_alguma_habilidade_com_fonte": 0
+      "fichas_com_alguma_habilidade_com_fonte": 0,
+      "mecanicas": 0
     },
     {
       "nome": "Violet: The Indigo Disk",
@@ -604,7 +655,8 @@
       "seis_estatisticas_com_fonte": 0,
       "tipos_sem_fonte": 0,
       "estatisticas_sem_fonte": 0,
-      "fichas_com_alguma_habilidade_com_fonte": 0
+      "fichas_com_alguma_habilidade_com_fonte": 0,
+      "mecanicas": 0
     },
     {
       "nome": "Violet: The Teal Mask",
@@ -615,7 +667,8 @@
       "seis_estatisticas_com_fonte": 0,
       "tipos_sem_fonte": 0,
       "estatisticas_sem_fonte": 0,
-      "fichas_com_alguma_habilidade_com_fonte": 0
+      "fichas_com_alguma_habilidade_com_fonte": 0,
+      "mecanicas": 0
     }
   ],
   "interpretacao_cobertura": {

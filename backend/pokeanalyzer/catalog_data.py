@@ -80,8 +80,9 @@ def importar_catalogo(directory=SNAPSHOT):
                 db.execute('INSERT INTO JOGO(nome,geracao,fonte_url,data_verificacao,codigo_versao_pokeapi) VALUES(?,?,?,?,?)',
                     (display, generation, source, date, r['identifier']))
         importar_encontros(db, data, manifest)
-        from .curated_data import importar_mecanicas_swsh, importar_dragapult
+        from .curated_data import importar_mecanicas_swsh, importar_mecanicas_historicas, importar_dragapult
         importar_mecanicas_swsh(db, data)
+        importar_mecanicas_historicas(db, data)
         importar_dragapult(db)
         from .contextual_data import importar_contextos_por_geracao
         importar_contextos_por_geracao(db, data, manifest)
@@ -152,7 +153,8 @@ def cobertura(directory=SNAPSHOT):
         SUM(CASE WHEN d.id_dados_forma IS NOT NULL AND d.fonte_tipos IS NULL THEN 1 ELSE 0 END) AS tipos_sem_fonte,
         SUM(CASE WHEN d.id_dados_forma IS NOT NULL AND d.fonte_estatisticas IS NULL THEN 1 ELSE 0 END) AS estatisticas_sem_fonte,
         SUM(CASE WHEN EXISTS (SELECT 1 FROM HABILIDADE_FORMA_JOGO h
-            WHERE h.id_dados_forma=d.id_dados_forma AND h.fonte_url IS NOT NULL) THEN 1 ELSE 0 END) AS fichas_com_alguma_habilidade_com_fonte
+            WHERE h.id_dados_forma=d.id_dados_forma AND h.fonte_url IS NOT NULL) THEN 1 ELSE 0 END) AS fichas_com_alguma_habilidade_com_fonte,
+        (SELECT COUNT(*) FROM MECANICA_JOGO m WHERE m.id_jogo=j.id_jogo) AS mecanicas
         FROM JOGO j LEFT JOIN DADOS_FORMA_JOGO d USING(id_jogo)
         GROUP BY j.id_jogo ORDER BY j.geracao,j.nome""")]
     return {'snapshot_commit': manifest['commit'], 'fonte_url': manifest['source_url'], 'contagens_banco': counts,
@@ -163,7 +165,7 @@ def cobertura(directory=SNAPSHOT):
                                   {r[0].casefold() for r in db.execute('SELECT codigo_versao_pokeapi FROM JOGO WHERE codigo_versao_pokeapi IS NOT NULL')})},
         'nomes_exibidos': 'Inglês da fonte, sem tradução portuguesa confirmada; códigos de forma preservados.',
         'pendencias': ['Fichas e presença por jogo', 'Tipos, habilidades e atributos históricos para contextos ainda não importados',
-                      'Mecânicas e limites fora de Sword/Shield', 'Outros regulamentos, formas e elegibilidades com fontes específicas',
+                      'Mecânicas e limites para versões ainda não contempladas', 'Outros regulamentos, formas e elegibilidades com fontes específicas',
                       'Outros perfis de referência competitiva verificados'],
         'fichas_outras_fontes_preservadas': db.execute("SELECT count(*) FROM DADOS_FORMA_JOGO WHERE fonte_url IS NULL OR fonte_url NOT IN (?,?)", (manifest['files']['encounters.csv.gz']['url'],DRAGAPULT_SOURCE)).fetchone()[0],
         'fichas_dragapult_guia_vgc': db.execute('SELECT count(*) FROM DADOS_FORMA_JOGO WHERE fonte_url=?',(DRAGAPULT_SOURCE,)).fetchone()[0],

@@ -1,4 +1,4 @@
-"""Explicitly sourced mechanics for the two named games; no generation-wide inference."""
+"""Mechanics only for explicitly named games and documented generation limits."""
 
 OFFICIAL = 'https://www.pokemon.com/us/strategy/train-raid-and-hatch-pokemon-to-breed-victories-in-pokemon-sword-and-pokemon-shield'
 IV_SOURCE = 'https://bulbapedia.bulbagarden.net/wiki/Individual_values'
@@ -7,6 +7,17 @@ NATURE_SOURCE = 'https://raw.githubusercontent.com/PokeAPI/pokeapi/8a92bfa7dab2f
 DATE = '2026-11-14'
 SERIES_14_SOURCE = 'https://www.pokemon.com/us/pokemon-news/pokemon-sword-and-pokemon-shield-ranked-battles-november-2022-season-season-36/'
 DRAGAPULT_SOURCE = 'https://www.vgcguide.com/ev-training'
+ABILITY_SOURCE = 'https://bulbapedia.bulbagarden.net/wiki/Ability'
+HISTORICAL_DATE = '2026-11-15'
+# Curated core-series versions only. Let's Go, spinoffs and later games with
+# distinct systems are deliberately excluded; no mechanical equivalence is inferred.
+HISTORICAL_GAMES = {
+    'ruby':3, 'sapphire':3, 'emerald':3, 'firered':3, 'leafgreen':3,
+    'diamond':4, 'pearl':4, 'platinum':4, 'heartgold':4, 'soulsilver':4,
+    'black':5, 'white':5, 'black-2':5, 'white-2':5,
+    'x':6, 'y':6, 'omega-ruby':6, 'alpha-sapphire':6,
+    'sun':7, 'moon':7, 'ultra-sun':7, 'ultra-moon':7,
+}
 STATS = {1: ('hp', 'HP'), 2: ('attack', 'Ataque'), 3: ('defense', 'Defesa'),
          4: ('special-attack', 'Ataque especial'), 5: ('special-defense', 'Defesa especial'), 6: ('speed', 'Velocidade')}
 
@@ -59,6 +70,40 @@ def importar_mecanicas_swsh(db, data):
             for attr in attrs.values():
                 _obter_ou_inserir(db,'MECANICA_ATRIBUTO',{'id_mecanica_sistema_atributo':system['id_mecanica_sistema_atributo'],'id_atributo':attr},
                     {'aplicabilidade':'aplicavel','fonte_url':source,'data_verificacao':DATE},['aplicabilidade'])
+
+
+def importar_mecanicas_historicas(db, data):
+    """Explicitly selected core games, with the 255→252 EV change in Gen VI."""
+    groups={r['id']:r for r in data['version_groups.csv']}
+    versions={r['identifier']:r for r in data['versions.csv']}
+    attrs=[db.execute('SELECT id_atributo FROM ATRIBUTO_BATALHA WHERE codigo=?',(code,)).fetchone()[0]
+           for code,_ in STATS.values()]
+    systems={code:db.execute('SELECT id_sistema_atributo FROM SISTEMA_ATRIBUTO WHERE codigo=?',(code,)).fetchone()[0]
+             for code in ('IV','EV')}
+    for code,generation in HISTORICAL_GAMES.items():
+        version=versions.get(code)
+        if not version or int(groups[version['version_group_id']]['generation_id'])!=generation:
+            raise ValueError(f'Versão histórica {code} não corresponde à fonte; carga revertida.')
+        game=db.execute('SELECT id_jogo FROM JOGO WHERE codigo_versao_pokeapi=?',(code,)).fetchone()
+        if not game:
+            raise ValueError(f'Jogo {code} não identificado; carga revertida.')
+        values={'usa_natureza':'sim','usa_habilidade':'sim','usa_nivel':'sim',
+                'nivel_minimo':1,'nivel_maximo':100,'fonte_url':ABILITY_SOURCE,'data_verificacao':HISTORICAL_DATE}
+        mechanic=_obter_ou_inserir(db,'MECANICA_JOGO',
+            {'id_jogo':game[0],'versao':'regras-gerais-documentadas'},values,
+            ['usa_natureza','usa_habilidade','usa_nivel','nivel_minimo','nivel_maximo'])
+        for system_code,maximum,total,limit,source in (
+            ('IV',31,None,'nao_aplicavel',IV_SOURCE),
+            ('EV',255 if generation<=5 else 252,510,'confirmado',EV_SOURCE)):
+            values={'aplicabilidade':'aplicavel','valor_minimo':0,'valor_maximo_atributo':maximum,
+                    'valor_maximo_total':total,'limite_total_status':limit,'fonte_url':source,'data_verificacao':HISTORICAL_DATE}
+            system=_obter_ou_inserir(db,'MECANICA_SISTEMA_ATRIBUTO',
+                {'id_mecanica':mechanic['id_mecanica'],'id_sistema_atributo':systems[system_code]},values,
+                ['aplicabilidade','valor_minimo','valor_maximo_atributo','valor_maximo_total','limite_total_status'])
+            for attr in attrs:
+                _obter_ou_inserir(db,'MECANICA_ATRIBUTO',
+                    {'id_mecanica_sistema_atributo':system['id_mecanica_sistema_atributo'],'id_atributo':attr},
+                    {'aplicabilidade':'aplicavel','fonte_url':source,'data_verificacao':HISTORICAL_DATE},['aplicabilidade'])
 
 
 def importar_regulamento_swsh(db, data, manifest):
