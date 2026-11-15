@@ -55,7 +55,9 @@ class UsuarioDAO:
 
 class PokemonDAO:
     _SELECT = """SELECT dfj.id_dados_forma, e.id_especie, f.id_forma, j.id_jogo,
-                      e.numero_nacional, e.nome_pt, f.nome_forma, j.nome AS nome_jogo,
+                      e.numero_nacional, e.nome_pt, f.nome_forma,
+                      CASE WHEN j.codigo_versao_pokeapi IS NULL AND j.nome COLLATE NOCASE IN ('Red','Blue')
+                           THEN j.nome || ' (versão não identificada)' ELSE j.nome END AS nome_jogo,
                       dfj.status_presenca, dfj.pode_ser_registrada, dfj.status_tipos, dfj.fonte_tipos, dfj.data_verificacao_tipos, f.codigo_forma, e.nome_en,
                       dfj.fonte_url, dfj.data_verificacao,
                       f.fonte_url AS fonte_forma_url, f.data_verificacao AS data_verificacao_forma
@@ -306,12 +308,16 @@ class ContextoDAO:
 
     def opcoes(self):
         db = get_db()
-        return {key: [dict(r) for r in db.execute(sql)] for key, sql in {
+        result = {key: [dict(r) for r in db.execute(sql)] for key, sql in {
             "jogos": "SELECT * FROM JOGO ORDER BY id_jogo",
             "tipos": "SELECT * FROM TIPO ORDER BY id_tipo",
             "naturezas": "SELECT * FROM NATUREZA ORDER BY id_natureza",
             "metodos": "SELECT * FROM METODO_OBTENCAO ORDER BY id_metodo",
             "mecanicas": "SELECT * FROM MECANICA_JOGO ORDER BY id_mecanica"}.items()}
+        for game in result['jogos']:
+            if game['codigo_versao_pokeapi'] is None and game['nome'].casefold() in {'red', 'blue'}:
+                game['nome'] += ' (versão não identificada)'
+        return result
 
     def ficha(self, id_dados_forma):
         item = PokemonDAO().obter(id_dados_forma)
@@ -321,12 +327,15 @@ class ContextoDAO:
         raw = dict(db.execute("SELECT * FROM DADOS_FORMA_JOGO WHERE id_dados_forma=?", (id_dados_forma,)).fetchone())
         raw.update(item.to_dict())
         raw["habilidades"] = [dict(r) for r in db.execute("SELECT h.*,a.nome,a.descricao FROM HABILIDADE_FORMA_JOGO h JOIN HABILIDADE a USING(id_habilidade) WHERE id_dados_forma=?", (id_dados_forma,))]
-        # These specific source-version names belong to generations I/II, before abilities.
+        # Only explicit source version identifiers establish generations I/II.
         # No conclusion is drawn for separately curated game sheets.
-        old_games = {'Green', 'Yellow', 'Gold', 'Silver', 'Crystal'}
+        code = db.execute('SELECT codigo_versao_pokeapi FROM JOGO WHERE id_jogo=?', (item.id_jogo,)).fetchone()[0]
+        raw['codigo_versao_pokeapi'] = code
+        first_generation = {'red', 'red-japan', 'blue', 'blue-japan', 'green', 'yellow'}
+        old_games = first_generation | {'gold', 'silver', 'crystal'}
         encounter_source = ('https://raw.githubusercontent.com/PokeAPI/pokeapi/'
                             '8a92bfa7dab2f12b84b5d151562f9857c133ff30/data/v2/csv/encounters.csv')
-        if raw['nome_jogo'] in old_games and raw['fonte_url'] == encounter_source:
+        if code in old_games and raw['fonte_url'] == encounter_source:
             raw['estado_sistema_habilidades'] = 'nao_aplicavel'
             raw['fonte_sistema_habilidades'] = 'https://bulbapedia.bulbagarden.net/wiki/Abilities'
             raw['data_verificacao_sistema_habilidades'] = '2026-11-15'
@@ -334,7 +343,7 @@ class ContextoDAO:
             raw['estado_sistema_habilidades'] = 'aplicavel' if raw['habilidades'] else 'nao_verificado'
             raw['fonte_sistema_habilidades'] = None
             raw['data_verificacao_sistema_habilidades'] = None
-        if raw['nome_jogo'] in {'Green', 'Yellow'} and raw['fonte_url'] == encounter_source:
+        if code in first_generation and raw['fonte_url'] == encounter_source:
             raw['estado_sistema_estatisticas'] = 'especial_unico'
             raw['fonte_sistema_estatisticas'] = 'https://bulbapedia.bulbagarden.net/wiki/Generation_II'
             raw['data_verificacao_sistema_estatisticas'] = '2026-11-15'

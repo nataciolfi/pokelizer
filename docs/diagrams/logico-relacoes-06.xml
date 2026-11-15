@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<DIAGRAMA ID="1" TIPO="tpLogico" UniversalUnicID="CC57-F0-33F6-EA-C41B-52-56">
+<DIAGRAMA ID="1" TIPO="tpLogico" UniversalUnicID="5991-B6-CD91-C9-C082-C4-38">
     <LogicoLinha ID="7">
         <DisablePainted Valor="false"/>
         <Tag LinhaMestre="-1"/>
@@ -443,7 +443,7 @@
         </Constraints>
     </Tabela>
     <Tabela ID="6">
-        <Bounds Height="320" Left="1010" Top="215" Width="540"/>
+        <Bounds Height="350" Left="1010" Top="215" Width="540"/>
         <DisablePainted Valor="false"/>
         <Texto>JOGO</Texto>
         <Observacao/>
@@ -541,6 +541,16 @@
             </Campo>
             <Campo>
                 <Texto>data_verificacao</Texto>
+                <Tipo>TEXT</Tipo>
+                <Complemento/>
+                <Dicionario/>
+                <Observacao/>
+                <Key Valor="false"/>
+                <Fkey Valor="false"/>
+                <Unique Valor="false"/>
+            </Campo>
+            <Campo>
+                <Texto>codigo_versao_pokeapi</Texto>
                 <Tipo>TEXT</Tipo>
                 <Complemento/>
                 <Dicionario/>

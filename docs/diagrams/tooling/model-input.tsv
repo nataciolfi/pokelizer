@@ -37,6 +37,7 @@ C	JOGO	plataforma	TEXT	0	0	0
 C	JOGO	data_lancamento	TEXT	0	0	0
 C	JOGO	fonte_url	TEXT	0	0	0
 C	JOGO	data_verificacao	TEXT	0	0	0
+C	JOGO	codigo_versao_pokeapi	TEXT	0	0	0
 U	JOGO	0	nome
 T	DADOS_FORMA_JOGO
 C	DADOS_FORMA_JOGO	id_dados_forma	INTEGER	0	1	0

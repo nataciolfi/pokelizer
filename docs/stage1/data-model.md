@@ -197,8 +197,9 @@ CHECKs, índices e gatilhos: consultar a definição desta tabela em [schema.sql
 | data_lancamento | TEXT | sim | — | — |
 | fonte_url | TEXT | sim | — | — |
 | data_verificacao | TEXT | sim | — | — |
+| codigo_versao_pokeapi | TEXT | sim | — | — |
 
-Chaves: PK(id_jogo); UNIQUE(nome).
+Chaves: PK(id_jogo); UNIQUE parcial(codigo_versao_pokeapi); UNIQUE(nome).
 
 CHECKs, índices e gatilhos: consultar a definição desta tabela em [schema.sql](../../backend/schema.sql) e a [matriz de invariantes](integrity.md).
 

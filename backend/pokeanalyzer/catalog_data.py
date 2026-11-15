@@ -36,6 +36,7 @@ def importar_catalogo(directory=SNAPSHOT):
     pokemon = {r['id']: r for r in data['pokemon.csv']}
     groups = {r['id']: r for r in data['version_groups.csv']}
     game_names = {r['version_id']: r['name'] for r in data['version_names.csv'] if r['local_language_id'] == '9'}
+    game_name_counts = Counter(game_names.get(r['id'], r['identifier']).casefold() for r in data['versions.csv'])
     with transaction(db):
         for r in data['pokemon_species.csv']:
             number = int(r['id'])
@@ -61,12 +62,23 @@ def importar_catalogo(directory=SNAPSHOT):
                     (species, code, code, default, 'temporario' if r['is_battle_only']=='1' else 'nao_verificado', source, date, category))
         for r in data['versions.csv']:
             name = game_names.get(r['id'], r['identifier'])
-            existing = db.execute('SELECT * FROM JOGO WHERE nome=? COLLATE NOCASE', (name,)).fetchone()
-            if existing and existing['fonte_url'] != source:
-                raise ValueError(f'Conflito em jogo {name}; catálogo existente preservado.')
-            if not existing:
-                db.execute('INSERT INTO JOGO(nome,geracao,fonte_url,data_verificacao) VALUES(?,?,?,?)',
-                    (name, int(groups[r['version_group_id']]['generation_id']), source, date))
+            ambiguous = game_name_counts[name.casefold()] > 1
+            display = f"{name} ({r['identifier']})" if ambiguous else name
+            generation = int(groups[r['version_group_id']]['generation_id'])
+            existing = db.execute('SELECT * FROM JOGO WHERE codigo_versao_pokeapi=? COLLATE NOCASE', (r['identifier'],)).fetchone()
+            if existing:
+                if existing['fonte_url'] != source or existing['geracao'] != generation:
+                    raise ValueError(f"Conflito na versão {r['identifier']}; catálogo existente preservado.")
+                continue
+            named = db.execute('SELECT * FROM JOGO WHERE nome=? COLLATE NOCASE', (display,)).fetchone()
+            if named:
+                # Only a unique old source name can be mapped without guessing.
+                if ambiguous or named['fonte_url'] != source or named['geracao'] != generation or named['codigo_versao_pokeapi'] is not None:
+                    raise ValueError(f'Conflito em jogo {display}; catálogo existente preservado.')
+                db.execute('UPDATE JOGO SET codigo_versao_pokeapi=? WHERE id_jogo=?', (r['identifier'], named['id_jogo']))
+            else:
+                db.execute('INSERT INTO JOGO(nome,geracao,fonte_url,data_verificacao,codigo_versao_pokeapi) VALUES(?,?,?,?,?)',
+                    (display, generation, source, date, r['identifier']))
         importar_encontros(db, data, manifest)
         from .curated_data import importar_mecanicas_swsh, importar_dragapult
         importar_mecanicas_swsh(db, data)
@@ -91,10 +103,7 @@ def importar_encontros(db, data, manifest):
     one_form = {pid: rows[0] for pid, rows in forms_by_pokemon.items()
                 if len(rows) == 1 and rows[0]['is_default'] == '1' and rows[0]['is_battle_only'] == '0'}
     pokemon = {r['id']: r for r in data['pokemon.csv']}
-    names = {r['version_id']: r['name'] for r in data['version_names.csv'] if r['local_language_id'] == '9'}
-    versions = {v['id']: names.get(v['id'], v['identifier']) for v in data['versions.csv']}
-    name_counts = Counter(name.casefold() for name in versions.values())
-    versions = {vid: name for vid, name in versions.items() if name_counts[name.casefold()] == 1}
+    versions = {v['id']: v['identifier'] for v in data['versions.csv']}
     source = manifest['files']['encounters.csv.gz']['url']
     date = manifest['files']['encounters.csv.gz']['retrieved_at']
     # Explicit wild methods only: gifts, NPC trades, bonus discs and snag events
@@ -113,7 +122,7 @@ def importar_encontros(db, data, manifest):
     for pid, vid in pairs:
         row = one_form[pid]
         existing_form = db.execute("SELECT f.id_forma FROM FORMA f JOIN ESPECIE e USING(id_especie) WHERE e.numero_nacional=? AND f.codigo_forma=?", (int(pokemon[pid]['species_id']), row['identifier'])).fetchone()
-        game = db.execute("SELECT id_jogo FROM JOGO WHERE nome=? COLLATE NOCASE", (versions[vid],)).fetchone()
+        game = db.execute("SELECT id_jogo FROM JOGO WHERE codigo_versao_pokeapi=? COLLATE NOCASE", (versions[vid],)).fetchone()
         if not existing_form or not game:
             raise ValueError('Forma ou jogo da fonte não encontrado; carga revertida.')
         current = db.execute("SELECT * FROM DADOS_FORMA_JOGO WHERE id_forma=? AND id_jogo=?", (existing_form[0],game[0])).fetchone()
@@ -134,7 +143,7 @@ def cobertura(directory=SNAPSHOT):
     matched = {
         'especies': db.execute('SELECT count(*) FROM ESPECIE WHERE fonte_url=?', (manifest['source_url'],)).fetchone()[0],
         'formas': db.execute('SELECT count(*) FROM FORMA WHERE fonte_url=?', (manifest['source_url'],)).fetchone()[0]}
-    games = [dict(row) for row in db.execute("""SELECT j.nome,j.geracao,
+    games = [dict(row) for row in db.execute("""SELECT j.nome,j.codigo_versao_pokeapi,j.geracao,
         COUNT(d.id_dados_forma) AS fichas,
         SUM(CASE WHEN d.fonte_tipos IS NOT NULL THEN 1 ELSE 0 END) AS tipos_com_fonte,
         SUM(CASE WHEN d.fonte_estatisticas IS NOT NULL AND d.hp_base IS NOT NULL AND d.ataque_base IS NOT NULL
@@ -148,7 +157,10 @@ def cobertura(directory=SNAPSHOT):
         GROUP BY j.id_jogo ORDER BY j.geracao,j.nome""")]
     return {'snapshot_commit': manifest['commit'], 'fonte_url': manifest['source_url'], 'contagens_banco': counts,
         'cobertura_snapshot': {'especies_importadas': matched['especies'], 'especies_fonte': len(data['pokemon_species.csv']),
-                              'formas_importadas': matched['formas'], 'formas_fonte': len(data['pokemon_forms.csv'])},
+                              'formas_importadas': matched['formas'], 'formas_fonte': len(data['pokemon_forms.csv']),
+                              'versoes_fonte': len(data['versions.csv']), 'versoes_identificadas': len(
+                                  {r['identifier'].casefold() for r in data['versions.csv']} &
+                                  {r[0].casefold() for r in db.execute('SELECT codigo_versao_pokeapi FROM JOGO WHERE codigo_versao_pokeapi IS NOT NULL')})},
         'nomes_exibidos': 'Inglês da fonte, sem tradução portuguesa confirmada; códigos de forma preservados.',
         'pendencias': ['Fichas e presença por jogo', 'Tipos, habilidades e atributos históricos para contextos ainda não importados',
                       'Mecânicas e limites fora de Sword/Shield', 'Outros regulamentos, formas e elegibilidades com fontes específicas',
@@ -156,7 +168,7 @@ def cobertura(directory=SNAPSHOT):
         'fichas_outras_fontes_preservadas': db.execute("SELECT count(*) FROM DADOS_FORMA_JOGO WHERE fonte_url IS NULL OR fonte_url NOT IN (?,?)", (manifest['files']['encounters.csv.gz']['url'],DRAGAPULT_SOURCE)).fetchone()[0],
         'fichas_dragapult_guia_vgc': db.execute('SELECT count(*) FROM DADOS_FORMA_JOGO WHERE fonte_url=?',(DRAGAPULT_SOURCE,)).fetchone()[0],
         'perfis_referencia_guia_vgc': db.execute("SELECT count(*) FROM PERFIL_ANALISE WHERE tipo_perfil='referencia_competitiva' AND fonte_url=?",(DRAGAPULT_SOURCE,)).fetchone()[0],
-        'versoes_excluidas_identidade_ambigua': ['red', 'red-japan', 'blue', 'blue-japan'],
+        'jogos_legados_identidade_ambigua': db.execute("SELECT count(*) FROM JOGO WHERE codigo_versao_pokeapi IS NULL AND nome COLLATE NOCASE IN ('Red','Blue')").fetchone()[0],
         'fichas_tipos_com_fonte': db.execute("SELECT count(*) FROM DADOS_FORMA_JOGO WHERE fonte_tipos IS NOT NULL").fetchone()[0],
         'fichas_estatisticas_com_fonte': db.execute("SELECT count(*) FROM DADOS_FORMA_JOGO WHERE fonte_estatisticas IS NOT NULL").fetchone()[0],
         'habilidades_com_fonte': db.execute("SELECT count(*) FROM HABILIDADE_FORMA_JOGO").fetchone()[0],

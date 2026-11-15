@@ -15,6 +15,7 @@ def test_real_snapshot_repeatable_preserves_private_data_and_reports_unknowns(ap
         c=first['cobertura_snapshot']
         assert c['especies_importadas']==c['especies_fonte']>=1025
         assert c['formas_importadas']==c['formas_fonte']>c['especies_fonte']
+        assert c['versoes_identificadas']==c['versoes_fonte']==53
         assert db.execute('SELECT nome_usuario FROM USUARIO').fetchone()[0]=='FIXTURE preserved'
         assert db.execute("SELECT count(*) FROM ESPECIE WHERE nome_en='Pikachu'").fetchone()[0]==1
         assert first['fichas_encontro_documentado'] >= 5000
@@ -22,8 +23,13 @@ def test_real_snapshot_repeatable_preserves_private_data_and_reports_unknowns(ap
         assert db.execute("""SELECT count(*) FROM DADOS_FORMA_JOGO d JOIN FORMA f USING(id_forma)
           JOIN JOGO j USING(id_jogo) WHERE f.codigo_forma='pikachu' AND j.nome='Gold'
           AND d.status_presenca='nativa' AND d.pode_ser_registrada='sim' AND d.fonte_url LIKE '%encounters.csv'""").fetchone()[0] == 1
-        assert db.execute("""SELECT count(*) FROM DADOS_FORMA_JOGO d JOIN JOGO j USING(id_jogo)
-          WHERE j.nome IN ('Red','Blue') AND d.fonte_url LIKE '%encounters.csv'""").fetchone()[0] == 0
+        versions=db.execute("""SELECT j.codigo_versao_pokeapi,count(d.id_dados_forma) FROM JOGO j
+          LEFT JOIN DADOS_FORMA_JOGO d USING(id_jogo) WHERE j.codigo_versao_pokeapi IN ('red','red-japan','blue','blue-japan')
+          GROUP BY j.id_jogo""").fetchall()
+        by_version=dict(versions)
+        assert set(by_version)=={'red','red-japan','blue','blue-japan'}
+        assert all(by_version[v]>0 for v in ('red','red-japan','blue'))
+        assert by_version['blue-japan']==0  # Source slots do not match this version's group.
         assert db.execute("SELECT count(*) FROM FORMA WHERE fonte_url=? AND forma_padrao=0 AND categoria!='nao_verificada'",(first['fonte_url'],)).fetchone()[0]==0
         assert not db.execute('PRAGMA foreign_key_check').fetchall()
 
@@ -208,6 +214,25 @@ def test_real_historical_contexts_preserve_generation_differences(app, client):
     assert [h['nome'] for h in details(poochyena_ruby)['habilidades']]==['Run Away']
     assert [h['nome'] for h in details(pikachu_diamond)['habilidades']]==['Static']
     assert {h['nome'] for h in details(pikachu_x)['habilidades']}=={'Static','Lightning Rod'}
+
+
+def test_distinct_red_blue_versions_report_first_generation_rules(app, client):
+    with app.app_context():
+        importar_catalogo()
+        db=get_db()
+        rows=db.execute("""SELECT j.codigo_versao_pokeapi,j.id_jogo,d.id_dados_forma FROM JOGO j
+            JOIN DADOS_FORMA_JOGO d USING(id_jogo) JOIN FORMA f USING(id_forma)
+            WHERE j.codigo_versao_pokeapi IN ('red','red-japan','blue','blue-japan')
+            AND f.codigo_forma='pikachu' ORDER BY j.codigo_versao_pokeapi""").fetchall()
+        # The snapshot supplies a wild Pikachu encounter only for versions with these rows;
+        # absence of a row does not imply absence in a version.
+        assert len(rows)>=2 and len({r['id_jogo'] for r in rows})==len(rows)
+    for row in rows:
+        detail=client.get(f"/api/pokemon/{row['id_dados_forma']}").json
+        assert detail['codigo_versao_pokeapi']==row['codigo_versao_pokeapi']
+        assert detail['estado_sistema_estatisticas']=='especial_unico'
+        assert detail['estado_sistema_habilidades']=='nao_aplicavel'
+        assert detail['tipos']==['Electric']
 
 
 def test_history_reimport_preserves_existing_specimen_and_partial_curation(app, client, monkeypatch):

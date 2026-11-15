@@ -192,7 +192,8 @@ def test_deletion_actions_preserve_catalog_and_remove_private_dependents(db):
 def test_physical_model_contains_ordered_migrations():
     first=(SCHEMA.parent/'migrations'/'001_stage1.sql').read_bytes()
     second=(SCHEMA.parent/'migrations'/'002_catalog_evidence.sql').read_bytes()
-    assert SCHEMA.read_bytes() == first + b'\n' + second
+    third=(SCHEMA.parent/'migrations'/'003_game_version_identity.sql').read_bytes()
+    assert SCHEMA.read_bytes() == first + b'\n' + second + b'\n' + third
 
 
 def test_replace_cannot_bypass_standard_type_or_applicability_invariants(db):
@@ -218,6 +219,7 @@ def test_generator_check_detects_source_drift_without_rewriting(tmp_path):
     shutil.copyfile(SCHEMA,backend/'schema.sql')
     shutil.copyfile(SCHEMA.parent/'migrations'/'001_stage1.sql',backend/'migrations'/'001_stage1.sql')
     shutil.copyfile(SCHEMA.parent/'migrations'/'002_catalog_evidence.sql',backend/'migrations'/'002_catalog_evidence.sql')
+    shutil.copyfile(SCHEMA.parent/'migrations'/'003_game_version_identity.sql',backend/'migrations'/'003_game_version_identity.sql')
     command=[sys.executable,str(backend/'tools'/'build_schema.py'),'--check']
     assert subprocess.run(command,capture_output=True).returncode == 0
     with (backend/'tools'/'schema_base.sql').open('a') as source:

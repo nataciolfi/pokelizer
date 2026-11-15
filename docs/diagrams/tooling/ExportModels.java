@@ -139,7 +139,7 @@ public class ExportModels {
    "TRANSFORMACAO_FORMA","METODO_FORMA_JOGO","POKEMON_COLECAO","USUARIO","NATUREZA",
    "SISTEMA_ATRIBUTO","MECANICA_SISTEMA_ATRIBUTO","VALOR_ATRIBUTO_POKEMON","ATRIBUTO_BATALHA","MECANICA_ATRIBUTO",
    "ELEGIBILIDADE_FORMA_REGULAMENTO","REGULAMENTO","PERFIL_ANALISE","VALOR_PERFIL_ANALISE","PERFIL_NATUREZA","PERFIL_HABILIDADE")){
-   forms.put(name,entity(d,name,50+(i%5)*760,140+(i/5)*660,logical));i++;}
+   forms.put(name,entity(d,name,50+(i%5)*760,140+(i/5)*740,logical));i++;}
   Map<String,Integer> local=new HashMap<>();for(Fk f:fks){Forma c=forms.get(f.child),p=forms.get(f.parent);int n=local.getOrDefault(f.child,0);local.put(f.child,n+1);relation(d,c,p,f,logical,c.getLeft()+495,c.getTop()+85+n*75);}
   // Put opaque boxes and attributes after connectors, preventing lines crossing labels.
   List<FormaElementar> list=d.getListaDeItens();list.sort(Comparator.comparingInt(f->f instanceof SuperLinha?0:1));save(d,logical?"logico":"conceitual");

@@ -22,7 +22,7 @@ O documento do professor pede classes, DAOs, Flask e cadastro/consulta no banco,
 | Dados reais reproduzíveis | Snapshot fixo com licença e hashes, carga atômica repetível, conflitos preservados | [Cobertura executada](coverage.json), [fontes](../../backend/data/README.md) |
 | Demonstração | Cenário HTTP pelo cliente Flask, banco temporário e fatos explicitamente sintéticos | [Script](../../tools/demonstrate_stage2.py), [resultado](demo-result.txt) |
 
-A carga real contém **1.025 espécies, 1.579 formas e 51 jogos**, cobrindo as identidades do snapshot da PokéAPI. **Não contém fichas por jogo, mecânicas, regulamentos ou referências competitivas confirmados.** As operações contextuais são demonstradas com fixtures identificadas, não apresentadas como fatos Pokémon. A cobertura factual por jogo continua uma pendência obrigatória do produto final. O backend recusa valores que dependam de limites não confirmados.
+A carga inicial da Etapa 2 continha 1.025 espécies, 1.579 formas e 51 jogos, sem fichas contextuais; o relatório histórico está em `coverage.json`. A carga atual acrescenta fichas, mecânicas, regulamentos e referências com fontes, mas ainda é parcial: consulte a [cobertura atual](../project/coverage-final.json) e as [fontes e limitações](../../backend/data/README.md). A demonstração sintética usa fixtures identificadas. O backend recusa valores que dependam de limites não confirmados.
 
 ## Verificação
 

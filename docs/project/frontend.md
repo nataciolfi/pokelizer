@@ -41,3 +41,5 @@ A repetição com o evento de teclado completo (`text` e `unmodifiedText` no pro
 ## Fichas históricas — 15/11/2026
 
 No Brave contra Flask e banco temporário com dados reais, a ficha de Magnemite em Yellow mostrou Electric, explicou o Especial único não representado e indicou que habilidades não se aplicam; a ficha Gold mostrou Electric/Steel, as seis estatísticas-base e o mesmo estado de habilidades. As fontes ficaram visíveis. Não houve exceções JavaScript nesse roteiro. A primeira execução de automação consultou a ficha antes da resposta Fetch terminar; a repetição aguardou o conteúdo detalhado. As fichas também mostram se o registro da forma está confirmado, negado ou não verificado. Em gerações com habilidades, a interface informa que a fonte lista possibilidades, sem comprovar o método de obtenção.
+
+Em 15/11/2026, após a migração 003, Brave/Flask local com banco temporário mostrou as quatro opções distintas Red/Blue, inclusive versões japonesas, e a ficha Pikachu em `Red (red-japan)` com tipo Electric, Especial único e habilidade não aplicável; nenhuma exceção JavaScript. Isso não substitui a revisão completa de teclado e contraste ainda pendente.

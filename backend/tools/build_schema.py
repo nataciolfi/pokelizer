@@ -119,7 +119,7 @@ header = '-- Pokelizer Stage 1 physical model. SQLite >= 3.37 (STRICT).\n-- Gene
 generated = (header + sql).encode('utf-8')
 outputs = {
     ROOT / 'migrations' / '001_stage1.sql': generated,
-    ROOT / 'schema.sql': generated + b'\n' + (ROOT / 'migrations' / '002_catalog_evidence.sql').read_bytes(),
+    ROOT / 'schema.sql': generated + b'\n' + (ROOT / 'migrations' / '002_catalog_evidence.sql').read_bytes() + b'\n' + (ROOT / 'migrations' / '003_game_version_identity.sql').read_bytes(),
 }
 if args.check:
     stale = [str(path) for path, expected in outputs.items() if not path.is_file() or path.read_bytes() != expected]

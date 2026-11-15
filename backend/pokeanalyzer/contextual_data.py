@@ -1,5 +1,5 @@
 """Generation histories for independently sourced, unambiguous game sheets."""
-from collections import Counter, defaultdict
+from collections import defaultdict
 from .curated_data import _obter_ou_inserir, DRAGAPULT_SOURCE
 
 CONTEXT_DATE = '2026-11-15'
@@ -30,11 +30,8 @@ def importar_contextos_por_geracao(db, data, manifest):
     """Never overwrite existing curated values, types, abilities or their provenance."""
     source = manifest['source_url']
     encounter_source = manifest['files']['encounters.csv.gz']['url']
-    names = {r['version_id']:r['name'] for r in data['version_names.csv'] if r['local_language_id']=='9'}
-    versions = [(names.get(v['id'],v['identifier']),v['version_group_id']) for v in data['versions.csv']]
-    counts = Counter(name.casefold() for name, _ in versions)
     groups = {r['id']:r for r in data['version_groups.csv']}
-    versions = {name.casefold():groups[group] for name,group in versions if counts[name.casefold()]==1}
+    versions = {v['identifier']:groups[v['version_group_id']] for v in data['versions.csv']}
     pokemon = {r['id']:r for r in data['pokemon.csv']}
     by_form = {(int(pokemon[f['pokemon_id']]['species_id']), f['identifier']):f['pokemon_id']
                for f in data['pokemon_forms.csv']}
@@ -62,11 +59,11 @@ def importar_contextos_por_geracao(db, data, manifest):
     ability_names = {r['ability_id']:r['name'] for r in data['ability_names.csv'] if r['local_language_id']=='9'}
     ability_codes = {r['id']:r['identifier'] for r in data['abilities.csv']}
     attrs = {'1':'hp_base','2':'ataque_base','3':'defesa_base','4':'ataque_especial_base','5':'defesa_especial_base','6':'velocidade_base'}
-    sheets = db.execute("""SELECT d.*,e.numero_nacional,f.codigo_forma,j.nome AS nome_jogo_fonte FROM DADOS_FORMA_JOGO d
+    sheets = db.execute("""SELECT d.*,e.numero_nacional,f.codigo_forma,j.codigo_versao_pokeapi FROM DADOS_FORMA_JOGO d
         JOIN FORMA f USING(id_forma) JOIN ESPECIE e USING(id_especie) JOIN JOGO j USING(id_jogo)
         WHERE d.fonte_url IN (?,?)""", (encounter_source,DRAGAPULT_SOURCE)).fetchall()
     for sheet in sheets:
-        group = versions.get(sheet['nome_jogo_fonte'].casefold())
+        group = versions.get(sheet['codigo_versao_pokeapi'])
         if not group or group['identifier'] not in STANDARD_GROUPS | TYPE_ONLY_GROUPS:
             continue
         generation = int(group['generation_id'])

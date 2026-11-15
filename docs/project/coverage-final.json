@@ -4,8 +4,8 @@
   "contagens_banco": {
     "ESPECIE": 1025,
     "FORMA": 1579,
-    "JOGO": 51,
-    "DADOS_FORMA_JOGO": 5074,
+    "JOGO": 53,
+    "DADOS_FORMA_JOGO": 5332,
     "MECANICA_JOGO": 2,
     "REGULAMENTO": 2,
     "ELEGIBILIDADE_FORMA_REGULAMENTO": 355
@@ -14,7 +14,9 @@
     "especies_importadas": 1025,
     "especies_fonte": 1025,
     "formas_importadas": 1579,
-    "formas_fonte": 1579
+    "formas_fonte": 1579,
+    "versoes_fonte": 53,
+    "versoes_identificadas": 53
   },
   "nomes_exibidos": "Inglês da fonte, sem tradução portuguesa confirmada; códigos de forma preservados.",
   "pendencias": [
@@ -27,18 +29,25 @@
   "fichas_outras_fontes_preservadas": 0,
   "fichas_dragapult_guia_vgc": 2,
   "perfis_referencia_guia_vgc": 2,
-  "versoes_excluidas_identidade_ambigua": [
-    "red",
-    "red-japan",
-    "blue",
-    "blue-japan"
-  ],
-  "fichas_tipos_com_fonte": 5074,
+  "jogos_legados_identidade_ambigua": 0,
+  "fichas_tipos_com_fonte": 5332,
   "fichas_estatisticas_com_fonte": 4903,
   "habilidades_com_fonte": 9956,
   "cobertura_por_jogo": [
     {
-      "nome": "Blue",
+      "nome": "Blue (blue)",
+      "codigo_versao_pokeapi": "blue",
+      "geracao": 1,
+      "fichas": 86,
+      "tipos_com_fonte": 86,
+      "seis_estatisticas_com_fonte": 0,
+      "tipos_sem_fonte": 0,
+      "estatisticas_sem_fonte": 86,
+      "fichas_com_alguma_habilidade_com_fonte": 0
+    },
+    {
+      "nome": "Blue (blue-japan)",
+      "codigo_versao_pokeapi": "blue-japan",
       "geracao": 1,
       "fichas": 0,
       "tipos_com_fonte": 0,
@@ -49,6 +58,7 @@
     },
     {
       "nome": "Green",
+      "codigo_versao_pokeapi": "green-japan",
       "geracao": 1,
       "fichas": 86,
       "tipos_com_fonte": 86,
@@ -58,17 +68,30 @@
       "fichas_com_alguma_habilidade_com_fonte": 0
     },
     {
-      "nome": "Red",
+      "nome": "Red (red)",
+      "codigo_versao_pokeapi": "red",
       "geracao": 1,
-      "fichas": 0,
-      "tipos_com_fonte": 0,
+      "fichas": 86,
+      "tipos_com_fonte": 86,
       "seis_estatisticas_com_fonte": 0,
       "tipos_sem_fonte": 0,
-      "estatisticas_sem_fonte": 0,
+      "estatisticas_sem_fonte": 86,
+      "fichas_com_alguma_habilidade_com_fonte": 0
+    },
+    {
+      "nome": "Red (red-japan)",
+      "codigo_versao_pokeapi": "red-japan",
+      "geracao": 1,
+      "fichas": 86,
+      "tipos_com_fonte": 86,
+      "seis_estatisticas_com_fonte": 0,
+      "tipos_sem_fonte": 0,
+      "estatisticas_sem_fonte": 86,
       "fichas_com_alguma_habilidade_com_fonte": 0
     },
     {
       "nome": "Yellow",
+      "codigo_versao_pokeapi": "yellow",
       "geracao": 1,
       "fichas": 85,
       "tipos_com_fonte": 85,
@@ -79,6 +102,7 @@
     },
     {
       "nome": "Crystal",
+      "codigo_versao_pokeapi": "crystal",
       "geracao": 2,
       "fichas": 143,
       "tipos_com_fonte": 143,
@@ -89,6 +113,7 @@
     },
     {
       "nome": "Gold",
+      "codigo_versao_pokeapi": "gold",
       "geracao": 2,
       "fichas": 131,
       "tipos_com_fonte": 131,
@@ -99,6 +124,7 @@
     },
     {
       "nome": "Silver",
+      "codigo_versao_pokeapi": "silver",
       "geracao": 2,
       "fichas": 131,
       "tipos_com_fonte": 131,
@@ -109,6 +135,7 @@
     },
     {
       "nome": "Colosseum",
+      "codigo_versao_pokeapi": "colosseum",
       "geracao": 3,
       "fichas": 0,
       "tipos_com_fonte": 0,
@@ -119,6 +146,7 @@
     },
     {
       "nome": "Emerald",
+      "codigo_versao_pokeapi": "emerald",
       "geracao": 3,
       "fichas": 129,
       "tipos_com_fonte": 129,
@@ -129,6 +157,7 @@
     },
     {
       "nome": "FireRed",
+      "codigo_versao_pokeapi": "firered",
       "geracao": 3,
       "fichas": 112,
       "tipos_com_fonte": 112,
@@ -139,6 +168,7 @@
     },
     {
       "nome": "LeafGreen",
+      "codigo_versao_pokeapi": "leafgreen",
       "geracao": 3,
       "fichas": 112,
       "tipos_com_fonte": 112,
@@ -149,6 +179,7 @@
     },
     {
       "nome": "Ruby",
+      "codigo_versao_pokeapi": "ruby",
       "geracao": 3,
       "fichas": 109,
       "tipos_com_fonte": 109,
@@ -159,6 +190,7 @@
     },
     {
       "nome": "Sapphire",
+      "codigo_versao_pokeapi": "sapphire",
       "geracao": 3,
       "fichas": 109,
       "tipos_com_fonte": 109,
@@ -169,6 +201,7 @@
     },
     {
       "nome": "XD",
+      "codigo_versao_pokeapi": "xd",
       "geracao": 3,
       "fichas": 0,
       "tipos_com_fonte": 0,
@@ -179,6 +212,7 @@
     },
     {
       "nome": "Diamond",
+      "codigo_versao_pokeapi": "diamond",
       "geracao": 4,
       "fichas": 241,
       "tipos_com_fonte": 241,
@@ -189,6 +223,7 @@
     },
     {
       "nome": "HeartGold",
+      "codigo_versao_pokeapi": "heartgold",
       "geracao": 4,
       "fichas": 243,
       "tipos_com_fonte": 243,
@@ -199,6 +234,7 @@
     },
     {
       "nome": "Pearl",
+      "codigo_versao_pokeapi": "pearl",
       "geracao": 4,
       "fichas": 242,
       "tipos_com_fonte": 242,
@@ -209,6 +245,7 @@
     },
     {
       "nome": "Platinum",
+      "codigo_versao_pokeapi": "platinum",
       "geracao": 4,
       "fichas": 248,
       "tipos_com_fonte": 248,
@@ -219,6 +256,7 @@
     },
     {
       "nome": "SoulSilver",
+      "codigo_versao_pokeapi": "soulsilver",
       "geracao": 4,
       "fichas": 243,
       "tipos_com_fonte": 243,
@@ -229,6 +267,7 @@
     },
     {
       "nome": "Black",
+      "codigo_versao_pokeapi": "black",
       "geracao": 5,
       "fichas": 210,
       "tipos_com_fonte": 210,
@@ -239,6 +278,7 @@
     },
     {
       "nome": "Black 2",
+      "codigo_versao_pokeapi": "black-2",
       "geracao": 5,
       "fichas": 235,
       "tipos_com_fonte": 235,
@@ -249,6 +289,7 @@
     },
     {
       "nome": "White",
+      "codigo_versao_pokeapi": "white",
       "geracao": 5,
       "fichas": 210,
       "tipos_com_fonte": 210,
@@ -259,6 +300,7 @@
     },
     {
       "nome": "White 2",
+      "codigo_versao_pokeapi": "white-2",
       "geracao": 5,
       "fichas": 235,
       "tipos_com_fonte": 235,
@@ -269,6 +311,7 @@
     },
     {
       "nome": "Alpha Sapphire",
+      "codigo_versao_pokeapi": "alpha-sapphire",
       "geracao": 6,
       "fichas": 38,
       "tipos_com_fonte": 38,
@@ -279,6 +322,7 @@
     },
     {
       "nome": "Omega Ruby",
+      "codigo_versao_pokeapi": "omega-ruby",
       "geracao": 6,
       "fichas": 38,
       "tipos_com_fonte": 38,
@@ -289,6 +333,7 @@
     },
     {
       "nome": "X",
+      "codigo_versao_pokeapi": "x",
       "geracao": 6,
       "fichas": 303,
       "tipos_com_fonte": 303,
@@ -299,6 +344,7 @@
     },
     {
       "nome": "Y",
+      "codigo_versao_pokeapi": "y",
       "geracao": 6,
       "fichas": 301,
       "tipos_com_fonte": 301,
@@ -309,6 +355,7 @@
     },
     {
       "nome": "Let’s Go, Eevee!",
+      "codigo_versao_pokeapi": "lets-go-eevee",
       "geracao": 7,
       "fichas": 0,
       "tipos_com_fonte": 0,
@@ -319,6 +366,7 @@
     },
     {
       "nome": "Let’s Go, Pikachu!",
+      "codigo_versao_pokeapi": "lets-go-pikachu",
       "geracao": 7,
       "fichas": 0,
       "tipos_com_fonte": 0,
@@ -329,6 +377,7 @@
     },
     {
       "nome": "Moon",
+      "codigo_versao_pokeapi": "moon",
       "geracao": 7,
       "fichas": 145,
       "tipos_com_fonte": 145,
@@ -339,6 +388,7 @@
     },
     {
       "nome": "Sun",
+      "codigo_versao_pokeapi": "sun",
       "geracao": 7,
       "fichas": 145,
       "tipos_com_fonte": 145,
@@ -349,6 +399,7 @@
     },
     {
       "nome": "Ultra Moon",
+      "codigo_versao_pokeapi": "ultra-moon",
       "geracao": 7,
       "fichas": 181,
       "tipos_com_fonte": 181,
@@ -359,6 +410,7 @@
     },
     {
       "nome": "Ultra Sun",
+      "codigo_versao_pokeapi": "ultra-sun",
       "geracao": 7,
       "fichas": 181,
       "tipos_com_fonte": 181,
@@ -369,6 +421,7 @@
     },
     {
       "nome": "Brilliant Diamond",
+      "codigo_versao_pokeapi": "brilliant-diamond",
       "geracao": 8,
       "fichas": 0,
       "tipos_com_fonte": 0,
@@ -379,6 +432,7 @@
     },
     {
       "nome": "Legends: Arceus",
+      "codigo_versao_pokeapi": "legends-arceus",
       "geracao": 8,
       "fichas": 0,
       "tipos_com_fonte": 0,
@@ -389,6 +443,7 @@
     },
     {
       "nome": "Shield",
+      "codigo_versao_pokeapi": "shield",
       "geracao": 8,
       "fichas": 182,
       "tipos_com_fonte": 182,
@@ -399,6 +454,7 @@
     },
     {
       "nome": "Shield: The Crown Tundra",
+      "codigo_versao_pokeapi": "the-crown-tundra-shield",
       "geracao": 8,
       "fichas": 29,
       "tipos_com_fonte": 29,
@@ -409,6 +465,7 @@
     },
     {
       "nome": "Shield: The Isle of Armor",
+      "codigo_versao_pokeapi": "the-isle-of-armor-shield",
       "geracao": 8,
       "fichas": 32,
       "tipos_com_fonte": 32,
@@ -419,6 +476,7 @@
     },
     {
       "nome": "Shining Pearl",
+      "codigo_versao_pokeapi": "shining-pearl",
       "geracao": 8,
       "fichas": 0,
       "tipos_com_fonte": 0,
@@ -429,6 +487,7 @@
     },
     {
       "nome": "Sword",
+      "codigo_versao_pokeapi": "sword",
       "geracao": 8,
       "fichas": 184,
       "tipos_com_fonte": 184,
@@ -439,6 +498,7 @@
     },
     {
       "nome": "Sword: The Crown Tundra",
+      "codigo_versao_pokeapi": "the-crown-tundra-sword",
       "geracao": 8,
       "fichas": 29,
       "tipos_com_fonte": 29,
@@ -449,6 +509,7 @@
     },
     {
       "nome": "Sword: The Isle of Armor",
+      "codigo_versao_pokeapi": "the-isle-of-armor-sword",
       "geracao": 8,
       "fichas": 32,
       "tipos_com_fonte": 32,
@@ -459,6 +520,7 @@
     },
     {
       "nome": "Champions",
+      "codigo_versao_pokeapi": "champions",
       "geracao": 9,
       "fichas": 0,
       "tipos_com_fonte": 0,
@@ -469,6 +531,7 @@
     },
     {
       "nome": "Legends: Z-A",
+      "codigo_versao_pokeapi": "legends-za",
       "geracao": 9,
       "fichas": 0,
       "tipos_com_fonte": 0,
@@ -479,6 +542,7 @@
     },
     {
       "nome": "Mega Dimension",
+      "codigo_versao_pokeapi": "mega-dimension",
       "geracao": 9,
       "fichas": 0,
       "tipos_com_fonte": 0,
@@ -489,6 +553,7 @@
     },
     {
       "nome": "Scarlet",
+      "codigo_versao_pokeapi": "scarlet",
       "geracao": 9,
       "fichas": 0,
       "tipos_com_fonte": 0,
@@ -499,6 +564,7 @@
     },
     {
       "nome": "Scarlet: The Indigo Disk",
+      "codigo_versao_pokeapi": "the-indigo-disk-scarlet",
       "geracao": 9,
       "fichas": 0,
       "tipos_com_fonte": 0,
@@ -509,6 +575,7 @@
     },
     {
       "nome": "Scarlet: The Teal Mask",
+      "codigo_versao_pokeapi": "the-teal-mask-scarlet",
       "geracao": 9,
       "fichas": 0,
       "tipos_com_fonte": 0,
@@ -519,6 +586,7 @@
     },
     {
       "nome": "Violet",
+      "codigo_versao_pokeapi": "violet",
       "geracao": 9,
       "fichas": 0,
       "tipos_com_fonte": 0,
@@ -529,6 +597,7 @@
     },
     {
       "nome": "Violet: The Indigo Disk",
+      "codigo_versao_pokeapi": "the-indigo-disk-violet",
       "geracao": 9,
       "fichas": 0,
       "tipos_com_fonte": 0,
@@ -539,6 +608,7 @@
     },
     {
       "nome": "Violet: The Teal Mask",
+      "codigo_versao_pokeapi": "the-teal-mask-violet",
       "geracao": 9,
       "fichas": 0,
       "tipos_com_fonte": 0,
@@ -554,6 +624,6 @@
     "habilidades": "Contagem de fichas com pelo menos um vínculo; não comprova obtenção por evento ou método.",
     "nao_aplicavel": "Habilidades não se aplicam às gerações I e II; consulte a fonte na ficha."
   },
-  "fichas_encontro_documentado": 5072,
+  "fichas_encontro_documentado": 5330,
   "observacao": "Cobertura é relativa ao snapshot, não certifica completude oficial atual. Ausência de ficha não indica ausência no jogo."
 }
