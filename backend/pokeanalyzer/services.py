@@ -295,6 +295,28 @@ class ComparacaoService:
                         "id_atributo": key[1], "atributo": attr["codigo"], "real": real, "alvo": target,
                         "estado_real": a["estado"] if a else "ausente", "estado_alvo": t["estado"] if t else "ausente",
                         "diferenca": difference, "estado": state})
+                from .curated_data import IV_SOURCE
+                if (system['codigo']=='DV' and system['fonte_url']==IV_SOURCE and
+                    {a['codigo'] for a in system['atributos']}=={'attack','defense','speed','special'}):
+                    # HP DV is not an independent input; each low bit comes from another DV.
+                    ids={a['codigo']:a['id_atributo'] for a in system['atributos']}
+                    def derived(values, field):
+                        parts=[values.get((system['id_mecanica_sistema_atributo'],ids.get(code)))
+                               for code in ('attack','defense','speed','special')]
+                        if any(part and part['estado']=='desconhecido' for part in parts):
+                            return None,'desconhecido'
+                        if any(not part or part['estado']!='conhecido' for part in parts):
+                            return None,'ausente'
+                        return sum((part[field]&1)<<shift for part,shift in zip(parts,(3,2,1,0))),'conhecido'
+                    real,real_state=derived(actual,'valor')
+                    target,target_state=derived(targets,'valor_alvo')
+                    difference=real-target if real is not None and target is not None else None
+                    state=('nao_comparado' if target_state=='ausente' else 'sem_dado' if difference is None
+                           else 'igual' if difference==0 else 'abaixo' if difference<0 else 'acima')
+                    rows.append({'id_mecanica_sistema_atributo':system['id_mecanica_sistema_atributo'],
+                        'sistema':'DV','id_atributo':None,'atributo':'hp (derivado)','real':real,'alvo':target,
+                        'estado_real':real_state,'estado_alvo':target_state,'diferenca':difference,'estado':state,
+                        'derivado':True,'explicacao':'Os bits menos significativos dos DVs de ataque, defesa, velocidade e Especial formam o DV de HP.'})
             categorical = []
             for field, options, flag in (("id_natureza", profile.naturezas, "usa_natureza"),
                                           ("id_habilidade_forma", profile.habilidades, "usa_habilidade")):

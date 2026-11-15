@@ -311,7 +311,9 @@ def test_early_real_games_allow_level_without_inventing_modern_systems(app, clie
             contexts[game]=dict(row)
             assert row['usa_natureza']==row['usa_habilidade']=='nao'
             assert (row['nivel_minimo'],row['nivel_maximo'])==(1,100)
-            assert not db.execute('SELECT 1 FROM MECANICA_SISTEMA_ATRIBUTO WHERE id_mecanica=?',(row['id_mecanica'],)).fetchall()
+            systems=db.execute("""SELECT s.codigo,m.valor_maximo_atributo FROM MECANICA_SISTEMA_ATRIBUTO m
+                JOIN SISTEMA_ATRIBUTO s USING(id_sistema_atributo) WHERE m.id_mecanica=?""",(row['id_mecanica'],)).fetchall()
+            assert dict(systems)=={'DV':15,'STAT_EXP':65535}
         nature=db.execute("SELECT id_natureza FROM NATUREZA WHERE nome='Timid'").fetchone()[0]
     headers={'X-CSRF-Token':get_csrf(client)}
     yellow=contexts['yellow']
@@ -326,8 +328,98 @@ def test_early_real_games_allow_level_without_inventing_modern_systems(app, clie
     assert profile.status_code==201,profile.json
     result=client.post('/api/analises',headers=headers,json={'id_pokemon_colecao':specimen.json['id_pokemon_colecao'],
                                                            'id_perfil':profile.json['id_perfil']})
-    assert result.status_code==200 and not result.json['campos']
+    assert result.status_code==200
+    hp=next(row for row in result.json['campos'] if row['atributo']=='hp (derivado)')
+    assert hp['real'] is None and hp['estado_real']=='ausente'
     assert all(row['estado']=='nao_aplicavel' for row in result.json['preferencias'])
+
+
+def test_early_values_derive_hp_preserve_unknown_and_validate_limits(app, client):
+    from test_api import create_user, get_csrf
+    create_user(client)
+    with app.app_context():
+        importar_catalogo()
+        db=get_db()
+        context=db.execute("""SELECT d.id_dados_forma,m.id_mecanica FROM DADOS_FORMA_JOGO d
+            JOIN FORMA f USING(id_forma) JOIN JOGO j USING(id_jogo) JOIN MECANICA_JOGO m USING(id_jogo)
+            WHERE f.codigo_forma='magnemite' AND j.codigo_versao_pokeapi='yellow'""").fetchone()
+        systems={row['codigo']:row['id_mecanica_sistema_atributo'] for row in db.execute("""SELECT s.codigo,m.id_mecanica_sistema_atributo
+            FROM MECANICA_SISTEMA_ATRIBUTO m JOIN SISTEMA_ATRIBUTO s USING(id_sistema_atributo) WHERE id_mecanica=?""",(context['id_mecanica'],))}
+        attrs={row['codigo']:row['id_atributo'] for row in db.execute('SELECT codigo,id_atributo FROM ATRIBUTO_BATALHA')}
+    mechanic=client.get('/api/mecanicas/'+str(context['id_mecanica'])).json
+    choices={s['codigo']:{a['codigo'] for a in s['atributos']} for s in mechanic['sistemas']}
+    assert choices=={'DV':{'attack','defense','speed','special'},'STAT_EXP':{'hp','attack','defense','speed','special'}}
+    assert all(s['descricao_sistema'] for s in mechanic['sistemas'])
+    def value(system,attribute,number,field='valor',state='conhecido'):
+        return {'id_mecanica_sistema_atributo':systems[system],'id_atributo':attrs[attribute],field:number,'estado':state}
+    headers={'X-CSRF-Token':get_csrf(client)}
+    actual=[value('DV',code,n) for code,n in [('attack',15),('defense',14),('speed',13),('special',12)]]
+    actual += [value('STAT_EXP','hp',65535),value('STAT_EXP','attack',0)]
+    body={'id_dados_forma_atual':context['id_dados_forma'],'id_mecanica':context['id_mecanica'],'valores':actual}
+    specimen=client.post('/api/colecao',headers=headers,json=body)
+    assert specimen.status_code==201,specimen.json
+    targets=[value('DV',code,n,'valor_alvo') for code,n in [('attack',14),('defense',15),('speed',12),('special',13)]]
+    profile=client.post('/api/perfis',headers=headers,json={'id_dados_forma':context['id_dados_forma'],
+        'id_mecanica':context['id_mecanica'],'nome_perfil':'FIXTURE DV alvo','valores':targets})
+    assert profile.status_code==201,profile.json
+    payload={'id_pokemon_colecao':specimen.json['id_pokemon_colecao'],'id_perfil':profile.json['id_perfil']}
+    comparison=client.post('/api/analises',headers=headers,json=payload).json
+    hp=next(row for row in comparison['campos'] if row['atributo']=='hp (derivado)')
+    assert (hp['real'],hp['alvo'],hp['diferenca'],hp['estado'])==(10,5,5,'acima')
+    assert hp['derivado'] and hp['explicacao']
+    assert next(row for row in comparison['campos'] if row['sistema']=='STAT_EXP' and row['atributo']=='attack')['real']==0
+    targets[-1]=value('DV','special',None,'valor_alvo','desconhecido')
+    assert client.patch('/api/perfis/'+str(profile.json['id_perfil']),headers=headers,json={'valores':targets}).status_code==200
+    hp=next(row for row in client.post('/api/analises',headers=headers,json=payload).json['campos'] if row['atributo']=='hp (derivado)')
+    assert hp['alvo'] is None and hp['estado_alvo']=='desconhecido' and hp['diferenca'] is None
+    for invalid in (value('DV','attack',16),value('DV','hp',1),value('STAT_EXP','special',65536)):
+        failed=client.post('/api/colecao',headers=headers,json=body|{'valores':[value('STAT_EXP','hp',1),invalid]})
+        assert failed.status_code==400
+    assert client.get('/api/colecao').json['total']==1
+    with app.app_context():
+        importar_catalogo()
+    assert len(client.get('/api/colecao/'+str(specimen.json['id_pokemon_colecao'])).json['valores'])==len(actual)
+
+
+def test_adding_early_systems_preserves_existing_specimen(app, client, monkeypatch):
+    from test_api import create_user, get_csrf
+    import pokeanalyzer.curated_data as curated
+    def old_partial(db, data):
+        game=db.execute("SELECT id_jogo FROM JOGO WHERE codigo_versao_pokeapi='yellow'").fetchone()[0]
+        db.execute("""INSERT INTO MECANICA_JOGO(id_jogo,versao,usa_natureza,usa_habilidade,usa_nivel,
+                   nivel_minimo,nivel_maximo,fonte_url,data_verificacao)
+                   VALUES(?,'regras-parciais-documentadas','nao','nao','sim',1,100,?,?)""",
+                   (game,curated.ABILITY_SOURCE,curated.HISTORICAL_DATE))
+    with app.app_context(), monkeypatch.context() as patch:
+        patch.setattr(curated,'importar_mecanicas_anteriores',old_partial)
+        importar_catalogo()
+        db=get_db()
+        context=db.execute("""SELECT d.id_dados_forma,m.id_mecanica FROM DADOS_FORMA_JOGO d
+            JOIN FORMA f USING(id_forma) JOIN JOGO j USING(id_jogo) JOIN MECANICA_JOGO m USING(id_jogo)
+            WHERE f.codigo_forma='magnemite' AND j.codigo_versao_pokeapi='yellow'""").fetchone()
+        sheet,mechanic=tuple(context)
+    create_user(client)
+    specimen=client.post('/api/colecao',headers={'X-CSRF-Token':get_csrf(client)},
+        json={'id_dados_forma_atual':sheet,'id_mecanica':mechanic,'nivel':55,'apelido':'FIXTURE preservado'})
+    assert specimen.status_code==201
+    with app.app_context():
+        importar_catalogo()
+        db=get_db()
+        assert db.execute('SELECT count(*) FROM MECANICA_SISTEMA_ATRIBUTO WHERE id_mecanica=?',(mechanic,)).fetchone()[0]==2
+    stored=client.get('/api/colecao/'+str(specimen.json['id_pokemon_colecao'])).json
+    assert (stored['id_mecanica'],stored['nivel'],stored['apelido'],stored['valores'])==(mechanic,55,'FIXTURE preservado',[])
+
+
+def test_early_special_code_conflict_aborts_without_reinterpreting_existing_data(app):
+    with app.app_context():
+        db=get_db()
+        db.execute("INSERT INTO ATRIBUTO_BATALHA(codigo,nome) VALUES('special','FIXTURE outro significado')")
+        db.commit()
+        species_before=db.execute('SELECT count(*) FROM ESPECIE').fetchone()[0]
+        with pytest.raises(ValueError,match='Conflito de curadoria'):
+            importar_catalogo()
+        assert db.execute("SELECT nome FROM ATRIBUTO_BATALHA WHERE codigo='special'").fetchone()[0]=='FIXTURE outro significado'
+        assert db.execute('SELECT count(*) FROM ESPECIE').fetchone()[0]==species_before
 
 
 def test_history_reimport_preserves_existing_specimen_and_partial_curation(app, client, monkeypatch):

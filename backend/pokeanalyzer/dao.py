@@ -301,8 +301,15 @@ class ContextoDAO:
         if not row:
             return None
         systems = []
-        for s in get_db().execute("SELECT m.*,s.codigo,s.nome FROM MECANICA_SISTEMA_ATRIBUTO m JOIN SISTEMA_ATRIBUTO s USING(id_sistema_atributo) WHERE id_mecanica=? ORDER BY id_mecanica_sistema_atributo", (id_mecanica,)):
-            attrs = [dict(r) for r in get_db().execute("SELECT a.id_atributo,a.codigo,a.nome,m.fonte_url,m.data_verificacao,COALESCE(m.aplicabilidade,'nao_verificado') AS aplicabilidade FROM ATRIBUTO_BATALHA a LEFT JOIN MECANICA_ATRIBUTO m ON m.id_atributo=a.id_atributo AND m.id_mecanica_sistema_atributo=? ORDER BY a.id_atributo", (s["id_mecanica_sistema_atributo"],))]
+        for s in get_db().execute("SELECT m.*,s.codigo,s.nome,s.descricao AS descricao_sistema FROM MECANICA_SISTEMA_ATRIBUTO m JOIN SISTEMA_ATRIBUTO s USING(id_sistema_atributo) WHERE id_mecanica=? ORDER BY id_mecanica_sistema_atributo", (id_mecanica,)):
+            from .curated_data import IV_SOURCE, EV_SOURCE
+            independent_only = (s['codigo'],s['fonte_url']) in {('DV',IV_SOURCE),('STAT_EXP',EV_SOURCE)}
+            attrs = [dict(r) for r in get_db().execute("""SELECT a.id_atributo,a.codigo,a.nome,m.fonte_url,m.data_verificacao,
+                COALESCE(m.aplicabilidade,'nao_verificado') AS aplicabilidade FROM ATRIBUTO_BATALHA a
+                LEFT JOIN MECANICA_ATRIBUTO m ON m.id_atributo=a.id_atributo AND m.id_mecanica_sistema_atributo=?
+                WHERE (a.codigo!='special' OR m.id_atributo IS NOT NULL)
+                  AND (?=0 OR m.id_atributo IS NOT NULL) ORDER BY a.id_atributo""",
+                (s["id_mecanica_sistema_atributo"],int(independent_only)))]
             systems.append(dict(s) | {"atributos": attrs})
         return dict(row) | {"sistemas": systems}
 

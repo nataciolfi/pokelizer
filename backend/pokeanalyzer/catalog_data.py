@@ -156,6 +156,7 @@ def cobertura(directory=SNAPSHOT):
         SUM(CASE WHEN EXISTS (SELECT 1 FROM HABILIDADE_FORMA_JOGO h
             WHERE h.id_dados_forma=d.id_dados_forma AND h.fonte_url IS NOT NULL) THEN 1 ELSE 0 END) AS fichas_com_alguma_habilidade_com_fonte,
         (SELECT COUNT(*) FROM MECANICA_JOGO m WHERE m.id_jogo=j.id_jogo) AS mecanicas,
+        (SELECT COUNT(*) FROM MECANICA_JOGO m WHERE m.id_jogo=j.id_jogo AND m.versao='regras-parciais-documentadas') AS mecanicas_parciais,
         (SELECT COUNT(*) FROM MECANICA_JOGO m WHERE m.id_jogo=j.id_jogo AND NOT EXISTS
             (SELECT 1 FROM MECANICA_SISTEMA_ATRIBUTO s WHERE s.id_mecanica=m.id_mecanica)) AS mecanicas_sem_sistemas_registrados
         FROM JOGO j LEFT JOIN DADOS_FORMA_JOGO d USING(id_jogo)
@@ -177,6 +178,7 @@ def cobertura(directory=SNAPSHOT):
         'fichas_tipos_com_fonte': db.execute("SELECT count(*) FROM DADOS_FORMA_JOGO WHERE fonte_tipos IS NOT NULL").fetchone()[0],
         'fichas_estatisticas_com_fonte': db.execute("SELECT count(*) FROM DADOS_FORMA_JOGO WHERE fonte_estatisticas IS NOT NULL").fetchone()[0],
         'mecanicas_sem_sistemas_registrados': db.execute("SELECT count(*) FROM MECANICA_JOGO m WHERE NOT EXISTS (SELECT 1 FROM MECANICA_SISTEMA_ATRIBUTO s WHERE s.id_mecanica=m.id_mecanica)").fetchone()[0],
+        'mecanicas_parciais_identificadas': db.execute("SELECT count(*) FROM MECANICA_JOGO WHERE versao='regras-parciais-documentadas'").fetchone()[0],
         'habilidades_com_fonte': db.execute("SELECT count(*) FROM HABILIDADE_FORMA_JOGO").fetchone()[0],
         'cobertura_por_jogo': games,
         'interpretacao_cobertura': {

@@ -32,7 +32,8 @@
   "jogos_legados_identidade_ambigua": 0,
   "fichas_tipos_com_fonte": 5332,
   "fichas_estatisticas_com_fonte": 4903,
-  "mecanicas_sem_sistemas_registrados": 9,
+  "mecanicas_sem_sistemas_registrados": 0,
+  "mecanicas_parciais_identificadas": 9,
   "habilidades_com_fonte": 9956,
   "cobertura_por_jogo": [
     {
@@ -46,7 +47,8 @@
       "estatisticas_sem_fonte": 86,
       "fichas_com_alguma_habilidade_com_fonte": 0,
       "mecanicas": 1,
-      "mecanicas_sem_sistemas_registrados": 1
+      "mecanicas_parciais": 1,
+      "mecanicas_sem_sistemas_registrados": 0
     },
     {
       "nome": "Blue (blue-japan)",
@@ -59,7 +61,8 @@
       "estatisticas_sem_fonte": 0,
       "fichas_com_alguma_habilidade_com_fonte": 0,
       "mecanicas": 1,
-      "mecanicas_sem_sistemas_registrados": 1
+      "mecanicas_parciais": 1,
+      "mecanicas_sem_sistemas_registrados": 0
     },
     {
       "nome": "Green",
@@ -72,7 +75,8 @@
       "estatisticas_sem_fonte": 86,
       "fichas_com_alguma_habilidade_com_fonte": 0,
       "mecanicas": 1,
-      "mecanicas_sem_sistemas_registrados": 1
+      "mecanicas_parciais": 1,
+      "mecanicas_sem_sistemas_registrados": 0
     },
     {
       "nome": "Red (red)",
@@ -85,7 +89,8 @@
       "estatisticas_sem_fonte": 86,
       "fichas_com_alguma_habilidade_com_fonte": 0,
       "mecanicas": 1,
-      "mecanicas_sem_sistemas_registrados": 1
+      "mecanicas_parciais": 1,
+      "mecanicas_sem_sistemas_registrados": 0
     },
     {
       "nome": "Red (red-japan)",
@@ -98,7 +103,8 @@
       "estatisticas_sem_fonte": 86,
       "fichas_com_alguma_habilidade_com_fonte": 0,
       "mecanicas": 1,
-      "mecanicas_sem_sistemas_registrados": 1
+      "mecanicas_parciais": 1,
+      "mecanicas_sem_sistemas_registrados": 0
     },
     {
       "nome": "Yellow",
@@ -111,7 +117,8 @@
       "estatisticas_sem_fonte": 85,
       "fichas_com_alguma_habilidade_com_fonte": 0,
       "mecanicas": 1,
-      "mecanicas_sem_sistemas_registrados": 1
+      "mecanicas_parciais": 1,
+      "mecanicas_sem_sistemas_registrados": 0
     },
     {
       "nome": "Crystal",
@@ -124,7 +131,8 @@
       "estatisticas_sem_fonte": 0,
       "fichas_com_alguma_habilidade_com_fonte": 0,
       "mecanicas": 1,
-      "mecanicas_sem_sistemas_registrados": 1
+      "mecanicas_parciais": 1,
+      "mecanicas_sem_sistemas_registrados": 0
     },
     {
       "nome": "Gold",
@@ -137,7 +145,8 @@
       "estatisticas_sem_fonte": 0,
       "fichas_com_alguma_habilidade_com_fonte": 0,
       "mecanicas": 1,
-      "mecanicas_sem_sistemas_registrados": 1
+      "mecanicas_parciais": 1,
+      "mecanicas_sem_sistemas_registrados": 0
     },
     {
       "nome": "Silver",
@@ -150,7 +159,8 @@
       "estatisticas_sem_fonte": 0,
       "fichas_com_alguma_habilidade_com_fonte": 0,
       "mecanicas": 1,
-      "mecanicas_sem_sistemas_registrados": 1
+      "mecanicas_parciais": 1,
+      "mecanicas_sem_sistemas_registrados": 0
     },
     {
       "nome": "Colosseum",
@@ -163,6 +173,7 @@
       "estatisticas_sem_fonte": 0,
       "fichas_com_alguma_habilidade_com_fonte": 0,
       "mecanicas": 0,
+      "mecanicas_parciais": 0,
       "mecanicas_sem_sistemas_registrados": 0
     },
     {
@@ -176,6 +187,7 @@
       "estatisticas_sem_fonte": 0,
       "fichas_com_alguma_habilidade_com_fonte": 129,
       "mecanicas": 1,
+      "mecanicas_parciais": 0,
       "mecanicas_sem_sistemas_registrados": 0
     },
     {
@@ -189,6 +201,7 @@
       "estatisticas_sem_fonte": 0,
       "fichas_com_alguma_habilidade_com_fonte": 112,
       "mecanicas": 1,
+      "mecanicas_parciais": 0,
       "mecanicas_sem_sistemas_registrados": 0
     },
     {
@@ -202,6 +215,7 @@
       "estatisticas_sem_fonte": 0,
       "fichas_com_alguma_habilidade_com_fonte": 112,
       "mecanicas": 1,
+      "mecanicas_parciais": 0,
       "mecanicas_sem_sistemas_registrados": 0
     },
     {
@@ -215,6 +229,7 @@
       "estatisticas_sem_fonte": 0,
       "fichas_com_alguma_habilidade_com_fonte": 109,
       "mecanicas": 1,
+      "mecanicas_parciais": 0,
       "mecanicas_sem_sistemas_registrados": 0
     },
     {
@@ -228,6 +243,7 @@
       "estatisticas_sem_fonte": 0,
       "fichas_com_alguma_habilidade_com_fonte": 109,
       "mecanicas": 1,
+      "mecanicas_parciais": 0,
       "mecanicas_sem_sistemas_registrados": 0
     },
     {
@@ -241,6 +257,7 @@
       "estatisticas_sem_fonte": 0,
       "fichas_com_alguma_habilidade_com_fonte": 0,
       "mecanicas": 0,
+      "mecanicas_parciais": 0,
       "mecanicas_sem_sistemas_registrados": 0
     },
     {
@@ -254,6 +271,7 @@
       "estatisticas_sem_fonte": 0,
       "fichas_com_alguma_habilidade_com_fonte": 241,
       "mecanicas": 1,
+      "mecanicas_parciais": 0,
       "mecanicas_sem_sistemas_registrados": 0
     },
     {
@@ -267,6 +285,7 @@
       "estatisticas_sem_fonte": 0,
       "fichas_com_alguma_habilidade_com_fonte": 243,
       "mecanicas": 1,
+      "mecanicas_parciais": 0,
       "mecanicas_sem_sistemas_registrados": 0
     },
     {
@@ -280,6 +299,7 @@
       "estatisticas_sem_fonte": 0,
       "fichas_com_alguma_habilidade_com_fonte": 242,
       "mecanicas": 1,
+      "mecanicas_parciais": 0,
       "mecanicas_sem_sistemas_registrados": 0
     },
     {
@@ -293,6 +313,7 @@
       "estatisticas_sem_fonte": 0,
       "fichas_com_alguma_habilidade_com_fonte": 248,
       "mecanicas": 1,
+      "mecanicas_parciais": 0,
       "mecanicas_sem_sistemas_registrados": 0
     },
     {
@@ -306,6 +327,7 @@
       "estatisticas_sem_fonte": 0,
       "fichas_com_alguma_habilidade_com_fonte": 243,
       "mecanicas": 1,
+      "mecanicas_parciais": 0,
       "mecanicas_sem_sistemas_registrados": 0
     },
     {
@@ -319,6 +341,7 @@
       "estatisticas_sem_fonte": 0,
       "fichas_com_alguma_habilidade_com_fonte": 210,
       "mecanicas": 1,
+      "mecanicas_parciais": 0,
       "mecanicas_sem_sistemas_registrados": 0
     },
     {
@@ -332,6 +355,7 @@
       "estatisticas_sem_fonte": 0,
       "fichas_com_alguma_habilidade_com_fonte": 235,
       "mecanicas": 1,
+      "mecanicas_parciais": 0,
       "mecanicas_sem_sistemas_registrados": 0
     },
     {
@@ -345,6 +369,7 @@
       "estatisticas_sem_fonte": 0,
       "fichas_com_alguma_habilidade_com_fonte": 210,
       "mecanicas": 1,
+      "mecanicas_parciais": 0,
       "mecanicas_sem_sistemas_registrados": 0
     },
     {
@@ -358,6 +383,7 @@
       "estatisticas_sem_fonte": 0,
       "fichas_com_alguma_habilidade_com_fonte": 235,
       "mecanicas": 1,
+      "mecanicas_parciais": 0,
       "mecanicas_sem_sistemas_registrados": 0
     },
     {
@@ -371,6 +397,7 @@
       "estatisticas_sem_fonte": 0,
       "fichas_com_alguma_habilidade_com_fonte": 38,
       "mecanicas": 1,
+      "mecanicas_parciais": 0,
       "mecanicas_sem_sistemas_registrados": 0
     },
     {
@@ -384,6 +411,7 @@
       "estatisticas_sem_fonte": 0,
       "fichas_com_alguma_habilidade_com_fonte": 38,
       "mecanicas": 1,
+      "mecanicas_parciais": 0,
       "mecanicas_sem_sistemas_registrados": 0
     },
     {
@@ -397,6 +425,7 @@
       "estatisticas_sem_fonte": 0,
       "fichas_com_alguma_habilidade_com_fonte": 303,
       "mecanicas": 1,
+      "mecanicas_parciais": 0,
       "mecanicas_sem_sistemas_registrados": 0
     },
     {
@@ -410,6 +439,7 @@
       "estatisticas_sem_fonte": 0,
       "fichas_com_alguma_habilidade_com_fonte": 301,
       "mecanicas": 1,
+      "mecanicas_parciais": 0,
       "mecanicas_sem_sistemas_registrados": 0
     },
     {
@@ -423,6 +453,7 @@
       "estatisticas_sem_fonte": 0,
       "fichas_com_alguma_habilidade_com_fonte": 0,
       "mecanicas": 0,
+      "mecanicas_parciais": 0,
       "mecanicas_sem_sistemas_registrados": 0
     },
     {
@@ -436,6 +467,7 @@
       "estatisticas_sem_fonte": 0,
       "fichas_com_alguma_habilidade_com_fonte": 0,
       "mecanicas": 0,
+      "mecanicas_parciais": 0,
       "mecanicas_sem_sistemas_registrados": 0
     },
     {
@@ -449,6 +481,7 @@
       "estatisticas_sem_fonte": 0,
       "fichas_com_alguma_habilidade_com_fonte": 145,
       "mecanicas": 1,
+      "mecanicas_parciais": 0,
       "mecanicas_sem_sistemas_registrados": 0
     },
     {
@@ -462,6 +495,7 @@
       "estatisticas_sem_fonte": 0,
       "fichas_com_alguma_habilidade_com_fonte": 145,
       "mecanicas": 1,
+      "mecanicas_parciais": 0,
       "mecanicas_sem_sistemas_registrados": 0
     },
     {
@@ -475,6 +509,7 @@
       "estatisticas_sem_fonte": 0,
       "fichas_com_alguma_habilidade_com_fonte": 181,
       "mecanicas": 1,
+      "mecanicas_parciais": 0,
       "mecanicas_sem_sistemas_registrados": 0
     },
     {
@@ -488,6 +523,7 @@
       "estatisticas_sem_fonte": 0,
       "fichas_com_alguma_habilidade_com_fonte": 181,
       "mecanicas": 1,
+      "mecanicas_parciais": 0,
       "mecanicas_sem_sistemas_registrados": 0
     },
     {
@@ -501,6 +537,7 @@
       "estatisticas_sem_fonte": 0,
       "fichas_com_alguma_habilidade_com_fonte": 0,
       "mecanicas": 0,
+      "mecanicas_parciais": 0,
       "mecanicas_sem_sistemas_registrados": 0
     },
     {
@@ -514,6 +551,7 @@
       "estatisticas_sem_fonte": 0,
       "fichas_com_alguma_habilidade_com_fonte": 0,
       "mecanicas": 0,
+      "mecanicas_parciais": 0,
       "mecanicas_sem_sistemas_registrados": 0
     },
     {
@@ -527,6 +565,7 @@
       "estatisticas_sem_fonte": 0,
       "fichas_com_alguma_habilidade_com_fonte": 182,
       "mecanicas": 1,
+      "mecanicas_parciais": 0,
       "mecanicas_sem_sistemas_registrados": 0
     },
     {
@@ -540,6 +579,7 @@
       "estatisticas_sem_fonte": 0,
       "fichas_com_alguma_habilidade_com_fonte": 29,
       "mecanicas": 0,
+      "mecanicas_parciais": 0,
       "mecanicas_sem_sistemas_registrados": 0
     },
     {
@@ -553,6 +593,7 @@
       "estatisticas_sem_fonte": 0,
       "fichas_com_alguma_habilidade_com_fonte": 32,
       "mecanicas": 0,
+      "mecanicas_parciais": 0,
       "mecanicas_sem_sistemas_registrados": 0
     },
     {
@@ -566,6 +607,7 @@
       "estatisticas_sem_fonte": 0,
       "fichas_com_alguma_habilidade_com_fonte": 0,
       "mecanicas": 0,
+      "mecanicas_parciais": 0,
       "mecanicas_sem_sistemas_registrados": 0
     },
     {
@@ -579,6 +621,7 @@
       "estatisticas_sem_fonte": 0,
       "fichas_com_alguma_habilidade_com_fonte": 184,
       "mecanicas": 1,
+      "mecanicas_parciais": 0,
       "mecanicas_sem_sistemas_registrados": 0
     },
     {
@@ -592,6 +635,7 @@
       "estatisticas_sem_fonte": 0,
       "fichas_com_alguma_habilidade_com_fonte": 29,
       "mecanicas": 0,
+      "mecanicas_parciais": 0,
       "mecanicas_sem_sistemas_registrados": 0
     },
     {
@@ -605,6 +649,7 @@
       "estatisticas_sem_fonte": 0,
       "fichas_com_alguma_habilidade_com_fonte": 32,
       "mecanicas": 0,
+      "mecanicas_parciais": 0,
       "mecanicas_sem_sistemas_registrados": 0
     },
     {
@@ -618,6 +663,7 @@
       "estatisticas_sem_fonte": 0,
       "fichas_com_alguma_habilidade_com_fonte": 0,
       "mecanicas": 0,
+      "mecanicas_parciais": 0,
       "mecanicas_sem_sistemas_registrados": 0
     },
     {
@@ -631,6 +677,7 @@
       "estatisticas_sem_fonte": 0,
       "fichas_com_alguma_habilidade_com_fonte": 0,
       "mecanicas": 0,
+      "mecanicas_parciais": 0,
       "mecanicas_sem_sistemas_registrados": 0
     },
     {
@@ -644,6 +691,7 @@
       "estatisticas_sem_fonte": 0,
       "fichas_com_alguma_habilidade_com_fonte": 0,
       "mecanicas": 0,
+      "mecanicas_parciais": 0,
       "mecanicas_sem_sistemas_registrados": 0
     },
     {
@@ -657,6 +705,7 @@
       "estatisticas_sem_fonte": 0,
       "fichas_com_alguma_habilidade_com_fonte": 0,
       "mecanicas": 0,
+      "mecanicas_parciais": 0,
       "mecanicas_sem_sistemas_registrados": 0
     },
     {
@@ -670,6 +719,7 @@
       "estatisticas_sem_fonte": 0,
       "fichas_com_alguma_habilidade_com_fonte": 0,
       "mecanicas": 0,
+      "mecanicas_parciais": 0,
       "mecanicas_sem_sistemas_registrados": 0
     },
     {
@@ -683,6 +733,7 @@
       "estatisticas_sem_fonte": 0,
       "fichas_com_alguma_habilidade_com_fonte": 0,
       "mecanicas": 0,
+      "mecanicas_parciais": 0,
       "mecanicas_sem_sistemas_registrados": 0
     },
     {
@@ -696,6 +747,7 @@
       "estatisticas_sem_fonte": 0,
       "fichas_com_alguma_habilidade_com_fonte": 0,
       "mecanicas": 0,
+      "mecanicas_parciais": 0,
       "mecanicas_sem_sistemas_registrados": 0
     },
     {
@@ -709,6 +761,7 @@
       "estatisticas_sem_fonte": 0,
       "fichas_com_alguma_habilidade_com_fonte": 0,
       "mecanicas": 0,
+      "mecanicas_parciais": 0,
       "mecanicas_sem_sistemas_registrados": 0
     },
     {
@@ -722,6 +775,7 @@
       "estatisticas_sem_fonte": 0,
       "fichas_com_alguma_habilidade_com_fonte": 0,
       "mecanicas": 0,
+      "mecanicas_parciais": 0,
       "mecanicas_sem_sistemas_registrados": 0
     }
   ],

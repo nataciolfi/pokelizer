@@ -111,9 +111,19 @@ def importar_mecanicas_historicas(db, data):
 
 
 def importar_mecanicas_anteriores(db, data):
-    """Levels and absent nature/abilities only; DV/Stat Exp require separate modeling."""
+    """Independent DV and Stat Exp fields; HP DV is derived, Special is shared."""
     groups={r['id']:r for r in data['version_groups.csv']}
     versions={r['identifier']:r for r in data['versions.csv']}
+    special=_obter_ou_inserir(db,'ATRIBUTO_BATALHA',{'codigo':'special'},{'nome':'Especial compartilhado'},['nome'])['id_atributo']
+    attrs={code:db.execute('SELECT id_atributo FROM ATRIBUTO_BATALHA WHERE codigo=?',(code,)).fetchone()[0]
+           for code in ('hp','attack','defense','speed')}
+    attrs['special']=special
+    systems={}
+    for code,name,description in [
+        ('DV','Determinant values','Quatro DVs independentes: ataque, defesa, velocidade e Especial compartilhado. O DV de HP é derivado deles.'),
+        ('STAT_EXP','Stat Experience','Experiência de atributo para HP, ataque, defesa, velocidade e Especial compartilhado; não é o EV moderno.')]:
+        systems[code]=_obter_ou_inserir(db,'SISTEMA_ATRIBUTO',{'codigo':code},
+            {'nome':name,'descricao':description},['nome','descricao'])['id_sistema_atributo']
     for code,generation in EARLY_GAMES.items():
         version=versions.get(code)
         if not version or int(groups[version['version_group_id']]['generation_id'])!=generation:
@@ -123,9 +133,22 @@ def importar_mecanicas_anteriores(db, data):
             raise ValueError(f'Jogo {code} não identificado; carga revertida.')
         values={'usa_natureza':'nao','usa_habilidade':'nao','usa_nivel':'sim',
                 'nivel_minimo':1,'nivel_maximo':100,'fonte_url':ABILITY_SOURCE,'data_verificacao':HISTORICAL_DATE}
-        _obter_ou_inserir(db,'MECANICA_JOGO',
+        mechanic=_obter_ou_inserir(db,'MECANICA_JOGO',
             {'id_jogo':game[0],'versao':'regras-parciais-documentadas'},values,
             ['usa_natureza','usa_habilidade','usa_nivel','nivel_minimo','nivel_maximo'])
+        for system_code,maximum,source,fields in [
+            ('DV',15,IV_SOURCE,('attack','defense','speed','special')),
+            ('STAT_EXP',65535,EV_SOURCE,('hp','attack','defense','speed','special'))]:
+            limits={'aplicabilidade':'aplicavel','valor_minimo':0,'valor_maximo_atributo':maximum,
+                    'valor_maximo_total':None,'limite_total_status':'nao_aplicavel',
+                    'fonte_url':source,'data_verificacao':HISTORICAL_DATE}
+            system=_obter_ou_inserir(db,'MECANICA_SISTEMA_ATRIBUTO',
+                {'id_mecanica':mechanic['id_mecanica'],'id_sistema_atributo':systems[system_code]},limits,
+                ['aplicabilidade','valor_minimo','valor_maximo_atributo','valor_maximo_total','limite_total_status'])
+            for field in fields:
+                _obter_ou_inserir(db,'MECANICA_ATRIBUTO',
+                    {'id_mecanica_sistema_atributo':system['id_mecanica_sistema_atributo'],'id_atributo':attrs[field]},
+                    {'aplicabilidade':'aplicavel','fonte_url':source,'data_verificacao':HISTORICAL_DATE},['aplicabilidade'])
 
 
 def importar_regulamento_swsh(db, data, manifest):
