@@ -39,14 +39,14 @@ public class ExportModels {
  }
  static Forma entity(Diagrama d,String name,int x,int y,boolean logical){
   Tab spec=tabs.get(name);
-  if(logical){Tabela t=new Tabela(d);t.setTexto(name);t.setFont(FONT);t.setAutosize(false);t.setGradiente(false);t.setAlfa(0);t.setMostrarConstraints(false);t.SetBounds(x,y,540,80+spec.cols.size()*30);
+  if(logical){Tabela t=new Tabela(d);t.setTexto(name);t.setFont(FONT);t.setAutosize(false);t.setGradiente(false);t.setAlfa(0);t.setMostrarConstraints(false);t.SetBounds(x,y,FULL?470:540,80+spec.cols.size()*30);
    for(Col c:spec.cols){Campo f=new Campo(t);f.setTexto(c.name);f.setTipo(c.type);f.setComplemento(c.nn||c.pk?"NOT NULL":"");f.SetKey(c.pk);f.SetFkey(c.fk);}
    Constraint pk=new Constraint(t);pk.setTipo(Constraint.CONSTRAINT_TIPO.tpPK);pk.setNome("PK_"+name);
    for(Campo c:t.getCampos())if(c.isKey())pk.Add(c,c);
    for(int i=0;i<spec.uniques.size();i++){Constraint u=new Constraint(t);u.setTipo(Constraint.CONSTRAINT_TIPO.tpUNIQUE);u.setNome("UQ_"+name+"_"+i);for(String s:spec.uniques.get(i)){Campo c=field(t,s);u.Add(c,c);}}
    return t;
   }
-  Entidade e=new Entidade(d);e.setTexto(name);e.setFont(TITLE);e.SetBounds(x,y,540,55);e.Reenquadre();
+  Entidade e=new Entidade(d);e.setTexto(name);e.setFont(TITLE);e.SetBounds(x,y,FULL?470:540,55);e.Reenquadre();
   int i=0;for(Col c:spec.cols){Atributo a=new Atributo(d);a.setTexto(c.name);a.setFont(FONT);a.SetBounds(x+25,y+85+24*i++,500,24);a.setIdentificador(c.pk);a.setOpcional(!c.nn&&!c.pk);Ligacao l=connect(d,a,e,null);
    // Native polyline spine stays left of the attribute labels.
    l.setInteligente(false);l.getPontos().get(0).setCentro(new Point(x+28,a.getTop()+12));l.getPontos().get(1).setCentro(new Point(x,e.getTop()+25));l.reSetBounds();}
@@ -54,26 +54,41 @@ public class ExportModels {
  }
  static int edgeIndex=0;
  static Map<Forma,Integer> portIndex=new IdentityHashMap<>();
+ static Map<Forma,Integer> groupTop=new IdentityHashMap<>();
  static void route(SuperLinha l,Forma source,Forma dest,boolean diamond){
   int n=edgeIndex++,sp=portIndex.getOrDefault(source,0),dp=portIndex.getOrDefault(dest,0);
   portIndex.put(source,sp+1);portIndex.put(dest,dp+1);
-  int sy=source.getTop()+8+(sp%6)*7,dy=dest.getTop()+8+(dp%6)*7;
-  int sx=source.getLeftWidth(),dx=dest.getLeft();
-  if(dest.getLeft()<source.getLeft()){sx=source.getLeft();dx=dest.getLeftWidth();}
-  int gx=sx+(sx==source.getLeft()?-1:1)*(12+(n%9)*6);
-  int hx=dx+(dx==dest.getLeft()?-1:1)*(12+(n%7)*6);
-  int gy=Math.min(source.getTop(),dest.getTop())-18-(n%10)*5;
-  while(l.getPontos().size()<6)l.InserirPonto(l.getPontos().size()-1);
-  Point[] pts={new Point(sx,sy),new Point(gx,sy),new Point(gx,gy),new Point(hx,gy),new Point(hx,dy),new Point(dx,dy)};
-  for(int i=0;i<6;i++)l.getPontos().get(i).setCentro(pts[i]);l.setInteligente(false);l.reSetBounds();
+  if(!diamond){
+   int sx=source.getLeft()+20+(sp%11)*40, sy=source.getTop();
+   int dx=dest.getLeft()+20+(dp%11)*40, dy=dest.getTop();
+   int gx=source.getLeft()-12-(n%3)*5, hx=dest.getLeft()-12-(n%3)*5;
+   int sy0=sy-38,dy0=dy-38,gy=Math.min(sy0,dy0)-(n%6)*5;
+   while(l.getPontos().size()<8)l.InserirPonto(l.getPontos().size()-1);
+   Point[] pts={new Point(sx,sy),new Point(sx,sy0),new Point(gx,sy0),new Point(gx,gy),new Point(hx,gy),new Point(hx,dy0),new Point(dx,dy0),new Point(dx,dy)};
+   for(int i=0;i<8;i++)l.getPontos().get(i).setCentro(pts[i]);l.setInteligente(false);l.reSetBounds();return;
+  }
+  int sx=source.getLeft()+20+(sp%11)*40, sy=source.getTop();
+  int dx=dp%2==0?dest.getLeft():dest.getLeftWidth(), dy=dest.getTop()+dest.getHeight()/2;
+  int gx=source.getLeft()-12-(n%3)*5, hx=dp%2==0?dest.getLeft()-12:dest.getLeftWidth()+12;
+  int sy0=sy-38,dy0=dy,gy=Math.min(sy0,groupTop.get(dest)-38)-(n%6)*5;
+  while(l.getPontos().size()<8)l.InserirPonto(l.getPontos().size()-1);
+  Point[] pts={new Point(sx,sy),new Point(sx,sy0),new Point(gx,sy0),new Point(gx,gy),new Point(hx,gy),new Point(hx,dy0),new Point(dx,dy0),new Point(dx,dy)};
+  for(int i=0;i<8;i++)l.getPontos().get(i).setCentro(pts[i]);l.setInteligente(false);l.reSetBounds();
  }
  static Campo field(Tabela t,String n){return t.getCampos().stream().filter(c->c.getTexto().equals(n)).findFirst().orElseThrow();}
  static Constraint candidate(Tabela t,String[] cols){Set<String> names=new HashSet<>(Arrays.asList(cols));for(Constraint c:t.getConstraints()){Set<String>s=new HashSet<>();for(Campo f:c.getCamposDeOrigem())s.add(f.getTexto());if(s.equals(names))return c;}return null;}
  static void relation(Diagrama d,Forma child,Forma parent,Fk f,boolean logical,int diamondX,int diamondY){
-  if(logical){Tabela c=(Tabela)child,p=(Tabela)parent;LogicoLinha l=new LogicoLinha(d);l.setInteligente(false);l.SuperInicie(0,center(p),center(c));l.getPontaA().SetEm(p);l.getPontaB().SetEm(c);p.PosicionePonto(l.getPontaA());c.PosicionePonto(l.getPontaB());l.getCardA().setCard(f.required?TiposCard.C11:TiposCard.C01);l.getCardB().setCard(TiposCard.C0N);l.PrepareCardinalidade();if(FULL)route(l,p,c,false);
+  if(logical){Tabela c=(Tabela)child,p=(Tabela)parent;LogicoLinha l=new LogicoLinha(d);l.setInteligente(false);l.SuperInicie(0,center(p),center(c));l.getPontaA().SetEm(p);l.getPontaB().SetEm(c);p.PosicionePonto(l.getPontaA());c.PosicionePonto(l.getPontaB());l.getCardA().setCard(f.required?TiposCard.C11:TiposCard.C01);l.getCardB().setCard(TiposCard.C0N);l.PrepareCardinalidade();if(FULL){route(l,p,c,false);
+    l.getCardA().setMovimentacaoManual(true);l.getCardA().setLocation(p.getLeft()+7+(portIndex.get(p)-1)*40,p.getTop()-27);
+    l.getCardB().setMovimentacaoManual(true);l.getCardB().setLocation(c.getLeft()+7+(portIndex.get(c)-1)*40,c.getTop()-27);
+   }
    Constraint fk=new Constraint(c);fk.setTipo(Constraint.CONSTRAINT_TIPO.tpFK);fk.setNome("FK_"+f.id);Constraint origin=candidate(p,f.targets);for(int i=0;i<f.cols.length;i++)fk.Add(field(p,f.targets[i]),field(c,f.cols[i]),l,origin);fk.setObservacao("DELETE "+f.del+"; UPDATE "+f.upd);fk.setDdlOnDelete(f.del);fk.setDdlOnUpdate(f.upd);fk.setValidado(true);
    text(d,"R"+f.id,diamondX,diamondY,65,22);
-  }else{Relacionamento r=new Relacionamento(d);r.setTexto("R"+f.id+" "+f.label);r.setFont(FONT);r.SetBounds(diamondX,diamondY,180,60);r.Reenquadre();Ligacao lc=connect(d,child,r,f.required?TiposCard.C11:TiposCard.C01);Ligacao lp=connect(d,parent,r,TiposCard.C0N);if(FULL){route(lc,child,r,true);route(lp,parent,r,true);}}
+  }else{Relacionamento r=new Relacionamento(d);r.setTexto("R"+f.id+" "+f.label);r.setFont(FONT);r.SetBounds(diamondX,diamondY,180,60);r.Reenquadre();groupTop.put(r,child.getTop());Ligacao lc=connect(d,child,r,f.required?TiposCard.C11:TiposCard.C01);Ligacao lp=connect(d,parent,r,TiposCard.C0N);if(FULL){route(lc,child,r,true);
+    lc.getCard().setMovimentacaoManual(true);lc.getCard().setLocation(child.getLeft()+7+(portIndex.get(child)-1)*40,child.getTop()-27);
+    route(lp,parent,r,true);
+    lp.getCard().setMovimentacaoManual(true);lp.getCard().setLocation(parent.getLeft()+7+(portIndex.get(parent)-1)*40,parent.getTop()-27);
+   }}
  }
  static void sanitizeNativeMetadata(Path path)throws Exception{
   GuardaPadraoBrM wrapper;
@@ -125,7 +140,7 @@ public class ExportModels {
    "SISTEMA_ATRIBUTO","MECANICA_SISTEMA_ATRIBUTO","VALOR_ATRIBUTO_POKEMON","ATRIBUTO_BATALHA","MECANICA_ATRIBUTO",
    "ELEGIBILIDADE_FORMA_REGULAMENTO","REGULAMENTO","PERFIL_ANALISE","VALOR_PERFIL_ANALISE","PERFIL_NATUREZA","PERFIL_HABILIDADE")){
    forms.put(name,entity(d,name,50+(i%5)*760,140+(i/5)*660,logical));i++;}
-  Map<String,Integer> local=new HashMap<>();for(Fk f:fks){Forma c=forms.get(f.child),p=forms.get(f.parent);int n=local.getOrDefault(f.child,0);local.put(f.child,n+1);relation(d,c,p,f,logical,c.getLeft()+565,c.getTop()+85+n*75);}
+  Map<String,Integer> local=new HashMap<>();for(Fk f:fks){Forma c=forms.get(f.child),p=forms.get(f.parent);int n=local.getOrDefault(f.child,0);local.put(f.child,n+1);relation(d,c,p,f,logical,c.getLeft()+495,c.getTop()+85+n*75);}
   // Put opaque boxes and attributes after connectors, preventing lines crossing labels.
   List<FormaElementar> list=d.getListaDeItens();list.sort(Comparator.comparingInt(f->f instanceof SuperLinha?0:1));save(d,logical?"logico":"conceitual");
  }

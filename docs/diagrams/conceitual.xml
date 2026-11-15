@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<DIAGRAMA ID="1" TIPO="tpConceitual" UniversalUnicID="CD84-93-115D-69-874-2-BA">
+<DIAGRAMA ID="1" TIPO="tpConceitual" UniversalUnicID="7070-1B-E442-38-2451-C0-D7">
     <Ligacao ID="6">
         <DisablePainted Valor="false"/>
         <Tag LinhaMestre="-1"/>
@@ -3192,15 +3192,17 @@
         <Largura Valor="1"/>
         <Ligacoes PontaA="21" PontaB="404"/>
         <Pontos>
-            <Ponto Left="1347" Top="145"/>
-            <Ponto Left="1359" Top="145"/>
-            <Ponto Left="1359" Top="119"/>
-            <Ponto Left="1360" Top="119"/>
-            <Ponto Left="1360" Top="230"/>
-            <Ponto Left="1372" Top="230"/>
+            <Ponto Left="827" Top="137"/>
+            <Ponto Left="827" Top="99"/>
+            <Ponto Left="795" Top="99"/>
+            <Ponto Left="795" Top="99"/>
+            <Ponto Left="1290" Top="99"/>
+            <Ponto Left="1290" Top="252"/>
+            <Ponto Left="1302" Top="252"/>
+            <Ponto Left="1302" Top="252"/>
         </Pontos>
         <Cardinalidade ID="406">
-            <Bounds Height="100" Left="1357" Top="47" Width="150"/>
+            <Bounds Height="100" Left="817" Top="113" Width="150"/>
             <DisablePainted Valor="false"/>
             <Texto>Cardinalidade_1</Texto>
             <Observacao/>
@@ -3209,7 +3211,7 @@
             <Ancorado Valor="false"/>
             <TamanhoAutmatico Valor="true"/>
             <Card Valor="0"/>
-            <MovimentacaoManual Valor="false"/>
+            <MovimentacaoManual Valor="true"/>
             <Papel Valor=""/>
         </Cardinalidade>
     </Ligacao>
@@ -3226,15 +3228,17 @@
         <Largura Valor="1"/>
         <Ligacoes PontaA="4" PontaB="404"/>
         <Pontos>
-            <Ponto Left="587" Top="145"/>
-            <Ponto Left="605" Top="145"/>
-            <Ponto Left="605" Top="114"/>
-            <Ponto Left="1354" Top="114"/>
-            <Ponto Left="1354" Top="237"/>
-            <Ponto Left="1372" Top="237"/>
+            <Ponto Left="67" Top="137"/>
+            <Ponto Left="67" Top="99"/>
+            <Ponto Left="30" Top="99"/>
+            <Ponto Left="30" Top="94"/>
+            <Ponto Left="1494" Top="94"/>
+            <Ponto Left="1494" Top="252"/>
+            <Ponto Left="1482" Top="252"/>
+            <Ponto Left="1482" Top="252"/>
         </Pontos>
         <Cardinalidade ID="408">
-            <Bounds Height="100" Left="597" Top="47" Width="150"/>
+            <Bounds Height="100" Left="57" Top="113" Width="150"/>
             <DisablePainted Valor="false"/>
             <Texto>Cardinalidade_2</Texto>
             <Observacao/>
@@ -3243,7 +3247,7 @@
             <Ancorado Valor="false"/>
             <TamanhoAutmatico Valor="true"/>
             <Card Valor="3"/>
-            <MovimentacaoManual Valor="false"/>
+            <MovimentacaoManual Valor="true"/>
             <Papel Valor=""/>
         </Cardinalidade>
     </Ligacao>
@@ -3260,15 +3264,17 @@
         <Largura Valor="1"/>
         <Ligacoes PontaA="42" PontaB="409"/>
         <Pontos>
-            <Ponto Left="2107" Top="145"/>
-            <Ponto Left="2131" Top="145"/>
-            <Ponto Left="2131" Top="109"/>
-            <Ponto Left="2108" Top="109"/>
-            <Ponto Left="2108" Top="230"/>
-            <Ponto Left="2132" Top="230"/>
+            <Ponto Left="1587" Top="137"/>
+            <Ponto Left="1587" Top="99"/>
+            <Ponto Left="1545" Top="99"/>
+            <Ponto Left="1545" Top="89"/>
+            <Ponto Left="2050" Top="89"/>
+            <Ponto Left="2050" Top="252"/>
+            <Ponto Left="2062" Top="252"/>
+            <Ponto Left="2062" Top="252"/>
         </Pontos>
         <Cardinalidade ID="411">
-            <Bounds Height="100" Left="2117" Top="47" Width="150"/>
+            <Bounds Height="100" Left="1577" Top="113" Width="150"/>
             <DisablePainted Valor="false"/>
             <Texto>Cardinalidade_3</Texto>
             <Observacao/>
@@ -3277,7 +3283,7 @@
             <Ancorado Valor="false"/>
             <TamanhoAutmatico Valor="true"/>
             <Card Valor="0"/>
-            <MovimentacaoManual Valor="false"/>
+            <MovimentacaoManual Valor="true"/>
             <Papel Valor=""/>
         </Cardinalidade>
     </Ligacao>
@@ -3294,15 +3300,17 @@
         <Largura Valor="1"/>
         <Ligacoes PontaA="85" PontaB="409"/>
         <Pontos>
-            <Ponto Left="2327" Top="145"/>
-            <Ponto Left="2297" Top="145"/>
-            <Ponto Left="2297" Top="104"/>
-            <Ponto Left="2342" Top="104"/>
-            <Ponto Left="2342" Top="237"/>
-            <Ponto Left="2312" Top="237"/>
+            <Ponto Left="2347" Top="137"/>
+            <Ponto Left="2347" Top="99"/>
+            <Ponto Left="2315" Top="99"/>
+            <Ponto Left="2315" Top="84"/>
+            <Ponto Left="2254" Top="84"/>
+            <Ponto Left="2254" Top="252"/>
+            <Ponto Left="2242" Top="252"/>
+            <Ponto Left="2242" Top="252"/>
         </Pontos>
         <Cardinalidade ID="413">
-            <Bounds Height="100" Left="2173" Top="47" Width="150"/>
+            <Bounds Height="100" Left="2337" Top="113" Width="150"/>
             <DisablePainted Valor="false"/>
             <Texto>Cardinalidade_4</Texto>
             <Observacao/>
@@ -3311,7 +3319,7 @@
             <Ancorado Valor="false"/>
             <TamanhoAutmatico Valor="true"/>
             <Card Valor="3"/>
-            <MovimentacaoManual Valor="false"/>
+            <MovimentacaoManual Valor="true"/>
             <Papel Valor=""/>
         </Cardinalidade>
     </Ligacao>
@@ -3328,15 +3336,17 @@
         <Largura Valor="1"/>
         <Ligacoes PontaA="42" PontaB="414"/>
         <Pontos>
-            <Ponto Left="2107" Top="152"/>
-            <Ponto Left="2143" Top="152"/>
-            <Ponto Left="2143" Top="99"/>
-            <Ponto Left="2096" Top="99"/>
-            <Ponto Left="2096" Top="305"/>
-            <Ponto Left="2132" Top="305"/>
+            <Ponto Left="1627" Top="137"/>
+            <Ponto Left="1627" Top="99"/>
+            <Ponto Left="1550" Top="99"/>
+            <Ponto Left="1550" Top="79"/>
+            <Ponto Left="2050" Top="79"/>
+            <Ponto Left="2050" Top="327"/>
+            <Ponto Left="2062" Top="327"/>
+            <Ponto Left="2062" Top="327"/>
         </Pontos>
         <Cardinalidade ID="416">
-            <Bounds Height="100" Left="2117" Top="54" Width="150"/>
+            <Bounds Height="100" Left="1617" Top="113" Width="150"/>
             <DisablePainted Valor="false"/>
             <Texto>Cardinalidade_5</Texto>
             <Observacao/>
@@ -3345,7 +3355,7 @@
             <Ancorado Valor="false"/>
             <TamanhoAutmatico Valor="true"/>
             <Card Valor="0"/>
-            <MovimentacaoManual Valor="false"/>
+            <MovimentacaoManual Valor="true"/>
             <Papel Valor=""/>
         </Cardinalidade>
     </Ligacao>
@@ -3362,15 +3372,17 @@
         <Largura Valor="1"/>
         <Ligacoes PontaA="21" PontaB="414"/>
         <Pontos>
-            <Ponto Left="1347" Top="152"/>
-            <Ponto Left="1389" Top="152"/>
-            <Ponto Left="1389" Top="94"/>
-            <Ponto Left="2090" Top="94"/>
-            <Ponto Left="2090" Top="312"/>
-            <Ponto Left="2132" Top="312"/>
+            <Ponto Left="867" Top="137"/>
+            <Ponto Left="867" Top="99"/>
+            <Ponto Left="785" Top="99"/>
+            <Ponto Left="785" Top="74"/>
+            <Ponto Left="2254" Top="74"/>
+            <Ponto Left="2254" Top="327"/>
+            <Ponto Left="2242" Top="327"/>
+            <Ponto Left="2242" Top="327"/>
         </Pontos>
         <Cardinalidade ID="418">
-            <Bounds Height="100" Left="1357" Top="54" Width="150"/>
+            <Bounds Height="100" Left="857" Top="113" Width="150"/>
             <DisablePainted Valor="false"/>
             <Texto>Cardinalidade_6</Texto>
             <Observacao/>
@@ -3379,7 +3391,7 @@
             <Ancorado Valor="false"/>
             <TamanhoAutmatico Valor="true"/>
             <Card Valor="3"/>
-            <MovimentacaoManual Valor="false"/>
+            <MovimentacaoManual Valor="true"/>
             <Papel Valor=""/>
         </Cardinalidade>
     </Ligacao>
@@ -3396,15 +3408,17 @@
         <Largura Valor="1"/>
         <Ligacoes PontaA="132" PontaB="419"/>
         <Pontos>
-            <Ponto Left="1347" Top="805"/>
-            <Ponto Left="1395" Top="805"/>
-            <Ponto Left="1395" Top="749"/>
-            <Ponto Left="1324" Top="749"/>
-            <Ponto Left="1324" Top="890"/>
-            <Ponto Left="1372" Top="890"/>
+            <Ponto Left="827" Top="797"/>
+            <Ponto Left="827" Top="759"/>
+            <Ponto Left="795" Top="759"/>
+            <Ponto Left="795" Top="759"/>
+            <Ponto Left="1290" Top="759"/>
+            <Ponto Left="1290" Top="912"/>
+            <Ponto Left="1302" Top="912"/>
+            <Ponto Left="1302" Top="912"/>
         </Pontos>
         <Cardinalidade ID="421">
-            <Bounds Height="100" Left="1357" Top="707" Width="150"/>
+            <Bounds Height="100" Left="817" Top="773" Width="150"/>
             <DisablePainted Valor="false"/>
             <Texto>Cardinalidade_7</Texto>
             <Observacao/>
@@ -3413,7 +3427,7 @@
             <Ancorado Valor="false"/>
             <TamanhoAutmatico Valor="true"/>
             <Card Valor="0"/>
-            <MovimentacaoManual Valor="false"/>
+            <MovimentacaoManual Valor="true"/>
             <Papel Valor=""/>
         </Cardinalidade>
     </Ligacao>
@@ -3430,15 +3444,17 @@
         <Largura Valor="1"/>
         <Ligacoes PontaA="127" PontaB="419"/>
         <Pontos>
-            <Ponto Left="587" Top="805"/>
-            <Ponto Left="641" Top="805"/>
-            <Ponto Left="641" Top="744"/>
-            <Ponto Left="1360" Top="744"/>
-            <Ponto Left="1360" Top="897"/>
-            <Ponto Left="1372" Top="897"/>
+            <Ponto Left="67" Top="797"/>
+            <Ponto Left="67" Top="759"/>
+            <Ponto Left="30" Top="759"/>
+            <Ponto Left="30" Top="754"/>
+            <Ponto Left="1494" Top="754"/>
+            <Ponto Left="1494" Top="912"/>
+            <Ponto Left="1482" Top="912"/>
+            <Ponto Left="1482" Top="912"/>
         </Pontos>
         <Cardinalidade ID="423">
-            <Bounds Height="100" Left="597" Top="707" Width="150"/>
+            <Bounds Height="100" Left="57" Top="773" Width="150"/>
             <DisablePainted Valor="false"/>
             <Texto>Cardinalidade_8</Texto>
             <Observacao/>
@@ -3447,7 +3463,7 @@
             <Ancorado Valor="false"/>
             <TamanhoAutmatico Valor="true"/>
             <Card Valor="3"/>
-            <MovimentacaoManual Valor="false"/>
+            <MovimentacaoManual Valor="true"/>
             <Papel Valor=""/>
         </Cardinalidade>
     </Ligacao>
@@ -3464,15 +3480,17 @@
         <Largura Valor="1"/>
         <Ligacoes PontaA="132" PontaB="424"/>
         <Pontos>
-            <Ponto Left="1347" Top="812"/>
-            <Ponto Left="1407" Top="812"/>
-            <Ponto Left="1407" Top="739"/>
-            <Ponto Left="1354" Top="739"/>
-            <Ponto Left="1354" Top="965"/>
-            <Ponto Left="1372" Top="965"/>
+            <Ponto Left="867" Top="797"/>
+            <Ponto Left="867" Top="759"/>
+            <Ponto Left="785" Top="759"/>
+            <Ponto Left="785" Top="749"/>
+            <Ponto Left="1290" Top="749"/>
+            <Ponto Left="1290" Top="987"/>
+            <Ponto Left="1302" Top="987"/>
+            <Ponto Left="1302" Top="987"/>
         </Pontos>
         <Cardinalidade ID="426">
-            <Bounds Height="100" Left="1357" Top="714" Width="150"/>
+            <Bounds Height="100" Left="857" Top="773" Width="150"/>
             <DisablePainted Valor="false"/>
             <Texto>Cardinalidade_9</Texto>
             <Observacao/>
@@ -3481,7 +3499,7 @@
             <Ancorado Valor="false"/>
             <TamanhoAutmatico Valor="true"/>
             <Card Valor="0"/>
-            <MovimentacaoManual Valor="false"/>
+            <MovimentacaoManual Valor="true"/>
             <Papel Valor=""/>
         </Cardinalidade>
     </Ligacao>
@@ -3498,15 +3516,17 @@
         <Largura Valor="1"/>
         <Ligacoes PontaA="42" PontaB="424"/>
         <Pontos>
-            <Ponto Left="1567" Top="159"/>
-            <Ponto Left="1555" Top="159"/>
-            <Ponto Left="1555" Top="74"/>
-            <Ponto Left="1576" Top="74"/>
-            <Ponto Left="1576" Top="972"/>
-            <Ponto Left="1552" Top="972"/>
+            <Ponto Left="1667" Top="137"/>
+            <Ponto Left="1667" Top="99"/>
+            <Ponto Left="1555" Top="99"/>
+            <Ponto Left="1555" Top="84"/>
+            <Ponto Left="1494" Top="84"/>
+            <Ponto Left="1494" Top="987"/>
+            <Ponto Left="1482" Top="987"/>
+            <Ponto Left="1482" Top="987"/>
         </Pontos>
         <Cardinalidade ID="428">
-            <Bounds Height="100" Left="1419" Top="169" Width="150"/>
+            <Bounds Height="100" Left="1657" Top="113" Width="150"/>
             <DisablePainted Valor="false"/>
             <Texto>Cardinalidade_10</Texto>
             <Observacao/>
@@ -3515,7 +3535,7 @@
             <Ancorado Valor="false"/>
             <TamanhoAutmatico Valor="true"/>
             <Card Valor="3"/>
-            <MovimentacaoManual Valor="false"/>
+            <MovimentacaoManual Valor="true"/>
             <Papel Valor=""/>
         </Cardinalidade>
     </Ligacao>
@@ -3532,15 +3552,17 @@
         <Largura Valor="1"/>
         <Ligacoes PontaA="139" PontaB="429"/>
         <Pontos>
-            <Ponto Left="2107" Top="805"/>
-            <Ponto Left="2125" Top="805"/>
-            <Ponto Left="2125" Top="779"/>
-            <Ponto Left="2102" Top="779"/>
-            <Ponto Left="2102" Top="890"/>
-            <Ponto Left="2132" Top="890"/>
+            <Ponto Left="1587" Top="797"/>
+            <Ponto Left="1587" Top="759"/>
+            <Ponto Left="1550" Top="759"/>
+            <Ponto Left="1550" Top="739"/>
+            <Ponto Left="2050" Top="739"/>
+            <Ponto Left="2050" Top="912"/>
+            <Ponto Left="2062" Top="912"/>
+            <Ponto Left="2062" Top="912"/>
         </Pontos>
         <Cardinalidade ID="431">
-            <Bounds Height="100" Left="2117" Top="707" Width="150"/>
+            <Bounds Height="100" Left="1577" Top="773" Width="150"/>
             <DisablePainted Valor="false"/>
             <Texto>Cardinalidade_11</Texto>
             <Observacao/>
@@ -3549,7 +3571,7 @@
             <Ancorado Valor="false"/>
             <TamanhoAutmatico Valor="true"/>
             <Card Valor="0"/>
-            <MovimentacaoManual Valor="false"/>
+            <MovimentacaoManual Valor="true"/>
             <Papel Valor=""/>
         </Cardinalidade>
     </Ligacao>
@@ -3566,15 +3588,17 @@
         <Largura Valor="1"/>
         <Ligacoes PontaA="154" PontaB="429"/>
         <Pontos>
-            <Ponto Left="2327" Top="805"/>
-            <Ponto Left="2303" Top="805"/>
-            <Ponto Left="2303" Top="774"/>
-            <Ponto Left="2348" Top="774"/>
-            <Ponto Left="2348" Top="897"/>
-            <Ponto Left="2312" Top="897"/>
+            <Ponto Left="2347" Top="797"/>
+            <Ponto Left="2347" Top="759"/>
+            <Ponto Left="2305" Top="759"/>
+            <Ponto Left="2305" Top="734"/>
+            <Ponto Left="2254" Top="734"/>
+            <Ponto Left="2254" Top="912"/>
+            <Ponto Left="2242" Top="912"/>
+            <Ponto Left="2242" Top="912"/>
         </Pontos>
         <Cardinalidade ID="433">
-            <Bounds Height="100" Left="2173" Top="707" Width="150"/>
+            <Bounds Height="100" Left="2337" Top="773" Width="150"/>
             <DisablePainted Valor="false"/>
             <Texto>Cardinalidade_12</Texto>
             <Observacao/>
@@ -3583,7 +3607,7 @@
             <Ancorado Valor="false"/>
             <TamanhoAutmatico Valor="true"/>
             <Card Valor="3"/>
-            <MovimentacaoManual Valor="false"/>
+            <MovimentacaoManual Valor="true"/>
             <Papel Valor=""/>
         </Cardinalidade>
     </Ligacao>
@@ -3600,15 +3624,17 @@
         <Largura Valor="1"/>
         <Ligacoes PontaA="139" PontaB="434"/>
         <Pontos>
-            <Ponto Left="2107" Top="812"/>
-            <Ponto Left="2137" Top="812"/>
-            <Ponto Left="2137" Top="769"/>
-            <Ponto Left="2090" Top="769"/>
-            <Ponto Left="2090" Top="965"/>
-            <Ponto Left="2132" Top="965"/>
+            <Ponto Left="1627" Top="797"/>
+            <Ponto Left="1627" Top="759"/>
+            <Ponto Left="1555" Top="759"/>
+            <Ponto Left="1555" Top="759"/>
+            <Ponto Left="2050" Top="759"/>
+            <Ponto Left="2050" Top="987"/>
+            <Ponto Left="2062" Top="987"/>
+            <Ponto Left="2062" Top="987"/>
         </Pontos>
         <Cardinalidade ID="436">
-            <Bounds Height="100" Left="2117" Top="714" Width="150"/>
+            <Bounds Height="100" Left="1617" Top="773" Width="150"/>
             <DisablePainted Valor="false"/>
             <Texto>Cardinalidade_13</Texto>
             <Observacao/>
@@ -3617,7 +3643,7 @@
             <Ancorado Valor="false"/>
             <TamanhoAutmatico Valor="true"/>
             <Card Valor="0"/>
-            <MovimentacaoManual Valor="false"/>
+            <MovimentacaoManual Valor="true"/>
             <Papel Valor=""/>
         </Cardinalidade>
     </Ligacao>
@@ -3634,15 +3660,17 @@
         <Largura Valor="1"/>
         <Ligacoes PontaA="42" PontaB="434"/>
         <Pontos>
-            <Ponto Left="2107" Top="166"/>
-            <Ponto Left="2143" Top="166"/>
-            <Ponto Left="2143" Top="104"/>
-            <Ponto Left="2084" Top="104"/>
-            <Ponto Left="2084" Top="972"/>
-            <Ponto Left="2132" Top="972"/>
+            <Ponto Left="1707" Top="137"/>
+            <Ponto Left="1707" Top="99"/>
+            <Ponto Left="1550" Top="99"/>
+            <Ponto Left="1550" Top="94"/>
+            <Ponto Left="2254" Top="94"/>
+            <Ponto Left="2254" Top="987"/>
+            <Ponto Left="2242" Top="987"/>
+            <Ponto Left="2242" Top="987"/>
         </Pontos>
         <Cardinalidade ID="438">
-            <Bounds Height="100" Left="1959" Top="176" Width="150"/>
+            <Bounds Height="100" Left="1697" Top="113" Width="150"/>
             <DisablePainted Valor="false"/>
             <Texto>Cardinalidade_14</Texto>
             <Observacao/>
@@ -3651,7 +3679,7 @@
             <Ancorado Valor="false"/>
             <TamanhoAutmatico Valor="true"/>
             <Card Valor="3"/>
-            <MovimentacaoManual Valor="false"/>
+            <MovimentacaoManual Valor="true"/>
             <Papel Valor=""/>
         </Cardinalidade>
     </Ligacao>
@@ -3668,15 +3696,17 @@
         <Largura Valor="1"/>
         <Ligacoes PontaA="189" PontaB="439"/>
         <Pontos>
-            <Ponto Left="1347" Top="1465"/>
-            <Ponto Left="1389" Top="1465"/>
-            <Ponto Left="1389" Top="1419"/>
-            <Ponto Left="1360" Top="1419"/>
-            <Ponto Left="1360" Top="1550"/>
-            <Ponto Left="1372" Top="1550"/>
+            <Ponto Left="827" Top="1457"/>
+            <Ponto Left="827" Top="1419"/>
+            <Ponto Left="785" Top="1419"/>
+            <Ponto Left="785" Top="1409"/>
+            <Ponto Left="1290" Top="1409"/>
+            <Ponto Left="1290" Top="1572"/>
+            <Ponto Left="1302" Top="1572"/>
+            <Ponto Left="1302" Top="1572"/>
         </Pontos>
         <Cardinalidade ID="441">
-            <Bounds Height="100" Left="1357" Top="1367" Width="150"/>
+            <Bounds Height="100" Left="817" Top="1433" Width="150"/>
             <DisablePainted Valor="false"/>
             <Texto>Cardinalidade_15</Texto>
             <Observacao/>
@@ -3685,7 +3715,7 @@
             <Ancorado Valor="false"/>
             <TamanhoAutmatico Valor="true"/>
             <Card Valor="0"/>
-            <MovimentacaoManual Valor="false"/>
+            <MovimentacaoManual Valor="true"/>
             <Papel Valor=""/>
         </Cardinalidade>
     </Ligacao>
@@ -3702,15 +3732,17 @@
         <Largura Valor="1"/>
         <Ligacoes PontaA="161" PontaB="439"/>
         <Pontos>
-            <Ponto Left="3087" Top="805"/>
-            <Ponto Left="3039" Top="805"/>
-            <Ponto Left="3039" Top="754"/>
-            <Ponto Left="1570" Top="754"/>
-            <Ponto Left="1570" Top="1557"/>
-            <Ponto Left="1552" Top="1557"/>
+            <Ponto Left="3107" Top="797"/>
+            <Ponto Left="3107" Top="759"/>
+            <Ponto Left="3075" Top="759"/>
+            <Ponto Left="3075" Top="744"/>
+            <Ponto Left="1494" Top="744"/>
+            <Ponto Left="1494" Top="1572"/>
+            <Ponto Left="1482" Top="1572"/>
+            <Ponto Left="1482" Top="1572"/>
         </Pontos>
         <Cardinalidade ID="443">
-            <Bounds Height="100" Left="2933" Top="707" Width="150"/>
+            <Bounds Height="100" Left="3097" Top="773" Width="150"/>
             <DisablePainted Valor="false"/>
             <Texto>Cardinalidade_16</Texto>
             <Observacao/>
@@ -3719,7 +3751,7 @@
             <Ancorado Valor="false"/>
             <TamanhoAutmatico Valor="true"/>
             <Card Valor="3"/>
-            <MovimentacaoManual Valor="false"/>
+            <MovimentacaoManual Valor="true"/>
             <Papel Valor=""/>
         </Cardinalidade>
     </Ligacao>
@@ -3736,15 +3768,17 @@
         <Largura Valor="1"/>
         <Ligacoes PontaA="189" PontaB="444"/>
         <Pontos>
-            <Ponto Left="1347" Top="1472"/>
-            <Ponto Left="1401" Top="1472"/>
-            <Ponto Left="1401" Top="1409"/>
-            <Ponto Left="1348" Top="1409"/>
-            <Ponto Left="1348" Top="1625"/>
-            <Ponto Left="1372" Top="1625"/>
+            <Ponto Left="867" Top="1457"/>
+            <Ponto Left="867" Top="1419"/>
+            <Ponto Left="790" Top="1419"/>
+            <Ponto Left="790" Top="1399"/>
+            <Ponto Left="1290" Top="1399"/>
+            <Ponto Left="1290" Top="1647"/>
+            <Ponto Left="1302" Top="1647"/>
+            <Ponto Left="1302" Top="1647"/>
         </Pontos>
         <Cardinalidade ID="446">
-            <Bounds Height="100" Left="1357" Top="1374" Width="150"/>
+            <Bounds Height="100" Left="857" Top="1433" Width="150"/>
             <DisablePainted Valor="false"/>
             <Texto>Cardinalidade_17</Texto>
             <Observacao/>
@@ -3753,7 +3787,7 @@
             <Ancorado Valor="false"/>
             <TamanhoAutmatico Valor="true"/>
             <Card Valor="0"/>
-            <MovimentacaoManual Valor="false"/>
+            <MovimentacaoManual Valor="true"/>
             <Papel Valor=""/>
         </Cardinalidade>
     </Ligacao>
@@ -3770,15 +3804,17 @@
         <Largura Valor="1"/>
         <Ligacoes PontaA="42" PontaB="444"/>
         <Pontos>
-            <Ponto Left="1567" Top="173"/>
-            <Ponto Left="1507" Top="173"/>
-            <Ponto Left="1507" Top="84"/>
-            <Ponto Left="1582" Top="84"/>
-            <Ponto Left="1582" Top="1632"/>
-            <Ponto Left="1552" Top="1632"/>
+            <Ponto Left="1747" Top="137"/>
+            <Ponto Left="1747" Top="99"/>
+            <Ponto Left="1545" Top="99"/>
+            <Ponto Left="1545" Top="74"/>
+            <Ponto Left="1494" Top="74"/>
+            <Ponto Left="1494" Top="1647"/>
+            <Ponto Left="1482" Top="1647"/>
+            <Ponto Left="1482" Top="1647"/>
         </Pontos>
         <Cardinalidade ID="448">
-            <Bounds Height="100" Left="1419" Top="183" Width="150"/>
+            <Bounds Height="100" Left="1737" Top="113" Width="150"/>
             <DisablePainted Valor="false"/>
             <Texto>Cardinalidade_18</Texto>
             <Observacao/>
@@ -3787,7 +3823,7 @@
             <Ancorado Valor="false"/>
             <TamanhoAutmatico Valor="true"/>
             <Card Valor="3"/>
-            <MovimentacaoManual Valor="false"/>
+            <MovimentacaoManual Valor="true"/>
             <Papel Valor=""/>
         </Cardinalidade>
     </Ligacao>
@@ -3804,15 +3840,17 @@
         <Largura Valor="1"/>
         <Ligacoes PontaA="238" PontaB="449"/>
         <Pontos>
-            <Ponto Left="3627" Top="1465"/>
-            <Ponto Left="3639" Top="1465"/>
-            <Ponto Left="3639" Top="1399"/>
-            <Ponto Left="3616" Top="1399"/>
-            <Ponto Left="3616" Top="1550"/>
-            <Ponto Left="3652" Top="1550"/>
+            <Ponto Left="3107" Top="1457"/>
+            <Ponto Left="3107" Top="1419"/>
+            <Ponto Left="3075" Top="1419"/>
+            <Ponto Left="3075" Top="1419"/>
+            <Ponto Left="3570" Top="1419"/>
+            <Ponto Left="3570" Top="1572"/>
+            <Ponto Left="3582" Top="1572"/>
+            <Ponto Left="3582" Top="1572"/>
         </Pontos>
         <Cardinalidade ID="451">
-            <Bounds Height="100" Left="3637" Top="1367" Width="150"/>
+            <Bounds Height="100" Left="3097" Top="1433" Width="150"/>
             <DisablePainted Valor="false"/>
             <Texto>Cardinalidade_19</Texto>
             <Observacao/>
@@ -3821,7 +3859,7 @@
             <Ancorado Valor="false"/>
             <TamanhoAutmatico Valor="true"/>
             <Card Valor="1"/>
-            <MovimentacaoManual Valor="false"/>
+            <MovimentacaoManual Valor="true"/>
             <Papel Valor=""/>
         </Cardinalidade>
     </Ligacao>
@@ -3838,15 +3876,17 @@
         <Largura Valor="1"/>
         <Ligacoes PontaA="300" PontaB="449"/>
         <Pontos>
-            <Ponto Left="2867" Top="2125"/>
-            <Ponto Left="2885" Top="2125"/>
-            <Ponto Left="2885" Top="1479"/>
-            <Ponto Left="3610" Top="1479"/>
-            <Ponto Left="3610" Top="1557"/>
-            <Ponto Left="3652" Top="1557"/>
+            <Ponto Left="2347" Top="2117"/>
+            <Ponto Left="2347" Top="2079"/>
+            <Ponto Left="2310" Top="2079"/>
+            <Ponto Left="2310" Top="1414"/>
+            <Ponto Left="3774" Top="1414"/>
+            <Ponto Left="3774" Top="1572"/>
+            <Ponto Left="3762" Top="1572"/>
+            <Ponto Left="3762" Top="1572"/>
         </Pontos>
         <Cardinalidade ID="453">
-            <Bounds Height="100" Left="2877" Top="2027" Width="150"/>
+            <Bounds Height="100" Left="2337" Top="2093" Width="150"/>
             <DisablePainted Valor="false"/>
             <Texto>Cardinalidade_20</Texto>
             <Observacao/>
@@ -3855,7 +3895,7 @@
             <Ancorado Valor="false"/>
             <TamanhoAutmatico Valor="true"/>
             <Card Valor="3"/>
-            <MovimentacaoManual Valor="false"/>
+            <MovimentacaoManual Valor="true"/>
             <Papel Valor=""/>
         </Cardinalidade>
     </Ligacao>
@@ -3872,15 +3912,17 @@
         <Largura Valor="1"/>
         <Ligacoes PontaA="238" PontaB="454"/>
         <Pontos>
-            <Ponto Left="3627" Top="1472"/>
-            <Ponto Left="3651" Top="1472"/>
-            <Ponto Left="3651" Top="1439"/>
-            <Ponto Left="3604" Top="1439"/>
-            <Ponto Left="3604" Top="1625"/>
-            <Ponto Left="3652" Top="1625"/>
+            <Ponto Left="3147" Top="1457"/>
+            <Ponto Left="3147" Top="1419"/>
+            <Ponto Left="3065" Top="1419"/>
+            <Ponto Left="3065" Top="1409"/>
+            <Ponto Left="3570" Top="1409"/>
+            <Ponto Left="3570" Top="1647"/>
+            <Ponto Left="3582" Top="1647"/>
+            <Ponto Left="3582" Top="1647"/>
         </Pontos>
         <Cardinalidade ID="456">
-            <Bounds Height="100" Left="3637" Top="1374" Width="150"/>
+            <Bounds Height="100" Left="3137" Top="1433" Width="150"/>
             <DisablePainted Valor="false"/>
             <Texto>Cardinalidade_21</Texto>
             <Observacao/>
@@ -3889,7 +3931,7 @@
             <Ancorado Valor="false"/>
             <TamanhoAutmatico Valor="true"/>
             <Card Valor="1"/>
-            <MovimentacaoManual Valor="false"/>
+            <MovimentacaoManual Valor="true"/>
             <Papel Valor=""/>
         </Cardinalidade>
     </Ligacao>
@@ -3906,15 +3948,17 @@
         <Largura Valor="1"/>
         <Ligacoes PontaA="300" PontaB="454"/>
         <Pontos>
-            <Ponto Left="2867" Top="2132"/>
-            <Ponto Left="2897" Top="2132"/>
-            <Ponto Left="2897" Top="1594"/>
-            <Ponto Left="3640" Top="1594"/>
-            <Ponto Left="3640" Top="1632"/>
-            <Ponto Left="3652" Top="1632"/>
+            <Ponto Left="2387" Top="2117"/>
+            <Ponto Left="2387" Top="2079"/>
+            <Ponto Left="2315" Top="2079"/>
+            <Ponto Left="2315" Top="1404"/>
+            <Ponto Left="3774" Top="1404"/>
+            <Ponto Left="3774" Top="1647"/>
+            <Ponto Left="3762" Top="1647"/>
+            <Ponto Left="3762" Top="1647"/>
         </Pontos>
         <Cardinalidade ID="458">
-            <Bounds Height="100" Left="2877" Top="2034" Width="150"/>
+            <Bounds Height="100" Left="2377" Top="2093" Width="150"/>
             <DisablePainted Valor="false"/>
             <Texto>Cardinalidade_22</Texto>
             <Observacao/>
@@ -3923,7 +3967,7 @@
             <Ancorado Valor="false"/>
             <TamanhoAutmatico Valor="true"/>
             <Card Valor="3"/>
-            <MovimentacaoManual Valor="false"/>
+            <MovimentacaoManual Valor="true"/>
             <Papel Valor=""/>
         </Cardinalidade>
     </Ligacao>
@@ -3940,15 +3984,17 @@
         <Largura Valor="1"/>
         <Ligacoes PontaA="102" PontaB="459"/>
         <Pontos>
-            <Ponto Left="3627" Top="145"/>
-            <Ponto Left="3663" Top="145"/>
-            <Ponto Left="3663" Top="109"/>
-            <Ponto Left="3634" Top="109"/>
-            <Ponto Left="3634" Top="230"/>
-            <Ponto Left="3652" Top="230"/>
+            <Ponto Left="3107" Top="137"/>
+            <Ponto Left="3107" Top="99"/>
+            <Ponto Left="3070" Top="99"/>
+            <Ponto Left="3070" Top="79"/>
+            <Ponto Left="3570" Top="79"/>
+            <Ponto Left="3570" Top="252"/>
+            <Ponto Left="3582" Top="252"/>
+            <Ponto Left="3582" Top="252"/>
         </Pontos>
         <Cardinalidade ID="461">
-            <Bounds Height="100" Left="3637" Top="47" Width="150"/>
+            <Bounds Height="100" Left="3097" Top="113" Width="150"/>
             <DisablePainted Valor="false"/>
             <Texto>Cardinalidade_23</Texto>
             <Observacao/>
@@ -3957,7 +4003,7 @@
             <Ancorado Valor="false"/>
             <TamanhoAutmatico Valor="true"/>
             <Card Valor="0"/>
-            <MovimentacaoManual Valor="false"/>
+            <MovimentacaoManual Valor="true"/>
             <Papel Valor=""/>
         </Cardinalidade>
     </Ligacao>
@@ -3974,15 +4020,17 @@
         <Largura Valor="1"/>
         <Ligacoes PontaA="85" PontaB="459"/>
         <Pontos>
-            <Ponto Left="2867" Top="152"/>
-            <Ponto Left="2909" Top="152"/>
-            <Ponto Left="2909" Top="104"/>
-            <Ponto Left="3628" Top="104"/>
-            <Ponto Left="3628" Top="237"/>
-            <Ponto Left="3652" Top="237"/>
+            <Ponto Left="2387" Top="137"/>
+            <Ponto Left="2387" Top="99"/>
+            <Ponto Left="2305" Top="99"/>
+            <Ponto Left="2305" Top="74"/>
+            <Ponto Left="3774" Top="74"/>
+            <Ponto Left="3774" Top="252"/>
+            <Ponto Left="3762" Top="252"/>
+            <Ponto Left="3762" Top="252"/>
         </Pontos>
         <Cardinalidade ID="463">
-            <Bounds Height="100" Left="2877" Top="54" Width="150"/>
+            <Bounds Height="100" Left="2377" Top="113" Width="150"/>
             <DisablePainted Valor="false"/>
             <Texto>Cardinalidade_24</Texto>
             <Observacao/>
@@ -3991,7 +4039,7 @@
             <Ancorado Valor="false"/>
             <TamanhoAutmatico Valor="true"/>
             <Card Valor="3"/>
-            <MovimentacaoManual Valor="false"/>
+            <MovimentacaoManual Valor="true"/>
             <Papel Valor=""/>
         </Cardinalidade>
     </Ligacao>
@@ -4008,15 +4056,17 @@
         <Largura Valor="1"/>
         <Ligacoes PontaA="262" PontaB="464"/>
         <Pontos>
-            <Ponto Left="1347" Top="2125"/>
-            <Ponto Left="1395" Top="2125"/>
-            <Ponto Left="1395" Top="2079"/>
-            <Ponto Left="1342" Top="2079"/>
-            <Ponto Left="1342" Top="2210"/>
-            <Ponto Left="1372" Top="2210"/>
+            <Ponto Left="827" Top="2117"/>
+            <Ponto Left="827" Top="2079"/>
+            <Ponto Left="795" Top="2079"/>
+            <Ponto Left="795" Top="2079"/>
+            <Ponto Left="1290" Top="2079"/>
+            <Ponto Left="1290" Top="2232"/>
+            <Ponto Left="1302" Top="2232"/>
+            <Ponto Left="1302" Top="2232"/>
         </Pontos>
         <Cardinalidade ID="466">
-            <Bounds Height="100" Left="1357" Top="2027" Width="150"/>
+            <Bounds Height="100" Left="817" Top="2093" Width="150"/>
             <DisablePainted Valor="false"/>
             <Texto>Cardinalidade_25</Texto>
             <Observacao/>
@@ -4025,7 +4075,7 @@
             <Ancorado Valor="false"/>
             <TamanhoAutmatico Valor="true"/>
             <Card Valor="0"/>
-            <MovimentacaoManual Valor="false"/>
+            <MovimentacaoManual Valor="true"/>
             <Papel Valor=""/>
         </Cardinalidade>
     </Ligacao>
@@ -4042,15 +4092,17 @@
         <Largura Valor="1"/>
         <Ligacoes PontaA="253" PontaB="464"/>
         <Pontos>
-            <Ponto Left="587" Top="2125"/>
-            <Ponto Left="641" Top="2125"/>
-            <Ponto Left="641" Top="2074"/>
-            <Ponto Left="1336" Top="2074"/>
-            <Ponto Left="1336" Top="2217"/>
-            <Ponto Left="1372" Top="2217"/>
+            <Ponto Left="67" Top="2117"/>
+            <Ponto Left="67" Top="2079"/>
+            <Ponto Left="30" Top="2079"/>
+            <Ponto Left="30" Top="2074"/>
+            <Ponto Left="1494" Top="2074"/>
+            <Ponto Left="1494" Top="2232"/>
+            <Ponto Left="1482" Top="2232"/>
+            <Ponto Left="1482" Top="2232"/>
         </Pontos>
         <Cardinalidade ID="468">
-            <Bounds Height="100" Left="597" Top="2027" Width="150"/>
+            <Bounds Height="100" Left="57" Top="2093" Width="150"/>
             <DisablePainted Valor="false"/>
             <Texto>Cardinalidade_26</Texto>
             <Observacao/>
@@ -4059,7 +4111,7 @@
             <Ancorado Valor="false"/>
             <TamanhoAutmatico Valor="true"/>
             <Card Valor="3"/>
-            <MovimentacaoManual Valor="false"/>
+            <MovimentacaoManual Valor="true"/>
             <Papel Valor=""/>
         </Cardinalidade>
     </Ligacao>
@@ -4076,15 +4128,17 @@
         <Largura Valor="1"/>
         <Ligacoes PontaA="262" PontaB="469"/>
         <Pontos>
-            <Ponto Left="1347" Top="2132"/>
-            <Ponto Left="1407" Top="2132"/>
-            <Ponto Left="1407" Top="2069"/>
-            <Ponto Left="1330" Top="2069"/>
-            <Ponto Left="1330" Top="2285"/>
-            <Ponto Left="1372" Top="2285"/>
+            <Ponto Left="867" Top="2117"/>
+            <Ponto Left="867" Top="2079"/>
+            <Ponto Left="785" Top="2079"/>
+            <Ponto Left="785" Top="2069"/>
+            <Ponto Left="1290" Top="2069"/>
+            <Ponto Left="1290" Top="2307"/>
+            <Ponto Left="1302" Top="2307"/>
+            <Ponto Left="1302" Top="2307"/>
         </Pontos>
         <Cardinalidade ID="471">
-            <Bounds Height="100" Left="1357" Top="2034" Width="150"/>
+            <Bounds Height="100" Left="857" Top="2093" Width="150"/>
             <DisablePainted Valor="false"/>
             <Texto>Cardinalidade_27</Texto>
             <Observacao/>
@@ -4093,7 +4147,7 @@
             <Ancorado Valor="false"/>
             <TamanhoAutmatico Valor="true"/>
             <Card Valor="0"/>
-            <MovimentacaoManual Valor="false"/>
+            <MovimentacaoManual Valor="true"/>
             <Papel Valor=""/>
         </Cardinalidade>
     </Ligacao>
@@ -4110,15 +4164,17 @@
         <Largura Valor="1"/>
         <Ligacoes PontaA="102" PontaB="469"/>
         <Pontos>
-            <Ponto Left="3087" Top="152"/>
-            <Ponto Left="3075" Top="152"/>
+            <Ponto Left="3147" Top="137"/>
+            <Ponto Left="3147" Top="99"/>
+            <Ponto Left="3075" Top="99"/>
             <Ponto Left="3075" Top="84"/>
-            <Ponto Left="1600" Top="84"/>
-            <Ponto Left="1600" Top="2292"/>
-            <Ponto Left="1552" Top="2292"/>
+            <Ponto Left="1494" Top="84"/>
+            <Ponto Left="1494" Top="2307"/>
+            <Ponto Left="1482" Top="2307"/>
+            <Ponto Left="1482" Top="2307"/>
         </Pontos>
         <Cardinalidade ID="473">
-            <Bounds Height="100" Left="2939" Top="162" Width="150"/>
+            <Bounds Height="100" Left="3137" Top="113" Width="150"/>
             <DisablePainted Valor="false"/>
             <Texto>Cardinalidade_28</Texto>
             <Observacao/>
@@ -4127,7 +4183,7 @@
             <Ancorado Valor="false"/>
             <TamanhoAutmatico Valor="true"/>
             <Card Valor="3"/>
-            <MovimentacaoManual Valor="false"/>
+            <MovimentacaoManual Valor="true"/>
             <Papel Valor=""/>
         </Cardinalidade>
     </Ligacao>
@@ -4144,15 +4200,17 @@
         <Largura Valor="1"/>
         <Ligacoes PontaA="307" PontaB="474"/>
         <Pontos>
-            <Ponto Left="3627" Top="2125"/>
-            <Ponto Left="3645" Top="2125"/>
-            <Ponto Left="3645" Top="2059"/>
-            <Ponto Left="3640" Top="2059"/>
-            <Ponto Left="3640" Top="2210"/>
-            <Ponto Left="3652" Top="2210"/>
+            <Ponto Left="3107" Top="2117"/>
+            <Ponto Left="3107" Top="2079"/>
+            <Ponto Left="3070" Top="2079"/>
+            <Ponto Left="3070" Top="2059"/>
+            <Ponto Left="3570" Top="2059"/>
+            <Ponto Left="3570" Top="2232"/>
+            <Ponto Left="3582" Top="2232"/>
+            <Ponto Left="3582" Top="2232"/>
         </Pontos>
         <Cardinalidade ID="476">
-            <Bounds Height="100" Left="3637" Top="2027" Width="150"/>
+            <Bounds Height="100" Left="3097" Top="2093" Width="150"/>
             <DisablePainted Valor="false"/>
             <Texto>Cardinalidade_29</Texto>
             <Observacao/>
@@ -4161,7 +4219,7 @@
             <Ancorado Valor="false"/>
             <TamanhoAutmatico Valor="true"/>
             <Card Valor="0"/>
-            <MovimentacaoManual Valor="false"/>
+            <MovimentacaoManual Valor="true"/>
             <Papel Valor=""/>
         </Cardinalidade>
     </Ligacao>
@@ -4178,15 +4236,17 @@
         <Largura Valor="1"/>
         <Ligacoes PontaA="300" PontaB="474"/>
         <Pontos>
-            <Ponto Left="2867" Top="2139"/>
-            <Ponto Left="2891" Top="2139"/>
-            <Ponto Left="2891" Top="2054"/>
-            <Ponto Left="3634" Top="2054"/>
-            <Ponto Left="3634" Top="2217"/>
-            <Ponto Left="3652" Top="2217"/>
+            <Ponto Left="2427" Top="2117"/>
+            <Ponto Left="2427" Top="2079"/>
+            <Ponto Left="2305" Top="2079"/>
+            <Ponto Left="2305" Top="2054"/>
+            <Ponto Left="3774" Top="2054"/>
+            <Ponto Left="3774" Top="2232"/>
+            <Ponto Left="3762" Top="2232"/>
+            <Ponto Left="3762" Top="2232"/>
         </Pontos>
         <Cardinalidade ID="478">
-            <Bounds Height="100" Left="2877" Top="2041" Width="150"/>
+            <Bounds Height="100" Left="2417" Top="2093" Width="150"/>
             <DisablePainted Valor="false"/>
             <Texto>Cardinalidade_30</Texto>
             <Observacao/>
@@ -4195,7 +4255,7 @@
             <Ancorado Valor="false"/>
             <TamanhoAutmatico Valor="true"/>
             <Card Valor="3"/>
-            <MovimentacaoManual Valor="false"/>
+            <MovimentacaoManual Valor="true"/>
             <Papel Valor=""/>
         </Cardinalidade>
     </Ligacao>
@@ -4212,15 +4272,17 @@
         <Largura Valor="1"/>
         <Ligacoes PontaA="307" PontaB="479"/>
         <Pontos>
-            <Ponto Left="3627" Top="2132"/>
-            <Ponto Left="3657" Top="2132"/>
-            <Ponto Left="3657" Top="2099"/>
-            <Ponto Left="3628" Top="2099"/>
-            <Ponto Left="3628" Top="2285"/>
-            <Ponto Left="3652" Top="2285"/>
+            <Ponto Left="3147" Top="2117"/>
+            <Ponto Left="3147" Top="2079"/>
+            <Ponto Left="3075" Top="2079"/>
+            <Ponto Left="3075" Top="2079"/>
+            <Ponto Left="3570" Top="2079"/>
+            <Ponto Left="3570" Top="2307"/>
+            <Ponto Left="3582" Top="2307"/>
+            <Ponto Left="3582" Top="2307"/>
         </Pontos>
         <Cardinalidade ID="481">
-            <Bounds Height="100" Left="3637" Top="2034" Width="150"/>
+            <Bounds Height="100" Left="3137" Top="2093" Width="150"/>
             <DisablePainted Valor="false"/>
             <Texto>Cardinalidade_31</Texto>
             <Observacao/>
@@ -4229,7 +4291,7 @@
             <Ancorado Valor="false"/>
             <TamanhoAutmatico Valor="true"/>
             <Card Valor="0"/>
-            <MovimentacaoManual Valor="false"/>
+            <MovimentacaoManual Valor="true"/>
             <Papel Valor=""/>
         </Cardinalidade>
     </Ligacao>
@@ -4246,15 +4308,17 @@
         <Largura Valor="1"/>
         <Ligacoes PontaA="262" PontaB="479"/>
         <Pontos>
-            <Ponto Left="1347" Top="2139"/>
-            <Ponto Left="1383" Top="2139"/>
-            <Ponto Left="1383" Top="2094"/>
-            <Ponto Left="3622" Top="2094"/>
-            <Ponto Left="3622" Top="2292"/>
-            <Ponto Left="3652" Top="2292"/>
+            <Ponto Left="907" Top="2117"/>
+            <Ponto Left="907" Top="2079"/>
+            <Ponto Left="790" Top="2079"/>
+            <Ponto Left="790" Top="2074"/>
+            <Ponto Left="3774" Top="2074"/>
+            <Ponto Left="3774" Top="2307"/>
+            <Ponto Left="3762" Top="2307"/>
+            <Ponto Left="3762" Top="2307"/>
         </Pontos>
         <Cardinalidade ID="483">
-            <Bounds Height="100" Left="1357" Top="2041" Width="150"/>
+            <Bounds Height="100" Left="897" Top="2093" Width="150"/>
             <DisablePainted Valor="false"/>
             <Texto>Cardinalidade_32</Texto>
             <Observacao/>
@@ -4263,7 +4327,7 @@
             <Ancorado Valor="false"/>
             <TamanhoAutmatico Valor="true"/>
             <Card Valor="3"/>
-            <MovimentacaoManual Valor="false"/>
+            <MovimentacaoManual Valor="true"/>
             <Papel Valor=""/>
         </Cardinalidade>
     </Ligacao>
@@ -4280,15 +4344,17 @@
         <Largura Valor="1"/>
         <Ligacoes PontaA="200" PontaB="484"/>
         <Pontos>
-            <Ponto Left="2107" Top="1465"/>
-            <Ponto Left="2149" Top="1465"/>
-            <Ponto Left="2149" Top="1429"/>
-            <Ponto Left="2096" Top="1429"/>
-            <Ponto Left="2096" Top="1550"/>
-            <Ponto Left="2132" Top="1550"/>
+            <Ponto Left="1587" Top="1457"/>
+            <Ponto Left="1587" Top="1419"/>
+            <Ponto Left="1545" Top="1419"/>
+            <Ponto Left="1545" Top="1409"/>
+            <Ponto Left="2050" Top="1409"/>
+            <Ponto Left="2050" Top="1572"/>
+            <Ponto Left="2062" Top="1572"/>
+            <Ponto Left="2062" Top="1572"/>
         </Pontos>
         <Cardinalidade ID="486">
-            <Bounds Height="100" Left="2117" Top="1367" Width="150"/>
+            <Bounds Height="100" Left="1577" Top="1433" Width="150"/>
             <DisablePainted Valor="false"/>
             <Texto>Cardinalidade_33</Texto>
             <Observacao/>
@@ -4297,7 +4363,7 @@
             <Ancorado Valor="false"/>
             <TamanhoAutmatico Valor="true"/>
             <Card Valor="1"/>
-            <MovimentacaoManual Valor="false"/>
+            <MovimentacaoManual Valor="true"/>
             <Papel Valor=""/>
         </Cardinalidade>
     </Ligacao>
@@ -4314,15 +4380,17 @@
         <Largura Valor="1"/>
         <Ligacoes PontaA="139" PontaB="484"/>
         <Pontos>
-            <Ponto Left="2107" Top="819"/>
-            <Ponto Left="2155" Top="819"/>
-            <Ponto Left="2155" Top="764"/>
-            <Ponto Left="2090" Top="764"/>
-            <Ponto Left="2090" Top="1557"/>
-            <Ponto Left="2132" Top="1557"/>
+            <Ponto Left="1667" Top="797"/>
+            <Ponto Left="1667" Top="759"/>
+            <Ponto Left="1555" Top="759"/>
+            <Ponto Left="1555" Top="744"/>
+            <Ponto Left="2254" Top="744"/>
+            <Ponto Left="2254" Top="1572"/>
+            <Ponto Left="2242" Top="1572"/>
+            <Ponto Left="2242" Top="1572"/>
         </Pontos>
         <Cardinalidade ID="488">
-            <Bounds Height="100" Left="1959" Top="829" Width="150"/>
+            <Bounds Height="100" Left="1657" Top="773" Width="150"/>
             <DisablePainted Valor="false"/>
             <Texto>Cardinalidade_34</Texto>
             <Observacao/>
@@ -4331,7 +4399,7 @@
             <Ancorado Valor="false"/>
             <TamanhoAutmatico Valor="true"/>
             <Card Valor="3"/>
-            <MovimentacaoManual Valor="false"/>
+            <MovimentacaoManual Valor="true"/>
             <Papel Valor=""/>
         </Cardinalidade>
     </Ligacao>
@@ -4348,15 +4416,17 @@
         <Largura Valor="1"/>
         <Ligacoes PontaA="200" PontaB="489"/>
         <Pontos>
-            <Ponto Left="2107" Top="1472"/>
-            <Ponto Left="2161" Top="1472"/>
-            <Ponto Left="2161" Top="1419"/>
-            <Ponto Left="2084" Top="1419"/>
-            <Ponto Left="2084" Top="1625"/>
-            <Ponto Left="2132" Top="1625"/>
+            <Ponto Left="1627" Top="1457"/>
+            <Ponto Left="1627" Top="1419"/>
+            <Ponto Left="1550" Top="1419"/>
+            <Ponto Left="1550" Top="1399"/>
+            <Ponto Left="2050" Top="1399"/>
+            <Ponto Left="2050" Top="1647"/>
+            <Ponto Left="2062" Top="1647"/>
+            <Ponto Left="2062" Top="1647"/>
         </Pontos>
         <Cardinalidade ID="491">
-            <Bounds Height="100" Left="2117" Top="1374" Width="150"/>
+            <Bounds Height="100" Left="1617" Top="1433" Width="150"/>
             <DisablePainted Valor="false"/>
             <Texto>Cardinalidade_35</Texto>
             <Observacao/>
@@ -4365,7 +4435,7 @@
             <Ancorado Valor="false"/>
             <TamanhoAutmatico Valor="true"/>
             <Card Valor="1"/>
-            <MovimentacaoManual Valor="false"/>
+            <MovimentacaoManual Valor="true"/>
             <Papel Valor=""/>
         </Cardinalidade>
     </Ligacao>
@@ -4382,15 +4452,17 @@
         <Largura Valor="1"/>
         <Ligacoes PontaA="238" PontaB="489"/>
         <Pontos>
-            <Ponto Left="3087" Top="1479"/>
-            <Ponto Left="3027" Top="1479"/>
-            <Ponto Left="3027" Top="1414"/>
-            <Ponto Left="2324" Top="1414"/>
-            <Ponto Left="2324" Top="1632"/>
-            <Ponto Left="2312" Top="1632"/>
+            <Ponto Left="3187" Top="1457"/>
+            <Ponto Left="3187" Top="1419"/>
+            <Ponto Left="3065" Top="1419"/>
+            <Ponto Left="3065" Top="1394"/>
+            <Ponto Left="2254" Top="1394"/>
+            <Ponto Left="2254" Top="1647"/>
+            <Ponto Left="2242" Top="1647"/>
+            <Ponto Left="2242" Top="1647"/>
         </Pontos>
         <Cardinalidade ID="493">
-            <Bounds Height="100" Left="2933" Top="1381" Width="150"/>
+            <Bounds Height="100" Left="3177" Top="1433" Width="150"/>
             <DisablePainted Valor="false"/>
             <Texto>Cardinalidade_36</Texto>
             <Observacao/>
@@ -4399,7 +4471,7 @@
             <Ancorado Valor="false"/>
             <TamanhoAutmatico Valor="true"/>
             <Card Valor="3"/>
-            <MovimentacaoManual Valor="false"/>
+            <MovimentacaoManual Valor="true"/>
             <Papel Valor=""/>
         </Cardinalidade>
     </Ligacao>
@@ -4416,15 +4488,17 @@
         <Largura Valor="1"/>
         <Ligacoes PontaA="200" PontaB="494"/>
         <Pontos>
-            <Ponto Left="2107" Top="1479"/>
-            <Ponto Left="2119" Top="1479"/>
-            <Ponto Left="2119" Top="1409"/>
-            <Ponto Left="2114" Top="1409"/>
-            <Ponto Left="2114" Top="1700"/>
-            <Ponto Left="2132" Top="1700"/>
+            <Ponto Left="1667" Top="1457"/>
+            <Ponto Left="1667" Top="1419"/>
+            <Ponto Left="1555" Top="1419"/>
+            <Ponto Left="1555" Top="1419"/>
+            <Ponto Left="2050" Top="1419"/>
+            <Ponto Left="2050" Top="1722"/>
+            <Ponto Left="2062" Top="1722"/>
+            <Ponto Left="2062" Top="1722"/>
         </Pontos>
         <Cardinalidade ID="496">
-            <Bounds Height="100" Left="1959" Top="1489" Width="150"/>
+            <Bounds Height="100" Left="1657" Top="1433" Width="150"/>
             <DisablePainted Valor="false"/>
             <Texto>Cardinalidade_37</Texto>
             <Observacao/>
@@ -4433,7 +4507,7 @@
             <Ancorado Valor="false"/>
             <TamanhoAutmatico Valor="true"/>
             <Card Valor="1"/>
-            <MovimentacaoManual Valor="false"/>
+            <MovimentacaoManual Valor="true"/>
             <Papel Valor=""/>
         </Cardinalidade>
     </Ligacao>
@@ -4450,15 +4524,17 @@
         <Largura Valor="1"/>
         <Ligacoes PontaA="161" PontaB="494"/>
         <Pontos>
-            <Ponto Left="3087" Top="812"/>
-            <Ponto Left="3069" Top="812"/>
-            <Ponto Left="3069" Top="744"/>
-            <Ponto Left="2336" Top="744"/>
-            <Ponto Left="2336" Top="1707"/>
-            <Ponto Left="2312" Top="1707"/>
+            <Ponto Left="3147" Top="797"/>
+            <Ponto Left="3147" Top="759"/>
+            <Ponto Left="3070" Top="759"/>
+            <Ponto Left="3070" Top="754"/>
+            <Ponto Left="2254" Top="754"/>
+            <Ponto Left="2254" Top="1722"/>
+            <Ponto Left="2242" Top="1722"/>
+            <Ponto Left="2242" Top="1722"/>
         </Pontos>
         <Cardinalidade ID="498">
-            <Bounds Height="100" Left="2933" Top="714" Width="150"/>
+            <Bounds Height="100" Left="3137" Top="773" Width="150"/>
             <DisablePainted Valor="false"/>
             <Texto>Cardinalidade_38</Texto>
             <Observacao/>
@@ -4467,7 +4543,7 @@
             <Ancorado Valor="false"/>
             <TamanhoAutmatico Valor="true"/>
             <Card Valor="3"/>
-            <MovimentacaoManual Valor="false"/>
+            <MovimentacaoManual Valor="true"/>
             <Papel Valor=""/>
         </Cardinalidade>
     </Ligacao>
@@ -4484,15 +4560,17 @@
         <Largura Valor="1"/>
         <Ligacoes PontaA="200" PontaB="499"/>
         <Pontos>
-            <Ponto Left="2107" Top="1486"/>
-            <Ponto Left="2131" Top="1486"/>
-            <Ponto Left="2131" Top="1399"/>
-            <Ponto Left="2102" Top="1399"/>
-            <Ponto Left="2102" Top="1775"/>
-            <Ponto Left="2132" Top="1775"/>
+            <Ponto Left="1707" Top="1457"/>
+            <Ponto Left="1707" Top="1419"/>
+            <Ponto Left="1545" Top="1419"/>
+            <Ponto Left="1545" Top="1409"/>
+            <Ponto Left="2050" Top="1409"/>
+            <Ponto Left="2050" Top="1797"/>
+            <Ponto Left="2062" Top="1797"/>
+            <Ponto Left="2062" Top="1797"/>
         </Pontos>
         <Cardinalidade ID="501">
-            <Bounds Height="100" Left="1959" Top="1496" Width="150"/>
+            <Bounds Height="100" Left="1697" Top="1433" Width="150"/>
             <DisablePainted Valor="false"/>
             <Texto>Cardinalidade_39</Texto>
             <Observacao/>
@@ -4501,7 +4579,7 @@
             <Ancorado Valor="false"/>
             <TamanhoAutmatico Valor="true"/>
             <Card Valor="1"/>
-            <MovimentacaoManual Valor="false"/>
+            <MovimentacaoManual Valor="true"/>
             <Papel Valor=""/>
         </Cardinalidade>
     </Ligacao>
@@ -4518,15 +4596,17 @@
         <Largura Valor="1"/>
         <Ligacoes PontaA="42" PontaB="499"/>
         <Pontos>
-            <Ponto Left="2107" Top="180"/>
-            <Ponto Left="2137" Top="180"/>
-            <Ponto Left="2137" Top="74"/>
-            <Ponto Left="2096" Top="74"/>
-            <Ponto Left="2096" Top="1782"/>
-            <Ponto Left="2132" Top="1782"/>
+            <Ponto Left="1787" Top="137"/>
+            <Ponto Left="1787" Top="99"/>
+            <Ponto Left="1555" Top="99"/>
+            <Ponto Left="1555" Top="84"/>
+            <Ponto Left="2254" Top="84"/>
+            <Ponto Left="2254" Top="1797"/>
+            <Ponto Left="2242" Top="1797"/>
+            <Ponto Left="2242" Top="1797"/>
         </Pontos>
         <Cardinalidade ID="503">
-            <Bounds Height="100" Left="1959" Top="190" Width="150"/>
+            <Bounds Height="100" Left="1777" Top="113" Width="150"/>
             <DisablePainted Valor="false"/>
             <Texto>Cardinalidade_40</Texto>
             <Observacao/>
@@ -4535,7 +4615,7 @@
             <Ancorado Valor="false"/>
             <TamanhoAutmatico Valor="true"/>
             <Card Valor="3"/>
-            <MovimentacaoManual Valor="false"/>
+            <MovimentacaoManual Valor="true"/>
             <Papel Valor=""/>
         </Cardinalidade>
     </Ligacao>
@@ -4552,15 +4632,17 @@
         <Largura Valor="1"/>
         <Ligacoes PontaA="200" PontaB="504"/>
         <Pontos>
-            <Ponto Left="2107" Top="1493"/>
-            <Ponto Left="2143" Top="1493"/>
-            <Ponto Left="2143" Top="1439"/>
-            <Ponto Left="2090" Top="1439"/>
-            <Ponto Left="2090" Top="1850"/>
-            <Ponto Left="2132" Top="1850"/>
+            <Ponto Left="1747" Top="1457"/>
+            <Ponto Left="1747" Top="1419"/>
+            <Ponto Left="1550" Top="1419"/>
+            <Ponto Left="1550" Top="1399"/>
+            <Ponto Left="2050" Top="1399"/>
+            <Ponto Left="2050" Top="1872"/>
+            <Ponto Left="2062" Top="1872"/>
+            <Ponto Left="2062" Top="1872"/>
         </Pontos>
         <Cardinalidade ID="506">
-            <Bounds Height="100" Left="1959" Top="1503" Width="150"/>
+            <Bounds Height="100" Left="1737" Top="1433" Width="150"/>
             <DisablePainted Valor="false"/>
             <Texto>Cardinalidade_41</Texto>
             <Observacao/>
@@ -4569,7 +4651,7 @@
             <Ancorado Valor="false"/>
             <TamanhoAutmatico Valor="true"/>
             <Card Valor="1"/>
-            <MovimentacaoManual Valor="false"/>
+            <MovimentacaoManual Valor="true"/>
             <Papel Valor=""/>
         </Cardinalidade>
     </Ligacao>
@@ -4586,15 +4668,17 @@
         <Largura Valor="1"/>
         <Ligacoes PontaA="85" PontaB="504"/>
         <Pontos>
-            <Ponto Left="2327" Top="159"/>
-            <Ponto Left="2285" Top="159"/>
-            <Ponto Left="2285" Top="114"/>
-            <Ponto Left="2360" Top="114"/>
-            <Ponto Left="2360" Top="1857"/>
-            <Ponto Left="2312" Top="1857"/>
+            <Ponto Left="2427" Top="137"/>
+            <Ponto Left="2427" Top="99"/>
+            <Ponto Left="2305" Top="99"/>
+            <Ponto Left="2305" Top="74"/>
+            <Ponto Left="2254" Top="74"/>
+            <Ponto Left="2254" Top="1872"/>
+            <Ponto Left="2242" Top="1872"/>
+            <Ponto Left="2242" Top="1872"/>
         </Pontos>
         <Cardinalidade ID="508">
-            <Bounds Height="100" Left="2179" Top="169" Width="150"/>
+            <Bounds Height="100" Left="2417" Top="113" Width="150"/>
             <DisablePainted Valor="false"/>
             <Texto>Cardinalidade_42</Texto>
             <Observacao/>
@@ -4603,7 +4687,7 @@
             <Ancorado Valor="false"/>
             <TamanhoAutmatico Valor="true"/>
             <Card Valor="3"/>
-            <MovimentacaoManual Valor="false"/>
+            <MovimentacaoManual Valor="true"/>
             <Papel Valor=""/>
         </Cardinalidade>
     </Ligacao>
@@ -4620,15 +4704,17 @@
         <Largura Valor="1"/>
         <Ligacoes PontaA="200" PontaB="509"/>
         <Pontos>
-            <Ponto Left="2107" Top="1500"/>
-            <Ponto Left="2155" Top="1500"/>
-            <Ponto Left="2155" Top="1429"/>
-            <Ponto Left="2120" Top="1429"/>
-            <Ponto Left="2120" Top="1925"/>
-            <Ponto Left="2132" Top="1925"/>
+            <Ponto Left="1787" Top="1457"/>
+            <Ponto Left="1787" Top="1419"/>
+            <Ponto Left="1555" Top="1419"/>
+            <Ponto Left="1555" Top="1419"/>
+            <Ponto Left="2050" Top="1419"/>
+            <Ponto Left="2050" Top="1947"/>
+            <Ponto Left="2062" Top="1947"/>
+            <Ponto Left="2062" Top="1947"/>
         </Pontos>
         <Cardinalidade ID="511">
-            <Bounds Height="100" Left="1959" Top="1510" Width="150"/>
+            <Bounds Height="100" Left="1777" Top="1433" Width="150"/>
             <DisablePainted Valor="false"/>
             <Texto>Cardinalidade_43</Texto>
             <Observacao/>
@@ -4637,7 +4723,7 @@
             <Ancorado Valor="false"/>
             <TamanhoAutmatico Valor="true"/>
             <Card Valor="1"/>
-            <MovimentacaoManual Valor="false"/>
+            <MovimentacaoManual Valor="true"/>
             <Papel Valor=""/>
         </Cardinalidade>
     </Ligacao>
@@ -4654,15 +4740,17 @@
         <Largura Valor="1"/>
         <Ligacoes PontaA="102" PontaB="509"/>
         <Pontos>
-            <Ponto Left="3087" Top="159"/>
-            <Ponto Left="3033" Top="159"/>
-            <Ponto Left="3033" Top="104"/>
-            <Ponto Left="2330" Top="104"/>
-            <Ponto Left="2330" Top="1932"/>
-            <Ponto Left="2312" Top="1932"/>
+            <Ponto Left="3187" Top="137"/>
+            <Ponto Left="3187" Top="99"/>
+            <Ponto Left="3070" Top="99"/>
+            <Ponto Left="3070" Top="94"/>
+            <Ponto Left="2254" Top="94"/>
+            <Ponto Left="2254" Top="1947"/>
+            <Ponto Left="2242" Top="1947"/>
+            <Ponto Left="2242" Top="1947"/>
         </Pontos>
         <Cardinalidade ID="513">
-            <Bounds Height="100" Left="2939" Top="169" Width="150"/>
+            <Bounds Height="100" Left="3177" Top="113" Width="150"/>
             <DisablePainted Valor="false"/>
             <Texto>Cardinalidade_44</Texto>
             <Observacao/>
@@ -4671,7 +4759,7 @@
             <Ancorado Valor="false"/>
             <TamanhoAutmatico Valor="true"/>
             <Card Valor="3"/>
-            <MovimentacaoManual Valor="false"/>
+            <MovimentacaoManual Valor="true"/>
             <Papel Valor=""/>
         </Cardinalidade>
     </Ligacao>
@@ -4688,15 +4776,17 @@
         <Largura Valor="1"/>
         <Ligacoes PontaA="200" PontaB="514"/>
         <Pontos>
-            <Ponto Left="2107" Top="1465"/>
-            <Ponto Left="2167" Top="1465"/>
-            <Ponto Left="2167" Top="1419"/>
-            <Ponto Left="2108" Top="1419"/>
-            <Ponto Left="2108" Top="2000"/>
-            <Ponto Left="2132" Top="2000"/>
+            <Ponto Left="1827" Top="1457"/>
+            <Ponto Left="1827" Top="1419"/>
+            <Ponto Left="1545" Top="1419"/>
+            <Ponto Left="1545" Top="1409"/>
+            <Ponto Left="2050" Top="1409"/>
+            <Ponto Left="2050" Top="2022"/>
+            <Ponto Left="2062" Top="2022"/>
+            <Ponto Left="2062" Top="2022"/>
         </Pontos>
         <Cardinalidade ID="516">
-            <Bounds Height="100" Left="1959" Top="1475" Width="150"/>
+            <Bounds Height="100" Left="1817" Top="1433" Width="150"/>
             <DisablePainted Valor="false"/>
             <Texto>Cardinalidade_45</Texto>
             <Observacao/>
@@ -4705,7 +4795,7 @@
             <Ancorado Valor="false"/>
             <TamanhoAutmatico Valor="true"/>
             <Card Valor="0"/>
-            <MovimentacaoManual Valor="false"/>
+            <MovimentacaoManual Valor="true"/>
             <Papel Valor=""/>
         </Cardinalidade>
     </Ligacao>
@@ -4722,15 +4812,17 @@
         <Largura Valor="1"/>
         <Ligacoes PontaA="42" PontaB="514"/>
         <Pontos>
-            <Ponto Left="2107" Top="145"/>
-            <Ponto Left="2119" Top="145"/>
-            <Ponto Left="2119" Top="94"/>
-            <Ponto Left="2102" Top="94"/>
-            <Ponto Left="2102" Top="2007"/>
-            <Ponto Left="2132" Top="2007"/>
+            <Ponto Left="1827" Top="137"/>
+            <Ponto Left="1827" Top="99"/>
+            <Ponto Left="1555" Top="99"/>
+            <Ponto Left="1555" Top="84"/>
+            <Ponto Left="2254" Top="84"/>
+            <Ponto Left="2254" Top="2022"/>
+            <Ponto Left="2242" Top="2022"/>
+            <Ponto Left="2242" Top="2022"/>
         </Pontos>
         <Cardinalidade ID="518">
-            <Bounds Height="100" Left="1959" Top="155" Width="150"/>
+            <Bounds Height="100" Left="1817" Top="113" Width="150"/>
             <DisablePainted Valor="false"/>
             <Texto>Cardinalidade_46</Texto>
             <Observacao/>
@@ -4739,7 +4831,7 @@
             <Ancorado Valor="false"/>
             <TamanhoAutmatico Valor="true"/>
             <Card Valor="3"/>
-            <MovimentacaoManual Valor="false"/>
+            <MovimentacaoManual Valor="true"/>
             <Papel Valor=""/>
         </Cardinalidade>
     </Ligacao>
@@ -4756,15 +4848,17 @@
         <Largura Valor="1"/>
         <Ligacoes PontaA="200" PontaB="519"/>
         <Pontos>
-            <Ponto Left="2107" Top="1472"/>
-            <Ponto Left="2125" Top="1472"/>
-            <Ponto Left="2125" Top="1409"/>
-            <Ponto Left="2096" Top="1409"/>
-            <Ponto Left="2096" Top="2075"/>
-            <Ponto Left="2132" Top="2075"/>
+            <Ponto Left="1867" Top="1457"/>
+            <Ponto Left="1867" Top="1419"/>
+            <Ponto Left="1550" Top="1419"/>
+            <Ponto Left="1550" Top="1399"/>
+            <Ponto Left="2050" Top="1399"/>
+            <Ponto Left="2050" Top="2097"/>
+            <Ponto Left="2062" Top="2097"/>
+            <Ponto Left="2062" Top="2097"/>
         </Pontos>
         <Cardinalidade ID="521">
-            <Bounds Height="100" Left="1959" Top="1482" Width="150"/>
+            <Bounds Height="100" Left="1857" Top="1433" Width="150"/>
             <DisablePainted Valor="false"/>
             <Texto>Cardinalidade_47</Texto>
             <Observacao/>
@@ -4773,7 +4867,7 @@
             <Ancorado Valor="false"/>
             <TamanhoAutmatico Valor="true"/>
             <Card Valor="0"/>
-            <MovimentacaoManual Valor="false"/>
+            <MovimentacaoManual Valor="true"/>
             <Papel Valor=""/>
         </Cardinalidade>
     </Ligacao>
@@ -4790,15 +4884,17 @@
         <Largura Valor="1"/>
         <Ligacoes PontaA="227" PontaB="519"/>
         <Pontos>
-            <Ponto Left="2327" Top="1465"/>
-            <Ponto Left="2303" Top="1465"/>
-            <Ponto Left="2303" Top="1404"/>
-            <Ponto Left="2354" Top="1404"/>
-            <Ponto Left="2354" Top="2082"/>
-            <Ponto Left="2312" Top="2082"/>
+            <Ponto Left="2347" Top="1457"/>
+            <Ponto Left="2347" Top="1419"/>
+            <Ponto Left="2305" Top="1419"/>
+            <Ponto Left="2305" Top="1394"/>
+            <Ponto Left="2254" Top="1394"/>
+            <Ponto Left="2254" Top="2097"/>
+            <Ponto Left="2242" Top="2097"/>
+            <Ponto Left="2242" Top="2097"/>
         </Pontos>
         <Cardinalidade ID="523">
-            <Bounds Height="100" Left="2179" Top="1475" Width="150"/>
+            <Bounds Height="100" Left="2337" Top="1433" Width="150"/>
             <DisablePainted Valor="false"/>
             <Texto>Cardinalidade_48</Texto>
             <Observacao/>
@@ -4807,7 +4903,7 @@
             <Ancorado Valor="false"/>
             <TamanhoAutmatico Valor="true"/>
             <Card Valor="3"/>
-            <MovimentacaoManual Valor="false"/>
+            <MovimentacaoManual Valor="true"/>
             <Papel Valor=""/>
         </Cardinalidade>
     </Ligacao>
@@ -4824,15 +4920,17 @@
         <Largura Valor="1"/>
         <Ligacoes PontaA="333" PontaB="524"/>
         <Pontos>
-            <Ponto Left="1347" Top="2785"/>
-            <Ponto Left="1377" Top="2785"/>
-            <Ponto Left="1377" Top="2719"/>
-            <Ponto Left="1324" Top="2719"/>
-            <Ponto Left="1324" Top="2870"/>
-            <Ponto Left="1372" Top="2870"/>
+            <Ponto Left="827" Top="2777"/>
+            <Ponto Left="827" Top="2739"/>
+            <Ponto Left="795" Top="2739"/>
+            <Ponto Left="795" Top="2739"/>
+            <Ponto Left="1290" Top="2739"/>
+            <Ponto Left="1290" Top="2892"/>
+            <Ponto Left="1302" Top="2892"/>
+            <Ponto Left="1302" Top="2892"/>
         </Pontos>
         <Cardinalidade ID="526">
-            <Bounds Height="100" Left="1357" Top="2687" Width="150"/>
+            <Bounds Height="100" Left="817" Top="2753" Width="150"/>
             <DisablePainted Valor="false"/>
             <Texto>Cardinalidade_49</Texto>
             <Observacao/>
@@ -4841,7 +4939,7 @@
             <Ancorado Valor="false"/>
             <TamanhoAutmatico Valor="true"/>
             <Card Valor="0"/>
-            <MovimentacaoManual Valor="false"/>
+            <MovimentacaoManual Valor="true"/>
             <Papel Valor=""/>
         </Cardinalidade>
     </Ligacao>
@@ -4858,15 +4956,17 @@
         <Largura Valor="1"/>
         <Ligacoes PontaA="102" PontaB="524"/>
         <Pontos>
-            <Ponto Left="3087" Top="166"/>
-            <Ponto Left="3051" Top="166"/>
-            <Ponto Left="3051" Top="74"/>
-            <Ponto Left="1564" Top="74"/>
-            <Ponto Left="1564" Top="2877"/>
-            <Ponto Left="1552" Top="2877"/>
+            <Ponto Left="3227" Top="137"/>
+            <Ponto Left="3227" Top="99"/>
+            <Ponto Left="3070" Top="99"/>
+            <Ponto Left="3070" Top="94"/>
+            <Ponto Left="1494" Top="94"/>
+            <Ponto Left="1494" Top="2892"/>
+            <Ponto Left="1482" Top="2892"/>
+            <Ponto Left="1482" Top="2892"/>
         </Pontos>
         <Cardinalidade ID="528">
-            <Bounds Height="100" Left="2939" Top="176" Width="150"/>
+            <Bounds Height="100" Left="3217" Top="113" Width="150"/>
             <DisablePainted Valor="false"/>
             <Texto>Cardinalidade_50</Texto>
             <Observacao/>
@@ -4875,7 +4975,7 @@
             <Ancorado Valor="false"/>
             <TamanhoAutmatico Valor="true"/>
             <Card Valor="3"/>
-            <MovimentacaoManual Valor="false"/>
+            <MovimentacaoManual Valor="true"/>
             <Papel Valor=""/>
         </Cardinalidade>
     </Ligacao>
@@ -4892,15 +4992,17 @@
         <Largura Valor="1"/>
         <Ligacoes PontaA="356" PontaB="529"/>
         <Pontos>
-            <Ponto Left="2107" Top="2785"/>
-            <Ponto Left="2149" Top="2785"/>
-            <Ponto Left="2149" Top="2759"/>
-            <Ponto Left="2114" Top="2759"/>
-            <Ponto Left="2114" Top="2870"/>
-            <Ponto Left="2132" Top="2870"/>
+            <Ponto Left="1587" Top="2777"/>
+            <Ponto Left="1587" Top="2739"/>
+            <Ponto Left="1545" Top="2739"/>
+            <Ponto Left="1545" Top="2729"/>
+            <Ponto Left="2050" Top="2729"/>
+            <Ponto Left="2050" Top="2892"/>
+            <Ponto Left="2062" Top="2892"/>
+            <Ponto Left="2062" Top="2892"/>
         </Pontos>
         <Cardinalidade ID="531">
-            <Bounds Height="100" Left="2117" Top="2687" Width="150"/>
+            <Bounds Height="100" Left="1577" Top="2753" Width="150"/>
             <DisablePainted Valor="false"/>
             <Texto>Cardinalidade_51</Texto>
             <Observacao/>
@@ -4909,7 +5011,7 @@
             <Ancorado Valor="false"/>
             <TamanhoAutmatico Valor="true"/>
             <Card Valor="1"/>
-            <MovimentacaoManual Valor="false"/>
+            <MovimentacaoManual Valor="true"/>
             <Papel Valor=""/>
         </Cardinalidade>
     </Ligacao>
@@ -4926,15 +5028,17 @@
         <Largura Valor="1"/>
         <Ligacoes PontaA="333" PontaB="529"/>
         <Pontos>
-            <Ponto Left="1347" Top="2792"/>
-            <Ponto Left="1395" Top="2792"/>
-            <Ponto Left="1395" Top="2754"/>
-            <Ponto Left="2108" Top="2754"/>
-            <Ponto Left="2108" Top="2877"/>
-            <Ponto Left="2132" Top="2877"/>
+            <Ponto Left="867" Top="2777"/>
+            <Ponto Left="867" Top="2739"/>
+            <Ponto Left="795" Top="2739"/>
+            <Ponto Left="795" Top="2724"/>
+            <Ponto Left="2254" Top="2724"/>
+            <Ponto Left="2254" Top="2892"/>
+            <Ponto Left="2242" Top="2892"/>
+            <Ponto Left="2242" Top="2892"/>
         </Pontos>
         <Cardinalidade ID="533">
-            <Bounds Height="100" Left="1357" Top="2694" Width="150"/>
+            <Bounds Height="100" Left="857" Top="2753" Width="150"/>
             <DisablePainted Valor="false"/>
             <Texto>Cardinalidade_52</Texto>
             <Observacao/>
@@ -4943,7 +5047,7 @@
             <Ancorado Valor="false"/>
             <TamanhoAutmatico Valor="true"/>
             <Card Valor="3"/>
-            <MovimentacaoManual Valor="false"/>
+            <MovimentacaoManual Valor="true"/>
             <Papel Valor=""/>
         </Cardinalidade>
     </Ligacao>
@@ -4960,15 +5064,17 @@
         <Largura Valor="1"/>
         <Ligacoes PontaA="356" PontaB="534"/>
         <Pontos>
-            <Ponto Left="2107" Top="2792"/>
-            <Ponto Left="2161" Top="2792"/>
-            <Ponto Left="2161" Top="2749"/>
-            <Ponto Left="2102" Top="2749"/>
-            <Ponto Left="2102" Top="2945"/>
-            <Ponto Left="2132" Top="2945"/>
+            <Ponto Left="1627" Top="2777"/>
+            <Ponto Left="1627" Top="2739"/>
+            <Ponto Left="1550" Top="2739"/>
+            <Ponto Left="1550" Top="2719"/>
+            <Ponto Left="2050" Top="2719"/>
+            <Ponto Left="2050" Top="2967"/>
+            <Ponto Left="2062" Top="2967"/>
+            <Ponto Left="2062" Top="2967"/>
         </Pontos>
         <Cardinalidade ID="536">
-            <Bounds Height="100" Left="2117" Top="2694" Width="150"/>
+            <Bounds Height="100" Left="1617" Top="2753" Width="150"/>
             <DisablePainted Valor="false"/>
             <Texto>Cardinalidade_53</Texto>
             <Observacao/>
@@ -4977,7 +5083,7 @@
             <Ancorado Valor="false"/>
             <TamanhoAutmatico Valor="true"/>
             <Card Valor="1"/>
-            <MovimentacaoManual Valor="false"/>
+            <MovimentacaoManual Valor="true"/>
             <Papel Valor=""/>
         </Cardinalidade>
     </Ligacao>
@@ -4994,15 +5100,17 @@
         <Largura Valor="1"/>
         <Ligacoes PontaA="227" PontaB="534"/>
         <Pontos>
-            <Ponto Left="2327" Top="1472"/>
-            <Ponto Left="2267" Top="1472"/>
-            <Ponto Left="2267" Top="1424"/>
-            <Ponto Left="2348" Top="1424"/>
-            <Ponto Left="2348" Top="2952"/>
-            <Ponto Left="2312" Top="2952"/>
+            <Ponto Left="2387" Top="1457"/>
+            <Ponto Left="2387" Top="1419"/>
+            <Ponto Left="2305" Top="1419"/>
+            <Ponto Left="2305" Top="1394"/>
+            <Ponto Left="2254" Top="1394"/>
+            <Ponto Left="2254" Top="2967"/>
+            <Ponto Left="2242" Top="2967"/>
+            <Ponto Left="2242" Top="2967"/>
         </Pontos>
         <Cardinalidade ID="538">
-            <Bounds Height="100" Left="2179" Top="1482" Width="150"/>
+            <Bounds Height="100" Left="2377" Top="1433" Width="150"/>
             <DisablePainted Valor="false"/>
             <Texto>Cardinalidade_54</Texto>
             <Observacao/>
@@ -5011,7 +5119,7 @@
             <Ancorado Valor="false"/>
             <TamanhoAutmatico Valor="true"/>
             <Card Valor="3"/>
-            <MovimentacaoManual Valor="false"/>
+            <MovimentacaoManual Valor="true"/>
             <Papel Valor=""/>
         </Cardinalidade>
     </Ligacao>
@@ -5028,15 +5136,17 @@
         <Largura Valor="1"/>
         <Ligacoes PontaA="356" PontaB="539"/>
         <Pontos>
-            <Ponto Left="2107" Top="2799"/>
-            <Ponto Left="2119" Top="2799"/>
-            <Ponto Left="2119" Top="2739"/>
-            <Ponto Left="2090" Top="2739"/>
-            <Ponto Left="2090" Top="3020"/>
-            <Ponto Left="2132" Top="3020"/>
+            <Ponto Left="1667" Top="2777"/>
+            <Ponto Left="1667" Top="2739"/>
+            <Ponto Left="1555" Top="2739"/>
+            <Ponto Left="1555" Top="2739"/>
+            <Ponto Left="2050" Top="2739"/>
+            <Ponto Left="2050" Top="3042"/>
+            <Ponto Left="2062" Top="3042"/>
+            <Ponto Left="2062" Top="3042"/>
         </Pontos>
         <Cardinalidade ID="541">
-            <Bounds Height="100" Left="1959" Top="2809" Width="150"/>
+            <Bounds Height="100" Left="1657" Top="2753" Width="150"/>
             <DisablePainted Valor="false"/>
             <Texto>Cardinalidade_55</Texto>
             <Observacao/>
@@ -5045,7 +5155,7 @@
             <Ancorado Valor="false"/>
             <TamanhoAutmatico Valor="true"/>
             <Card Valor="0"/>
-            <MovimentacaoManual Valor="false"/>
+            <MovimentacaoManual Valor="true"/>
             <Papel Valor=""/>
         </Cardinalidade>
     </Ligacao>
@@ -5062,15 +5172,17 @@
         <Largura Valor="1"/>
         <Ligacoes PontaA="102" PontaB="539"/>
         <Pontos>
-            <Ponto Left="3087" Top="173"/>
-            <Ponto Left="3069" Top="173"/>
-            <Ponto Left="3069" Top="94"/>
-            <Ponto Left="2360" Top="94"/>
-            <Ponto Left="2360" Top="3027"/>
-            <Ponto Left="2312" Top="3027"/>
+            <Ponto Left="3267" Top="137"/>
+            <Ponto Left="3267" Top="99"/>
+            <Ponto Left="3070" Top="99"/>
+            <Ponto Left="3070" Top="94"/>
+            <Ponto Left="2254" Top="94"/>
+            <Ponto Left="2254" Top="3042"/>
+            <Ponto Left="2242" Top="3042"/>
+            <Ponto Left="2242" Top="3042"/>
         </Pontos>
         <Cardinalidade ID="543">
-            <Bounds Height="100" Left="2939" Top="183" Width="150"/>
+            <Bounds Height="100" Left="3257" Top="113" Width="150"/>
             <DisablePainted Valor="false"/>
             <Texto>Cardinalidade_56</Texto>
             <Observacao/>
@@ -5079,7 +5191,7 @@
             <Ancorado Valor="false"/>
             <TamanhoAutmatico Valor="true"/>
             <Card Valor="3"/>
-            <MovimentacaoManual Valor="false"/>
+            <MovimentacaoManual Valor="true"/>
             <Papel Valor=""/>
         </Cardinalidade>
     </Ligacao>
@@ -5096,15 +5208,17 @@
         <Largura Valor="1"/>
         <Ligacoes PontaA="356" PontaB="544"/>
         <Pontos>
-            <Ponto Left="2107" Top="2806"/>
-            <Ponto Left="2131" Top="2806"/>
-            <Ponto Left="2131" Top="2729"/>
-            <Ponto Left="2120" Top="2729"/>
-            <Ponto Left="2120" Top="3095"/>
-            <Ponto Left="2132" Top="3095"/>
+            <Ponto Left="1707" Top="2777"/>
+            <Ponto Left="1707" Top="2739"/>
+            <Ponto Left="1545" Top="2739"/>
+            <Ponto Left="1545" Top="2729"/>
+            <Ponto Left="2050" Top="2729"/>
+            <Ponto Left="2050" Top="3117"/>
+            <Ponto Left="2062" Top="3117"/>
+            <Ponto Left="2062" Top="3117"/>
         </Pontos>
         <Cardinalidade ID="546">
-            <Bounds Height="100" Left="1959" Top="2816" Width="150"/>
+            <Bounds Height="100" Left="1697" Top="2753" Width="150"/>
             <DisablePainted Valor="false"/>
             <Texto>Cardinalidade_57</Texto>
             <Observacao/>
@@ -5113,7 +5227,7 @@
             <Ancorado Valor="false"/>
             <TamanhoAutmatico Valor="true"/>
             <Card Valor="0"/>
-            <MovimentacaoManual Valor="false"/>
+            <MovimentacaoManual Valor="true"/>
             <Papel Valor=""/>
         </Cardinalidade>
     </Ligacao>
@@ -5130,15 +5244,17 @@
         <Largura Valor="1"/>
         <Ligacoes PontaA="42" PontaB="544"/>
         <Pontos>
-            <Ponto Left="2107" Top="152"/>
-            <Ponto Left="2137" Top="152"/>
-            <Ponto Left="2137" Top="84"/>
-            <Ponto Left="2114" Top="84"/>
-            <Ponto Left="2114" Top="3102"/>
-            <Ponto Left="2132" Top="3102"/>
+            <Ponto Left="1867" Top="137"/>
+            <Ponto Left="1867" Top="99"/>
+            <Ponto Left="1555" Top="99"/>
+            <Ponto Left="1555" Top="84"/>
+            <Ponto Left="2254" Top="84"/>
+            <Ponto Left="2254" Top="3117"/>
+            <Ponto Left="2242" Top="3117"/>
+            <Ponto Left="2242" Top="3117"/>
         </Pontos>
         <Cardinalidade ID="548">
-            <Bounds Height="100" Left="1959" Top="162" Width="150"/>
+            <Bounds Height="100" Left="1857" Top="113" Width="150"/>
             <DisablePainted Valor="false"/>
             <Texto>Cardinalidade_58</Texto>
             <Observacao/>
@@ -5147,7 +5263,7 @@
             <Ancorado Valor="false"/>
             <TamanhoAutmatico Valor="true"/>
             <Card Valor="3"/>
-            <MovimentacaoManual Valor="false"/>
+            <MovimentacaoManual Valor="true"/>
             <Papel Valor=""/>
         </Cardinalidade>
     </Ligacao>
@@ -5164,15 +5280,17 @@
         <Largura Valor="1"/>
         <Ligacoes PontaA="285" PontaB="549"/>
         <Pontos>
-            <Ponto Left="2107" Top="2125"/>
-            <Ponto Left="2143" Top="2125"/>
-            <Ponto Left="2143" Top="2059"/>
-            <Ponto Left="2108" Top="2059"/>
-            <Ponto Left="2108" Top="2210"/>
-            <Ponto Left="2132" Top="2210"/>
+            <Ponto Left="1587" Top="2117"/>
+            <Ponto Left="1587" Top="2079"/>
+            <Ponto Left="1550" Top="2079"/>
+            <Ponto Left="1550" Top="2059"/>
+            <Ponto Left="2050" Top="2059"/>
+            <Ponto Left="2050" Top="2232"/>
+            <Ponto Left="2062" Top="2232"/>
+            <Ponto Left="2062" Top="2232"/>
         </Pontos>
         <Cardinalidade ID="551">
-            <Bounds Height="100" Left="2117" Top="2027" Width="150"/>
+            <Bounds Height="100" Left="1577" Top="2093" Width="150"/>
             <DisablePainted Valor="false"/>
             <Texto>Cardinalidade_59</Texto>
             <Observacao/>
@@ -5181,7 +5299,7 @@
             <Ancorado Valor="false"/>
             <TamanhoAutmatico Valor="true"/>
             <Card Valor="0"/>
-            <MovimentacaoManual Valor="false"/>
+            <MovimentacaoManual Valor="true"/>
             <Papel Valor=""/>
         </Cardinalidade>
     </Ligacao>
@@ -5198,15 +5316,17 @@
         <Largura Valor="1"/>
         <Ligacoes PontaA="300" PontaB="549"/>
         <Pontos>
-            <Ponto Left="2327" Top="2146"/>
-            <Ponto Left="2285" Top="2146"/>
-            <Ponto Left="2285" Top="2054"/>
-            <Ponto Left="2342" Top="2054"/>
-            <Ponto Left="2342" Top="2217"/>
-            <Ponto Left="2312" Top="2217"/>
+            <Ponto Left="2467" Top="2117"/>
+            <Ponto Left="2467" Top="2079"/>
+            <Ponto Left="2305" Top="2079"/>
+            <Ponto Left="2305" Top="2054"/>
+            <Ponto Left="2254" Top="2054"/>
+            <Ponto Left="2254" Top="2232"/>
+            <Ponto Left="2242" Top="2232"/>
+            <Ponto Left="2242" Top="2232"/>
         </Pontos>
         <Cardinalidade ID="553">
-            <Bounds Height="100" Left="2173" Top="2048" Width="150"/>
+            <Bounds Height="100" Left="2457" Top="2093" Width="150"/>
             <DisablePainted Valor="false"/>
             <Texto>Cardinalidade_60</Texto>
             <Observacao/>
@@ -5215,7 +5335,7 @@
             <Ancorado Valor="false"/>
             <TamanhoAutmatico Valor="true"/>
             <Card Valor="3"/>
-            <MovimentacaoManual Valor="false"/>
+            <MovimentacaoManual Valor="true"/>
             <Papel Valor=""/>
         </Cardinalidade>
     </Ligacao>
@@ -5232,15 +5352,17 @@
         <Largura Valor="1"/>
         <Ligacoes PontaA="285" PontaB="554"/>
         <Pontos>
-            <Ponto Left="2107" Top="2132"/>
-            <Ponto Left="2155" Top="2132"/>
-            <Ponto Left="2155" Top="2099"/>
-            <Ponto Left="2096" Top="2099"/>
-            <Ponto Left="2096" Top="2285"/>
-            <Ponto Left="2132" Top="2285"/>
+            <Ponto Left="1627" Top="2117"/>
+            <Ponto Left="1627" Top="2079"/>
+            <Ponto Left="1555" Top="2079"/>
+            <Ponto Left="1555" Top="2079"/>
+            <Ponto Left="2050" Top="2079"/>
+            <Ponto Left="2050" Top="2307"/>
+            <Ponto Left="2062" Top="2307"/>
+            <Ponto Left="2062" Top="2307"/>
         </Pontos>
         <Cardinalidade ID="556">
-            <Bounds Height="100" Left="2117" Top="2034" Width="150"/>
+            <Bounds Height="100" Left="1617" Top="2093" Width="150"/>
             <DisablePainted Valor="false"/>
             <Texto>Cardinalidade_61</Texto>
             <Observacao/>
@@ -5249,7 +5371,7 @@
             <Ancorado Valor="false"/>
             <TamanhoAutmatico Valor="true"/>
             <Card Valor="0"/>
-            <MovimentacaoManual Valor="false"/>
+            <MovimentacaoManual Valor="true"/>
             <Papel Valor=""/>
         </Cardinalidade>
     </Ligacao>
@@ -5266,15 +5388,17 @@
         <Largura Valor="1"/>
         <Ligacoes PontaA="262" PontaB="554"/>
         <Pontos>
-            <Ponto Left="1347" Top="2146"/>
-            <Ponto Left="1401" Top="2146"/>
-            <Ponto Left="1401" Top="2094"/>
-            <Ponto Left="2090" Top="2094"/>
-            <Ponto Left="2090" Top="2292"/>
-            <Ponto Left="2132" Top="2292"/>
+            <Ponto Left="947" Top="2117"/>
+            <Ponto Left="947" Top="2079"/>
+            <Ponto Left="790" Top="2079"/>
+            <Ponto Left="790" Top="2074"/>
+            <Ponto Left="2254" Top="2074"/>
+            <Ponto Left="2254" Top="2307"/>
+            <Ponto Left="2242" Top="2307"/>
+            <Ponto Left="2242" Top="2307"/>
         </Pontos>
         <Cardinalidade ID="558">
-            <Bounds Height="100" Left="1357" Top="2048" Width="150"/>
+            <Bounds Height="100" Left="937" Top="2093" Width="150"/>
             <DisablePainted Valor="false"/>
             <Texto>Cardinalidade_62</Texto>
             <Observacao/>
@@ -5283,7 +5407,7 @@
             <Ancorado Valor="false"/>
             <TamanhoAutmatico Valor="true"/>
             <Card Valor="3"/>
-            <MovimentacaoManual Valor="false"/>
+            <MovimentacaoManual Valor="true"/>
             <Papel Valor=""/>
         </Cardinalidade>
     </Ligacao>
@@ -5300,15 +5424,17 @@
         <Largura Valor="1"/>
         <Ligacoes PontaA="285" PontaB="559"/>
         <Pontos>
-            <Ponto Left="2107" Top="2139"/>
-            <Ponto Left="2167" Top="2139"/>
-            <Ponto Left="2167" Top="2089"/>
-            <Ponto Left="2084" Top="2089"/>
-            <Ponto Left="2084" Top="2360"/>
-            <Ponto Left="2132" Top="2360"/>
+            <Ponto Left="1667" Top="2117"/>
+            <Ponto Left="1667" Top="2079"/>
+            <Ponto Left="1545" Top="2079"/>
+            <Ponto Left="1545" Top="2069"/>
+            <Ponto Left="2050" Top="2069"/>
+            <Ponto Left="2050" Top="2382"/>
+            <Ponto Left="2062" Top="2382"/>
+            <Ponto Left="2062" Top="2382"/>
         </Pontos>
         <Cardinalidade ID="561">
-            <Bounds Height="100" Left="1959" Top="2149" Width="150"/>
+            <Bounds Height="100" Left="1657" Top="2093" Width="150"/>
             <DisablePainted Valor="false"/>
             <Texto>Cardinalidade_63</Texto>
             <Observacao/>
@@ -5317,7 +5443,7 @@
             <Ancorado Valor="false"/>
             <TamanhoAutmatico Valor="true"/>
             <Card Valor="0"/>
-            <MovimentacaoManual Valor="false"/>
+            <MovimentacaoManual Valor="true"/>
             <Papel Valor=""/>
         </Cardinalidade>
     </Ligacao>
@@ -5334,15 +5460,17 @@
         <Largura Valor="1"/>
         <Ligacoes PontaA="200" PontaB="559"/>
         <Pontos>
-            <Ponto Left="2107" Top="1479"/>
-            <Ponto Left="2119" Top="1479"/>
-            <Ponto Left="2119" Top="1424"/>
-            <Ponto Left="2120" Top="1424"/>
-            <Ponto Left="2120" Top="2367"/>
-            <Ponto Left="2132" Top="2367"/>
+            <Ponto Left="1907" Top="1457"/>
+            <Ponto Left="1907" Top="1419"/>
+            <Ponto Left="1555" Top="1419"/>
+            <Ponto Left="1555" Top="1404"/>
+            <Ponto Left="2254" Top="1404"/>
+            <Ponto Left="2254" Top="2382"/>
+            <Ponto Left="2242" Top="2382"/>
+            <Ponto Left="2242" Top="2382"/>
         </Pontos>
         <Cardinalidade ID="563">
-            <Bounds Height="100" Left="1959" Top="1489" Width="150"/>
+            <Bounds Height="100" Left="1897" Top="1433" Width="150"/>
             <DisablePainted Valor="false"/>
             <Texto>Cardinalidade_64</Texto>
             <Observacao/>
@@ -5351,7 +5479,7 @@
             <Ancorado Valor="false"/>
             <TamanhoAutmatico Valor="true"/>
             <Card Valor="3"/>
-            <MovimentacaoManual Valor="false"/>
+            <MovimentacaoManual Valor="true"/>
             <Papel Valor=""/>
         </Cardinalidade>
     </Ligacao>
@@ -5368,15 +5496,17 @@
         <Largura Valor="1"/>
         <Ligacoes PontaA="379" PontaB="564"/>
         <Pontos>
-            <Ponto Left="2867" Top="2785"/>
-            <Ponto Left="2885" Top="2785"/>
-            <Ponto Left="2885" Top="2739"/>
-            <Ponto Left="2874" Top="2739"/>
-            <Ponto Left="2874" Top="2870"/>
-            <Ponto Left="2892" Top="2870"/>
+            <Ponto Left="2347" Top="2777"/>
+            <Ponto Left="2347" Top="2739"/>
+            <Ponto Left="2310" Top="2739"/>
+            <Ponto Left="2310" Top="2719"/>
+            <Ponto Left="2810" Top="2719"/>
+            <Ponto Left="2810" Top="2892"/>
+            <Ponto Left="2822" Top="2892"/>
+            <Ponto Left="2822" Top="2892"/>
         </Pontos>
         <Cardinalidade ID="566">
-            <Bounds Height="100" Left="2877" Top="2687" Width="150"/>
+            <Bounds Height="100" Left="2337" Top="2753" Width="150"/>
             <DisablePainted Valor="false"/>
             <Texto>Cardinalidade_65</Texto>
             <Observacao/>
@@ -5385,7 +5515,7 @@
             <Ancorado Valor="false"/>
             <TamanhoAutmatico Valor="true"/>
             <Card Valor="0"/>
-            <MovimentacaoManual Valor="false"/>
+            <MovimentacaoManual Valor="true"/>
             <Papel Valor=""/>
         </Cardinalidade>
     </Ligacao>
@@ -5402,15 +5532,17 @@
         <Largura Valor="1"/>
         <Ligacoes PontaA="300" PontaB="564"/>
         <Pontos>
-            <Ponto Left="2867" Top="2153"/>
-            <Ponto Left="2891" Top="2153"/>
-            <Ponto Left="2891" Top="2074"/>
-            <Ponto Left="2868" Top="2074"/>
-            <Ponto Left="2868" Top="2877"/>
-            <Ponto Left="2892" Top="2877"/>
+            <Ponto Left="2507" Top="2117"/>
+            <Ponto Left="2507" Top="2079"/>
+            <Ponto Left="2305" Top="2079"/>
+            <Ponto Left="2305" Top="2054"/>
+            <Ponto Left="3014" Top="2054"/>
+            <Ponto Left="3014" Top="2892"/>
+            <Ponto Left="3002" Top="2892"/>
+            <Ponto Left="3002" Top="2892"/>
         </Pontos>
         <Cardinalidade ID="568">
-            <Bounds Height="100" Left="2719" Top="2163" Width="150"/>
+            <Bounds Height="100" Left="2497" Top="2093" Width="150"/>
             <DisablePainted Valor="false"/>
             <Texto>Cardinalidade_66</Texto>
             <Observacao/>
@@ -5419,7 +5551,7 @@
             <Ancorado Valor="false"/>
             <TamanhoAutmatico Valor="true"/>
             <Card Valor="3"/>
-            <MovimentacaoManual Valor="false"/>
+            <MovimentacaoManual Valor="true"/>
             <Papel Valor=""/>
         </Cardinalidade>
     </Ligacao>
@@ -5436,15 +5568,17 @@
         <Largura Valor="1"/>
         <Ligacoes PontaA="379" PontaB="569"/>
         <Pontos>
-            <Ponto Left="2867" Top="2792"/>
-            <Ponto Left="2897" Top="2792"/>
-            <Ponto Left="2897" Top="2729"/>
-            <Ponto Left="2862" Top="2729"/>
-            <Ponto Left="2862" Top="2945"/>
-            <Ponto Left="2892" Top="2945"/>
+            <Ponto Left="2387" Top="2777"/>
+            <Ponto Left="2387" Top="2739"/>
+            <Ponto Left="2315" Top="2739"/>
+            <Ponto Left="2315" Top="2739"/>
+            <Ponto Left="2810" Top="2739"/>
+            <Ponto Left="2810" Top="2967"/>
+            <Ponto Left="2822" Top="2967"/>
+            <Ponto Left="2822" Top="2967"/>
         </Pontos>
         <Cardinalidade ID="571">
-            <Bounds Height="100" Left="2877" Top="2694" Width="150"/>
+            <Bounds Height="100" Left="2377" Top="2753" Width="150"/>
             <DisablePainted Valor="false"/>
             <Texto>Cardinalidade_67</Texto>
             <Observacao/>
@@ -5453,7 +5587,7 @@
             <Ancorado Valor="false"/>
             <TamanhoAutmatico Valor="true"/>
             <Card Valor="0"/>
-            <MovimentacaoManual Valor="false"/>
+            <MovimentacaoManual Valor="true"/>
             <Papel Valor=""/>
         </Cardinalidade>
     </Ligacao>
@@ -5470,15 +5604,17 @@
         <Largura Valor="1"/>
         <Ligacoes PontaA="262" PontaB="569"/>
         <Pontos>
-            <Ponto Left="1347" Top="2153"/>
-            <Ponto Left="1383" Top="2153"/>
-            <Ponto Left="1383" Top="2064"/>
-            <Ponto Left="2856" Top="2064"/>
-            <Ponto Left="2856" Top="2952"/>
-            <Ponto Left="2892" Top="2952"/>
+            <Ponto Left="987" Top="2117"/>
+            <Ponto Left="987" Top="2079"/>
+            <Ponto Left="790" Top="2079"/>
+            <Ponto Left="790" Top="2074"/>
+            <Ponto Left="3014" Top="2074"/>
+            <Ponto Left="3014" Top="2967"/>
+            <Ponto Left="3002" Top="2967"/>
+            <Ponto Left="3002" Top="2967"/>
         </Pontos>
         <Cardinalidade ID="573">
-            <Bounds Height="100" Left="1357" Top="2055" Width="150"/>
+            <Bounds Height="100" Left="977" Top="2093" Width="150"/>
             <DisablePainted Valor="false"/>
             <Texto>Cardinalidade_68</Texto>
             <Observacao/>
@@ -5487,7 +5623,7 @@
             <Ancorado Valor="false"/>
             <TamanhoAutmatico Valor="true"/>
             <Card Valor="3"/>
-            <MovimentacaoManual Valor="false"/>
+            <MovimentacaoManual Valor="true"/>
             <Papel Valor=""/>
         </Cardinalidade>
     </Ligacao>
@@ -5504,15 +5640,17 @@
         <Largura Valor="1"/>
         <Ligacoes PontaA="379" PontaB="574"/>
         <Pontos>
-            <Ponto Left="2867" Top="2799"/>
-            <Ponto Left="2909" Top="2799"/>
-            <Ponto Left="2909" Top="2719"/>
-            <Ponto Left="2850" Top="2719"/>
-            <Ponto Left="2850" Top="3020"/>
-            <Ponto Left="2892" Top="3020"/>
+            <Ponto Left="2427" Top="2777"/>
+            <Ponto Left="2427" Top="2739"/>
+            <Ponto Left="2305" Top="2739"/>
+            <Ponto Left="2305" Top="2729"/>
+            <Ponto Left="2810" Top="2729"/>
+            <Ponto Left="2810" Top="3042"/>
+            <Ponto Left="2822" Top="3042"/>
+            <Ponto Left="2822" Top="3042"/>
         </Pontos>
         <Cardinalidade ID="576">
-            <Bounds Height="100" Left="2719" Top="2809" Width="150"/>
+            <Bounds Height="100" Left="2417" Top="2753" Width="150"/>
             <DisablePainted Valor="false"/>
             <Texto>Cardinalidade_69</Texto>
             <Observacao/>
@@ -5521,7 +5659,7 @@
             <Ancorado Valor="false"/>
             <TamanhoAutmatico Valor="true"/>
             <Card Valor="0"/>
-            <MovimentacaoManual Valor="false"/>
+            <MovimentacaoManual Valor="true"/>
             <Papel Valor=""/>
         </Cardinalidade>
     </Ligacao>
@@ -5538,15 +5676,17 @@
         <Largura Valor="1"/>
         <Ligacoes PontaA="356" PontaB="574"/>
         <Pontos>
-            <Ponto Left="2107" Top="2813"/>
-            <Ponto Left="2155" Top="2813"/>
-            <Ponto Left="2155" Top="2714"/>
-            <Ponto Left="2844" Top="2714"/>
-            <Ponto Left="2844" Top="3027"/>
-            <Ponto Left="2892" Top="3027"/>
+            <Ponto Left="1747" Top="2777"/>
+            <Ponto Left="1747" Top="2739"/>
+            <Ponto Left="1555" Top="2739"/>
+            <Ponto Left="1555" Top="2724"/>
+            <Ponto Left="3014" Top="2724"/>
+            <Ponto Left="3014" Top="3042"/>
+            <Ponto Left="3002" Top="3042"/>
+            <Ponto Left="3002" Top="3042"/>
         </Pontos>
         <Cardinalidade ID="578">
-            <Bounds Height="100" Left="2117" Top="2715" Width="150"/>
+            <Bounds Height="100" Left="1737" Top="2753" Width="150"/>
             <DisablePainted Valor="false"/>
             <Texto>Cardinalidade_70</Texto>
             <Observacao/>
@@ -5555,7 +5695,7 @@
             <Ancorado Valor="false"/>
             <TamanhoAutmatico Valor="true"/>
             <Card Valor="3"/>
-            <MovimentacaoManual Valor="false"/>
+            <MovimentacaoManual Valor="true"/>
             <Papel Valor=""/>
         </Cardinalidade>
     </Ligacao>
@@ -5572,15 +5712,17 @@
         <Largura Valor="1"/>
         <Ligacoes PontaA="394" PontaB="579"/>
         <Pontos>
-            <Ponto Left="3627" Top="2785"/>
-            <Ponto Left="3681" Top="2785"/>
-            <Ponto Left="3681" Top="2759"/>
-            <Ponto Left="3640" Top="2759"/>
-            <Ponto Left="3640" Top="2870"/>
-            <Ponto Left="3652" Top="2870"/>
+            <Ponto Left="3107" Top="2777"/>
+            <Ponto Left="3107" Top="2739"/>
+            <Ponto Left="3070" Top="2739"/>
+            <Ponto Left="3070" Top="2719"/>
+            <Ponto Left="3570" Top="2719"/>
+            <Ponto Left="3570" Top="2892"/>
+            <Ponto Left="3582" Top="2892"/>
+            <Ponto Left="3582" Top="2892"/>
         </Pontos>
         <Cardinalidade ID="581">
-            <Bounds Height="100" Left="3637" Top="2687" Width="150"/>
+            <Bounds Height="100" Left="3097" Top="2753" Width="150"/>
             <DisablePainted Valor="false"/>
             <Texto>Cardinalidade_71</Texto>
             <Observacao/>
@@ -5589,7 +5731,7 @@
             <Ancorado Valor="false"/>
             <TamanhoAutmatico Valor="true"/>
             <Card Valor="0"/>
-            <MovimentacaoManual Valor="false"/>
+            <MovimentacaoManual Valor="true"/>
             <Papel Valor=""/>
         </Cardinalidade>
     </Ligacao>
@@ -5606,15 +5748,17 @@
         <Largura Valor="1"/>
         <Ligacoes PontaA="238" PontaB="579"/>
         <Pontos>
-            <Ponto Left="3627" Top="1486"/>
-            <Ponto Left="3687" Top="1486"/>
-            <Ponto Left="3687" Top="1434"/>
-            <Ponto Left="3634" Top="1434"/>
-            <Ponto Left="3634" Top="2877"/>
-            <Ponto Left="3652" Top="2877"/>
+            <Ponto Left="3227" Top="1457"/>
+            <Ponto Left="3227" Top="1419"/>
+            <Ponto Left="3065" Top="1419"/>
+            <Ponto Left="3065" Top="1394"/>
+            <Ponto Left="3774" Top="1394"/>
+            <Ponto Left="3774" Top="2892"/>
+            <Ponto Left="3762" Top="2892"/>
+            <Ponto Left="3762" Top="2892"/>
         </Pontos>
         <Cardinalidade ID="583">
-            <Bounds Height="100" Left="3479" Top="1496" Width="150"/>
+            <Bounds Height="100" Left="3217" Top="1433" Width="150"/>
             <DisablePainted Valor="false"/>
             <Texto>Cardinalidade_72</Texto>
             <Observacao/>
@@ -5623,7 +5767,7 @@
             <Ancorado Valor="false"/>
             <TamanhoAutmatico Valor="true"/>
             <Card Valor="3"/>
-            <MovimentacaoManual Valor="false"/>
+            <MovimentacaoManual Valor="true"/>
             <Papel Valor=""/>
         </Cardinalidade>
     </Ligacao>
@@ -5640,15 +5784,17 @@
         <Largura Valor="1"/>
         <Ligacoes PontaA="394" PontaB="584"/>
         <Pontos>
-            <Ponto Left="3627" Top="2792"/>
-            <Ponto Left="3639" Top="2792"/>
-            <Ponto Left="3639" Top="2749"/>
-            <Ponto Left="3628" Top="2749"/>
-            <Ponto Left="3628" Top="2945"/>
-            <Ponto Left="3652" Top="2945"/>
+            <Ponto Left="3147" Top="2777"/>
+            <Ponto Left="3147" Top="2739"/>
+            <Ponto Left="3075" Top="2739"/>
+            <Ponto Left="3075" Top="2739"/>
+            <Ponto Left="3570" Top="2739"/>
+            <Ponto Left="3570" Top="2967"/>
+            <Ponto Left="3582" Top="2967"/>
+            <Ponto Left="3582" Top="2967"/>
         </Pontos>
         <Cardinalidade ID="586">
-            <Bounds Height="100" Left="3637" Top="2694" Width="150"/>
+            <Bounds Height="100" Left="3137" Top="2753" Width="150"/>
             <DisablePainted Valor="false"/>
             <Texto>Cardinalidade_73</Texto>
             <Observacao/>
@@ -5657,7 +5803,7 @@
             <Ancorado Valor="false"/>
             <TamanhoAutmatico Valor="true"/>
             <Card Valor="0"/>
-            <MovimentacaoManual Valor="false"/>
+            <MovimentacaoManual Valor="true"/>
             <Papel Valor=""/>
         </Cardinalidade>
     </Ligacao>
@@ -5674,15 +5820,17 @@
         <Largura Valor="1"/>
         <Ligacoes PontaA="356" PontaB="584"/>
         <Pontos>
-            <Ponto Left="2107" Top="2820"/>
-            <Ponto Left="2125" Top="2820"/>
-            <Ponto Left="2125" Top="2744"/>
-            <Ponto Left="3622" Top="2744"/>
-            <Ponto Left="3622" Top="2952"/>
-            <Ponto Left="3652" Top="2952"/>
+            <Ponto Left="1787" Top="2777"/>
+            <Ponto Left="1787" Top="2739"/>
+            <Ponto Left="1550" Top="2739"/>
+            <Ponto Left="1550" Top="2734"/>
+            <Ponto Left="3774" Top="2734"/>
+            <Ponto Left="3774" Top="2967"/>
+            <Ponto Left="3762" Top="2967"/>
+            <Ponto Left="3762" Top="2967"/>
         </Pontos>
         <Cardinalidade ID="588">
-            <Bounds Height="100" Left="2117" Top="2722" Width="150"/>
+            <Bounds Height="100" Left="1777" Top="2753" Width="150"/>
             <DisablePainted Valor="false"/>
             <Texto>Cardinalidade_74</Texto>
             <Observacao/>
@@ -5691,7 +5839,7 @@
             <Ancorado Valor="false"/>
             <TamanhoAutmatico Valor="true"/>
             <Card Valor="3"/>
-            <MovimentacaoManual Valor="false"/>
+            <MovimentacaoManual Valor="true"/>
             <Papel Valor=""/>
         </Cardinalidade>
     </Ligacao>
@@ -5708,15 +5856,17 @@
         <Largura Valor="1"/>
         <Ligacoes PontaA="399" PontaB="589"/>
         <Pontos>
-            <Ponto Left="587" Top="3445"/>
-            <Ponto Left="611" Top="3445"/>
-            <Ponto Left="611" Top="3399"/>
-            <Ponto Left="576" Top="3399"/>
-            <Ponto Left="576" Top="3530"/>
-            <Ponto Left="612" Top="3530"/>
+            <Ponto Left="67" Top="3437"/>
+            <Ponto Left="67" Top="3399"/>
+            <Ponto Left="25" Top="3399"/>
+            <Ponto Left="25" Top="3389"/>
+            <Ponto Left="530" Top="3389"/>
+            <Ponto Left="530" Top="3552"/>
+            <Ponto Left="542" Top="3552"/>
+            <Ponto Left="542" Top="3552"/>
         </Pontos>
         <Cardinalidade ID="591">
-            <Bounds Height="100" Left="597" Top="3347" Width="150"/>
+            <Bounds Height="100" Left="57" Top="3413" Width="150"/>
             <DisablePainted Valor="false"/>
             <Texto>Cardinalidade_75</Texto>
             <Observacao/>
@@ -5725,7 +5875,7 @@
             <Ancorado Valor="false"/>
             <TamanhoAutmatico Valor="true"/>
             <Card Valor="0"/>
-            <MovimentacaoManual Valor="false"/>
+            <MovimentacaoManual Valor="true"/>
             <Papel Valor=""/>
         </Cardinalidade>
     </Ligacao>
@@ -5742,15 +5892,17 @@
         <Largura Valor="1"/>
         <Ligacoes PontaA="139" PontaB="589"/>
         <Pontos>
-            <Ponto Left="1567" Top="826"/>
-            <Ponto Left="1537" Top="826"/>
-            <Ponto Left="1537" Top="754"/>
-            <Ponto Left="834" Top="754"/>
-            <Ponto Left="834" Top="3537"/>
-            <Ponto Left="792" Top="3537"/>
+            <Ponto Left="1707" Top="797"/>
+            <Ponto Left="1707" Top="759"/>
+            <Ponto Left="1555" Top="759"/>
+            <Ponto Left="1555" Top="744"/>
+            <Ponto Left="734" Top="744"/>
+            <Ponto Left="734" Top="3552"/>
+            <Ponto Left="722" Top="3552"/>
+            <Ponto Left="722" Top="3552"/>
         </Pontos>
         <Cardinalidade ID="593">
-            <Bounds Height="100" Left="1419" Top="836" Width="150"/>
+            <Bounds Height="100" Left="1697" Top="773" Width="150"/>
             <DisablePainted Valor="false"/>
             <Texto>Cardinalidade_76</Texto>
             <Observacao/>
@@ -5759,7 +5911,7 @@
             <Ancorado Valor="false"/>
             <TamanhoAutmatico Valor="true"/>
             <Card Valor="3"/>
-            <MovimentacaoManual Valor="false"/>
+            <MovimentacaoManual Valor="true"/>
             <Papel Valor=""/>
         </Cardinalidade>
     </Ligacao>
@@ -5776,15 +5928,17 @@
         <Largura Valor="1"/>
         <Ligacoes PontaA="399" PontaB="594"/>
         <Pontos>
-            <Ponto Left="587" Top="3452"/>
-            <Ponto Left="623" Top="3452"/>
-            <Ponto Left="623" Top="3389"/>
-            <Ponto Left="564" Top="3389"/>
-            <Ponto Left="564" Top="3605"/>
-            <Ponto Left="612" Top="3605"/>
+            <Ponto Left="107" Top="3437"/>
+            <Ponto Left="107" Top="3399"/>
+            <Ponto Left="30" Top="3399"/>
+            <Ponto Left="30" Top="3379"/>
+            <Ponto Left="530" Top="3379"/>
+            <Ponto Left="530" Top="3627"/>
+            <Ponto Left="542" Top="3627"/>
+            <Ponto Left="542" Top="3627"/>
         </Pontos>
         <Cardinalidade ID="596">
-            <Bounds Height="100" Left="597" Top="3354" Width="150"/>
+            <Bounds Height="100" Left="97" Top="3413" Width="150"/>
             <DisablePainted Valor="false"/>
             <Texto>Cardinalidade_77</Texto>
             <Observacao/>
@@ -5793,7 +5947,7 @@
             <Ancorado Valor="false"/>
             <TamanhoAutmatico Valor="true"/>
             <Card Valor="0"/>
-            <MovimentacaoManual Valor="false"/>
+            <MovimentacaoManual Valor="true"/>
             <Papel Valor=""/>
         </Cardinalidade>
     </Ligacao>
@@ -5810,15 +5964,17 @@
         <Largura Valor="1"/>
         <Ligacoes PontaA="356" PontaB="594"/>
         <Pontos>
-            <Ponto Left="1567" Top="2785"/>
-            <Ponto Left="1525" Top="2785"/>
-            <Ponto Left="1525" Top="2724"/>
-            <Ponto Left="804" Top="2724"/>
-            <Ponto Left="804" Top="3612"/>
-            <Ponto Left="792" Top="3612"/>
+            <Ponto Left="1827" Top="2777"/>
+            <Ponto Left="1827" Top="2739"/>
+            <Ponto Left="1545" Top="2739"/>
+            <Ponto Left="1545" Top="2714"/>
+            <Ponto Left="734" Top="2714"/>
+            <Ponto Left="734" Top="3627"/>
+            <Ponto Left="722" Top="3627"/>
+            <Ponto Left="722" Top="3627"/>
         </Pontos>
         <Cardinalidade ID="598">
-            <Bounds Height="100" Left="1413" Top="2687" Width="150"/>
+            <Bounds Height="100" Left="1817" Top="2753" Width="150"/>
             <DisablePainted Valor="false"/>
             <Texto>Cardinalidade_78</Texto>
             <Observacao/>
@@ -5827,7 +5983,7 @@
             <Ancorado Valor="false"/>
             <TamanhoAutmatico Valor="true"/>
             <Card Valor="3"/>
-            <MovimentacaoManual Valor="false"/>
+            <MovimentacaoManual Valor="true"/>
             <Papel Valor=""/>
         </Cardinalidade>
     </Ligacao>
@@ -5844,15 +6000,17 @@
         <Largura Valor="1"/>
         <Ligacoes PontaA="318" PontaB="599"/>
         <Pontos>
-            <Ponto Left="587" Top="2785"/>
-            <Ponto Left="635" Top="2785"/>
-            <Ponto Left="635" Top="2719"/>
-            <Ponto Left="594" Top="2719"/>
-            <Ponto Left="594" Top="2870"/>
-            <Ponto Left="612" Top="2870"/>
+            <Ponto Left="67" Top="2777"/>
+            <Ponto Left="67" Top="2739"/>
+            <Ponto Left="35" Top="2739"/>
+            <Ponto Left="35" Top="2739"/>
+            <Ponto Left="530" Top="2739"/>
+            <Ponto Left="530" Top="2892"/>
+            <Ponto Left="542" Top="2892"/>
+            <Ponto Left="542" Top="2892"/>
         </Pontos>
         <Cardinalidade ID="601">
-            <Bounds Height="100" Left="597" Top="2687" Width="150"/>
+            <Bounds Height="100" Left="57" Top="2753" Width="150"/>
             <DisablePainted Valor="false"/>
             <Texto>Cardinalidade_79</Texto>
             <Observacao/>
@@ -5861,7 +6019,7 @@
             <Ancorado Valor="false"/>
             <TamanhoAutmatico Valor="true"/>
             <Card Valor="0"/>
-            <MovimentacaoManual Valor="false"/>
+            <MovimentacaoManual Valor="true"/>
             <Papel Valor=""/>
         </Cardinalidade>
     </Ligacao>
@@ -5878,15 +6036,17 @@
         <Largura Valor="1"/>
         <Ligacoes PontaA="42" PontaB="599"/>
         <Pontos>
-            <Ponto Left="1567" Top="159"/>
-            <Ponto Left="1513" Top="159"/>
-            <Ponto Left="1513" Top="74"/>
-            <Ponto Left="816" Top="74"/>
-            <Ponto Left="816" Top="2877"/>
-            <Ponto Left="792" Top="2877"/>
+            <Ponto Left="1907" Top="137"/>
+            <Ponto Left="1907" Top="99"/>
+            <Ponto Left="1550" Top="99"/>
+            <Ponto Left="1550" Top="94"/>
+            <Ponto Left="734" Top="94"/>
+            <Ponto Left="734" Top="2892"/>
+            <Ponto Left="722" Top="2892"/>
+            <Ponto Left="722" Top="2892"/>
         </Pontos>
         <Cardinalidade ID="603">
-            <Bounds Height="100" Left="1419" Top="169" Width="150"/>
+            <Bounds Height="100" Left="1897" Top="113" Width="150"/>
             <DisablePainted Valor="false"/>
             <Texto>Cardinalidade_80</Texto>
             <Observacao/>
@@ -5895,7 +6055,7 @@
             <Ancorado Valor="false"/>
             <TamanhoAutmatico Valor="true"/>
             <Card Valor="3"/>
-            <MovimentacaoManual Valor="false"/>
+            <MovimentacaoManual Valor="true"/>
             <Papel Valor=""/>
         </Cardinalidade>
     </Ligacao>
@@ -5912,15 +6072,17 @@
         <Largura Valor="1"/>
         <Ligacoes PontaA="318" PontaB="604"/>
         <Pontos>
-            <Ponto Left="587" Top="2792"/>
-            <Ponto Left="647" Top="2792"/>
-            <Ponto Left="647" Top="2759"/>
-            <Ponto Left="582" Top="2759"/>
-            <Ponto Left="582" Top="2945"/>
-            <Ponto Left="612" Top="2945"/>
+            <Ponto Left="107" Top="2777"/>
+            <Ponto Left="107" Top="2739"/>
+            <Ponto Left="25" Top="2739"/>
+            <Ponto Left="25" Top="2729"/>
+            <Ponto Left="530" Top="2729"/>
+            <Ponto Left="530" Top="2967"/>
+            <Ponto Left="542" Top="2967"/>
+            <Ponto Left="542" Top="2967"/>
         </Pontos>
         <Cardinalidade ID="606">
-            <Bounds Height="100" Left="597" Top="2694" Width="150"/>
+            <Bounds Height="100" Left="97" Top="2753" Width="150"/>
             <DisablePainted Valor="false"/>
             <Texto>Cardinalidade_81</Texto>
             <Observacao/>
@@ -5929,7 +6091,7 @@
             <Ancorado Valor="false"/>
             <TamanhoAutmatico Valor="true"/>
             <Card Valor="0"/>
-            <MovimentacaoManual Valor="false"/>
+            <MovimentacaoManual Valor="true"/>
             <Papel Valor=""/>
         </Cardinalidade>
     </Ligacao>
@@ -5946,15 +6108,17 @@
         <Largura Valor="1"/>
         <Ligacoes PontaA="333" PontaB="604"/>
         <Pontos>
-            <Ponto Left="807" Top="2799"/>
-            <Ponto Left="795" Top="2799"/>
-            <Ponto Left="795" Top="2754"/>
-            <Ponto Left="828" Top="2754"/>
-            <Ponto Left="828" Top="2952"/>
-            <Ponto Left="792" Top="2952"/>
+            <Ponto Left="907" Top="2777"/>
+            <Ponto Left="907" Top="2739"/>
+            <Ponto Left="795" Top="2739"/>
+            <Ponto Left="795" Top="2724"/>
+            <Ponto Left="734" Top="2724"/>
+            <Ponto Left="734" Top="2967"/>
+            <Ponto Left="722" Top="2967"/>
+            <Ponto Left="722" Top="2967"/>
         </Pontos>
         <Cardinalidade ID="608">
-            <Bounds Height="100" Left="653" Top="2701" Width="150"/>
+            <Bounds Height="100" Left="897" Top="2753" Width="150"/>
             <DisablePainted Valor="false"/>
             <Texto>Cardinalidade_82</Texto>
             <Observacao/>
@@ -5963,7 +6127,7 @@
             <Ancorado Valor="false"/>
             <TamanhoAutmatico Valor="true"/>
             <Card Valor="3"/>
-            <MovimentacaoManual Valor="false"/>
+            <MovimentacaoManual Valor="true"/>
             <Papel Valor=""/>
         </Cardinalidade>
     </Ligacao>
@@ -5980,15 +6144,17 @@
         <Largura Valor="1"/>
         <Ligacoes PontaA="168" PontaB="609"/>
         <Pontos>
-            <Ponto Left="587" Top="1465"/>
-            <Ponto Left="605" Top="1465"/>
-            <Ponto Left="605" Top="1429"/>
-            <Ponto Left="570" Top="1429"/>
-            <Ponto Left="570" Top="1550"/>
-            <Ponto Left="612" Top="1550"/>
+            <Ponto Left="67" Top="1457"/>
+            <Ponto Left="67" Top="1419"/>
+            <Ponto Left="30" Top="1419"/>
+            <Ponto Left="30" Top="1399"/>
+            <Ponto Left="530" Top="1399"/>
+            <Ponto Left="530" Top="1572"/>
+            <Ponto Left="542" Top="1572"/>
+            <Ponto Left="542" Top="1572"/>
         </Pontos>
         <Cardinalidade ID="611">
-            <Bounds Height="100" Left="597" Top="1367" Width="150"/>
+            <Bounds Height="100" Left="57" Top="1433" Width="150"/>
             <DisablePainted Valor="false"/>
             <Texto>Cardinalidade_83</Texto>
             <Observacao/>
@@ -5997,7 +6163,7 @@
             <Ancorado Valor="false"/>
             <TamanhoAutmatico Valor="true"/>
             <Card Valor="0"/>
-            <MovimentacaoManual Valor="false"/>
+            <MovimentacaoManual Valor="true"/>
             <Papel Valor=""/>
         </Cardinalidade>
     </Ligacao>
@@ -6014,15 +6180,17 @@
         <Largura Valor="1"/>
         <Ligacoes PontaA="42" PontaB="609"/>
         <Pontos>
-            <Ponto Left="1567" Top="166"/>
-            <Ponto Left="1543" Top="166"/>
-            <Ponto Left="1543" Top="104"/>
-            <Ponto Left="840" Top="104"/>
-            <Ponto Left="840" Top="1557"/>
-            <Ponto Left="792" Top="1557"/>
+            <Ponto Left="1947" Top="137"/>
+            <Ponto Left="1947" Top="99"/>
+            <Ponto Left="1545" Top="99"/>
+            <Ponto Left="1545" Top="74"/>
+            <Ponto Left="734" Top="74"/>
+            <Ponto Left="734" Top="1572"/>
+            <Ponto Left="722" Top="1572"/>
+            <Ponto Left="722" Top="1572"/>
         </Pontos>
         <Cardinalidade ID="613">
-            <Bounds Height="100" Left="1419" Top="176" Width="150"/>
+            <Bounds Height="100" Left="1937" Top="113" Width="150"/>
             <DisablePainted Valor="false"/>
             <Texto>Cardinalidade_84</Texto>
             <Observacao/>
@@ -6031,7 +6199,7 @@
             <Ancorado Valor="false"/>
             <TamanhoAutmatico Valor="true"/>
             <Card Valor="3"/>
-            <MovimentacaoManual Valor="false"/>
+            <MovimentacaoManual Valor="true"/>
             <Papel Valor=""/>
         </Cardinalidade>
     </Ligacao>
@@ -6048,15 +6216,17 @@
         <Largura Valor="1"/>
         <Ligacoes PontaA="168" PontaB="614"/>
         <Pontos>
-            <Ponto Left="587" Top="1472"/>
-            <Ponto Left="617" Top="1472"/>
-            <Ponto Left="617" Top="1419"/>
-            <Ponto Left="600" Top="1419"/>
-            <Ponto Left="600" Top="1625"/>
-            <Ponto Left="612" Top="1625"/>
+            <Ponto Left="107" Top="1457"/>
+            <Ponto Left="107" Top="1419"/>
+            <Ponto Left="35" Top="1419"/>
+            <Ponto Left="35" Top="1419"/>
+            <Ponto Left="530" Top="1419"/>
+            <Ponto Left="530" Top="1647"/>
+            <Ponto Left="542" Top="1647"/>
+            <Ponto Left="542" Top="1647"/>
         </Pontos>
         <Cardinalidade ID="616">
-            <Bounds Height="100" Left="597" Top="1374" Width="150"/>
+            <Bounds Height="100" Left="97" Top="1433" Width="150"/>
             <DisablePainted Valor="false"/>
             <Texto>Cardinalidade_85</Texto>
             <Observacao/>
@@ -6065,7 +6235,7 @@
             <Ancorado Valor="false"/>
             <TamanhoAutmatico Valor="true"/>
             <Card Valor="0"/>
-            <MovimentacaoManual Valor="false"/>
+            <MovimentacaoManual Valor="true"/>
             <Papel Valor=""/>
         </Cardinalidade>
     </Ligacao>
@@ -6082,15 +6252,17 @@
         <Largura Valor="1"/>
         <Ligacoes PontaA="42" PontaB="614"/>
         <Pontos>
-            <Ponto Left="1567" Top="173"/>
-            <Ponto Left="1531" Top="173"/>
-            <Ponto Left="1531" Top="94"/>
-            <Ponto Left="810" Top="94"/>
-            <Ponto Left="810" Top="1632"/>
-            <Ponto Left="792" Top="1632"/>
+            <Ponto Left="1987" Top="137"/>
+            <Ponto Left="1987" Top="99"/>
+            <Ponto Left="1550" Top="99"/>
+            <Ponto Left="1550" Top="94"/>
+            <Ponto Left="734" Top="94"/>
+            <Ponto Left="734" Top="1647"/>
+            <Ponto Left="722" Top="1647"/>
+            <Ponto Left="722" Top="1647"/>
         </Pontos>
         <Cardinalidade ID="618">
-            <Bounds Height="100" Left="1419" Top="183" Width="150"/>
+            <Bounds Height="100" Left="1977" Top="113" Width="150"/>
             <DisablePainted Valor="false"/>
             <Texto>Cardinalidade_86</Texto>
             <Observacao/>
@@ -6099,7 +6271,7 @@
             <Ancorado Valor="false"/>
             <TamanhoAutmatico Valor="true"/>
             <Card Valor="3"/>
-            <MovimentacaoManual Valor="false"/>
+            <MovimentacaoManual Valor="true"/>
             <Papel Valor=""/>
         </Cardinalidade>
     </Ligacao>
@@ -6154,7 +6326,7 @@
         <MovimentacaoManual Valor="false"/>
     </Texto>
     <Entidade ID="4">
-        <Bounds Height="55" Left="50" Top="140" Width="540"/>
+        <Bounds Height="55" Left="50" Top="140" Width="470"/>
         <DisablePainted Valor="false"/>
         <Texto>ESPECIE</Texto>
         <Observacao/>
@@ -6300,7 +6472,7 @@
         <TipoAtributo Valor=""/>
     </Atributo>
     <Entidade ID="21">
-        <Bounds Height="55" Left="810" Top="140" Width="540"/>
+        <Bounds Height="55" Left="810" Top="140" Width="470"/>
         <DisablePainted Valor="false"/>
         <Texto>FORMA</Texto>
         <Observacao/>
@@ -6480,7 +6652,7 @@
         <TipoAtributo Valor=""/>
     </Atributo>
     <Entidade ID="42">
-        <Bounds Height="55" Left="1570" Top="140" Width="540"/>
+        <Bounds Height="55" Left="1570" Top="140" Width="470"/>
         <DisablePainted Valor="false"/>
         <Texto>DADOS_FORMA_JOGO</Texto>
         <Observacao/>
@@ -6847,7 +7019,7 @@
         <TipoAtributo Valor=""/>
     </Atributo>
     <Entidade ID="85">
-        <Bounds Height="55" Left="2330" Top="140" Width="540"/>
+        <Bounds Height="55" Left="2330" Top="140" Width="470"/>
         <DisablePainted Valor="false"/>
         <Texto>JOGO</Texto>
         <Observacao/>
@@ -6993,7 +7165,7 @@
         <TipoAtributo Valor=""/>
     </Atributo>
     <Entidade ID="102">
-        <Bounds Height="55" Left="3090" Top="140" Width="540"/>
+        <Bounds Height="55" Left="3090" Top="140" Width="470"/>
         <DisablePainted Valor="false"/>
         <Texto>MECANICA_JOGO</Texto>
         <Observacao/>
@@ -7207,7 +7379,7 @@
         <TipoAtributo Valor=""/>
     </Atributo>
     <Entidade ID="127">
-        <Bounds Height="55" Left="50" Top="800" Width="540"/>
+        <Bounds Height="55" Left="50" Top="800" Width="470"/>
         <DisablePainted Valor="false"/>
         <Texto>TIPO</Texto>
         <Observacao/>
@@ -7251,7 +7423,7 @@
         <TipoAtributo Valor=""/>
     </Atributo>
     <Entidade ID="132">
-        <Bounds Height="55" Left="810" Top="800" Width="540"/>
+        <Bounds Height="55" Left="810" Top="800" Width="470"/>
         <DisablePainted Valor="false"/>
         <Texto>TIPO_FORMA_JOGO</Texto>
         <Observacao/>
@@ -7312,7 +7484,7 @@
         <TipoAtributo Valor=""/>
     </Atributo>
     <Entidade ID="139">
-        <Bounds Height="55" Left="1570" Top="800" Width="540"/>
+        <Bounds Height="55" Left="1570" Top="800" Width="470"/>
         <DisablePainted Valor="false"/>
         <Texto>HABILIDADE_FORMA_JOGO</Texto>
         <Observacao/>
@@ -7441,7 +7613,7 @@
         <TipoAtributo Valor=""/>
     </Atributo>
     <Entidade ID="154">
-        <Bounds Height="55" Left="2330" Top="800" Width="540"/>
+        <Bounds Height="55" Left="2330" Top="800" Width="470"/>
         <DisablePainted Valor="false"/>
         <Texto>HABILIDADE</Texto>
         <Observacao/>
@@ -7502,7 +7674,7 @@
         <TipoAtributo Valor=""/>
     </Atributo>
     <Entidade ID="161">
-        <Bounds Height="55" Left="3090" Top="800" Width="540"/>
+        <Bounds Height="55" Left="3090" Top="800" Width="470"/>
         <DisablePainted Valor="false"/>
         <Texto>METODO_OBTENCAO</Texto>
         <Observacao/>
@@ -7563,7 +7735,7 @@
         <TipoAtributo Valor=""/>
     </Atributo>
     <Entidade ID="168">
-        <Bounds Height="55" Left="50" Top="1460" Width="540"/>
+        <Bounds Height="55" Left="50" Top="1460" Width="470"/>
         <DisablePainted Valor="false"/>
         <Texto>TRANSFORMACAO_FORMA</Texto>
         <Observacao/>
@@ -7743,7 +7915,7 @@
         <TipoAtributo Valor=""/>
     </Atributo>
     <Entidade ID="189">
-        <Bounds Height="55" Left="810" Top="1460" Width="540"/>
+        <Bounds Height="55" Left="810" Top="1460" Width="470"/>
         <DisablePainted Valor="false"/>
         <Texto>METODO_FORMA_JOGO</Texto>
         <Observacao/>
@@ -7838,7 +8010,7 @@
         <TipoAtributo Valor=""/>
     </Atributo>
     <Entidade ID="200">
-        <Bounds Height="55" Left="1570" Top="1460" Width="540"/>
+        <Bounds Height="55" Left="1570" Top="1460" Width="470"/>
         <DisablePainted Valor="false"/>
         <Texto>POKEMON_COLECAO</Texto>
         <Observacao/>
@@ -8069,7 +8241,7 @@
         <TipoAtributo Valor=""/>
     </Atributo>
     <Entidade ID="227">
-        <Bounds Height="55" Left="2330" Top="1460" Width="540"/>
+        <Bounds Height="55" Left="2330" Top="1460" Width="470"/>
         <DisablePainted Valor="false"/>
         <Texto>USUARIO</Texto>
         <Observacao/>
@@ -8164,7 +8336,7 @@
         <TipoAtributo Valor=""/>
     </Atributo>
     <Entidade ID="238">
-        <Bounds Height="55" Left="3090" Top="1460" Width="540"/>
+        <Bounds Height="55" Left="3090" Top="1460" Width="470"/>
         <DisablePainted Valor="false"/>
         <Texto>NATUREZA</Texto>
         <Observacao/>
@@ -8293,7 +8465,7 @@
         <TipoAtributo Valor=""/>
     </Atributo>
     <Entidade ID="253">
-        <Bounds Height="55" Left="50" Top="2120" Width="540"/>
+        <Bounds Height="55" Left="50" Top="2120" Width="470"/>
         <DisablePainted Valor="false"/>
         <Texto>SISTEMA_ATRIBUTO</Texto>
         <Observacao/>
@@ -8371,7 +8543,7 @@
         <TipoAtributo Valor=""/>
     </Atributo>
     <Entidade ID="262">
-        <Bounds Height="55" Left="810" Top="2120" Width="540"/>
+        <Bounds Height="55" Left="810" Top="2120" Width="470"/>
         <DisablePainted Valor="false"/>
         <Texto>MECANICA_SISTEMA_ATRIBUTO</Texto>
         <Observacao/>
@@ -8568,7 +8740,7 @@
         <TipoAtributo Valor=""/>
     </Atributo>
     <Entidade ID="285">
-        <Bounds Height="55" Left="1570" Top="2120" Width="540"/>
+        <Bounds Height="55" Left="1570" Top="2120" Width="470"/>
         <DisablePainted Valor="false"/>
         <Texto>VALOR_ATRIBUTO_POKEMON</Texto>
         <Observacao/>
@@ -8697,7 +8869,7 @@
         <TipoAtributo Valor=""/>
     </Atributo>
     <Entidade ID="300">
-        <Bounds Height="55" Left="2330" Top="2120" Width="540"/>
+        <Bounds Height="55" Left="2330" Top="2120" Width="470"/>
         <DisablePainted Valor="false"/>
         <Texto>ATRIBUTO_BATALHA</Texto>
         <Observacao/>
@@ -8758,7 +8930,7 @@
         <TipoAtributo Valor=""/>
     </Atributo>
     <Entidade ID="307">
-        <Bounds Height="55" Left="3090" Top="2120" Width="540"/>
+        <Bounds Height="55" Left="3090" Top="2120" Width="470"/>
         <DisablePainted Valor="false"/>
         <Texto>MECANICA_ATRIBUTO</Texto>
         <Observacao/>
@@ -8853,7 +9025,7 @@
         <TipoAtributo Valor=""/>
     </Atributo>
     <Entidade ID="318">
-        <Bounds Height="55" Left="50" Top="2780" Width="540"/>
+        <Bounds Height="55" Left="50" Top="2780" Width="470"/>
         <DisablePainted Valor="false"/>
         <Texto>ELEGIBILIDADE_FORMA_REGULAMENTO</Texto>
         <Observacao/>
@@ -8982,7 +9154,7 @@
         <TipoAtributo Valor=""/>
     </Atributo>
     <Entidade ID="333">
-        <Bounds Height="55" Left="810" Top="2780" Width="540"/>
+        <Bounds Height="55" Left="810" Top="2780" Width="470"/>
         <DisablePainted Valor="false"/>
         <Texto>REGULAMENTO</Texto>
         <Observacao/>
@@ -9179,7 +9351,7 @@
         <TipoAtributo Valor=""/>
     </Atributo>
     <Entidade ID="356">
-        <Bounds Height="55" Left="1570" Top="2780" Width="540"/>
+        <Bounds Height="55" Left="1570" Top="2780" Width="470"/>
         <DisablePainted Valor="false"/>
         <Texto>PERFIL_ANALISE</Texto>
         <Observacao/>
@@ -9376,7 +9548,7 @@
         <TipoAtributo Valor=""/>
     </Atributo>
     <Entidade ID="379">
-        <Bounds Height="55" Left="2330" Top="2780" Width="540"/>
+        <Bounds Height="55" Left="2330" Top="2780" Width="470"/>
         <DisablePainted Valor="false"/>
         <Texto>VALOR_PERFIL_ANALISE</Texto>
         <Observacao/>
@@ -9505,7 +9677,7 @@
         <TipoAtributo Valor=""/>
     </Atributo>
     <Entidade ID="394">
-        <Bounds Height="55" Left="3090" Top="2780" Width="540"/>
+        <Bounds Height="55" Left="3090" Top="2780" Width="470"/>
         <DisablePainted Valor="false"/>
         <Texto>PERFIL_NATUREZA</Texto>
         <Observacao/>
@@ -9549,7 +9721,7 @@
         <TipoAtributo Valor=""/>
     </Atributo>
     <Entidade ID="399">
-        <Bounds Height="55" Left="50" Top="3440" Width="540"/>
+        <Bounds Height="55" Left="50" Top="3440" Width="470"/>
         <DisablePainted Valor="false"/>
         <Texto>PERFIL_HABILIDADE</Texto>
         <Observacao/>
@@ -9593,7 +9765,7 @@
         <TipoAtributo Valor=""/>
     </Atributo>
     <Relacionamento ID="404">
-        <Bounds Height="60" Left="1375" Top="225" Width="180"/>
+        <Bounds Height="60" Left="1305" Top="225" Width="180"/>
         <DisablePainted Valor="false"/>
         <Texto>R1 da espécie</Texto>
         <Observacao/>
@@ -9602,7 +9774,7 @@
         <Ancorado Valor="false"/>
     </Relacionamento>
     <Relacionamento ID="409">
-        <Bounds Height="60" Left="2135" Top="225" Width="180"/>
+        <Bounds Height="60" Left="2065" Top="225" Width="180"/>
         <DisablePainted Valor="false"/>
         <Texto>R2 no jogo</Texto>
         <Observacao/>
@@ -9611,7 +9783,7 @@
         <Ancorado Valor="false"/>
     </Relacionamento>
     <Relacionamento ID="414">
-        <Bounds Height="60" Left="2135" Top="300" Width="180"/>
+        <Bounds Height="60" Left="2065" Top="300" Width="180"/>
         <DisablePainted Valor="false"/>
         <Texto>R3 descreve forma</Texto>
         <Observacao/>
@@ -9620,7 +9792,7 @@
         <Ancorado Valor="false"/>
     </Relacionamento>
     <Relacionamento ID="419">
-        <Bounds Height="60" Left="1375" Top="885" Width="180"/>
+        <Bounds Height="60" Left="1305" Top="885" Width="180"/>
         <DisablePainted Valor="false"/>
         <Texto>R4 tipifica</Texto>
         <Observacao/>
@@ -9629,7 +9801,7 @@
         <Ancorado Valor="false"/>
     </Relacionamento>
     <Relacionamento ID="424">
-        <Bounds Height="60" Left="1375" Top="960" Width="180"/>
+        <Bounds Height="60" Left="1305" Top="960" Width="180"/>
         <DisablePainted Valor="false"/>
         <Texto>R5 da ficha</Texto>
         <Observacao/>
@@ -9638,7 +9810,7 @@
         <Ancorado Valor="false"/>
     </Relacionamento>
     <Relacionamento ID="429">
-        <Bounds Height="60" Left="2135" Top="885" Width="180"/>
+        <Bounds Height="60" Left="2065" Top="885" Width="180"/>
         <DisablePainted Valor="false"/>
         <Texto>R6 usa habilidade</Texto>
         <Observacao/>
@@ -9647,7 +9819,7 @@
         <Ancorado Valor="false"/>
     </Relacionamento>
     <Relacionamento ID="434">
-        <Bounds Height="60" Left="2135" Top="960" Width="180"/>
+        <Bounds Height="60" Left="2065" Top="960" Width="180"/>
         <DisablePainted Valor="false"/>
         <Texto>R7 da ficha</Texto>
         <Observacao/>
@@ -9656,7 +9828,7 @@
         <Ancorado Valor="false"/>
     </Relacionamento>
     <Relacionamento ID="439">
-        <Bounds Height="60" Left="1375" Top="1545" Width="180"/>
+        <Bounds Height="60" Left="1305" Top="1545" Width="180"/>
         <DisablePainted Valor="false"/>
         <Texto>R8 usa método</Texto>
         <Observacao/>
@@ -9665,7 +9837,7 @@
         <Ancorado Valor="false"/>
     </Relacionamento>
     <Relacionamento ID="444">
-        <Bounds Height="60" Left="1375" Top="1620" Width="180"/>
+        <Bounds Height="60" Left="1305" Top="1620" Width="180"/>
         <DisablePainted Valor="false"/>
         <Texto>R9 da ficha</Texto>
         <Observacao/>
@@ -9674,7 +9846,7 @@
         <Ancorado Valor="false"/>
     </Relacionamento>
     <Relacionamento ID="449">
-        <Bounds Height="60" Left="3655" Top="1545" Width="180"/>
+        <Bounds Height="60" Left="3585" Top="1545" Width="180"/>
         <DisablePainted Valor="false"/>
         <Texto>R10 reduz</Texto>
         <Observacao/>
@@ -9683,7 +9855,7 @@
         <Ancorado Valor="false"/>
     </Relacionamento>
     <Relacionamento ID="454">
-        <Bounds Height="60" Left="3655" Top="1620" Width="180"/>
+        <Bounds Height="60" Left="3585" Top="1620" Width="180"/>
         <DisablePainted Valor="false"/>
         <Texto>R11 aumenta</Texto>
         <Observacao/>
@@ -9692,7 +9864,7 @@
         <Ancorado Valor="false"/>
     </Relacionamento>
     <Relacionamento ID="459">
-        <Bounds Height="60" Left="3655" Top="225" Width="180"/>
+        <Bounds Height="60" Left="3585" Top="225" Width="180"/>
         <DisablePainted Valor="false"/>
         <Texto>R12 no jogo</Texto>
         <Observacao/>
@@ -9701,7 +9873,7 @@
         <Ancorado Valor="false"/>
     </Relacionamento>
     <Relacionamento ID="464">
-        <Bounds Height="60" Left="1375" Top="2205" Width="180"/>
+        <Bounds Height="60" Left="1305" Top="2205" Width="180"/>
         <DisablePainted Valor="false"/>
         <Texto>R13 usa sistema</Texto>
         <Observacao/>
@@ -9710,7 +9882,7 @@
         <Ancorado Valor="false"/>
     </Relacionamento>
     <Relacionamento ID="469">
-        <Bounds Height="60" Left="1375" Top="2280" Width="180"/>
+        <Bounds Height="60" Left="1305" Top="2280" Width="180"/>
         <DisablePainted Valor="false"/>
         <Texto>R14 usa mecânica</Texto>
         <Observacao/>
@@ -9719,7 +9891,7 @@
         <Ancorado Valor="false"/>
     </Relacionamento>
     <Relacionamento ID="474">
-        <Bounds Height="60" Left="3655" Top="2205" Width="180"/>
+        <Bounds Height="60" Left="3585" Top="2205" Width="180"/>
         <DisablePainted Valor="false"/>
         <Texto>R15 mede atributo</Texto>
         <Observacao/>
@@ -9728,7 +9900,7 @@
         <Ancorado Valor="false"/>
     </Relacionamento>
     <Relacionamento ID="479">
-        <Bounds Height="60" Left="3655" Top="2280" Width="180"/>
+        <Bounds Height="60" Left="3585" Top="2280" Width="180"/>
         <DisablePainted Valor="false"/>
         <Texto>R16 sob limites</Texto>
         <Observacao/>
@@ -9737,7 +9909,7 @@
         <Ancorado Valor="false"/>
     </Relacionamento>
     <Relacionamento ID="484">
-        <Bounds Height="60" Left="2135" Top="1545" Width="180"/>
+        <Bounds Height="60" Left="2065" Top="1545" Width="180"/>
         <DisablePainted Valor="false"/>
         <Texto>R17 usa habilidade</Texto>
         <Observacao/>
@@ -9746,7 +9918,7 @@
         <Ancorado Valor="false"/>
     </Relacionamento>
     <Relacionamento ID="489">
-        <Bounds Height="60" Left="2135" Top="1620" Width="180"/>
+        <Bounds Height="60" Left="2065" Top="1620" Width="180"/>
         <DisablePainted Valor="false"/>
         <Texto>R18 usa natureza</Texto>
         <Observacao/>
@@ -9755,7 +9927,7 @@
         <Ancorado Valor="false"/>
     </Relacionamento>
     <Relacionamento ID="494">
-        <Bounds Height="60" Left="2135" Top="1695" Width="180"/>
+        <Bounds Height="60" Left="2065" Top="1695" Width="180"/>
         <DisablePainted Valor="false"/>
         <Texto>R19 obtido por</Texto>
         <Observacao/>
@@ -9764,7 +9936,7 @@
         <Ancorado Valor="false"/>
     </Relacionamento>
     <Relacionamento ID="499">
-        <Bounds Height="60" Left="2135" Top="1770" Width="180"/>
+        <Bounds Height="60" Left="2065" Top="1770" Width="180"/>
         <DisablePainted Valor="false"/>
         <Texto>R20 tem origem</Texto>
         <Observacao/>
@@ -9773,7 +9945,7 @@
         <Ancorado Valor="false"/>
     </Relacionamento>
     <Relacionamento ID="504">
-        <Bounds Height="60" Left="2135" Top="1845" Width="180"/>
+        <Bounds Height="60" Left="2065" Top="1845" Width="180"/>
         <DisablePainted Valor="false"/>
         <Texto>R21 veio do jogo</Texto>
         <Observacao/>
@@ -9782,7 +9954,7 @@
         <Ancorado Valor="false"/>
     </Relacionamento>
     <Relacionamento ID="509">
-        <Bounds Height="60" Left="2135" Top="1920" Width="180"/>
+        <Bounds Height="60" Left="2065" Top="1920" Width="180"/>
         <DisablePainted Valor="false"/>
         <Texto>R22 usa mecânica</Texto>
         <Observacao/>
@@ -9791,7 +9963,7 @@
         <Ancorado Valor="false"/>
     </Relacionamento>
     <Relacionamento ID="514">
-        <Bounds Height="60" Left="2135" Top="1995" Width="180"/>
+        <Bounds Height="60" Left="2065" Top="1995" Width="180"/>
         <DisablePainted Valor="false"/>
         <Texto>R23 estado atual</Texto>
         <Observacao/>
@@ -9800,7 +9972,7 @@
         <Ancorado Valor="false"/>
     </Relacionamento>
     <Relacionamento ID="519">
-        <Bounds Height="60" Left="2135" Top="2070" Width="180"/>
+        <Bounds Height="60" Left="2065" Top="2070" Width="180"/>
         <DisablePainted Valor="false"/>
         <Texto>R24 pertence a</Texto>
         <Observacao/>
@@ -9809,7 +9981,7 @@
         <Ancorado Valor="false"/>
     </Relacionamento>
     <Relacionamento ID="524">
-        <Bounds Height="60" Left="1375" Top="2865" Width="180"/>
+        <Bounds Height="60" Left="1305" Top="2865" Width="180"/>
         <DisablePainted Valor="false"/>
         <Texto>R25 usa mecânica</Texto>
         <Observacao/>
@@ -9818,7 +9990,7 @@
         <Ancorado Valor="false"/>
     </Relacionamento>
     <Relacionamento ID="529">
-        <Bounds Height="60" Left="2135" Top="2865" Width="180"/>
+        <Bounds Height="60" Left="2065" Top="2865" Width="180"/>
         <DisablePainted Valor="false"/>
         <Texto>R26 sob regra</Texto>
         <Observacao/>
@@ -9827,7 +9999,7 @@
         <Ancorado Valor="false"/>
     </Relacionamento>
     <Relacionamento ID="534">
-        <Bounds Height="60" Left="2135" Top="2940" Width="180"/>
+        <Bounds Height="60" Left="2065" Top="2940" Width="180"/>
         <DisablePainted Valor="false"/>
         <Texto>R27 pertence a</Texto>
         <Observacao/>
@@ -9836,7 +10008,7 @@
         <Ancorado Valor="false"/>
     </Relacionamento>
     <Relacionamento ID="539">
-        <Bounds Height="60" Left="2135" Top="3015" Width="180"/>
+        <Bounds Height="60" Left="2065" Top="3015" Width="180"/>
         <DisablePainted Valor="false"/>
         <Texto>R28 usa mecânica</Texto>
         <Observacao/>
@@ -9845,7 +10017,7 @@
         <Ancorado Valor="false"/>
     </Relacionamento>
     <Relacionamento ID="544">
-        <Bounds Height="60" Left="2135" Top="3090" Width="180"/>
+        <Bounds Height="60" Left="2065" Top="3090" Width="180"/>
         <DisablePainted Valor="false"/>
         <Texto>R29 da ficha</Texto>
         <Observacao/>
@@ -9854,7 +10026,7 @@
         <Ancorado Valor="false"/>
     </Relacionamento>
     <Relacionamento ID="549">
-        <Bounds Height="60" Left="2135" Top="2205" Width="180"/>
+        <Bounds Height="60" Left="2065" Top="2205" Width="180"/>
         <DisablePainted Valor="false"/>
         <Texto>R30 mede atributo</Texto>
         <Observacao/>
@@ -9863,7 +10035,7 @@
         <Ancorado Valor="false"/>
     </Relacionamento>
     <Relacionamento ID="554">
-        <Bounds Height="60" Left="2135" Top="2280" Width="180"/>
+        <Bounds Height="60" Left="2065" Top="2280" Width="180"/>
         <DisablePainted Valor="false"/>
         <Texto>R31 sob limites</Texto>
         <Observacao/>
@@ -9872,7 +10044,7 @@
         <Ancorado Valor="false"/>
     </Relacionamento>
     <Relacionamento ID="559">
-        <Bounds Height="60" Left="2135" Top="2355" Width="180"/>
+        <Bounds Height="60" Left="2065" Top="2355" Width="180"/>
         <DisablePainted Valor="false"/>
         <Texto>R32 do exemplar</Texto>
         <Observacao/>
@@ -9881,7 +10053,7 @@
         <Ancorado Valor="false"/>
     </Relacionamento>
     <Relacionamento ID="564">
-        <Bounds Height="60" Left="2895" Top="2865" Width="180"/>
+        <Bounds Height="60" Left="2825" Top="2865" Width="180"/>
         <DisablePainted Valor="false"/>
         <Texto>R33 mede atributo</Texto>
         <Observacao/>
@@ -9890,7 +10062,7 @@
         <Ancorado Valor="false"/>
     </Relacionamento>
     <Relacionamento ID="569">
-        <Bounds Height="60" Left="2895" Top="2940" Width="180"/>
+        <Bounds Height="60" Left="2825" Top="2940" Width="180"/>
         <DisablePainted Valor="false"/>
         <Texto>R34 sob limites</Texto>
         <Observacao/>
@@ -9899,7 +10071,7 @@
         <Ancorado Valor="false"/>
     </Relacionamento>
     <Relacionamento ID="574">
-        <Bounds Height="60" Left="2895" Top="3015" Width="180"/>
+        <Bounds Height="60" Left="2825" Top="3015" Width="180"/>
         <DisablePainted Valor="false"/>
         <Texto>R35 do perfil</Texto>
         <Observacao/>
@@ -9908,7 +10080,7 @@
         <Ancorado Valor="false"/>
     </Relacionamento>
     <Relacionamento ID="579">
-        <Bounds Height="60" Left="3655" Top="2865" Width="180"/>
+        <Bounds Height="60" Left="3585" Top="2865" Width="180"/>
         <DisablePainted Valor="false"/>
         <Texto>R36 usa natureza</Texto>
         <Observacao/>
@@ -9917,7 +10089,7 @@
         <Ancorado Valor="false"/>
     </Relacionamento>
     <Relacionamento ID="584">
-        <Bounds Height="60" Left="3655" Top="2940" Width="180"/>
+        <Bounds Height="60" Left="3585" Top="2940" Width="180"/>
         <DisablePainted Valor="false"/>
         <Texto>R37 do perfil</Texto>
         <Observacao/>
@@ -9926,7 +10098,7 @@
         <Ancorado Valor="false"/>
     </Relacionamento>
     <Relacionamento ID="589">
-        <Bounds Height="60" Left="615" Top="3525" Width="180"/>
+        <Bounds Height="60" Left="545" Top="3525" Width="180"/>
         <DisablePainted Valor="false"/>
         <Texto>R38 usa habilidade</Texto>
         <Observacao/>
@@ -9935,7 +10107,7 @@
         <Ancorado Valor="false"/>
     </Relacionamento>
     <Relacionamento ID="594">
-        <Bounds Height="60" Left="615" Top="3600" Width="180"/>
+        <Bounds Height="60" Left="545" Top="3600" Width="180"/>
         <DisablePainted Valor="false"/>
         <Texto>R39 do perfil</Texto>
         <Observacao/>
@@ -9944,7 +10116,7 @@
         <Ancorado Valor="false"/>
     </Relacionamento>
     <Relacionamento ID="599">
-        <Bounds Height="60" Left="615" Top="2865" Width="180"/>
+        <Bounds Height="60" Left="545" Top="2865" Width="180"/>
         <DisablePainted Valor="false"/>
         <Texto>R40 da ficha</Texto>
         <Observacao/>
@@ -9953,7 +10125,7 @@
         <Ancorado Valor="false"/>
     </Relacionamento>
     <Relacionamento ID="604">
-        <Bounds Height="60" Left="615" Top="2940" Width="180"/>
+        <Bounds Height="60" Left="545" Top="2940" Width="180"/>
         <DisablePainted Valor="false"/>
         <Texto>R41 sob regra</Texto>
         <Observacao/>
@@ -9962,7 +10134,7 @@
         <Ancorado Valor="false"/>
     </Relacionamento>
     <Relacionamento ID="609">
-        <Bounds Height="60" Left="615" Top="1545" Width="180"/>
+        <Bounds Height="60" Left="545" Top="1545" Width="180"/>
         <DisablePainted Valor="false"/>
         <Texto>R42 tem destino</Texto>
         <Observacao/>
@@ -9971,7 +10143,7 @@
         <Ancorado Valor="false"/>
     </Relacionamento>
     <Relacionamento ID="614">
-        <Bounds Height="60" Left="615" Top="1620" Width="180"/>
+        <Bounds Height="60" Left="545" Top="1620" Width="180"/>
         <DisablePainted Valor="false"/>
         <Texto>R43 tem origem</Texto>
         <Observacao/>

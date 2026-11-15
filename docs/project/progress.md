@@ -119,3 +119,13 @@ O marco do regulamento foi publicado em `791b2d352cd5e387d45644262fa6780ae155299
 Próximo passo: investigar ativação por Enter, melhorar as imagens gerais dos modelos, ampliar cobertura contextual e referências com fontes. A cobertura de encontros é parcial e os jogos Red/Blue homônimos seguem sem importação contextual; não declarar o projeto concluído.
 
 Enter no botão focado foi repetido com o evento completo do navegador e fechou o diálogo; a tentativa anterior não enviava o caractere. Permanece pendente navegar por todos os fluxos usando apenas teclado e verificar contraste dos estados.
+
+### Retomada em 15/11/2026 — modelos completos
+
+Estado inicial da retomada: branch `final/complete-project` sincronizada com `origin` em `82415d9720a94d535be8b2b1822db52e52c22411`; a alteração local dos modelos lógicos era trabalho em andamento da sessão anterior. O relatório de cobertura continua registrando 5.074 fichas, 366 com tipos/estatísticas, 976 vínculos de habilidade, duas mecânicas, dois regulamentos, 355 elegibilidades condicionais e dois perfis de referência. Esses dados são parciais e o objetivo permanece ativo.
+
+As duas visões completas do brModelo foram reorganizadas em uma cópia temporária antes de atualizar os arquivos nativos e as imagens. Cardinalidades foram distribuídas acima das entidades e conexões encaminhadas por corredores; as caixas ficaram mais estreitas para abrir espaço ao redor dos relacionamentos. As duas imagens e recortes a 100% foram inspecionados, e os modelos foram reabertos pelo carregador oficial. A leitura das cardinalidades melhorou; ainda há muitos corredores compartilhados e é difícil seguir determinados vínculos na visão geral. Pranchas R e visões por domínio continuam complementos necessários. O SQL e a implementação não foram alterados nesta revisão.
+
+Próximo passo: executar as verificações de consistência, registrar/publicar o marco dos diagramas e ampliar dados reais para mais jogos, formas e perfis, com fontes e sem inferir disponibilidade a partir de índices internos. Também falta a revisão completa por teclado e contraste no navegador.
+
+Verificação após reorganização: `PYTHONPATH=/home/Danilo/tools/python:backend python tools/check_stage2.py` passou com **84 testes**, conferência de 26 entidades/187 campos/43 relações, UML, links e demonstração; `git diff --check` passou. A inspeção visual e seus limites estão em `docs/diagrams/visual-review.md`.

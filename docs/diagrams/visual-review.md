@@ -21,3 +21,9 @@ O SQL não mudou: 26 entidades, 183 campos, 43 FKs. Os 34 `.brM3` foram reaberto
 ## Revisão após migração 002 — 14/11/2026
 
 Reabertas visualmente as duas imagens completas e a prancha conceitual 01 após acrescentar as quatro colunas de fonte e data em DADOS_FORMA_JOGO. A prancha inspecionada mostra os novos campos e relações isoladas. As imagens completas ainda apresentam cardinalidades sobrepostas junto às entidades mais conectadas; a legibilidade integral solicitada continua pendente, apesar das pranchas ampliadas. A verificação estrutural atual identifica 26 entidades, 187 campos e 43 relações, e o carregador oficial reabriu os 34 arquivos nativos.
+
+## Nova disposição das imagens completas — 15/11/2026
+
+Reorganizamos as conexões dos dois modelos completos em corredores e distribuímos as cardinalidades ao longo das bordas superiores das entidades. As caixas ficaram mais estreitas para manter espaço entre as conexões e a entidade seguinte. As imagens completas e recortes ampliados de FORMA e DADOS_FORMA_JOGO foram abertos e inspecionados: os campos e as cardinalidades nesse recorte são legíveis e os textos dos relacionamentos não estão sobrepostos. Os 43 vínculos e os 187 campos continuam presentes nos arquivos editáveis; o carregador oficial reabriu os dois modelos.
+
+As visões gerais ainda são densas: vários vínculos percorrem corredores comuns e é difícil seguir determinadas linhas de ponta a ponta em escala de página. As pranchas R e visões de domínio continuam necessárias para conferência individual e apresentação; essa revisão visual parcial não comprova que todos os percursos tenham leitura fácil. SQL e UML não foram modificados nesta alteração de disposição.
