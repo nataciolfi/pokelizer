@@ -6,6 +6,18 @@ const labels = {conhecido:'Conhecido',desconhecido:'Desconhecido',ausente:'Não 
 const state = {user:null,csrf:null,all:[],options:{},rules:[],collection:[],profiles:[],page:'catalogo',offset:0,results:[],coverage:null};
 const content = $('#content'), dialog = $('#dialog'), dialogBody = $('#dialog-body');
 let viewVersion = 0;
+dialog.addEventListener('keydown', event => {
+  if (event.key !== 'Tab') return;
+  const focusable = $$('a[href],button,input,select,textarea,[tabindex]',dialog)
+    .filter(el => !el.disabled && el.tabIndex >= 0 && el.getClientRects().length && getComputedStyle(el).visibility !== 'hidden');
+  if (!focusable.length) { event.preventDefault(); return; }
+  const first = focusable[0], last = focusable[focusable.length-1];
+  if (event.shiftKey && (document.activeElement === first || !dialog.contains(document.activeElement))) {
+    event.preventDefault(); last.focus();
+  } else if (!event.shiftKey && document.activeElement === last) {
+    event.preventDefault(); first.focus();
+  }
+});
 function feedback(message, error=false) { const e=$('#feedback'); e.textContent=message;e.className=error?'error':'';e.hidden=false; }
 function modalError(message) { let e=$('.dialog-error',dialog);if(!e){e=document.createElement('div');e.className='dialog-error';e.setAttribute('role','alert');dialogBody.append(e);}e.textContent=message;e.scrollIntoView({block:'nearest'}); }
 async function api(path, options={}) {
@@ -61,7 +73,7 @@ function catalog(){
 function catalogResults(){
   const results=$('#catalog-results');if(!results)return;
   const page=state.results.slice(state.offset,state.offset+24);
-  results.innerHTML=`<div class="results-head"><b>${state.results.length} FORMAS NO ARQUIVO</b><span>IDENTIDADE GLOBAL / FICHAS POR JOGO</span></div>`+(page.length?`<div class="catalog-grid">${page.map(p=>`<article class="pokemon-card"><div class="card-art"><span class="card-number">Nº ${esc(String(p.numero_nacional).padStart(4,'0'))}</span>${p.imagem_url?`<img class="pokemon-art" src="${esc(p.imagem_url)}" alt="" loading="lazy" referrerpolicy="no-referrer">`:`<span class="catalog-letter" aria-hidden="true">✦</span>`}<span class="card-category">REGISTRO DE FORMA</span></div><div class="card-body"><h2>${esc(p.nome_pt)}</h2><p class="form-code">${esc(p.codigo_forma||p.nome_forma||'Forma ainda não catalogada')}</p><div class="card-foot">${tag(p.fichas.length?p.fichas.length+' ficha(s) de jogo':'Sem ficha de jogo',!p.fichas.length)}<button data-form="${p.id_forma||''}" ${!p.id_forma?'disabled':''}>Explorar ↗</button></div></div></article>`).join('')}</div><div class="pagination"><button id="prev" ${state.offset===0?'disabled':''}>← Anterior</button><span>${Math.floor(state.offset/24)+1} / ${Math.ceil(state.results.length/24)}</span><button id="next" ${state.offset+24>=state.results.length?'disabled':''}>Próxima →</button></div>`:empty('Nenhuma forma encontrada.','Tente outro nome, número ou código. Filtros por jogo e tipo exigem uma ficha contextual conhecida.'));
+  results.innerHTML=`<div class="results-head"><b>${state.results.length} FORMAS NO ARQUIVO</b><span>IDENTIDADE GLOBAL / FICHAS POR JOGO</span></div>`+(page.length?`<div class="catalog-grid">${page.map(p=>`<article class="pokemon-card"><div class="card-art"><span class="card-number">Nº ${esc(String(p.numero_nacional).padStart(4,'0'))}</span>${p.imagem_url?`<img class="pokemon-art" src="${esc(p.imagem_url)}" alt="" loading="lazy" referrerpolicy="no-referrer">`:`<span class="catalog-letter" aria-hidden="true">✦</span>`}<span class="card-category">REGISTRO DE FORMA</span></div><div class="card-body"><h2>${esc(p.nome_pt)}</h2><p class="form-code">${esc(p.codigo_forma||p.nome_forma||'Forma ainda não catalogada')}</p><div class="card-foot">${tag(p.fichas.length?p.fichas.length+' ficha(s) de jogo':'Sem ficha de jogo',!p.fichas.length)}<button data-form="${p.id_forma||''}" aria-label="Explorar ${esc(p.nome_pt)}: ${esc(p.codigo_forma||p.nome_forma||'forma não catalogada')}" ${!p.id_forma?'disabled':''}>Explorar ↗</button></div></div></article>`).join('')}</div><div class="pagination"><button id="prev" ${state.offset===0?'disabled':''}>← Anterior</button><span>${Math.floor(state.offset/24)+1} / ${Math.ceil(state.results.length/24)}</span><button id="next" ${state.offset+24>=state.results.length?'disabled':''}>Próxima →</button></div>`:empty('Nenhuma forma encontrada.','Tente outro nome, número ou código. Filtros por jogo e tipo exigem uma ficha contextual conhecida.'));
   $$('.pokemon-art',results).forEach(img=>img.onerror=()=>{const icon=document.createElement('span');icon.className='catalog-letter';icon.setAttribute('aria-hidden','true');icon.textContent='✦';img.replaceWith(icon);});
   $$('[data-form]',results).forEach(b=>b.onclick=()=>detail(Number(b.dataset.form)));
   for(const [id,step] of [['prev',-24],['next',24]]){const b=$('#'+id);if(b)b.onclick=()=>{state.offset+=step;catalogResults();$('#filters').scrollIntoView({block:'start'});};}

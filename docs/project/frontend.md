@@ -11,11 +11,11 @@ Arquivos:
 - [JavaScript](../../backend/pokeanalyzer/static/app.js)
 - [Factory e rota inicial](../../backend/pokeanalyzer/__init__.py)
 
-## Verificação e limite atual
+## Primeira tentativa de verificação — histórico
 
 Rotas, operações e contratos são exercitados pelos testes de integração Flask. Há teste de renderização do template, entrega dos assets e cobertura. A demonstração contextual cria dados FIXTURE claramente identificados. O catálogo real offline foi carregado sem inventar fichas.
 
-**A verificação visual e ponta a ponta no navegador não foi concluída.** O ambiente bloqueou a abertura de socket para o servidor local (`PermissionError: Operation not permitted`) e o navegador Brave encerrou por bloqueio de IPC/rede (`setsockopt: Operation not permitted`). Não foi solicitado relaxamento das permissões. Nenhum screenshot ou teste de navegador é alegado como evidência.
+**Na primeira tentativa**, a verificação visual e ponta a ponta no navegador não foi concluída. O ambiente bloqueou a abertura de socket para o servidor local (`PermissionError: Operation not permitted`) e o navegador Brave encerrou por bloqueio de IPC/rede (`setsockopt: Operation not permitted`). As tentativas posteriores usaram permissão para um servidor local e estão registradas abaixo.
 
 Para concluir em ambiente com navegador e servidor local:
 
@@ -53,3 +53,9 @@ Em 15/11/2026, o fluxo Yellow passou novamente com quatro DVs, Stat Experience 6
 Em 16/11/2026, Brave com Flask e banco temporário mostrou as cinco estatísticas de Magnemite Yellow (HP 25, Especial 95, Velocidade 45) e Chansey Yellow (HP 250, Especial 105), com fontes e sem exibir os campos especiais modernos. Não houve exceções JavaScript. A primeira execução encerrou prematuramente a conexão do próprio roteiro por indentação; corrigida e repetida com sucesso.
 
 Em 16/11/2026, Brave com servidor Flask e banco temporário também verificou os novos detalhes de obtenção: Pidgey em Let’s Go mostrou encontro selvagem e habilidades não aplicáveis; Pikachu em Yellow mostrou presente, sem indicação de encontro selvagem; Togepi em Gold mostrou ovo. As fontes estavam visíveis e não houve exceções JavaScript. Isso não substitui a revisão completa de teclado e contraste.
+
+## Acessibilidade e apresentação — 16/11/2026
+
+No Brave com Flask e banco temporário, foram inspecionadas imagens em 1440×900 e 390×844; o catálogo não apresentou transbordamento horizontal da página nessas dimensões. A primeira medição de contraste dos textos visíveis identificou falhas em navegação, metadados de cartões e etiquetas; as cores foram ajustadas e a repetição, assim como as telas públicas de coleção, perfis, análise, regulamentos e o diálogo de conta, não apontou falhas entre os textos examinados. A medição usa estilos computados e fundos opacos; não cobre todas as combinações de imagem, transparência, foco, erro ou dados privados e não equivale a uma auditoria WCAG completa.
+
+Com eventos reais de teclado, Tab alcançou navegação, conta, filtros e cartões; Enter abriu a conta e os detalhes de Bulbasaur; Escape fechou os diálogos e devolveu o foco ao controle de origem. O foco agora circula dentro do diálogo ao chegar ao primeiro/último controle. Os botões de catálogo têm nomes acessíveis com espécie e código da forma. O roteiro não percorreu todos os formulários privados por teclado; essa verificação e uma revisão com leitor de tela continuam pendentes. Não houve exceções JavaScript nas verificações.
