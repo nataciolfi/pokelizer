@@ -61,3 +61,5 @@ No Brave com Flask e banco temporário, foram inspecionadas imagens em 1440×900
 Com eventos reais de teclado, Tab alcançou navegação, conta, filtros e cartões; Enter abriu a conta e os detalhes de Bulbasaur; Escape fechou os diálogos e devolveu o foco ao controle de origem. O foco agora circula dentro do diálogo ao chegar ao primeiro/último controle. Os botões de catálogo têm nomes acessíveis com espécie e código da forma. O roteiro não percorreu todos os formulários privados por teclado; essa verificação e uma revisão com leitor de tela continuam pendentes. Não houve exceções JavaScript nas verificações.
 
 Em 16/11/2026, a consulta no Brave de Sprigatito em Scarlet e Fuecoco em Violet exibiu tipos, estatísticas, presente e fontes, sem exceções JavaScript. Outros registros dessas versões ainda necessitam de fontes específicas.
+
+Em 16/11/2026, o Brave exibiu nas fichas Stonjourner Scarlet e Ceruledge Violet o método de incursão, o aviso de evento encerrado, período em UTC e fonte, sem exceções JavaScript.

@@ -213,3 +213,11 @@ Banco vazio aplicou `[1, 2, 3, 4]`; duas cargas produziram relatórios idêntico
 No Brave com Flask e banco temporário, Sprigatito Scarlet e Fuecoco Violet exibiram tipo, estatísticas, método de presente e fontes, sem exceções JS. Servidor e navegador temporários foram encerrados. A disponibilidade das demais espécies em cada versão continua desconhecida; uma fonte conjunta sem distinção por versão não é suficiente.
 
 Próximo passo: publicar este marco e seguir com cobertura contextual específica e acessibilidade dos formulários privados. Não declarar o projeto concluído.
+
+### Evento histórico Scarlet/Violet — 16/11/2026
+
+O marco dos iniciais foi publicado em `6f8869f9776e749fab40d7981b15b6cbafb2313a`, com árvore local e remota idênticas; a tag local `final-session-history-2026-11-16-04` preserva o commit anterior à sincronização. Fonte oficial do Poké Portal registra Stonjourner, Eiscue, Armarouge e Ceruledge nas duas versões em incursões Teracristal de cinco estrelas entre 18/10/2024 00:00 e 20/10/2024 23:59 UTC. Foram criadas oito fichas com método e período explícitos: o evento está encerrado e não comprova disponibilidade atual ou legalidade completa. A forma temporária `eiscue-noice` não recebe ficha; tipos e estatísticas vêm separadamente do snapshot PokéAPI. Fichas preexistentes não são substituídas.
+
+Banco vazio aplicou `[1, 2, 3, 4]`; duas cargas geraram relatórios idênticos, `integrity_check=ok` e `foreign_key_check` vazio. São 7.470 fichas, 35 mecânicas e 617 avaliações condicionais. Scarlet e Violet têm sete fichas por versão, quatro delas do evento encerrado. `PYTHONPATH=/home/Danilo/tools/python:backend python tools/check_stage2.py` passou 104 testes, SQL, modelos, UML, links e demonstração. Após acrescentar a contagem por jogo ao relatório, o teste direcionado do evento passou novamente: ele verifica versões, forma padrão, não inclusão da forma de batalha, fontes, datas e repetição. No Brave com Flask e banco temporário, Stonjourner Scarlet e Ceruledge Violet mostraram o método, aviso de encerramento, período e fonte, sem exceções JS. Servidor e navegador temporários foram encerrados.
+
+Próximo passo: publicar; ampliar contextos por versão a partir de fontes reproduzíveis e verificadas, completar regulamentos/perfis e terminar revisão dos formulários privados por teclado. Não declarar o projeto concluído.

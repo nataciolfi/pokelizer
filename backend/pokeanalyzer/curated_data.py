@@ -9,6 +9,7 @@ SERIES_14_SOURCE = 'https://www.pokemon.com/us/pokemon-news/pokemon-sword-and-po
 DRAGAPULT_SOURCE = 'https://www.vgcguide.com/ev-training'
 ABILITY_SOURCE = 'https://bulbapedia.bulbagarden.net/wiki/Ability'
 SV_STARTER_SOURCE = 'https://press.pokemon.com/en-CA/POKEMON-ANNOUNCES-NEW-VIDEO-GAMES-POKEMON-SCARLET-AND-POKEMON-VIOLET-'
+SV_RAID_SOURCE = 'https://sv-news.pokemon.co.jp/en/page/261.html'
 SV_DATE = '2026-11-16'
 HISTORICAL_DATE = '2026-11-15'
 # Curated historical core-series versions only. Other games are added explicitly.
@@ -217,6 +218,28 @@ def importar_iniciais_sv(db):
                 (*tuple(row),'Um dos três primeiros parceiros escolhidos no início do jogo.',SV_STARTER_SOURCE,SV_DATE)).lastrowid
             db.execute("""INSERT INTO METODO_FORMA_JOGO(id_dados_forma,id_metodo,condicao,fonte_url,data_verificacao)
                 VALUES(?,?,?,?,?)""",(sheet,method[0],'Escolha de um dos três primeiros parceiros.',SV_STARTER_SOURCE,SV_DATE))
+
+
+def importar_evento_sv(db):
+    """Evento encerrado de 18 a 20/10/2024, documentado para as duas versões."""
+    method=_obter_ou_inserir(db,'METODO_OBTENCAO',{'nome':'Incursão Teracristal de evento'},
+        {'descricao':'Encontro em incursão Teracristal de evento; consulte o período e as condições.'},['descricao'])
+    condition=('Evento encerrado: 18/10/2024 00:00 a 20/10/2024 23:59 UTC; '
+               'incursão de cinco estrelas em Paldea. Condições adicionais na fonte.')
+    for game in ('scarlet','violet'):
+        for number,code in ((874,'stonjourner'),(875,'eiscue-ice'),(936,'armarouge'),(937,'ceruledge')):
+            row=db.execute("""SELECT f.id_forma,j.id_jogo FROM FORMA f JOIN ESPECIE e USING(id_especie)
+                CROSS JOIN JOGO j WHERE e.numero_nacional=? AND f.codigo_forma=? AND f.forma_padrao=1
+                AND f.estado_forma!='temporario' AND j.codigo_versao_pokeapi=?""",(number,code,game)).fetchone()
+            if not row:
+                raise ValueError(f'Forma {code} ou versão {game} ausente; carga revertida.')
+            if db.execute('SELECT 1 FROM DADOS_FORMA_JOGO WHERE id_forma=? AND id_jogo=?',tuple(row)).fetchone():
+                continue
+            sheet=db.execute("""INSERT INTO DADOS_FORMA_JOGO(id_forma,id_jogo,status_presenca,pode_ser_registrada,
+                motivo_registro,fonte_url,data_verificacao) VALUES (?,?,'nativa','sim',?,?,?)""",
+                (*tuple(row),'Forma registrável no evento histórico especificado; não confirma disponibilidade atual.',SV_RAID_SOURCE,SV_DATE)).lastrowid
+            db.execute("""INSERT INTO METODO_FORMA_JOGO(id_dados_forma,id_metodo,condicao,fonte_url,data_verificacao)
+                VALUES(?,?,?,?,?)""",(sheet,method['id_metodo'],condition,SV_RAID_SOURCE,SV_DATE))
 
 
 def importar_perfis_dragapult(db):

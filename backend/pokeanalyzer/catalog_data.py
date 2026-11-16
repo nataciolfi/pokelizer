@@ -100,12 +100,13 @@ def importar_catalogo(directory=SNAPSHOT):
                 db.execute('INSERT INTO JOGO(nome,geracao,fonte_url,data_verificacao,codigo_versao_pokeapi) VALUES(?,?,?,?,?)',
                     (display, generation, source, date, r['identifier']))
         importar_encontros(db, data, manifest)
-        from .curated_data import importar_mecanicas_swsh, importar_mecanicas_historicas, importar_mecanicas_anteriores, importar_dragapult, importar_iniciais_sv
+        from .curated_data import importar_mecanicas_swsh, importar_mecanicas_historicas, importar_mecanicas_anteriores, importar_dragapult, importar_iniciais_sv, importar_evento_sv
         importar_mecanicas_swsh(db, data)
         importar_mecanicas_historicas(db, data)
         importar_mecanicas_anteriores(db, data)
         importar_dragapult(db)
         importar_iniciais_sv(db)
+        importar_evento_sv(db)
         from .contextual_data import importar_contextos_por_geracao
         importar_contextos_por_geracao(db, data, manifest)
         from .curated_data import importar_regulamento_swsh
@@ -180,7 +181,7 @@ def importar_encontros(db, data, manifest):
                        (cursor.lastrowid,method_ids[group],condition,source,date))
 
 def cobertura(directory=SNAPSHOT):
-    from .curated_data import DRAGAPULT_SOURCE, SV_STARTER_SOURCE
+    from .curated_data import DRAGAPULT_SOURCE, SV_STARTER_SOURCE, SV_RAID_SOURCE
     manifest, data = ler_snapshot(directory)
     db = get_db()
     counts = {t: db.execute(f'SELECT count(*) FROM {t}').fetchone()[0] for t in
@@ -210,6 +211,8 @@ def cobertura(directory=SNAPSHOT):
             WHERE mf.id_dados_forma=d.id_dados_forma AND mo.nome='Presente no jogo') THEN 1 ELSE 0 END) AS fichas_metodo_presente,
         SUM(CASE WHEN EXISTS (SELECT 1 FROM METODO_FORMA_JOGO mf JOIN METODO_OBTENCAO mo USING(id_metodo)
             WHERE mf.id_dados_forma=d.id_dados_forma AND mo.nome='Ovo recebido no jogo') THEN 1 ELSE 0 END) AS fichas_metodo_ovo,
+        SUM(CASE WHEN EXISTS (SELECT 1 FROM METODO_FORMA_JOGO mf JOIN METODO_OBTENCAO mo USING(id_metodo)
+            WHERE mf.id_dados_forma=d.id_dados_forma AND mo.nome='Incursão Teracristal de evento') THEN 1 ELSE 0 END) AS fichas_metodo_evento_sv,
         (SELECT COUNT(*) FROM MECANICA_JOGO m WHERE m.id_jogo=j.id_jogo) AS mecanicas,
         (SELECT COUNT(*) FROM MECANICA_JOGO m WHERE m.id_jogo=j.id_jogo AND m.versao='regras-parciais-documentadas') AS mecanicas_parciais,
         (SELECT COUNT(*) FROM MECANICA_JOGO m WHERE m.id_jogo=j.id_jogo AND NOT EXISTS
@@ -226,9 +229,10 @@ def cobertura(directory=SNAPSHOT):
         'pendencias': ['Fichas e presença por jogo', 'Tipos, habilidades e atributos históricos para contextos ainda não importados',
                       'Mecânicas e limites para versões ainda não contempladas', 'Outros regulamentos, formas e elegibilidades com fontes específicas',
                       'Outros perfis de referência competitiva verificados'],
-        'fichas_outras_fontes_preservadas': db.execute("SELECT count(*) FROM DADOS_FORMA_JOGO WHERE fonte_url IS NULL OR fonte_url NOT IN (?,?,?)", (manifest['files']['encounters.csv.gz']['url'],DRAGAPULT_SOURCE,SV_STARTER_SOURCE)).fetchone()[0],
+        'fichas_outras_fontes_preservadas': db.execute("SELECT count(*) FROM DADOS_FORMA_JOGO WHERE fonte_url IS NULL OR fonte_url NOT IN (?,?,?,?)", (manifest['files']['encounters.csv.gz']['url'],DRAGAPULT_SOURCE,SV_STARTER_SOURCE,SV_RAID_SOURCE)).fetchone()[0],
         'fichas_dragapult_guia_vgc': db.execute('SELECT count(*) FROM DADOS_FORMA_JOGO WHERE fonte_url=?',(DRAGAPULT_SOURCE,)).fetchone()[0],
         'fichas_iniciais_scarlet_violet': db.execute('SELECT count(*) FROM DADOS_FORMA_JOGO WHERE fonte_url=?',(SV_STARTER_SOURCE,)).fetchone()[0],
+        'fichas_evento_sv_2024': db.execute('SELECT count(*) FROM DADOS_FORMA_JOGO WHERE fonte_url=?',(SV_RAID_SOURCE,)).fetchone()[0],
         'perfis_referencia_guia_vgc': db.execute("SELECT count(*) FROM PERFIL_ANALISE WHERE tipo_perfil='referencia_competitiva' AND fonte_url=?",(DRAGAPULT_SOURCE,)).fetchone()[0],
         'jogos_legados_identidade_ambigua': db.execute("SELECT count(*) FROM JOGO WHERE codigo_versao_pokeapi IS NULL AND nome COLLATE NOCASE IN ('Red','Blue')").fetchone()[0],
         'fichas_tipos_com_fonte': db.execute("SELECT count(*) FROM DADOS_FORMA_JOGO WHERE fonte_tipos IS NOT NULL").fetchone()[0],

@@ -714,3 +714,28 @@ def test_scarlet_starter_reimport_preserves_prior_context(app):
         assert tuple(saved)==('https://example.invalid/fixture-curada',42)
         assert report['fichas_iniciais_scarlet_violet']==5
         assert report['fichas_outras_fontes_preservadas']>=1
+
+
+def test_official_sv_historical_raid_is_dated_and_does_not_create_battle_form(app, client):
+    from pokeanalyzer.curated_data import SV_RAID_SOURCE
+    with app.app_context():
+        report=importar_catalogo()
+        assert report['fichas_evento_sv_2024']==8
+        games={g['codigo_versao_pokeapi']:g for g in report['cobertura_por_jogo']}
+        assert games['scarlet']['fichas_metodo_evento_sv']==games['violet']['fichas_metodo_evento_sv']==4
+        db=get_db()
+        rows=db.execute("""SELECT d.id_dados_forma,f.codigo_forma,j.codigo_versao_pokeapi
+            FROM DADOS_FORMA_JOGO d JOIN FORMA f USING(id_forma) JOIN JOGO j USING(id_jogo)
+            WHERE d.fonte_url=?""",(SV_RAID_SOURCE,)).fetchall()
+        assert {(r['codigo_forma'],r['codigo_versao_pokeapi']) for r in rows}=={
+            (form,version) for form in ('stonjourner','eiscue-ice','armarouge','ceruledge')
+            for version in ('scarlet','violet')}
+        assert not db.execute("""SELECT 1 FROM DADOS_FORMA_JOGO d JOIN FORMA f USING(id_forma)
+            WHERE d.fonte_url=? AND f.codigo_forma='eiscue-noice'""",(SV_RAID_SOURCE,)).fetchone()
+        assert importar_catalogo()==report
+    for row in rows:
+        detail=client.get('/api/pokemon/'+str(row['id_dados_forma'])).json
+        method=detail['metodos'][0]
+        assert method['nome']=='Incursão Teracristal de evento' and method['fonte_url']==SV_RAID_SOURCE
+        assert 'Evento encerrado' in method['condicao'] and '20/10/2024 23:59 UTC' in method['condicao']
+        assert detail['fonte_tipos'] and detail['fonte_estatisticas']

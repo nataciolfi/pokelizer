@@ -1,6 +1,6 @@
 """Generation histories for independently sourced, unambiguous game sheets."""
 from collections import defaultdict
-from .curated_data import _obter_ou_inserir, DRAGAPULT_SOURCE, SV_STARTER_SOURCE, SV_DATE
+from .curated_data import _obter_ou_inserir, DRAGAPULT_SOURCE, SV_STARTER_SOURCE, SV_RAID_SOURCE, SV_DATE
 
 CONTEXT_DATE = '2026-11-15'
 # Groups with the six-stat system and/or abilities. Generation I has one
@@ -69,9 +69,9 @@ def importar_contextos_por_geracao(db, data, manifest):
     attrs = {'1':'hp_base','2':'ataque_base','3':'defesa_base','4':'ataque_especial_base','5':'defesa_especial_base','6':'velocidade_base'}
     sheets = db.execute("""SELECT d.*,e.numero_nacional,f.codigo_forma,j.codigo_versao_pokeapi FROM DADOS_FORMA_JOGO d
         JOIN FORMA f USING(id_forma) JOIN ESPECIE e USING(id_especie) JOIN JOGO j USING(id_jogo)
-        WHERE d.fonte_url IN (?,?,?)""", (encounter_source,DRAGAPULT_SOURCE,SV_STARTER_SOURCE)).fetchall()
+        WHERE d.fonte_url IN (?,?,?,?)""", (encounter_source,DRAGAPULT_SOURCE,SV_STARTER_SOURCE,SV_RAID_SOURCE)).fetchall()
     for sheet in sheets:
-        context_date = SV_DATE if sheet['fonte_url'] == SV_STARTER_SOURCE else CONTEXT_DATE
+        context_date = SV_DATE if sheet['fonte_url'] in (SV_STARTER_SOURCE,SV_RAID_SOURCE) else CONTEXT_DATE
         group = versions.get(sheet['codigo_versao_pokeapi'])
         if not group or group['identifier'] not in STANDARD_GROUPS | TYPE_ONLY_GROUPS:
             continue
