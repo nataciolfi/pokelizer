@@ -10,6 +10,8 @@ DRAGAPULT_SOURCE = 'https://www.vgcguide.com/ev-training'
 ABILITY_SOURCE = 'https://bulbapedia.bulbagarden.net/wiki/Ability'
 SV_STARTER_SOURCE = 'https://press.pokemon.com/en-CA/POKEMON-ANNOUNCES-NEW-VIDEO-GAMES-POKEMON-SCARLET-AND-POKEMON-VIOLET-'
 SV_RAID_SOURCE = 'https://sv-news.pokemon.co.jp/en/page/261.html'
+LGPE_PARTNER_SOURCE = ('https://bulbapedia.bulbagarden.net/w/index.php?title=List_of_in-game_event_Pok%C3%A9mon_in_Pok%C3%A9mon:'
+                       '_Let%27s_Go,_Pikachu!_and_Let%27s_Go,_Eevee!&oldid=4559684')
 SV_DATE = '2026-11-16'
 HISTORICAL_DATE = '2026-11-15'
 # Curated historical core-series versions only. Other games are added explicitly.
@@ -240,6 +242,26 @@ def importar_evento_sv(db):
                 (*tuple(row),'Forma registrável no evento histórico especificado; não confirma disponibilidade atual.',SV_RAID_SOURCE,SV_DATE)).lastrowid
             db.execute("""INSERT INTO METODO_FORMA_JOGO(id_dados_forma,id_metodo,condicao,fonte_url,data_verificacao)
                 VALUES(?,?,?,?,?)""",(sheet,method['id_metodo'],condition,SV_RAID_SOURCE,SV_DATE))
+
+
+def importar_parceiros_lgpe(db):
+    """Os parceiros iniciais são formas distintas de Pikachu e Eevee comuns."""
+    method=db.execute("SELECT id_metodo FROM METODO_OBTENCAO WHERE nome='Presente no jogo'").fetchone()
+    if not method:
+        raise ValueError('Método de presente não encontrado; carga revertida.')
+    for game,number,form in (('lets-go-pikachu',25,'pikachu-starter'),('lets-go-eevee',133,'eevee-starter')):
+        row=db.execute("""SELECT f.id_forma,j.id_jogo FROM FORMA f JOIN ESPECIE e USING(id_especie)
+            CROSS JOIN JOGO j WHERE e.numero_nacional=? AND f.codigo_forma=?
+            AND f.estado_forma!='temporario' AND j.codigo_versao_pokeapi=?""",(number,form,game)).fetchone()
+        if not row:
+            raise ValueError(f'Parceiro {form} ou versão {game} ausente; carga revertida.')
+        if db.execute('SELECT 1 FROM DADOS_FORMA_JOGO WHERE id_forma=? AND id_jogo=?',tuple(row)).fetchone():
+            continue
+        sheet=db.execute("""INSERT INTO DADOS_FORMA_JOGO(id_forma,id_jogo,status_presenca,pode_ser_registrada,
+            motivo_registro,fonte_url,data_verificacao) VALUES (?,?,'nativa','sim',?,?,?)""",
+            (*tuple(row),'Parceiro inicial exclusivo desta versão, distinto da forma comum.',LGPE_PARTNER_SOURCE,SV_DATE)).lastrowid
+        db.execute("""INSERT INTO METODO_FORMA_JOGO(id_dados_forma,id_metodo,condicao,fonte_url,data_verificacao)
+            VALUES(?,?,?,?,?)""",(sheet,method[0],'Primeiro parceiro desta versão; não evolui nem pode ser transferido a outros jogos.',LGPE_PARTNER_SOURCE,SV_DATE))
 
 
 def importar_perfis_dragapult(db):

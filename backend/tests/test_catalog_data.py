@@ -499,6 +499,8 @@ def test_real_extended_encounters_distinguish_gifts_eggs_and_wild(app, client):
     assert all(m['fonte_url'].endswith('/encounters.csv') for m in sword['metodos'])
     letsgo=details(pidgey)
     assert letsgo['estado_sistema_habilidades']=='nao_aplicavel' and not letsgo['habilidades']
+    assert letsgo['tipos']==['Normal','Flying'] and letsgo['fonte_tipos']
+    assert letsgo['fonte_estatisticas'] is None and letsgo['hp_base'] is None
     assert any(m['nome']=='Encontro selvagem' for m in letsgo['metodos'])
     assert [m['nome'] for m in details(gifted)['metodos']]==['Presente no jogo']
     assert [m['nome'] for m in details(egg)['metodos']]==['Ovo recebido no jogo']
@@ -506,6 +508,21 @@ def test_real_extended_encounters_distinguish_gifts_eggs_and_wild(app, client):
     added=client.post('/api/colecao',headers={'X-CSRF-Token':get_csrf(client)},
         json={'id_dados_forma_atual':gifted,'id_metodo_obtencao':details(gifted)['metodos'][0]['id_metodo'],'apelido':'FIXTURE presente'})
     assert added.status_code==201,added.json
+
+
+def test_lets_go_type_filter_uses_sourced_context_without_inventing_other_stats(app, client):
+    with app.app_context():
+        report=importar_catalogo()
+        db=get_db()
+        game=db.execute("SELECT id_jogo FROM JOGO WHERE codigo_versao_pokeapi='lets-go-pikachu'").fetchone()[0]
+        electric=db.execute("SELECT id_tipo FROM TIPO WHERE nome_tipo='Electric'").fetchone()[0]
+        coverage=next(g for g in report['cobertura_por_jogo'] if g['codigo_versao_pokeapi']=='lets-go-pikachu')
+        assert coverage['tipos_com_fonte']==coverage['fichas']-1>0  # Parceiro é forma própria, ainda sem essa curadoria.
+        assert coverage['estatisticas_sem_fonte']==coverage['fichas']
+    result=client.get('/api/pokemon',query_string={'busca':'pikachu','tipo':electric,'jogo':game})
+    assert result.status_code==200
+    row=next(p for p in result.json['itens'] if p['codigo_forma']=='pikachu')
+    assert row['fichas'][0]['tipos']==['Electric'] and row['fichas'][0]['fonte_tipos']
 
 
 def test_extended_import_preserves_owned_specimen_and_existing_method_curation(app, client, monkeypatch):
@@ -739,3 +756,55 @@ def test_official_sv_historical_raid_is_dated_and_does_not_create_battle_form(ap
         assert method['nome']=='Incursão Teracristal de evento' and method['fonte_url']==SV_RAID_SOURCE
         assert 'Evento encerrado' in method['condicao'] and '20/10/2024 23:59 UTC' in method['condicao']
         assert detail['fonte_tipos'] and detail['fonte_estatisticas']
+
+
+def test_lets_go_type_reference_tampering_rolls_back_import(app, tmp_path, monkeypatch):
+    import pokeanalyzer.contextual_data as contextual
+    reference=tmp_path/'types.csv'
+    reference.write_text('numero_nacional,tipo_1,tipo_2\n25,Water,\n')
+    monkeypatch.setattr(contextual,'LGPE_TYPES_FILE',reference)
+    with app.app_context():
+        db=get_db()
+        before=db.execute('SELECT count(*) FROM ESPECIE').fetchone()[0]
+        with pytest.raises(ValueError,match='Referência de tipos'):
+            importar_catalogo()
+        assert db.execute('SELECT count(*) FROM ESPECIE').fetchone()[0]==before
+        assert not db.execute('PRAGMA foreign_key_check').fetchall()
+
+
+def test_lets_go_partner_forms_are_distinct_and_old_ambiguous_links_are_preserved(app, client):
+    from test_api import create_user, get_csrf
+    from pokeanalyzer.curated_data import LGPE_PARTNER_SOURCE
+    create_user(client)
+    with app.app_context():
+        report=importar_catalogo()
+        assert report['fichas_parceiros_lgpe']==2 and report['vinculos_antigos_parceiro_a_revisar']==0
+        db=get_db()
+        def sheet(form,game):
+            return db.execute("""SELECT d.id_dados_forma FROM DADOS_FORMA_JOGO d JOIN FORMA f USING(id_forma)
+                JOIN JOGO j USING(id_jogo) WHERE f.codigo_forma=? AND j.codigo_versao_pokeapi=?""",(form,game)).fetchone()[0]
+        regular=sheet('pikachu','lets-go-pikachu');partner=sheet('pikachu-starter','lets-go-pikachu')
+        eevee=sheet('eevee-starter','lets-go-eevee')
+        gift=db.execute("SELECT id_metodo FROM METODO_OBTENCAO WHERE nome='Presente no jogo'").fetchone()[0]
+    details=client.get('/api/pokemon/'+str(regular)).json
+    assert [m['nome'] for m in details['metodos']]==['Encontro selvagem']
+    for ident in (partner,eevee):
+        detail=client.get('/api/pokemon/'+str(ident)).json
+        assert detail['fonte_url']==LGPE_PARTNER_SOURCE and detail['estado_sistema_habilidades']=='nao_aplicavel'
+        assert detail['metodos'][0]['nome']=='Presente no jogo' and 'não evolui' in detail['metodos'][0]['condicao']
+        assert 'nem pode ser transferido' in detail['metodos'][0]['condicao']
+    created=client.post('/api/colecao',headers={'X-CSRF-Token':get_csrf(client)},
+        json={'id_dados_forma_atual':regular,'id_metodo_obtencao':gift,'apelido':'FIXTURE legado'})
+    assert created.status_code==201
+    with app.app_context():
+        db=get_db()
+        old_source='https://raw.githubusercontent.com/PokeAPI/pokeapi/8a92bfa7dab2f12b84b5d151562f9857c133ff30/data/v2/csv/encounters.csv'
+        db.execute("""INSERT INTO METODO_FORMA_JOGO(id_dados_forma,id_metodo,condicao,fonte_url,data_verificacao)
+            VALUES(?,?,'FIXTURE vínculo preservado',?,'2026-11-13')""",(regular,gift,old_source))
+        db.commit()
+        assert importar_catalogo()['vinculos_antigos_parceiro_a_revisar']==1
+        assert db.execute('SELECT condicao FROM METODO_FORMA_JOGO WHERE id_dados_forma=? AND id_metodo=?',(regular,gift)).fetchone()[0]=='FIXTURE vínculo preservado'
+    regular_detail=client.get('/api/pokemon/'+str(regular)).json
+    warning=next(m for m in regular_detail['metodos'] if m['nome']=='Presente no jogo')
+    assert warning['estado_verificacao']=='nao_verificado' and 'forma distinta' in warning['condicao']
+    assert client.get('/api/colecao/'+str(created.json['id_pokemon_colecao'])).json['apelido']=='FIXTURE legado'

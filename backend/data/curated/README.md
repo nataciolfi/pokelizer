@@ -1,0 +1,7 @@
+# Dados de referência curados
+
+`lgpe-default-types.csv` contém números nacionais e um ou dois tipos das formas padrão listadas para Pokémon: Let's Go, Pikachu! e Let's Go, Eevee!. É uma extração dos dados da [lista da Bulbapedia, revisão 4566084](https://bulbapedia.bulbagarden.net/w/index.php?title=List_of_Pok%C3%A9mon_in_Pok%C3%A9mon:_Let%27s_Go,_Pikachu!_and_Let%27s_Go,_Eevee!&oldid=4566084), consultada em 16/11/2026. O arquivo foi reduzido aos três campos necessários; não representa disponibilidade por versão, condições de obtenção, outras formas ou estatísticas. São 153 espécies: 1–151, 808 e 809.
+
+A [política da Bulbapedia](https://bulbapedia.bulbagarden.net/wiki/Bulbapedia:Copyrights) identifica o conteúdo original como Creative Commons Atribuição–NãoComercial–CompartilhaIgual 2.5; esta extração é distribuída sob [CC BY-NC-SA 2.5](https://creativecommons.org/licenses/by-nc-sa/2.5/), com atribuição à Bulbapedia e seus colaboradores. Direitos sobre nomes e personagens Pokémon pertencem aos respectivos titulares.
+
+SHA-256: `acee9b929108c023e8284f2d8756898e502e4ec82f2e630d09bf5d6508a97377`. A carga valida o hash e a lista de espécies. Cada ficha comprovada de forma padrão em Let’s Go recebe tipos da PokéAPI fixada somente quando eles coincidem com esta referência; divergência reverte a transação. A comparação inicial dos 153 registros não teve divergências. Nenhuma ficha de presença é criada a partir desta tabela.

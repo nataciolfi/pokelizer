@@ -1,5 +1,8 @@
 """Generation histories for independently sourced, unambiguous game sheets."""
 from collections import defaultdict
+import csv
+import hashlib
+from pathlib import Path
 from .curated_data import _obter_ou_inserir, DRAGAPULT_SOURCE, SV_STARTER_SOURCE, SV_RAID_SOURCE, SV_DATE
 
 CONTEXT_DATE = '2026-11-15'
@@ -12,6 +15,23 @@ STANDARD_GROUPS = {
     'ultra-sun-ultra-moon', 'sword-shield', 'the-isle-of-armor', 'the-crown-tundra', 'scarlet-violet',
 }
 TYPE_ONLY_GROUPS = {'red-green-japan', 'blue-japan', 'red-blue', 'yellow'}
+LGPE_TYPE_GROUP = 'lets-go-pikachu-lets-go-eevee'
+# Default forms listed for these games were cross-checked against the versioned
+# game-specific list; non-default forms need their own verification.
+LGPE_DEFAULT_SPECIES = frozenset(range(1, 152)) | {808, 809}
+LGPE_TYPES_FILE = Path(__file__).resolve().parents[1] / 'data' / 'curated' / 'lgpe-default-types.csv'
+LGPE_TYPES_SHA256 = 'acee9b929108c023e8284f2d8756898e502e4ec82f2e630d09bf5d6508a97377'
+
+
+def _lgpe_type_reference():
+    content=LGPE_TYPES_FILE.read_bytes()
+    if hashlib.sha256(content).hexdigest()!=LGPE_TYPES_SHA256:
+        raise ValueError('Referência de tipos de Let’s Go alterada; carga revertida.')
+    rows=list(csv.DictReader(content.decode('utf-8').splitlines()))
+    reference={int(r['numero_nacional']):[r['tipo_1']]+([r['tipo_2']] if r['tipo_2'] else []) for r in rows}
+    if len(rows)!=len(reference) or set(reference)!=LGPE_DEFAULT_SPECIES:
+        raise ValueError('Referência de tipos de Let’s Go incompleta ou duplicada; carga revertida.')
+    return reference
 
 
 def _historical_rows(current, past, generation, value_field):
@@ -66,14 +86,17 @@ def importar_contextos_por_geracao(db, data, manifest):
     type_names = {r['type_id']:r['name'] for r in data['type_names.csv'] if r['local_language_id']=='9'}
     ability_names = {r['ability_id']:r['name'] for r in data['ability_names.csv'] if r['local_language_id']=='9'}
     ability_codes = {r['id']:r['identifier'] for r in data['abilities.csv']}
+    lgpe_types = _lgpe_type_reference()
     attrs = {'1':'hp_base','2':'ataque_base','3':'defesa_base','4':'ataque_especial_base','5':'defesa_especial_base','6':'velocidade_base'}
-    sheets = db.execute("""SELECT d.*,e.numero_nacional,f.codigo_forma,j.codigo_versao_pokeapi FROM DADOS_FORMA_JOGO d
+    sheets = db.execute("""SELECT d.*,e.numero_nacional,f.codigo_forma,f.forma_padrao,j.codigo_versao_pokeapi FROM DADOS_FORMA_JOGO d
         JOIN FORMA f USING(id_forma) JOIN ESPECIE e USING(id_especie) JOIN JOGO j USING(id_jogo)
         WHERE d.fonte_url IN (?,?,?,?)""", (encounter_source,DRAGAPULT_SOURCE,SV_STARTER_SOURCE,SV_RAID_SOURCE)).fetchall()
     for sheet in sheets:
         context_date = SV_DATE if sheet['fonte_url'] in (SV_STARTER_SOURCE,SV_RAID_SOURCE) else CONTEXT_DATE
         group = versions.get(sheet['codigo_versao_pokeapi'])
-        if not group or group['identifier'] not in STANDARD_GROUPS | TYPE_ONLY_GROUPS:
+        if not group or group['identifier'] not in STANDARD_GROUPS | TYPE_ONLY_GROUPS | {LGPE_TYPE_GROUP}:
+            continue
+        if group['identifier'] == LGPE_TYPE_GROUP and (not sheet['forma_padrao'] or sheet['numero_nacional'] not in LGPE_DEFAULT_SPECIES):
             continue
         generation = int(group['generation_id'])
         pid = by_form.get((sheet['numero_nacional'],sheet['codigo_forma']))
@@ -83,6 +106,10 @@ def importar_contextos_por_geracao(db, data, manifest):
         eligible = [g for g in past_types[pid] if g >= generation]
         if eligible:
             selected_types = {r['slot']:r for r in past_types[pid][min(eligible)]}
+        if group['identifier'] == LGPE_TYPE_GROUP:
+            observed=[type_names.get(item['type_id']) for _,item in sorted(selected_types.items())]
+            if observed != lgpe_types[sheet['numero_nacional']]:
+                raise ValueError('Divergência nas fontes de tipos de Let’s Go; carga revertida.')
         has_types = db.execute('SELECT 1 FROM TIPO_FORMA_JOGO WHERE id_dados_forma=? LIMIT 1',(sheet['id_dados_forma'],)).fetchone()
         if sheet['status_tipos']=='nao_verificado' and not has_types and sheet['fonte_tipos'] is None and selected_types:
             for slot, item in sorted(selected_types.items()):

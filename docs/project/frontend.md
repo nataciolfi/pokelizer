@@ -63,3 +63,7 @@ Com eventos reais de teclado, Tab alcançou navegação, conta, filtros e cartõ
 Em 16/11/2026, a consulta no Brave de Sprigatito em Scarlet e Fuecoco em Violet exibiu tipos, estatísticas, presente e fontes, sem exceções JavaScript. Outros registros dessas versões ainda necessitam de fontes específicas.
 
 Em 16/11/2026, o Brave exibiu nas fichas Stonjourner Scarlet e Ceruledge Violet o método de incursão, o aviso de evento encerrado, período em UTC e fonte, sem exceções JavaScript.
+
+Em 16/11/2026, Brave com banco temporário filtrou o catálogo por Electric e Let’s Go, Pikachu!, retornou Pikachu e exibiu seu tipo com fonte, mantendo estatísticas-base como não verificadas. Nenhuma exceção JavaScript foi registrada nesse roteiro.
+
+Em 16/11/2026, um banco temporário anterior foi reimportado e o Brave mostrou no Pikachu comum que um vínculo de presente legado exige revisão; a ficha separada do parceiro mostrou suas restrições e fonte. Não houve exceções JavaScript.
