@@ -1,6 +1,6 @@
 """Generation histories for independently sourced, unambiguous game sheets."""
 from collections import defaultdict
-from .curated_data import _obter_ou_inserir, DRAGAPULT_SOURCE
+from .curated_data import _obter_ou_inserir, DRAGAPULT_SOURCE, SV_STARTER_SOURCE, SV_DATE
 
 CONTEXT_DATE = '2026-11-15'
 # Groups with the six-stat system and/or abilities. Generation I has one
@@ -9,7 +9,7 @@ STANDARD_GROUPS = {
     'gold-silver', 'crystal', 'ruby-sapphire', 'emerald', 'firered-leafgreen',
     'diamond-pearl', 'platinum', 'heartgold-soulsilver', 'black-white',
     'black-2-white-2', 'x-y', 'omega-ruby-alpha-sapphire', 'sun-moon',
-    'ultra-sun-ultra-moon', 'sword-shield', 'the-isle-of-armor', 'the-crown-tundra',
+    'ultra-sun-ultra-moon', 'sword-shield', 'the-isle-of-armor', 'the-crown-tundra', 'scarlet-violet',
 }
 TYPE_ONLY_GROUPS = {'red-green-japan', 'blue-japan', 'red-blue', 'yellow'}
 
@@ -69,8 +69,9 @@ def importar_contextos_por_geracao(db, data, manifest):
     attrs = {'1':'hp_base','2':'ataque_base','3':'defesa_base','4':'ataque_especial_base','5':'defesa_especial_base','6':'velocidade_base'}
     sheets = db.execute("""SELECT d.*,e.numero_nacional,f.codigo_forma,j.codigo_versao_pokeapi FROM DADOS_FORMA_JOGO d
         JOIN FORMA f USING(id_forma) JOIN ESPECIE e USING(id_especie) JOIN JOGO j USING(id_jogo)
-        WHERE d.fonte_url IN (?,?)""", (encounter_source,DRAGAPULT_SOURCE)).fetchall()
+        WHERE d.fonte_url IN (?,?,?)""", (encounter_source,DRAGAPULT_SOURCE,SV_STARTER_SOURCE)).fetchall()
     for sheet in sheets:
+        context_date = SV_DATE if sheet['fonte_url'] == SV_STARTER_SOURCE else CONTEXT_DATE
         group = versions.get(sheet['codigo_versao_pokeapi'])
         if not group or group['identifier'] not in STANDARD_GROUPS | TYPE_ONLY_GROUPS:
             continue
@@ -90,7 +91,7 @@ def importar_contextos_por_geracao(db, data, manifest):
                     raise ValueError('Tipo ou slot inesperado no snapshot; carga revertida.')
                 kind = _obter_ou_inserir(db,'TIPO',{'nome_tipo':name},{},[])
                 db.execute('INSERT INTO TIPO_FORMA_JOGO(id_dados_forma,id_tipo,posicao) VALUES(?,?,?)',(sheet['id_dados_forma'],kind['id_tipo'],int(slot)))
-            db.execute("UPDATE DADOS_FORMA_JOGO SET status_tipos='aplicavel',fonte_tipos=?,data_verificacao_tipos=? WHERE id_dados_forma=?",(source,CONTEXT_DATE,sheet['id_dados_forma']))
+            db.execute("UPDATE DADOS_FORMA_JOGO SET status_tipos='aplicavel',fonte_tipos=?,data_verificacao_tipos=? WHERE id_dados_forma=?",(source,context_date,sheet['id_dados_forma']))
         # Generation I has a single sourced Special, never two modern fields.
         if group['identifier'] in TYPE_ONLY_GROUPS:
             old_stats=_historical_rows(current_stats[pid],past_stats[pid],generation,'base_stat')
@@ -99,14 +100,14 @@ def importar_contextos_por_geracao(db, data, manifest):
                 and sheet['fonte_estatisticas'] is None and all(k in old_stats for k in old_attrs) and pid in first_special):
                 db.execute('UPDATE DADOS_FORMA_JOGO SET '+','.join(column+'=?' for column in old_attrs.values())+
                            ',especial_base=?,fonte_estatisticas=?,data_verificacao_estatisticas=? WHERE id_dados_forma=?',
-                    tuple(int(old_stats[k]) for k in old_attrs)+(int(first_special[pid]),source,CONTEXT_DATE,sheet['id_dados_forma']))
+                    tuple(int(old_stats[k]) for k in old_attrs)+(int(first_special[pid]),source,context_date,sheet['id_dados_forma']))
             continue
         if group['identifier'] not in STANDARD_GROUPS:
             continue
         stats = _historical_rows(current_stats[pid],past_stats[pid],generation,'base_stat')
         if all(sheet[column] is None for column in attrs.values()) and sheet['especial_base'] is None and sheet['fonte_estatisticas'] is None and set(stats)==set(attrs):
             db.execute('UPDATE DADOS_FORMA_JOGO SET '+','.join(column+'=?' for column in attrs.values())+',fonte_estatisticas=?,data_verificacao_estatisticas=? WHERE id_dados_forma=?',
-                tuple(int(stats[n]) for n in attrs)+(source,CONTEXT_DATE,sheet['id_dados_forma']))
+                tuple(int(stats[n]) for n in attrs)+(source,context_date,sheet['id_dados_forma']))
         # Generations I and II have no abilities; omission here does not mean zero.
         if generation < 3:
             continue
@@ -122,4 +123,4 @@ def importar_contextos_por_geracao(db, data, manifest):
                 ability = _obter_ou_inserir(db,'HABILIDADE',{'nome':name},{},[])
                 db.execute('''INSERT INTO HABILIDADE_FORMA_JOGO(id_dados_forma,id_habilidade,slot,condicao,fonte_url,data_verificacao)
                     VALUES(?,?,?,?,?,?)''',(sheet['id_dados_forma'],ability['id_habilidade'],'slot-'+slot,
-                    'Habilidade potencial na geração; obtenção nesta versão não comprovada.',source,CONTEXT_DATE))
+                    'Habilidade potencial na geração; obtenção nesta versão não comprovada.',source,context_date))

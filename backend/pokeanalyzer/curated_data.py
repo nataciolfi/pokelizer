@@ -8,9 +8,10 @@ DATE = '2026-11-14'
 SERIES_14_SOURCE = 'https://www.pokemon.com/us/pokemon-news/pokemon-sword-and-pokemon-shield-ranked-battles-november-2022-season-season-36/'
 DRAGAPULT_SOURCE = 'https://www.vgcguide.com/ev-training'
 ABILITY_SOURCE = 'https://bulbapedia.bulbagarden.net/wiki/Ability'
+SV_STARTER_SOURCE = 'https://press.pokemon.com/en-CA/POKEMON-ANNOUNCES-NEW-VIDEO-GAMES-POKEMON-SCARLET-AND-POKEMON-VIOLET-'
+SV_DATE = '2026-11-16'
 HISTORICAL_DATE = '2026-11-15'
-# Curated core-series versions only. Let's Go, spinoffs and later games with
-# distinct systems are deliberately excluded; no mechanical equivalence is inferred.
+# Curated historical core-series versions only. Other games are added explicitly.
 HISTORICAL_GAMES = {
     'ruby':3, 'sapphire':3, 'emerald':3, 'firered':3, 'leafgreen':3,
     'diamond':4, 'pearl':4, 'platinum':4, 'heartgold':4, 'soulsilver':4,
@@ -22,6 +23,7 @@ EARLY_GAMES = {
     'red':1, 'blue':1, 'red-japan':1, 'blue-japan':1, 'green-japan':1, 'yellow':1,
     'gold':2, 'silver':2, 'crystal':2,
 }
+SV_GAMES = {'scarlet':9, 'violet':9}
 STATS = {1: ('hp', 'HP'), 2: ('attack', 'Ataque'), 3: ('defense', 'Defesa'),
          4: ('special-attack', 'Ataque especial'), 5: ('special-defense', 'Defesa especial'), 6: ('speed', 'Velocidade')}
 
@@ -84,15 +86,16 @@ def importar_mecanicas_historicas(db, data):
            for code,_ in STATS.values()]
     systems={code:db.execute('SELECT id_sistema_atributo FROM SISTEMA_ATRIBUTO WHERE codigo=?',(code,)).fetchone()[0]
              for code in ('IV','EV')}
-    for code,generation in HISTORICAL_GAMES.items():
+    for code,generation in (HISTORICAL_GAMES | SV_GAMES).items():
+        verification_date = SV_DATE if code in SV_GAMES else HISTORICAL_DATE
         version=versions.get(code)
         if not version or int(groups[version['version_group_id']]['generation_id'])!=generation:
-            raise ValueError(f'Versão histórica {code} não corresponde à fonte; carga revertida.')
+            raise ValueError(f'Versão {code} não corresponde à fonte; carga revertida.')
         game=db.execute('SELECT id_jogo FROM JOGO WHERE codigo_versao_pokeapi=?',(code,)).fetchone()
         if not game:
             raise ValueError(f'Jogo {code} não identificado; carga revertida.')
         values={'usa_natureza':'sim','usa_habilidade':'sim','usa_nivel':'sim',
-                'nivel_minimo':1,'nivel_maximo':100,'fonte_url':ABILITY_SOURCE,'data_verificacao':HISTORICAL_DATE}
+                'nivel_minimo':1,'nivel_maximo':100,'fonte_url':ABILITY_SOURCE,'data_verificacao':verification_date}
         mechanic=_obter_ou_inserir(db,'MECANICA_JOGO',
             {'id_jogo':game[0],'versao':'regras-gerais-documentadas'},values,
             ['usa_natureza','usa_habilidade','usa_nivel','nivel_minimo','nivel_maximo'])
@@ -100,14 +103,14 @@ def importar_mecanicas_historicas(db, data):
             ('IV',31,None,'nao_aplicavel',IV_SOURCE),
             ('EV',255 if generation<=5 else 252,510,'confirmado',EV_SOURCE)):
             values={'aplicabilidade':'aplicavel','valor_minimo':0,'valor_maximo_atributo':maximum,
-                    'valor_maximo_total':total,'limite_total_status':limit,'fonte_url':source,'data_verificacao':HISTORICAL_DATE}
+                    'valor_maximo_total':total,'limite_total_status':limit,'fonte_url':source,'data_verificacao':verification_date}
             system=_obter_ou_inserir(db,'MECANICA_SISTEMA_ATRIBUTO',
                 {'id_mecanica':mechanic['id_mecanica'],'id_sistema_atributo':systems[system_code]},values,
                 ['aplicabilidade','valor_minimo','valor_maximo_atributo','valor_maximo_total','limite_total_status'])
             for attr in attrs:
                 _obter_ou_inserir(db,'MECANICA_ATRIBUTO',
                     {'id_mecanica_sistema_atributo':system['id_mecanica_sistema_atributo'],'id_atributo':attr},
-                    {'aplicabilidade':'aplicavel','fonte_url':source,'data_verificacao':HISTORICAL_DATE},['aplicabilidade'])
+                    {'aplicabilidade':'aplicavel','fonte_url':source,'data_verificacao':verification_date},['aplicabilidade'])
 
 
 def importar_mecanicas_anteriores(db, data):
@@ -193,6 +196,27 @@ def importar_dragapult(db):
             db.execute("""INSERT INTO DADOS_FORMA_JOGO(id_forma,id_jogo,status_presenca,pode_ser_registrada,
                 motivo_registro,fonte_url,data_verificacao) VALUES (?,?,'nativa','sim',?,?,?)""",
                 (*tuple(row),'Guia descreve treinar Dreepy para evoluir a Dragapult.',DRAGAPULT_SOURCE,DATE))
+
+
+def importar_iniciais_sv(db):
+    """A fonte oficial documenta a escolha de um destes três em cada versão."""
+    method=db.execute("SELECT id_metodo FROM METODO_OBTENCAO WHERE nome='Presente no jogo'").fetchone()
+    if not method:
+        raise ValueError('Método de presente não encontrado; carga revertida.')
+    for game in ('scarlet','violet'):
+        for number,code in ((906,'sprigatito'),(909,'fuecoco'),(912,'quaxly')):
+            row=db.execute("""SELECT f.id_forma,j.id_jogo FROM FORMA f JOIN ESPECIE e USING(id_especie)
+                CROSS JOIN JOGO j WHERE e.numero_nacional=? AND f.codigo_forma=? AND f.forma_padrao=1
+                AND j.codigo_versao_pokeapi=?""",(number,code,game)).fetchone()
+            if not row:
+                raise ValueError(f'Inicial {code} ou versão {game} ausente; carga revertida.')
+            if db.execute('SELECT 1 FROM DADOS_FORMA_JOGO WHERE id_forma=? AND id_jogo=?',tuple(row)).fetchone():
+                continue  # Preserve a pre-existing context and its method curation.
+            sheet=db.execute("""INSERT INTO DADOS_FORMA_JOGO(id_forma,id_jogo,status_presenca,pode_ser_registrada,
+                motivo_registro,fonte_url,data_verificacao) VALUES (?,?,'nativa','sim',?,?,?)""",
+                (*tuple(row),'Um dos três primeiros parceiros escolhidos no início do jogo.',SV_STARTER_SOURCE,SV_DATE)).lastrowid
+            db.execute("""INSERT INTO METODO_FORMA_JOGO(id_dados_forma,id_metodo,condicao,fonte_url,data_verificacao)
+                VALUES(?,?,?,?,?)""",(sheet,method[0],'Escolha de um dos três primeiros parceiros.',SV_STARTER_SOURCE,SV_DATE))
 
 
 def importar_perfis_dragapult(db):

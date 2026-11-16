@@ -253,7 +253,7 @@ def test_historical_real_mechanics_have_distinct_ev_limits_and_contexts(app, cli
     with app.app_context():
         report=importar_catalogo()
         db=get_db()
-        assert report['contagens_banco']['MECANICA_JOGO']==34  # 22 historical, 9 early, 2 SwSh, 1 FIXTURE
+        assert report['contagens_banco']['MECANICA_JOGO']==36  # 22 históricas, 9 antigas, 2 SwSh, 2 SV, 1 FIXTURE
         contexts={}
         for game in ('ruby','x'):
             row=db.execute("""SELECT d.id_dados_forma,m.id_mecanica,ms.id_mecanica_sistema_atributo,
@@ -650,3 +650,67 @@ def test_reference_dragapult_targets_are_sourced_and_no_other_values_inferred(ap
     assert result.status_code==200
     hp=next(x for x in result.json['campos'] if x['sistema']=='EV' and x['atributo']=='hp')
     assert hp['alvo']==4 and hp['real'] is None and hp['estado']=='sem_dado'
+
+
+def test_official_scarlet_violet_starters_have_real_contexts_and_mechanics(app, client):
+    from test_api import create_user, get_csrf
+    from pokeanalyzer.curated_data import SV_STARTER_SOURCE
+    create_user(client)
+    with app.app_context():
+        report=importar_catalogo()
+        assert report['fichas_iniciais_scarlet_violet']==6
+        db=get_db()
+        def sheet(form, version):
+            return db.execute("""SELECT d.id_dados_forma,m.id_mecanica FROM DADOS_FORMA_JOGO d
+                JOIN FORMA f USING(id_forma) JOIN JOGO j USING(id_jogo) JOIN MECANICA_JOGO m USING(id_jogo)
+                WHERE f.codigo_forma=? AND j.codigo_versao_pokeapi=? AND d.fonte_url=?""",
+                (form,version,SV_STARTER_SOURCE)).fetchone()
+        scarlet=sheet('sprigatito','scarlet');violet=sheet('sprigatito','violet')
+        assert scarlet and violet
+        assert all(sheet(form,version) for form in ('sprigatito','fuecoco','quaxly') for version in ('scarlet','violet'))
+        ev=db.execute("""SELECT ms.id_mecanica_sistema_atributo FROM MECANICA_SISTEMA_ATRIBUTO ms
+            JOIN SISTEMA_ATRIBUTO s USING(id_sistema_atributo) WHERE ms.id_mecanica=? AND s.codigo='EV'""",(scarlet['id_mecanica'],)).fetchone()[0]
+        speed=db.execute("SELECT id_atributo FROM ATRIBUTO_BATALHA WHERE codigo='speed'").fetchone()[0]
+    details=client.get('/api/pokemon/'+str(scarlet['id_dados_forma'])).json
+    assert details['tipos']==['Grass'] and details['hp_base']==40 and details['velocidade_base']==65
+    assert details['fonte_url']==SV_STARTER_SOURCE and details['fonte_tipos'] and details['fonte_estatisticas']
+    assert any(m['nome']=='Presente no jogo' and m['fonte_url']==SV_STARTER_SOURCE for m in details['metodos'])
+    headers={'X-CSRF-Token':get_csrf(client)}
+    value={'id_mecanica_sistema_atributo':ev,'id_atributo':speed,'valor':252}
+    body={'id_dados_forma_atual':scarlet['id_dados_forma'],'id_mecanica':scarlet['id_mecanica'],
+          'nivel':50,'valores':[value]}
+    created=client.post('/api/colecao',headers=headers,json=body)
+    assert created.status_code==201, created.json
+    bad=client.post('/api/colecao',headers=headers,json={**body,'valores':[{**value,'valor':253}]})
+    assert bad.status_code==400
+    target={**value,'valor_alvo':4};target.pop('valor')
+    profile=client.post('/api/perfis',headers=headers,json={'id_dados_forma':scarlet['id_dados_forma'],
+        'id_mecanica':scarlet['id_mecanica'],'nome_perfil':'FIXTURE SV','valores':[target]})
+    assert profile.status_code==201, profile.json
+    analysis=client.post('/api/analises',headers=headers,json={'id_pokemon_colecao':created.json['id_pokemon_colecao'],
+        'id_perfil':profile.json['id_perfil']})
+    assert analysis.status_code==200 and any(x['diferenca']==248 for x in analysis.json['campos'])
+    different=client.post('/api/perfis',headers=headers,json={'id_dados_forma':violet['id_dados_forma'],
+        'id_mecanica':violet['id_mecanica'],'nome_perfil':'FIXTURE outra versão'})
+    assert different.status_code==201
+    assert client.post('/api/analises',headers=headers,json={'id_pokemon_colecao':created.json['id_pokemon_colecao'],
+        'id_perfil':different.json['id_perfil']}).status_code==400
+    with app.app_context():
+        assert importar_catalogo()==report
+        assert not get_db().execute('PRAGMA foreign_key_check').fetchall()
+    assert client.get('/api/colecao/'+str(created.json['id_pokemon_colecao'])).status_code==200
+
+
+def test_scarlet_starter_reimport_preserves_prior_context(app):
+    with app.app_context():
+        importar_catalogo()
+        db=get_db()
+        row=db.execute("""SELECT d.id_dados_forma FROM DADOS_FORMA_JOGO d JOIN FORMA f USING(id_forma)
+            JOIN JOGO j USING(id_jogo) WHERE f.codigo_forma='sprigatito' AND j.codigo_versao_pokeapi='scarlet'""").fetchone()
+        db.execute("UPDATE DADOS_FORMA_JOGO SET fonte_url='https://example.invalid/fixture-curada',hp_base=42 WHERE id_dados_forma=?",(row[0],))
+        db.commit()
+        report=importar_catalogo()
+        saved=db.execute('SELECT fonte_url,hp_base FROM DADOS_FORMA_JOGO WHERE id_dados_forma=?',(row[0],)).fetchone()
+        assert tuple(saved)==('https://example.invalid/fixture-curada',42)
+        assert report['fichas_iniciais_scarlet_violet']==5
+        assert report['fichas_outras_fontes_preservadas']>=1
