@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<DIAGRAMA ID="1" TIPO="tpLogico" UniversalUnicID="817B-91-DE63-2D-8A47-74-EA">
+<DIAGRAMA ID="1" TIPO="tpLogico" UniversalUnicID="F93F-5A-13E3-98-4486-13-6E">
     <LogicoLinha ID="7">
         <DisablePainted Valor="false"/>
         <Tag LinhaMestre="-1"/>
@@ -153,7 +153,7 @@
         <Ligacoes PontaA="33" PontaB="32"/>
         <Pontos>
             <Ponto Left="2606" Top="1126"/>
-            <Ponto Left="2187" Top="1467"/>
+            <Ponto Left="2187" Top="1427"/>
         </Pontos>
         <LogicoCardinalidade ID="35">
             <Bounds Height="100" Left="2452" Top="1028" Width="150"/>
@@ -170,7 +170,7 @@
             <Fonte Estilo="0" Nome="SansSerif" Tamanho="15"/>
         </LogicoCardinalidade>
         <LogicoCardinalidade ID="36">
-            <Bounds Height="100" Left="2197" Top="1369" Width="150"/>
+            <Bounds Height="100" Left="2197" Top="1329" Width="150"/>
             <DisablePainted Valor="false"/>
             <Texto>Cardinalidade_8</Texto>
             <Observacao/>
@@ -260,7 +260,7 @@
         <MovimentacaoManual Valor="false"/>
     </Texto>
     <Tabela ID="5">
-        <Bounds Height="470" Left="50" Top="215" Width="540"/>
+        <Bounds Height="405" Left="50" Top="215" Width="540"/>
         <DisablePainted Valor="false"/>
         <Texto>POKEMON_COLECAO</Texto>
         <Observacao/>
@@ -443,7 +443,7 @@
         </Constraints>
     </Tabela>
     <Tabela ID="6">
-        <Bounds Height="290" Left="1010" Top="215" Width="540"/>
+        <Bounds Height="255" Left="1010" Top="215" Width="540"/>
         <DisablePainted Valor="false"/>
         <Texto>HABILIDADE_FORMA_JOGO</Texto>
         <Observacao/>
@@ -688,7 +688,7 @@
         <MovimentacaoManual Valor="false"/>
     </Texto>
     <Tabela ID="14">
-        <Bounds Height="470" Left="1650" Top="215" Width="540"/>
+        <Bounds Height="405" Left="1650" Top="215" Width="540"/>
         <DisablePainted Valor="false"/>
         <Texto>POKEMON_COLECAO</Texto>
         <Observacao/>
@@ -871,7 +871,7 @@
         </Constraints>
     </Tabela>
     <Tabela ID="15">
-        <Bounds Height="290" Left="2610" Top="215" Width="540"/>
+        <Bounds Height="255" Left="2610" Top="215" Width="540"/>
         <DisablePainted Valor="false"/>
         <Texto>NATUREZA</Texto>
         <Observacao/>
@@ -1094,7 +1094,7 @@
         <MovimentacaoManual Valor="false"/>
     </Texto>
     <Tabela ID="23">
-        <Bounds Height="470" Left="50" Top="1115" Width="540"/>
+        <Bounds Height="405" Left="50" Top="1115" Width="540"/>
         <DisablePainted Valor="false"/>
         <Texto>POKEMON_COLECAO</Texto>
         <Observacao/>
@@ -1277,7 +1277,7 @@
         </Constraints>
     </Tabela>
     <Tabela ID="24">
-        <Bounds Height="170" Left="1010" Top="1115" Width="540"/>
+        <Bounds Height="155" Left="1010" Top="1115" Width="540"/>
         <DisablePainted Valor="false"/>
         <Texto>METODO_OBTENCAO</Texto>
         <Observacao/>
@@ -1460,7 +1460,7 @@
         <MovimentacaoManual Valor="false"/>
     </Texto>
     <Tabela ID="32">
-        <Bounds Height="470" Left="1650" Top="1115" Width="540"/>
+        <Bounds Height="405" Left="1650" Top="1115" Width="540"/>
         <DisablePainted Valor="false"/>
         <Texto>POKEMON_COLECAO</Texto>
         <Observacao/>
@@ -1643,7 +1643,7 @@
         </Constraints>
     </Tabela>
     <Tabela ID="33">
-        <Bounds Height="710" Left="2610" Top="1115" Width="540"/>
+        <Bounds Height="630" Left="2610" Top="1115" Width="540"/>
         <DisablePainted Valor="false"/>
         <Texto>DADOS_FORMA_JOGO</Texto>
         <Observacao/>
@@ -1872,6 +1872,16 @@
             <Campo>
                 <Texto>data_verificacao_estatisticas</Texto>
                 <Tipo>TEXT</Tipo>
+                <Complemento/>
+                <Dicionario/>
+                <Observacao/>
+                <Key Valor="false"/>
+                <Fkey Valor="false"/>
+                <Unique Valor="false"/>
+            </Campo>
+            <Campo>
+                <Texto>especial_base</Texto>
+                <Tipo>INTEGER</Tipo>
                 <Complemento/>
                 <Dicionario/>
                 <Observacao/>

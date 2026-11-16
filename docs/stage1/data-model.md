@@ -100,6 +100,7 @@ CHECKs, índices e gatilhos: consultar a definição desta tabela em [schema.sql
 | data_verificacao_tipos | TEXT | sim | — | — |
 | fonte_estatisticas | TEXT | sim | — | — |
 | data_verificacao_estatisticas | TEXT | sim | — | — |
+| especial_base | INTEGER | sim | — | — |
 
 Chaves: PK(id_dados_forma); UNIQUE(id_forma, id_jogo).
 

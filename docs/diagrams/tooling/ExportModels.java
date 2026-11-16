@@ -39,7 +39,7 @@ public class ExportModels {
  }
  static Forma entity(Diagrama d,String name,int x,int y,boolean logical){
   Tab spec=tabs.get(name);
-  if(logical){Tabela t=new Tabela(d);t.setTexto(name);t.setFont(FONT);t.setAutosize(false);t.setGradiente(false);t.setAlfa(0);t.setMostrarConstraints(false);t.SetBounds(x,y,FULL?470:540,80+spec.cols.size()*30);
+  if(logical){Tabela t=new Tabela(d);t.setTexto(name);t.setFont(FONT);t.setAutosize(false);t.setGradiente(false);t.setAlfa(0);t.setMostrarConstraints(false);t.SetBounds(x,y,FULL?470:540,80+spec.cols.size()*25);
    for(Col c:spec.cols){Campo f=new Campo(t);f.setTexto(c.name);f.setTipo(c.type);f.setComplemento(c.nn||c.pk?"NOT NULL":"");f.SetKey(c.pk);f.SetFkey(c.fk);}
    Constraint pk=new Constraint(t);pk.setTipo(Constraint.CONSTRAINT_TIPO.tpPK);pk.setNome("PK_"+name);
    for(Campo c:t.getCampos())if(c.isKey())pk.Add(c,c);

@@ -31,3 +31,7 @@ As visões gerais ainda são densas: vários vínculos percorrem corredores comu
 ## Migração 003 — 15/11/2026
 
 Os modelos brModelo foram regenerados e reabertos após a adição de `JOGO.codigo_versao_pokeapi`: são 26 entidades, 188 campos e 43 relações. As imagens gerais conceitual e lógica e a visão lógica de catálogo foram abertas. A primeira exportação mostrou a borda inferior de DADOS_FORMA_JOGO sobre o cabeçalho de HABILIDADE_FORMA_JOGO no lógico; o espaçamento vertical foi aumentado e ambas as imagens completas foram abertas novamente. As caixas já não se sobrepõem; ainda há linhas compartilhadas e trechos sobre área vazia da caixa lógica, de modo que as pranchas ampliadas continuam necessárias para acompanhar cada vínculo.
+
+## Migração 004 — 16/11/2026
+
+Reabertas visualmente as imagens completas conceitual e lógica e a prancha lógica 01 após acrescentar `especial_base`. A primeira exportação deixou a borda de DADOS_FORMA_JOGO encostada na tabela seguinte e sobre o rodapé da prancha. A altura das caixas lógicas foi reduzida, mantendo os campos visíveis, e as imagens foram reabertas: a caixa e o rodapé ficaram separados e o campo novo está legível na prancha. As visões completas continuam densas, com corredores compartilhados; as pranchas R seguem necessárias para acompanhar as relações individualmente. O carregador oficial reabriu os arquivos nativos e a checagem comparou 26 entidades, 189 campos e 43 relações ao SQL.

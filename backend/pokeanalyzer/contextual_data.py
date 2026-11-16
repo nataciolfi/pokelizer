@@ -45,8 +45,16 @@ def importar_contextos_por_geracao(db, data, manifest):
     for r in data['pokemon_stats.csv']:
         if r['stat_id'] in {'1','2','3','4','5','6'}:
             current_stats[r['pokemon_id']][r['stat_id']] = r
+    special_ids=[r['id'] for r in data['stats.csv'] if r['identifier']=='special']
+    if len(special_ids)!=1:
+        raise ValueError('Identificador de Especial ausente ou ambíguo no snapshot; carga revertida.')
+    first_special={}
     past_stats = defaultdict(lambda: defaultdict(list))
     for r in data['pokemon_stats_past.csv']:
+        if r['stat_id']==special_ids[0] and r['generation_id']=='1':
+            if r['pokemon_id'] in first_special:
+                raise ValueError('Especial histórico duplicado no snapshot; carga revertida.')
+            first_special[r['pokemon_id']]=r['base_stat']
         if r['stat_id'] in {'1','2','3','4','5','6'}:
             past_stats[r['pokemon_id']][r['stat_id']].append(r)
     current_abilities = defaultdict(dict)
@@ -83,11 +91,20 @@ def importar_contextos_por_geracao(db, data, manifest):
                 kind = _obter_ou_inserir(db,'TIPO',{'nome_tipo':name},{},[])
                 db.execute('INSERT INTO TIPO_FORMA_JOGO(id_dados_forma,id_tipo,posicao) VALUES(?,?,?)',(sheet['id_dados_forma'],kind['id_tipo'],int(slot)))
             db.execute("UPDATE DADOS_FORMA_JOGO SET status_tipos='aplicavel',fonte_tipos=?,data_verificacao_tipos=? WHERE id_dados_forma=?",(source,CONTEXT_DATE,sheet['id_dados_forma']))
-        # Do not map Generation I's unified Special stat into two different fields.
+        # Generation I has a single sourced Special, never two modern fields.
+        if group['identifier'] in TYPE_ONLY_GROUPS:
+            old_stats=_historical_rows(current_stats[pid],past_stats[pid],generation,'base_stat')
+            old_attrs={'1':'hp_base','2':'ataque_base','3':'defesa_base','6':'velocidade_base'}
+            if (all(sheet[column] is None for column in attrs.values()) and sheet['especial_base'] is None
+                and sheet['fonte_estatisticas'] is None and all(k in old_stats for k in old_attrs) and pid in first_special):
+                db.execute('UPDATE DADOS_FORMA_JOGO SET '+','.join(column+'=?' for column in old_attrs.values())+
+                           ',especial_base=?,fonte_estatisticas=?,data_verificacao_estatisticas=? WHERE id_dados_forma=?',
+                    tuple(int(old_stats[k]) for k in old_attrs)+(int(first_special[pid]),source,CONTEXT_DATE,sheet['id_dados_forma']))
+            continue
         if group['identifier'] not in STANDARD_GROUPS:
             continue
         stats = _historical_rows(current_stats[pid],past_stats[pid],generation,'base_stat')
-        if all(sheet[column] is None for column in attrs.values()) and sheet['fonte_estatisticas'] is None and set(stats)==set(attrs):
+        if all(sheet[column] is None for column in attrs.values()) and sheet['especial_base'] is None and sheet['fonte_estatisticas'] is None and set(stats)==set(attrs):
             db.execute('UPDATE DADOS_FORMA_JOGO SET '+','.join(column+'=?' for column in attrs.values())+',fonte_estatisticas=?,data_verificacao_estatisticas=? WHERE id_dados_forma=?',
                 tuple(int(stats[n]) for n in attrs)+(source,CONTEXT_DATE,sheet['id_dados_forma']))
         # Generations I and II have no abilities; omission here does not mean zero.

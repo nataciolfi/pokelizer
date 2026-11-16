@@ -150,7 +150,13 @@ def cobertura(directory=SNAPSHOT):
         SUM(CASE WHEN d.fonte_tipos IS NOT NULL THEN 1 ELSE 0 END) AS tipos_com_fonte,
         SUM(CASE WHEN d.fonte_estatisticas IS NOT NULL AND d.hp_base IS NOT NULL AND d.ataque_base IS NOT NULL
             AND d.defesa_base IS NOT NULL AND d.ataque_especial_base IS NOT NULL
-            AND d.defesa_especial_base IS NOT NULL AND d.velocidade_base IS NOT NULL THEN 1 ELSE 0 END) AS seis_estatisticas_com_fonte,
+            AND d.defesa_especial_base IS NOT NULL AND d.velocidade_base IS NOT NULL AND d.especial_base IS NULL THEN 1 ELSE 0 END) AS seis_estatisticas_com_fonte,
+        SUM(CASE WHEN d.fonte_estatisticas IS NOT NULL AND d.hp_base IS NOT NULL AND d.ataque_base IS NOT NULL
+            AND d.defesa_base IS NOT NULL AND d.velocidade_base IS NOT NULL AND d.especial_base IS NOT NULL
+            AND d.ataque_especial_base IS NULL AND d.defesa_especial_base IS NULL AND j.geracao=1
+            THEN 1 ELSE 0 END) AS cinco_estatisticas_especial_unico_com_fonte,
+        SUM(CASE WHEN d.especial_base IS NOT NULL AND (d.ataque_especial_base IS NOT NULL OR d.defesa_especial_base IS NOT NULL)
+            THEN 1 ELSE 0 END) AS fichas_com_sistemas_estatisticos_misturados,
         SUM(CASE WHEN d.id_dados_forma IS NOT NULL AND d.fonte_tipos IS NULL THEN 1 ELSE 0 END) AS tipos_sem_fonte,
         SUM(CASE WHEN d.id_dados_forma IS NOT NULL AND d.fonte_estatisticas IS NULL THEN 1 ELSE 0 END) AS estatisticas_sem_fonte,
         SUM(CASE WHEN EXISTS (SELECT 1 FROM HABILIDADE_FORMA_JOGO h
@@ -177,13 +183,20 @@ def cobertura(directory=SNAPSHOT):
         'jogos_legados_identidade_ambigua': db.execute("SELECT count(*) FROM JOGO WHERE codigo_versao_pokeapi IS NULL AND nome COLLATE NOCASE IN ('Red','Blue')").fetchone()[0],
         'fichas_tipos_com_fonte': db.execute("SELECT count(*) FROM DADOS_FORMA_JOGO WHERE fonte_tipos IS NOT NULL").fetchone()[0],
         'fichas_estatisticas_com_fonte': db.execute("SELECT count(*) FROM DADOS_FORMA_JOGO WHERE fonte_estatisticas IS NOT NULL").fetchone()[0],
+        'fichas_especial_unico_com_fonte': db.execute("""SELECT count(*) FROM DADOS_FORMA_JOGO d JOIN JOGO j USING(id_jogo)
+            WHERE d.fonte_estatisticas IS NOT NULL AND d.hp_base IS NOT NULL AND d.ataque_base IS NOT NULL
+            AND d.defesa_base IS NOT NULL AND d.velocidade_base IS NOT NULL AND d.especial_base IS NOT NULL
+            AND d.ataque_especial_base IS NULL AND d.defesa_especial_base IS NULL AND j.geracao=1""").fetchone()[0],
+        'fichas_com_sistemas_estatisticos_misturados': db.execute("""SELECT count(*) FROM DADOS_FORMA_JOGO
+            WHERE especial_base IS NOT NULL AND (ataque_especial_base IS NOT NULL OR defesa_especial_base IS NOT NULL)""").fetchone()[0],
         'mecanicas_sem_sistemas_registrados': db.execute("SELECT count(*) FROM MECANICA_JOGO m WHERE NOT EXISTS (SELECT 1 FROM MECANICA_SISTEMA_ATRIBUTO s WHERE s.id_mecanica=m.id_mecanica)").fetchone()[0],
         'mecanicas_parciais_identificadas': db.execute("SELECT count(*) FROM MECANICA_JOGO WHERE versao='regras-parciais-documentadas'").fetchone()[0],
         'habilidades_com_fonte': db.execute("SELECT count(*) FROM HABILIDADE_FORMA_JOGO").fetchone()[0],
         'cobertura_por_jogo': games,
         'interpretacao_cobertura': {
             'sem_fonte': 'Não verificado; ausência de ficha ou vínculo não comprova ausência no jogo.',
-            'seis_estatisticas': 'Fonte e seis valores preenchidos; a primeira geração usa Especial único, não representado aqui.',
+            'seis_estatisticas': 'Fonte e seis valores modernos preenchidos; a primeira geração usa cinco estatísticas, com Especial único.',
+            'especial_unico': 'Fonte e cinco valores preenchidos com Especial único; não se aplica aos dois campos especiais modernos.',
             'habilidades': 'Contagem de fichas com pelo menos um vínculo; não comprova obtenção por evento ou método.',
             'nao_aplicavel': 'Habilidades não se aplicam às gerações I e II; consulte a fonte na ficha.'},
         'fichas_encontro_documentado': db.execute("SELECT count(*) FROM DADOS_FORMA_JOGO WHERE fonte_url=?", (manifest['files']['encounters.csv.gz']['url'],)).fetchone()[0],

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<DIAGRAMA ID="1" TIPO="tpLogico" UniversalUnicID="E6B1-9-BE34-77-CFA0-63-E5">
+<DIAGRAMA ID="1" TIPO="tpLogico" UniversalUnicID="66FA-2D-BFF4-5-928D-42-81">
     <LogicoLinha ID="7">
         <DisablePainted Valor="false"/>
         <Tag LinhaMestre="-1"/>
@@ -260,7 +260,7 @@
         <MovimentacaoManual Valor="false"/>
     </Texto>
     <Tabela ID="5">
-        <Bounds Height="290" Left="50" Top="215" Width="540"/>
+        <Bounds Height="255" Left="50" Top="215" Width="540"/>
         <DisablePainted Valor="false"/>
         <Texto>VALOR_PERFIL_ANALISE</Texto>
         <Observacao/>
@@ -394,7 +394,7 @@
         </Constraints>
     </Tabela>
     <Tabela ID="6">
-        <Bounds Height="170" Left="1010" Top="215" Width="540"/>
+        <Bounds Height="155" Left="1010" Top="215" Width="540"/>
         <DisablePainted Valor="false"/>
         <Texto>ATRIBUTO_BATALHA</Texto>
         <Observacao/>
@@ -577,7 +577,7 @@
         <MovimentacaoManual Valor="false"/>
     </Texto>
     <Tabela ID="14">
-        <Bounds Height="290" Left="1650" Top="215" Width="540"/>
+        <Bounds Height="255" Left="1650" Top="215" Width="540"/>
         <DisablePainted Valor="false"/>
         <Texto>VALOR_PERFIL_ANALISE</Texto>
         <Observacao/>
@@ -711,7 +711,7 @@
         </Constraints>
     </Tabela>
     <Tabela ID="15">
-        <Bounds Height="410" Left="2610" Top="215" Width="540"/>
+        <Bounds Height="355" Left="2610" Top="215" Width="540"/>
         <DisablePainted Valor="false"/>
         <Texto>MECANICA_SISTEMA_ATRIBUTO</Texto>
         <Observacao/>
@@ -974,7 +974,7 @@
         <MovimentacaoManual Valor="false"/>
     </Texto>
     <Tabela ID="23">
-        <Bounds Height="290" Left="50" Top="1115" Width="540"/>
+        <Bounds Height="255" Left="50" Top="1115" Width="540"/>
         <DisablePainted Valor="false"/>
         <Texto>VALOR_PERFIL_ANALISE</Texto>
         <Observacao/>
@@ -1108,7 +1108,7 @@
         </Constraints>
     </Tabela>
     <Tabela ID="24">
-        <Bounds Height="410" Left="1010" Top="1115" Width="540"/>
+        <Bounds Height="355" Left="1010" Top="1115" Width="540"/>
         <DisablePainted Valor="false"/>
         <Texto>PERFIL_ANALISE</Texto>
         <Observacao/>
@@ -1360,7 +1360,7 @@
         <MovimentacaoManual Valor="false"/>
     </Texto>
     <Tabela ID="32">
-        <Bounds Height="140" Left="1650" Top="1115" Width="540"/>
+        <Bounds Height="130" Left="1650" Top="1115" Width="540"/>
         <DisablePainted Valor="false"/>
         <Texto>PERFIL_NATUREZA</Texto>
         <Observacao/>
@@ -1444,7 +1444,7 @@
         </Constraints>
     </Tabela>
     <Tabela ID="33">
-        <Bounds Height="290" Left="2610" Top="1115" Width="540"/>
+        <Bounds Height="255" Left="2610" Top="1115" Width="540"/>
         <DisablePainted Valor="false"/>
         <Texto>NATUREZA</Texto>
         <Observacao/>

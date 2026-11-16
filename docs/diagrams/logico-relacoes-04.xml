@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<DIAGRAMA ID="1" TIPO="tpLogico" UniversalUnicID="3D0-22-83D9-13-FCF2-4D-BA">
+<DIAGRAMA ID="1" TIPO="tpLogico" UniversalUnicID="7996-E-FF4-DC-48F-ED-B7">
     <LogicoLinha ID="7">
         <DisablePainted Valor="false"/>
         <Tag LinhaMestre="-1"/>
@@ -260,7 +260,7 @@
         <MovimentacaoManual Valor="false"/>
     </Texto>
     <Tabela ID="5">
-        <Bounds Height="410" Left="50" Top="215" Width="540"/>
+        <Bounds Height="355" Left="50" Top="215" Width="540"/>
         <DisablePainted Valor="false"/>
         <Texto>MECANICA_SISTEMA_ATRIBUTO</Texto>
         <Observacao/>
@@ -434,7 +434,7 @@
         </Constraints>
     </Tabela>
     <Tabela ID="6">
-        <Bounds Height="200" Left="1010" Top="215" Width="540"/>
+        <Bounds Height="180" Left="1010" Top="215" Width="540"/>
         <DisablePainted Valor="false"/>
         <Texto>SISTEMA_ATRIBUTO</Texto>
         <Observacao/>
@@ -627,7 +627,7 @@
         <MovimentacaoManual Valor="false"/>
     </Texto>
     <Tabela ID="14">
-        <Bounds Height="410" Left="1650" Top="215" Width="540"/>
+        <Bounds Height="355" Left="1650" Top="215" Width="540"/>
         <DisablePainted Valor="false"/>
         <Texto>MECANICA_SISTEMA_ATRIBUTO</Texto>
         <Observacao/>
@@ -801,7 +801,7 @@
         </Constraints>
     </Tabela>
     <Tabela ID="15">
-        <Bounds Height="440" Left="2610" Top="215" Width="540"/>
+        <Bounds Height="380" Left="2610" Top="215" Width="540"/>
         <DisablePainted Valor="false"/>
         <Texto>MECANICA_JOGO</Texto>
         <Observacao/>
@@ -1074,7 +1074,7 @@
         <MovimentacaoManual Valor="false"/>
     </Texto>
     <Tabela ID="23">
-        <Bounds Height="230" Left="50" Top="1115" Width="540"/>
+        <Bounds Height="205" Left="50" Top="1115" Width="540"/>
         <DisablePainted Valor="false"/>
         <Texto>MECANICA_ATRIBUTO</Texto>
         <Observacao/>
@@ -1188,7 +1188,7 @@
         </Constraints>
     </Tabela>
     <Tabela ID="24">
-        <Bounds Height="170" Left="1010" Top="1115" Width="540"/>
+        <Bounds Height="155" Left="1010" Top="1115" Width="540"/>
         <DisablePainted Valor="false"/>
         <Texto>ATRIBUTO_BATALHA</Texto>
         <Observacao/>
@@ -1371,7 +1371,7 @@
         <MovimentacaoManual Valor="false"/>
     </Texto>
     <Tabela ID="32">
-        <Bounds Height="230" Left="1650" Top="1115" Width="540"/>
+        <Bounds Height="205" Left="1650" Top="1115" Width="540"/>
         <DisablePainted Valor="false"/>
         <Texto>MECANICA_ATRIBUTO</Texto>
         <Observacao/>
@@ -1485,7 +1485,7 @@
         </Constraints>
     </Tabela>
     <Tabela ID="33">
-        <Bounds Height="410" Left="2610" Top="1115" Width="540"/>
+        <Bounds Height="355" Left="2610" Top="1115" Width="540"/>
         <DisablePainted Valor="false"/>
         <Texto>MECANICA_SISTEMA_ATRIBUTO</Texto>
         <Observacao/>

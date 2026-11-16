@@ -16,7 +16,7 @@ def test_clean_init_repeatable_upgrade_and_persistence(tmp_path):
     path = tmp_path / "catalog.sqlite3"
     db = connect_database(path)
     assert db.execute("PRAGMA foreign_keys").fetchone()[0] == 1
-    assert upgrade(db) == [1, 2, 3]
+    assert upgrade(db) == [1, 2, 3, 4]
     with transaction(db):
         db.execute("INSERT INTO USUARIO(nome_usuario,email,senha_hash) VALUES (?,?,?)",
                    ("fixture_user", "fixture@example.invalid", generate_password_hash("password123")))
@@ -223,6 +223,8 @@ def test_game_version_upgrade_preserves_ambiguous_legacy_context_and_owner(tmp_p
     shutil.copyfile(MIGRATIONS/'003_game_version_identity.sql',migrations/'003_game_version_identity.sql')
     assert upgrade(db,migrations)==[3]
     assert tuple(db.execute('SELECT id_jogo,nome,codigo_versao_pokeapi FROM JOGO WHERE id_jogo=91').fetchone())==(91,'Red',None)
+    shutil.copyfile(MIGRATIONS/'004_generation_one_special.sql',migrations/'004_generation_one_special.sql')
+    assert upgrade(db,migrations)==[4]
     db.close()
     app=create_app({'TESTING':True,'DATABASE':str(path)})
     with app.app_context():
@@ -239,3 +241,35 @@ def test_game_version_upgrade_preserves_ambiguous_legacy_context_and_owner(tmp_p
         assert importar_catalogo()==report
         assert not db.execute('PRAGMA foreign_key_check').fetchall()
         assert db.execute('PRAGMA integrity_check').fetchone()[0]=='ok'
+
+
+def test_generation_one_special_upgrade_preserves_existing_values_and_ownership(tmp_path):
+    import shutil
+    from pokeanalyzer.db import MIGRATIONS
+    migrations=tmp_path/'migrations'
+    migrations.mkdir()
+    for filename in ('001_stage1.sql','002_catalog_evidence.sql','003_game_version_identity.sql'):
+        shutil.copyfile(MIGRATIONS/filename,migrations/filename)
+    db=connect_database(tmp_path/'old.sqlite3')
+    assert upgrade(db,migrations)==[1,2,3]
+    db.executescript("""
+    INSERT INTO USUARIO(id_usuario,nome_usuario,email,senha_hash) VALUES(9,'FIXTURE owner','fixture@example.invalid','xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx');
+    INSERT INTO ESPECIE(id_especie,numero_nacional,nome_pt) VALUES(9,99991,'FIXTURE species');
+    INSERT INTO FORMA(id_forma,id_especie,codigo_forma,nome_forma) VALUES(9,9,'fixture','FIXTURE form');
+    INSERT INTO JOGO(id_jogo,nome) VALUES(9,'FIXTURE game');
+    INSERT INTO DADOS_FORMA_JOGO(id_dados_forma,id_forma,id_jogo,hp_base,status_presenca,pode_ser_registrada,fonte_url,data_verificacao)
+        VALUES(9,9,9,42,'nativa','sim','https://example.invalid/fixture','2026-11-15');
+    INSERT INTO POKEMON_COLECAO(id_pokemon_colecao,id_usuario,id_dados_forma_atual,apelido) VALUES(9,9,9,'FIXTURE preserved');
+    """)
+    db.commit()
+    checksums=[tuple(row) for row in db.execute('SELECT version,checksum FROM SCHEMA_MIGRATION ORDER BY version')]
+    shutil.copyfile(MIGRATIONS/'004_generation_one_special.sql',migrations/'004_generation_one_special.sql')
+    assert upgrade(db,migrations)==[4]
+    assert tuple(db.execute('SELECT hp_base,especial_base,fonte_estatisticas FROM DADOS_FORMA_JOGO WHERE id_dados_forma=9').fetchone())==(42,None,None)
+    assert tuple(db.execute('SELECT id_usuario,id_dados_forma_atual,apelido FROM POKEMON_COLECAO WHERE id_pokemon_colecao=9').fetchone())==(9,9,'FIXTURE preserved')
+    assert [tuple(row) for row in db.execute('SELECT version,checksum FROM SCHEMA_MIGRATION WHERE version<4 ORDER BY version')]==checksums
+    with pytest.raises(sqlite3.IntegrityError):
+        db.execute('UPDATE DADOS_FORMA_JOGO SET especial_base=-1 WHERE id_dados_forma=9')
+    db.rollback()
+    assert upgrade(db,migrations)==[]
+    assert not db.execute('PRAGMA foreign_key_check').fetchall()

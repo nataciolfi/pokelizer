@@ -116,6 +116,10 @@
       "sha256": "aa6570e15092f80750431a59a8712410cc114d74ffffb75b3334df64b33b3d07",
       "url": "https://raw.githubusercontent.com/PokeAPI/pokeapi/8a92bfa7dab2f12b84b5d151562f9857c133ff30/data/v2/csv/pokedexes.csv",
       "retrieved_at": "2026-11-14"
+    },
+    "stats.csv": {
+      "sha256": "ee8c541b45b64f40f0eb2545c767294b5801ce8a1410e19d8c33a54e6f1c3b9c",
+      "url": "https://raw.githubusercontent.com/PokeAPI/pokeapi/8a92bfa7dab2f12b84b5d151562f9857c133ff30/data/v2/csv/stats.csv"
     }
   }
 }

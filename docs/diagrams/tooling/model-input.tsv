@@ -61,6 +61,7 @@ C	DADOS_FORMA_JOGO	fonte_tipos	TEXT	0	0	0
 C	DADOS_FORMA_JOGO	data_verificacao_tipos	TEXT	0	0	0
 C	DADOS_FORMA_JOGO	fonte_estatisticas	TEXT	0	0	0
 C	DADOS_FORMA_JOGO	data_verificacao_estatisticas	TEXT	0	0	0
+C	DADOS_FORMA_JOGO	especial_base	INTEGER	0	0	0
 U	DADOS_FORMA_JOGO	0	id_forma,id_jogo
 T	TIPO
 C	TIPO	id_tipo	INTEGER	0	1	0

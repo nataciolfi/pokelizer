@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<DIAGRAMA ID="1" TIPO="tpLogico" UniversalUnicID="95BA-FA-2B6D-C3-D63B-AC-C1">
+<DIAGRAMA ID="1" TIPO="tpLogico" UniversalUnicID="CA5E-A4-8657-E3-26AC-7A-7C">
     <LogicoLinha ID="7">
         <DisablePainted Valor="false"/>
         <Tag LinhaMestre="-1"/>
@@ -15,7 +15,7 @@
         <Ligacoes PontaA="6" PontaB="5"/>
         <Pontos>
             <Ponto Left="1006" Top="226"/>
-            <Ponto Left="587" Top="567"/>
+            <Ponto Left="587" Top="527"/>
         </Pontos>
         <LogicoCardinalidade ID="8">
             <Bounds Height="100" Left="852" Top="128" Width="150"/>
@@ -32,7 +32,7 @@
             <Fonte Estilo="0" Nome="SansSerif" Tamanho="15"/>
         </LogicoCardinalidade>
         <LogicoCardinalidade ID="9">
-            <Bounds Height="100" Left="597" Top="469" Width="150"/>
+            <Bounds Height="100" Left="597" Top="429" Width="150"/>
             <DisablePainted Valor="false"/>
             <Texto>Cardinalidade_2</Texto>
             <Observacao/>
@@ -260,7 +260,7 @@
         <MovimentacaoManual Valor="false"/>
     </Texto>
     <Tabela ID="5">
-        <Bounds Height="410" Left="50" Top="215" Width="540"/>
+        <Bounds Height="355" Left="50" Top="215" Width="540"/>
         <DisablePainted Valor="false"/>
         <Texto>PERFIL_ANALISE</Texto>
         <Observacao/>
@@ -423,7 +423,7 @@
         </Constraints>
     </Tabela>
     <Tabela ID="6">
-        <Bounds Height="710" Left="1010" Top="215" Width="540"/>
+        <Bounds Height="630" Left="1010" Top="215" Width="540"/>
         <DisablePainted Valor="false"/>
         <Texto>DADOS_FORMA_JOGO</Texto>
         <Observacao/>
@@ -659,6 +659,16 @@
                 <Fkey Valor="false"/>
                 <Unique Valor="false"/>
             </Campo>
+            <Campo>
+                <Texto>especial_base</Texto>
+                <Tipo>INTEGER</Tipo>
+                <Complemento/>
+                <Dicionario/>
+                <Observacao/>
+                <Key Valor="false"/>
+                <Fkey Valor="false"/>
+                <Unique Valor="false"/>
+            </Campo>
         </Campos>
         <Constraints>
             <Constraint>
@@ -786,7 +796,7 @@
         <MovimentacaoManual Valor="false"/>
     </Texto>
     <Tabela ID="14">
-        <Bounds Height="290" Left="1650" Top="215" Width="540"/>
+        <Bounds Height="255" Left="1650" Top="215" Width="540"/>
         <DisablePainted Valor="false"/>
         <Texto>VALOR_ATRIBUTO_POKEMON</Texto>
         <Observacao/>
@@ -920,7 +930,7 @@
         </Constraints>
     </Tabela>
     <Tabela ID="15">
-        <Bounds Height="170" Left="2610" Top="215" Width="540"/>
+        <Bounds Height="155" Left="2610" Top="215" Width="540"/>
         <DisablePainted Valor="false"/>
         <Texto>ATRIBUTO_BATALHA</Texto>
         <Observacao/>
@@ -1103,7 +1113,7 @@
         <MovimentacaoManual Valor="false"/>
     </Texto>
     <Tabela ID="23">
-        <Bounds Height="290" Left="50" Top="1115" Width="540"/>
+        <Bounds Height="255" Left="50" Top="1115" Width="540"/>
         <DisablePainted Valor="false"/>
         <Texto>VALOR_ATRIBUTO_POKEMON</Texto>
         <Observacao/>
@@ -1237,7 +1247,7 @@
         </Constraints>
     </Tabela>
     <Tabela ID="24">
-        <Bounds Height="410" Left="1010" Top="1115" Width="540"/>
+        <Bounds Height="355" Left="1010" Top="1115" Width="540"/>
         <DisablePainted Valor="false"/>
         <Texto>MECANICA_SISTEMA_ATRIBUTO</Texto>
         <Observacao/>
@@ -1500,7 +1510,7 @@
         <MovimentacaoManual Valor="false"/>
     </Texto>
     <Tabela ID="32">
-        <Bounds Height="290" Left="1650" Top="1115" Width="540"/>
+        <Bounds Height="255" Left="1650" Top="1115" Width="540"/>
         <DisablePainted Valor="false"/>
         <Texto>VALOR_ATRIBUTO_POKEMON</Texto>
         <Observacao/>
@@ -1634,7 +1644,7 @@
         </Constraints>
     </Tabela>
     <Tabela ID="33">
-        <Bounds Height="470" Left="2610" Top="1115" Width="540"/>
+        <Bounds Height="405" Left="2610" Top="1115" Width="540"/>
         <DisablePainted Valor="false"/>
         <Texto>POKEMON_COLECAO</Texto>
         <Observacao/>

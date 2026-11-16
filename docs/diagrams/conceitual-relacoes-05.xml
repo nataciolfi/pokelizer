@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<DIAGRAMA ID="1" TIPO="tpConceitual" UniversalUnicID="789D-6-FB22-87-25F9-2F-DF">
+<DIAGRAMA ID="1" TIPO="tpConceitual" UniversalUnicID="9F77-1F-C692-7E-F621-31-74">
     <Ligacao ID="7">
         <DisablePainted Valor="false"/>
         <Tag LinhaMestre="-1"/>
@@ -1721,12 +1721,29 @@
         <SetaLargura Valor="10"/>
         <Inteligente Valor="false"/>
         <Largura Valor="1"/>
-        <Ligacoes PontaA="147" PontaB="217"/>
+        <Ligacoes PontaA="217" PontaB="174"/>
+        <Pontos>
+            <Ponto Left="2635" Top="1713"/>
+            <Ponto Left="2607" Top="1137"/>
+        </Pontos>
+    </Ligacao>
+    <Ligacao ID="220">
+        <DisablePainted Valor="false"/>
+        <Tag LinhaMestre="-1"/>
+        <Dashed Valor="false"/>
+        <Ancorado Valor="false"/>
+        <TemSetaPontaA Valor="false"/>
+        <TemSetaPontaB Valor="false"/>
+        <SetaAberta Valor="true"/>
+        <SetaLargura Valor="10"/>
+        <Inteligente Valor="false"/>
+        <Largura Valor="1"/>
+        <Ligacoes PontaA="147" PontaB="219"/>
         <Pontos>
             <Ponto Left="2187" Top="1117"/>
             <Ponto Left="2302" Top="1147"/>
         </Pontos>
-        <Cardinalidade ID="219">
+        <Cardinalidade ID="221">
             <Bounds Height="100" Left="2197" Top="1019" Width="150"/>
             <DisablePainted Valor="false"/>
             <Texto>Cardinalidade_7</Texto>
@@ -1740,7 +1757,7 @@
             <Papel Valor=""/>
         </Cardinalidade>
     </Ligacao>
-    <Ligacao ID="220">
+    <Ligacao ID="222">
         <DisablePainted Valor="false"/>
         <Tag LinhaMestre="-1"/>
         <Dashed Valor="false"/>
@@ -1751,12 +1768,12 @@
         <SetaLargura Valor="10"/>
         <Inteligente Valor="false"/>
         <Largura Valor="1"/>
-        <Ligacoes PontaA="174" PontaB="217"/>
+        <Ligacoes PontaA="174" PontaB="219"/>
         <Pontos>
             <Ponto Left="2606" Top="1117"/>
             <Ponto Left="2482" Top="1147"/>
         </Pontos>
-        <Cardinalidade ID="221">
+        <Cardinalidade ID="223">
             <Bounds Height="100" Left="2452" Top="1019" Width="150"/>
             <DisablePainted Valor="false"/>
             <Texto>Cardinalidade_8</Texto>
@@ -3707,7 +3724,24 @@
         <CardMaxFromString Valor="n"/>
         <TipoAtributo Valor=""/>
     </Atributo>
-    <Relacionamento ID="217">
+    <Atributo ID="217">
+        <Bounds Height="24" Left="2635" Top="1704" Width="500"/>
+        <DisablePainted Valor="false"/>
+        <Texto>especial_base</Texto>
+        <Observacao/>
+        <Dicionario/>
+        <Fonte Estilo="0" Nome="SansSerif" Tamanho="15"/>
+        <Ancorado Valor="false"/>
+        <DirecaoFromInspector Valor="0"/>
+        <Autosize Valor="true"/>
+        <Identificador Valor="false"/>
+        <Opcional Valor="true"/>
+        <Multivalorado Valor="false"/>
+        <CardMinFromString Valor="0"/>
+        <CardMaxFromString Valor="n"/>
+        <TipoAtributo Valor=""/>
+    </Atributo>
+    <Relacionamento ID="219">
         <Bounds Height="60" Left="2305" Top="1120" Width="180"/>
         <DisablePainted Valor="false"/>
         <Texto>R20 tem origem</Texto>
@@ -3716,7 +3750,7 @@
         <Fonte Estilo="0" Nome="SansSerif" Tamanho="15"/>
         <Ancorado Valor="false"/>
     </Relacionamento>
-    <Texto ID="222">
+    <Texto ID="224">
         <Bounds Height="30" Left="1650" Top="1800" Width="1480"/>
         <DisablePainted Valor="false"/>
         <Texto>Filho → pai: 0..1; pai → filhos: 0..N. DELETE RESTRICT; UPDATE RESTRICT.</Texto>
@@ -3741,7 +3775,7 @@
         <Autosize Valor="false"/>
         <MovimentacaoManual Valor="false"/>
     </Texto>
-    <Texto ID="223">
+    <Texto ID="225">
         <Bounds Height="55" Left="1650" Top="1835" Width="1500"/>
         <DisablePainted Valor="false"/>
         <Texto>Condições: espécie completa = 1 padrão; tipos confirmados = 1..2; perfil pessoal = 1 dono; referência = 0 donos. Ver invariantes.</Texto>

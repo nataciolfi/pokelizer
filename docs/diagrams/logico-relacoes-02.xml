@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<DIAGRAMA ID="1" TIPO="tpLogico" UniversalUnicID="8D97-D1-A525-BF-C3D2-A1-37">
+<DIAGRAMA ID="1" TIPO="tpLogico" UniversalUnicID="F483-E6-C784-55-EBED-65-A5">
     <LogicoLinha ID="7">
         <DisablePainted Valor="false"/>
         <Tag LinhaMestre="-1"/>
@@ -15,7 +15,7 @@
         <Ligacoes PontaA="6" PontaB="5"/>
         <Pontos>
             <Ponto Left="1006" Top="226"/>
-            <Ponto Left="587" Top="374"/>
+            <Ponto Left="587" Top="359"/>
         </Pontos>
         <LogicoCardinalidade ID="8">
             <Bounds Height="100" Left="852" Top="128" Width="150"/>
@@ -32,7 +32,7 @@
             <Fonte Estilo="0" Nome="SansSerif" Tamanho="15"/>
         </LogicoCardinalidade>
         <LogicoCardinalidade ID="9">
-            <Bounds Height="100" Left="597" Top="276" Width="150"/>
+            <Bounds Height="100" Left="597" Top="261" Width="150"/>
             <DisablePainted Valor="false"/>
             <Texto>Cardinalidade_2</Texto>
             <Observacao/>
@@ -107,7 +107,7 @@
         <Ligacoes PontaA="24" PontaB="23"/>
         <Pontos>
             <Ponto Left="1006" Top="1126"/>
-            <Ponto Left="587" Top="1394"/>
+            <Ponto Left="587" Top="1359"/>
         </Pontos>
         <LogicoCardinalidade ID="26">
             <Bounds Height="100" Left="852" Top="1028" Width="150"/>
@@ -124,7 +124,7 @@
             <Fonte Estilo="0" Nome="SansSerif" Tamanho="15"/>
         </LogicoCardinalidade>
         <LogicoCardinalidade ID="27">
-            <Bounds Height="100" Left="597" Top="1296" Width="150"/>
+            <Bounds Height="100" Left="597" Top="1261" Width="150"/>
             <DisablePainted Valor="false"/>
             <Texto>Cardinalidade_6</Texto>
             <Observacao/>
@@ -260,7 +260,7 @@
         <MovimentacaoManual Valor="false"/>
     </Texto>
     <Tabela ID="5">
-        <Bounds Height="170" Left="50" Top="215" Width="540"/>
+        <Bounds Height="155" Left="50" Top="215" Width="540"/>
         <DisablePainted Valor="false"/>
         <Texto>TIPO_FORMA_JOGO</Texto>
         <Observacao/>
@@ -365,7 +365,7 @@
         </Constraints>
     </Tabela>
     <Tabela ID="6">
-        <Bounds Height="710" Left="1010" Top="215" Width="540"/>
+        <Bounds Height="630" Left="1010" Top="215" Width="540"/>
         <DisablePainted Valor="false"/>
         <Texto>DADOS_FORMA_JOGO</Texto>
         <Observacao/>
@@ -601,6 +601,16 @@
                 <Fkey Valor="false"/>
                 <Unique Valor="false"/>
             </Campo>
+            <Campo>
+                <Texto>especial_base</Texto>
+                <Tipo>INTEGER</Tipo>
+                <Complemento/>
+                <Dicionario/>
+                <Observacao/>
+                <Key Valor="false"/>
+                <Fkey Valor="false"/>
+                <Unique Valor="false"/>
+            </Campo>
         </Campos>
         <Constraints>
             <Constraint>
@@ -728,7 +738,7 @@
         <MovimentacaoManual Valor="false"/>
     </Texto>
     <Tabela ID="14">
-        <Bounds Height="290" Left="1650" Top="215" Width="540"/>
+        <Bounds Height="255" Left="1650" Top="215" Width="540"/>
         <DisablePainted Valor="false"/>
         <Texto>HABILIDADE_FORMA_JOGO</Texto>
         <Observacao/>
@@ -884,7 +894,7 @@
         </Constraints>
     </Tabela>
     <Tabela ID="15">
-        <Bounds Height="170" Left="2610" Top="215" Width="540"/>
+        <Bounds Height="155" Left="2610" Top="215" Width="540"/>
         <DisablePainted Valor="false"/>
         <Texto>HABILIDADE</Texto>
         <Observacao/>
@@ -1067,7 +1077,7 @@
         <MovimentacaoManual Valor="false"/>
     </Texto>
     <Tabela ID="23">
-        <Bounds Height="290" Left="50" Top="1115" Width="540"/>
+        <Bounds Height="255" Left="50" Top="1115" Width="540"/>
         <DisablePainted Valor="false"/>
         <Texto>HABILIDADE_FORMA_JOGO</Texto>
         <Observacao/>
@@ -1223,7 +1233,7 @@
         </Constraints>
     </Tabela>
     <Tabela ID="24">
-        <Bounds Height="710" Left="1010" Top="1115" Width="540"/>
+        <Bounds Height="630" Left="1010" Top="1115" Width="540"/>
         <DisablePainted Valor="false"/>
         <Texto>DADOS_FORMA_JOGO</Texto>
         <Observacao/>
@@ -1459,6 +1469,16 @@
                 <Fkey Valor="false"/>
                 <Unique Valor="false"/>
             </Campo>
+            <Campo>
+                <Texto>especial_base</Texto>
+                <Tipo>INTEGER</Tipo>
+                <Complemento/>
+                <Dicionario/>
+                <Observacao/>
+                <Key Valor="false"/>
+                <Fkey Valor="false"/>
+                <Unique Valor="false"/>
+            </Campo>
         </Campos>
         <Constraints>
             <Constraint>
@@ -1586,7 +1606,7 @@
         <MovimentacaoManual Valor="false"/>
     </Texto>
     <Tabela ID="32">
-        <Bounds Height="230" Left="1650" Top="1115" Width="540"/>
+        <Bounds Height="205" Left="1650" Top="1115" Width="540"/>
         <DisablePainted Valor="false"/>
         <Texto>METODO_FORMA_JOGO</Texto>
         <Observacao/>
@@ -1700,7 +1720,7 @@
         </Constraints>
     </Tabela>
     <Tabela ID="33">
-        <Bounds Height="170" Left="2610" Top="1115" Width="540"/>
+        <Bounds Height="155" Left="2610" Top="1115" Width="540"/>
         <DisablePainted Valor="false"/>
         <Texto>METODO_OBTENCAO</Texto>
         <Observacao/>

@@ -182,6 +182,7 @@ def test_real_historical_contexts_preserve_generation_differences(app, client):
                 JOIN JOGO j USING(id_jogo) WHERE f.codigo_forma=? AND j.nome=?""",(form,game)).fetchone()[0]
         clefairy_gold,clefairy_x=sheet('clefairy','Gold'),sheet('clefairy','X')
         magnemite_yellow,magnemite_gold=sheet('magnemite','Yellow'),sheet('magnemite','Gold')
+        chansey_yellow,hypno_red=sheet('chansey','Yellow'),sheet('hypno','Red (red)')
         pikachu_gold,gengar_diamond=sheet('pikachu','Gold'),sheet('gengar','Diamond')
         pikachu_diamond,pikachu_x=sheet('pikachu','Diamond'),sheet('pikachu','X')
         poochyena_ruby=sheet('poochyena','Ruby')
@@ -190,6 +191,7 @@ def test_real_historical_contexts_preserve_generation_differences(app, client):
         coverage={g['nome']:g for g in report['cobertura_por_jogo']}
         assert coverage['Yellow']['tipos_com_fonte']==coverage['Yellow']['fichas']>0
         assert coverage['Yellow']['seis_estatisticas_com_fonte']==0
+        assert coverage['Yellow']['cinco_estatisticas_especial_unico_com_fonte']==coverage['Yellow']['fichas']
         assert coverage['Gold']['fichas_com_alguma_habilidade_com_fonte']==0
         assert coverage['Diamond']['fichas_com_alguma_habilidade_com_fonte']>0
     def details(identifier):
@@ -200,7 +202,11 @@ def test_real_historical_contexts_preserve_generation_differences(app, client):
     assert details(clefairy_x)['tipos']==['Fairy']
     yellow=details(magnemite_yellow)
     assert yellow['tipos']==['Electric']
-    assert yellow['hp_base'] is None and yellow['ataque_especial_base'] is None
+    assert yellow['hp_base']==25 and yellow['especial_base']==95
+    assert yellow['ataque_especial_base'] is None and yellow['defesa_especial_base'] is None
+    assert yellow['fonte_estatisticas'] and yellow['data_verificacao_estatisticas']
+    assert details(chansey_yellow)['especial_base']==105  # Modern Special Attack is 35, not this value.
+    assert details(hypno_red)['especial_base']==115  # Modern Special Attack is 73.
     assert yellow['estado_sistema_estatisticas']=='especial_unico' and yellow['fonte_sistema_estatisticas']
     assert yellow['estado_sistema_habilidades']=='nao_aplicavel'
     assert yellow['fonte_sistema_habilidades'] and not yellow['habilidades']
@@ -420,6 +426,42 @@ def test_early_special_code_conflict_aborts_without_reinterpreting_existing_data
             importar_catalogo()
         assert db.execute("SELECT nome FROM ATRIBUTO_BATALHA WHERE codigo='special'").fetchone()[0]=='FIXTURE outro significado'
         assert db.execute('SELECT count(*) FROM ESPECIE').fetchone()[0]==species_before
+
+
+def test_generation_one_stats_preserve_partial_existing_curation(app, monkeypatch):
+    import pokeanalyzer.contextual_data as contextual
+    with app.app_context(), monkeypatch.context() as patch:
+        patch.setattr(contextual,'importar_contextos_por_geracao',lambda *_:None)
+        importar_catalogo()
+        db=get_db()
+        sheet=db.execute("""SELECT d.id_dados_forma FROM DADOS_FORMA_JOGO d JOIN FORMA f USING(id_forma)
+            JOIN JOGO j USING(id_jogo) WHERE f.codigo_forma='magnemite' AND j.codigo_versao_pokeapi='yellow'""").fetchone()[0]
+        db.execute('UPDATE DADOS_FORMA_JOGO SET hp_base=42 WHERE id_dados_forma=?',(sheet,))
+        db.commit()
+    with app.app_context():
+        importar_catalogo()
+        row=get_db().execute('SELECT hp_base,ataque_base,especial_base,fonte_estatisticas FROM DADOS_FORMA_JOGO WHERE id_dados_forma=?',(sheet,)).fetchone()
+        assert tuple(row)==(42,None,None,None)
+
+
+def test_historical_stats_do_not_mix_with_existing_special_curated_value(app, monkeypatch):
+    import pokeanalyzer.contextual_data as contextual
+    with app.app_context(), monkeypatch.context() as patch:
+        patch.setattr(contextual,'importar_contextos_por_geracao',lambda *_:None)
+        importar_catalogo()
+        db=get_db()
+        sheet=db.execute("""SELECT d.id_dados_forma FROM DADOS_FORMA_JOGO d JOIN FORMA f USING(id_forma)
+            JOIN JOGO j USING(id_jogo) WHERE f.codigo_forma='pikachu' AND j.codigo_versao_pokeapi='gold'""").fetchone()[0]
+        db.execute('UPDATE DADOS_FORMA_JOGO SET especial_base=42 WHERE id_dados_forma=?',(sheet,))
+        db.commit()
+    with app.app_context():
+        report=importar_catalogo()
+        row=get_db().execute('SELECT hp_base,ataque_especial_base,especial_base,fonte_estatisticas FROM DADOS_FORMA_JOGO WHERE id_dados_forma=?',(sheet,)).fetchone()
+        assert tuple(row)==(None,None,42,None)
+        assert report['fichas_com_sistemas_estatisticos_misturados']==0
+        get_db().execute('UPDATE DADOS_FORMA_JOGO SET ataque_especial_base=99 WHERE id_dados_forma=?',(sheet,))
+        from pokeanalyzer.catalog_data import cobertura
+        assert cobertura()['fichas_com_sistemas_estatisticos_misturados']==1
 
 
 def test_history_reimport_preserves_existing_specimen_and_partial_curation(app, client, monkeypatch):
