@@ -4,7 +4,7 @@ Python 3.11+, SQLite 3.37+ e Flask. Camadas: dataclasses em `models.py`, SQL/DAO
 
 ## Instalar e iniciar
 
-Na raiz de um clone da branch `stage2/functional-delivery`:
+Na raiz de um clone da branch `final/complete-project` (a `main` está desatualizada). Em Debian/Ubuntu, instale `python3-venv` se o Python informar que `ensurepip` não está disponível:
 
 ```bash
 python3 -m venv .venv
@@ -23,7 +23,7 @@ python -m flask --app pokeanalyzer:create_app run --host 127.0.0.1 --port 5000
 
 Ao atualizar uma instalação existente, faça backup e execute `python -m flask --app pokeanalyzer:create_app db-upgrade` antes de iniciar esta versão. A migração 002 acrescenta fontes independentes para tipos e estatísticas; registros anteriores permanecem sem essas fontes até serem verificados. A 003 acrescenta o código de versão da PokéAPI sem mudar IDs, dados ou vínculos existentes. A 004 acrescenta o campo opcional do Especial único da primeira geração; valores e referências anteriores são preservados. Após a migração, execute `catalog-import`; entradas legadas Red/Blue de identidade ambígua permanecem não identificadas e não são associadas automaticamente a qualquer versão. As migrações anteriores continuam imutáveis.
 
-No ambiente da sessão, dependências e ferramentas portáteis foram usadas porque a rede do shell está sem DNS e a `.venv` herdada não tinha os pacotes disponíveis neste runtime; isso está registrado no [relatório](../docs/stage2/README.md). Em outra máquina, use a instalação convencional acima.
+As primeiras verificações usaram dependências portáteis neste ambiente. A reprodução em clone limpo e seus resultados estão registrados em [progress.md](../docs/project/progress.md).
 
 ## Banco existente e preservação
 

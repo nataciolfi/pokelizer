@@ -14,6 +14,8 @@ A entrega é desenvolvida na branch `final/complete-project`; a `main` ainda con
 
 ## Executar
 
+Use Python 3.11+ e SQLite 3.37+. Em Debian/Ubuntu, instale também o pacote `python3-venv` se `python3 -m venv` informar que `ensurepip` não está disponível.
+
 ```bash
 git clone --branch final/complete-project https://github.com/nataciolfi/pokelizer.git
 cd pokelizer
