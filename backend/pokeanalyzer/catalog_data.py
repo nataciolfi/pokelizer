@@ -2,12 +2,32 @@
 import csv
 import hashlib
 import gzip
-from collections import Counter
+from collections import Counter, defaultdict
 import json
 from pathlib import Path
 from .db import get_db, transaction
 
 SNAPSHOT = Path(__file__).resolve().parents[1] / 'data' / 'pokeapi'
+
+# Source identifiers reviewed against encounter_method_prose.csv. NPC trades,
+# distributions, raids and shadow Pokémon need separate semantics.
+WILD_METHODS = frozenset({
+    'walk','old-rod','good-rod','super-rod','surf','rock-smash','headbutt',
+    'dark-grass','grass-spots','cave-spots','bridge-spots','super-rod-spots',
+    'surf-spots','yellow-flowers','purple-flowers','red-flowers','rough-terrain',
+    'headbutt-low','headbutt-normal','headbutt-high','seaweed','roaming-grass',
+    'roaming-water','feebas-tile-fishing','island-scan','sos','bubbling-spots',
+    'berry-trees','sos-from-bubbling-spot','overworld','overworld-water',
+    'overworld-flying','overworld-special','overworld-flying-special',
+    'overworld-water-special','horde','pokespot','hidden-grotto','honey-tree',
+    'overworld-dirt','wanderer','wanderer-water','chase-water','trash-can-ambush',
+    'rustling-bush-ambush','ceiling-ambush','ground-ambush','sky-ambush',
+})
+METHOD_GROUPS = {
+    'Encontro selvagem': WILD_METHODS,
+    'Presente no jogo': frozenset({'gift'}),
+    'Ovo recebido no jogo': frozenset({'gift-egg'}),
+}
 
 
 def ler_snapshot(directory=SNAPSHOT):
@@ -108,20 +128,39 @@ def importar_encontros(db, data, manifest):
     versions = {v['id']: v['identifier'] for v in data['versions.csv']}
     source = manifest['files']['encounters.csv.gz']['url']
     date = manifest['files']['encounters.csv.gz']['retrieved_at']
-    # Explicit wild methods only: gifts, NPC trades, bonus discs and snag events
-    # also occur in encounters.csv and must not be described as wild capture.
-    wild_method_ids = {str(n) for n in (*range(1,18), 22, 23, 24)}
-    wild_slots = {r['id']: r['version_group_id'] for r in data['encounter_slots.csv'] if r['encounter_method_id'] in wild_method_ids}
+    # Use reviewed identifiers, never label gifts or eggs as wild. NPC trades,
+    # distributions, raids and snagging are intentionally excluded.
+    group_for = {identifier:group for group,identifiers in METHOD_GROUPS.items() for identifier in identifiers}
+    methods = {r['id']:r['identifier'] for r in data['encounter_methods.csv'] if r['identifier'] in group_for}
+    if set(methods.values()) != set(group_for) or len(methods) != len(group_for):
+        raise ValueError('Métodos ausentes ou ambíguos na fonte; carga revertida.')
+    prose = {r['encounter_method_id']:r['name'] for r in data['encounter_method_prose.csv'] if r['local_language_id']=='9'}
+    if not set(methods).issubset(prose):
+        raise ValueError('Descrição de método ausente na fonte; carga revertida.')
+    selected_slots = {r['id']: (r['version_group_id'],r['encounter_method_id']) for r in data['encounter_slots.csv'] if r['encounter_method_id'] in methods}
     version_groups = {r['id']: r['version_group_id'] for r in data['versions.csv']}
     # Absence of a matching encounter never implies absence in the game.
-    pairs = sorted({(r['pokemon_id'], r['version_id']) for r in data['encounters.csv']
-                    if r['pokemon_id'] in one_form and r['version_id'] in versions and r['encounter_slot_id'] in wild_slots and wild_slots[r['encounter_slot_id']] == version_groups[r['version_id']]},
-                   key=lambda p: (int(p[1]), int(p[0])))
-    method = db.execute("SELECT id_metodo FROM METODO_OBTENCAO WHERE nome=? COLLATE NOCASE", ('Encontro selvagem',)).fetchone()
-    if not method:
-        db.execute("INSERT INTO METODO_OBTENCAO(nome,descricao) VALUES(?,?)", ('Encontro selvagem','Encontro selvagem documentado na fonte; condições variam por local.'))
-        method = db.execute("SELECT last_insert_rowid()").fetchone()
-    for pid, vid in pairs:
+    pairs = defaultdict(lambda: defaultdict(set))
+    for encounter in data['encounters.csv']:
+        pid,vid,slot = encounter['pokemon_id'],encounter['version_id'],selected_slots.get(encounter['encounter_slot_id'])
+        if pid in one_form and vid in versions and slot and slot[0] == version_groups[vid]:
+            pairs[(pid,vid)][group_for[methods[slot[1]]]].add(slot[1])
+    descriptions = {
+        'Encontro selvagem':'Encontro selvagem documentado na fonte; condições variam por local.',
+        'Presente no jogo':'Recebimento documentado na fonte; condições e local variam.',
+        'Ovo recebido no jogo':'Ovo recebido no jogo, com espécie documentada na fonte; condições e local variam.',
+    }
+    method_ids={}
+    for name,description in descriptions.items():
+        method = db.execute('SELECT id_metodo,descricao FROM METODO_OBTENCAO WHERE nome=? COLLATE NOCASE',(name,)).fetchone()
+        if not method:
+            method = db.execute('INSERT INTO METODO_OBTENCAO(nome,descricao) VALUES(?,?)',(name,description))
+            method_ids[name]=method.lastrowid
+        else:
+            if method['descricao'] != description:
+                raise ValueError(f'Conflito no método {name}; curadoria existente preservada.')
+            method_ids[name]=method[0]
+    for pid, vid in sorted(pairs, key=lambda p: (int(p[1]), int(p[0]))):
         row = one_form[pid]
         existing_form = db.execute("SELECT f.id_forma FROM FORMA f JOIN ESPECIE e USING(id_especie) WHERE e.numero_nacional=? AND f.codigo_forma=?", (int(pokemon[pid]['species_id']), row['identifier'])).fetchone()
         game = db.execute("SELECT id_jogo FROM JOGO WHERE codigo_versao_pokeapi=? COLLATE NOCASE", (versions[vid],)).fetchone()
@@ -133,8 +172,11 @@ def importar_encontros(db, data, manifest):
             continue
         cursor = db.execute("""INSERT INTO DADOS_FORMA_JOGO(id_forma,id_jogo,status_presenca,pode_ser_registrada,fonte_url,data_verificacao)
                                 VALUES(?,?,'nativa','sim',?,?)""", (existing_form[0],game[0],source,date))
-        db.execute("INSERT INTO METODO_FORMA_JOGO(id_dados_forma,id_metodo,fonte_url,data_verificacao) VALUES(?,?,?,?)",
-                   (cursor.lastrowid,method[0],source,date))
+        for group,ids in sorted(pairs[(pid,vid)].items()):
+            condition = ('Métodos descritos pela fonte: ' + '; '.join(sorted(prose[mid] for mid in ids)) +
+                         '. Local, período e demais condições dependem do jogo e não foram detalhados aqui.')
+            db.execute("INSERT INTO METODO_FORMA_JOGO(id_dados_forma,id_metodo,condicao,fonte_url,data_verificacao) VALUES(?,?,?,?,?)",
+                       (cursor.lastrowid,method_ids[group],condition,source,date))
 
 def cobertura(directory=SNAPSHOT):
     from .curated_data import DRAGAPULT_SOURCE
@@ -161,6 +203,12 @@ def cobertura(directory=SNAPSHOT):
         SUM(CASE WHEN d.id_dados_forma IS NOT NULL AND d.fonte_estatisticas IS NULL THEN 1 ELSE 0 END) AS estatisticas_sem_fonte,
         SUM(CASE WHEN EXISTS (SELECT 1 FROM HABILIDADE_FORMA_JOGO h
             WHERE h.id_dados_forma=d.id_dados_forma AND h.fonte_url IS NOT NULL) THEN 1 ELSE 0 END) AS fichas_com_alguma_habilidade_com_fonte,
+        SUM(CASE WHEN EXISTS (SELECT 1 FROM METODO_FORMA_JOGO mf JOIN METODO_OBTENCAO mo USING(id_metodo)
+            WHERE mf.id_dados_forma=d.id_dados_forma AND mo.nome='Encontro selvagem') THEN 1 ELSE 0 END) AS fichas_metodo_selvagem,
+        SUM(CASE WHEN EXISTS (SELECT 1 FROM METODO_FORMA_JOGO mf JOIN METODO_OBTENCAO mo USING(id_metodo)
+            WHERE mf.id_dados_forma=d.id_dados_forma AND mo.nome='Presente no jogo') THEN 1 ELSE 0 END) AS fichas_metodo_presente,
+        SUM(CASE WHEN EXISTS (SELECT 1 FROM METODO_FORMA_JOGO mf JOIN METODO_OBTENCAO mo USING(id_metodo)
+            WHERE mf.id_dados_forma=d.id_dados_forma AND mo.nome='Ovo recebido no jogo') THEN 1 ELSE 0 END) AS fichas_metodo_ovo,
         (SELECT COUNT(*) FROM MECANICA_JOGO m WHERE m.id_jogo=j.id_jogo) AS mecanicas,
         (SELECT COUNT(*) FROM MECANICA_JOGO m WHERE m.id_jogo=j.id_jogo AND m.versao='regras-parciais-documentadas') AS mecanicas_parciais,
         (SELECT COUNT(*) FROM MECANICA_JOGO m WHERE m.id_jogo=j.id_jogo AND NOT EXISTS
@@ -198,6 +246,12 @@ def cobertura(directory=SNAPSHOT):
             'seis_estatisticas': 'Fonte e seis valores modernos preenchidos; a primeira geração usa cinco estatísticas, com Especial único.',
             'especial_unico': 'Fonte e cinco valores preenchidos com Especial único; não se aplica aos dois campos especiais modernos.',
             'habilidades': 'Contagem de fichas com pelo menos um vínculo; não comprova obtenção por evento ou método.',
-            'nao_aplicavel': 'Habilidades não se aplicam às gerações I e II; consulte a fonte na ficha.'},
+            'nao_aplicavel': 'Habilidades não se aplicam às gerações I e II nem a Pokémon: Let’s Go; consulte a fonte na ficha.'},
         'fichas_encontro_documentado': db.execute("SELECT count(*) FROM DADOS_FORMA_JOGO WHERE fonte_url=?", (manifest['files']['encounters.csv.gz']['url'],)).fetchone()[0],
+        'fichas_metodo_selvagem': db.execute("""SELECT count(DISTINCT mf.id_dados_forma) FROM METODO_FORMA_JOGO mf JOIN METODO_OBTENCAO mo USING(id_metodo)
+            WHERE mo.nome='Encontro selvagem' AND mf.fonte_url=?""",(manifest['files']['encounters.csv.gz']['url'],)).fetchone()[0],
+        'fichas_metodo_presente': db.execute("""SELECT count(DISTINCT mf.id_dados_forma) FROM METODO_FORMA_JOGO mf JOIN METODO_OBTENCAO mo USING(id_metodo)
+            WHERE mo.nome='Presente no jogo' AND mf.fonte_url=?""",(manifest['files']['encounters.csv.gz']['url'],)).fetchone()[0],
+        'fichas_metodo_ovo': db.execute("""SELECT count(DISTINCT mf.id_dados_forma) FROM METODO_FORMA_JOGO mf JOIN METODO_OBTENCAO mo USING(id_metodo)
+            WHERE mo.nome='Ovo recebido no jogo' AND mf.fonte_url=?""",(manifest['files']['encounters.csv.gz']['url'],)).fetchone()[0],
         'observacao': 'Cobertura é relativa ao snapshot, não certifica completude oficial atual. Ausência de ficha não indica ausência no jogo.'}

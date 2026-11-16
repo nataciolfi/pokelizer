@@ -334,12 +334,14 @@ class ContextoDAO:
         raw = dict(db.execute("SELECT * FROM DADOS_FORMA_JOGO WHERE id_dados_forma=?", (id_dados_forma,)).fetchone())
         raw.update(item.to_dict())
         raw["habilidades"] = [dict(r) for r in db.execute("SELECT h.*,a.nome,a.descricao FROM HABILIDADE_FORMA_JOGO h JOIN HABILIDADE a USING(id_habilidade) WHERE id_dados_forma=?", (id_dados_forma,))]
-        # Only explicit source version identifiers establish generations I/II.
+        raw["metodos"] = [dict(r) for r in db.execute("""SELECT mf.id_metodo,mo.nome,mo.descricao,mf.condicao,mf.fonte_url,mf.data_verificacao
+            FROM METODO_FORMA_JOGO mf JOIN METODO_OBTENCAO mo USING(id_metodo) WHERE mf.id_dados_forma=? ORDER BY mo.nome""", (id_dados_forma,))]
+        # Explicit source versions establish games without functional abilities.
         # No conclusion is drawn for separately curated game sheets.
         code = db.execute('SELECT codigo_versao_pokeapi FROM JOGO WHERE id_jogo=?', (item.id_jogo,)).fetchone()[0]
         raw['codigo_versao_pokeapi'] = code
         first_generation = {'red', 'red-japan', 'blue', 'blue-japan', 'green', 'yellow'}
-        old_games = first_generation | {'gold', 'silver', 'crystal'}
+        old_games = first_generation | {'gold', 'silver', 'crystal', 'lets-go-pikachu', 'lets-go-eevee'}
         encounter_source = ('https://raw.githubusercontent.com/PokeAPI/pokeapi/'
                             '8a92bfa7dab2f12b84b5d151562f9857c133ff30/data/v2/csv/encounters.csv')
         if code in old_games and raw['fonte_url'] == encounter_source:

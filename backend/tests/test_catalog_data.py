@@ -29,7 +29,13 @@ def test_real_snapshot_repeatable_preserves_private_data_and_reports_unknowns(ap
         by_version=dict(versions)
         assert set(by_version)=={'red','red-japan','blue','blue-japan'}
         assert all(by_version[v]>0 for v in ('red','red-japan','blue'))
-        assert by_version['blue-japan']==0  # Source slots do not match this version's group.
+        # Blue japonesa possui presentes documentados; não há encontros selvagens
+        # cujo grupo de versão coincida com o da ficha neste snapshot.
+        assert by_version['blue-japan'] > 0
+        assert db.execute("""SELECT count(*) FROM DADOS_FORMA_JOGO d
+          JOIN JOGO j USING(id_jogo) JOIN METODO_FORMA_JOGO mf USING(id_dados_forma)
+          JOIN METODO_OBTENCAO m USING(id_metodo)
+          WHERE j.codigo_versao_pokeapi='blue-japan' AND m.nome='Encontro selvagem'""").fetchone()[0] == 0
         assert db.execute("SELECT count(*) FROM FORMA WHERE fonte_url=? AND forma_padrao=0 AND categoria!='nao_verificada'",(first['fonte_url'],)).fetchone()[0]==0
         assert not db.execute('PRAGMA foreign_key_check').fetchall()
 
@@ -462,6 +468,73 @@ def test_historical_stats_do_not_mix_with_existing_special_curated_value(app, mo
         get_db().execute('UPDATE DADOS_FORMA_JOGO SET ataque_especial_base=99 WHERE id_dados_forma=?',(sheet,))
         from pokeanalyzer.catalog_data import cobertura
         assert cobertura()['fichas_com_sistemas_estatisticos_misturados']==1
+
+
+def test_real_extended_encounters_distinguish_gifts_eggs_and_wild(app, client):
+    from test_api import create_user, get_csrf
+    create_user(client)
+    with app.app_context():
+        report=importar_catalogo()
+        db=get_db()
+        def sheet(form,version):
+            row=db.execute("""SELECT d.id_dados_forma FROM DADOS_FORMA_JOGO d JOIN FORMA f USING(id_forma)
+                JOIN JOGO j USING(id_jogo) WHERE f.codigo_forma=? AND j.codigo_versao_pokeapi=?""",(form,version)).fetchone()
+            assert row,(form,version)
+            return row[0]
+        nickit=sheet('nickit','sword')
+        pidgey=sheet('pidgey','lets-go-pikachu')
+        gifted=sheet('pikachu','yellow')
+        egg=sheet('togepi','gold')
+        charmander=sheet('charmander','sword')
+        assert report['fichas_metodo_selvagem']>6000
+        assert report['fichas_metodo_presente']>200
+        assert report['fichas_metodo_ovo']>0
+    def details(identifier):
+        response=client.get('/api/pokemon/'+str(identifier))
+        assert response.status_code==200
+        return response.json
+    sword=details(nickit)
+    assert sword['status_presenca']=='nativa' and sword['pode_ser_registrada']=='sim'
+    assert sword['tipos']==['Dark'] and any('Walking in the overworld' in (m['condicao'] or '') for m in sword['metodos'])
+    assert all(m['fonte_url'].endswith('/encounters.csv') for m in sword['metodos'])
+    letsgo=details(pidgey)
+    assert letsgo['estado_sistema_habilidades']=='nao_aplicavel' and not letsgo['habilidades']
+    assert any(m['nome']=='Encontro selvagem' for m in letsgo['metodos'])
+    assert [m['nome'] for m in details(gifted)['metodos']]==['Presente no jogo']
+    assert [m['nome'] for m in details(egg)['metodos']]==['Ovo recebido no jogo']
+    assert [m['nome'] for m in details(charmander)['metodos']]==['Presente no jogo']  # Source raid rows are not called wild or imported.
+    added=client.post('/api/colecao',headers={'X-CSRF-Token':get_csrf(client)},
+        json={'id_dados_forma_atual':gifted,'id_metodo_obtencao':details(gifted)['metodos'][0]['id_metodo'],'apelido':'FIXTURE presente'})
+    assert added.status_code==201,added.json
+
+
+def test_extended_import_preserves_owned_specimen_and_existing_method_curation(app, client, monkeypatch):
+    from test_api import create_user, get_csrf
+    import pokeanalyzer.catalog_data as catalog
+    _,source=catalog.ler_snapshot()
+    original_ids={str(n) for n in (*range(1,18),22,23,24)}
+    old_names=frozenset(row['identifier'] for row in source['encounter_methods.csv'] if row['id'] in original_ids)
+    with app.app_context(), monkeypatch.context() as patch:
+        patch.setattr(catalog,'METHOD_GROUPS',{'Encontro selvagem':old_names})
+        catalog.importar_catalogo()
+        db=get_db()
+        sheet=db.execute("""SELECT d.id_dados_forma FROM DADOS_FORMA_JOGO d JOIN FORMA f USING(id_forma)
+            JOIN JOGO j USING(id_jogo) WHERE f.codigo_forma='pikachu' AND j.codigo_versao_pokeapi='gold'""").fetchone()[0]
+        db.execute("UPDATE METODO_FORMA_JOGO SET condicao='FIXTURE curadoria' WHERE id_dados_forma=?",(sheet,))
+        db.commit()
+    create_user(client)
+    added=client.post('/api/colecao',headers={'X-CSRF-Token':get_csrf(client)},
+        json={'id_dados_forma_atual':sheet,'apelido':'FIXTURE preservado'})
+    assert added.status_code==201
+    with app.app_context():
+        first=catalog.importar_catalogo()
+        assert catalog.importar_catalogo()==first
+        db=get_db()
+        assert db.execute('SELECT condicao FROM METODO_FORMA_JOGO WHERE id_dados_forma=?',(sheet,)).fetchone()[0]=='FIXTURE curadoria'
+        assert db.execute("""SELECT count(*) FROM DADOS_FORMA_JOGO d JOIN FORMA f USING(id_forma)
+            JOIN JOGO j USING(id_jogo) WHERE f.codigo_forma='pikachu' AND j.codigo_versao_pokeapi='yellow'""").fetchone()[0]==1
+        assert not db.execute('PRAGMA foreign_key_check').fetchall()
+    assert client.get('/api/colecao/'+str(added.json['id_pokemon_colecao'])).json['apelido']=='FIXTURE preservado'
 
 
 def test_history_reimport_preserves_existing_specimen_and_partial_curation(app, client, monkeypatch):

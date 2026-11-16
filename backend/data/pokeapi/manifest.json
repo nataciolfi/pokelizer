@@ -120,6 +120,10 @@
     "stats.csv": {
       "sha256": "ee8c541b45b64f40f0eb2545c767294b5801ce8a1410e19d8c33a54e6f1c3b9c",
       "url": "https://raw.githubusercontent.com/PokeAPI/pokeapi/8a92bfa7dab2f12b84b5d151562f9857c133ff30/data/v2/csv/stats.csv"
+    },
+    "encounter_method_prose.csv": {
+      "sha256": "5d5b524683444c8fb603276605a673c0f6be3ddfcc143c8326a962563f2a0125",
+      "url": "https://raw.githubusercontent.com/PokeAPI/pokeapi/8a92bfa7dab2f12b84b5d151562f9857c133ff30/data/v2/csv/encounter_method_prose.csv"
     }
   }
 }
