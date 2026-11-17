@@ -362,7 +362,314 @@ def test_early_values_derive_hp_preserve_unknown_and_validate_limits(app, client
     mechanic=client.get('/api/mecanicas/'+str(context['id_mecanica'])).json
     choices={s['codigo']:{a['codigo'] for a in s['atributos']} for s in mechanic['sistemas']}
     assert choices=={'DV':{'attack','defense','speed','special'},'STAT_EXP':{'hp','attack','defense','speed','special'}}
-    assert all(s['descri…5115 tokens truncated…no_other_values_inferred(app, client):
+    assert all(s['descricao_sistema'] for s in mechanic['sistemas'])
+    def value(system,attribute,number,field='valor',state='conhecido'):
+        return {'id_mecanica_sistema_atributo':systems[system],'id_atributo':attrs[attribute],field:number,'estado':state}
+    headers={'X-CSRF-Token':get_csrf(client)}
+    actual=[value('DV',code,n) for code,n in [('attack',15),('defense',14),('speed',13),('special',12)]]
+    actual += [value('STAT_EXP','hp',65535),value('STAT_EXP','attack',0)]
+    body={'id_dados_forma_atual':context['id_dados_forma'],'id_mecanica':context['id_mecanica'],'valores':actual}
+    specimen=client.post('/api/colecao',headers=headers,json=body)
+    assert specimen.status_code==201,specimen.json
+    targets=[value('DV',code,n,'valor_alvo') for code,n in [('attack',14),('defense',15),('speed',12),('special',13)]]
+    profile=client.post('/api/perfis',headers=headers,json={'id_dados_forma':context['id_dados_forma'],
+        'id_mecanica':context['id_mecanica'],'nome_perfil':'FIXTURE DV alvo','valores':targets})
+    assert profile.status_code==201,profile.json
+    payload={'id_pokemon_colecao':specimen.json['id_pokemon_colecao'],'id_perfil':profile.json['id_perfil']}
+    comparison=client.post('/api/analises',headers=headers,json=payload).json
+    hp=next(row for row in comparison['campos'] if row['atributo']=='hp (derivado)')
+    assert (hp['real'],hp['alvo'],hp['diferenca'],hp['estado'])==(10,5,5,'acima')
+    assert hp['derivado'] and hp['explicacao']
+    assert next(row for row in comparison['campos'] if row['sistema']=='STAT_EXP' and row['atributo']=='attack')['real']==0
+    targets[-1]=value('DV','special',None,'valor_alvo','desconhecido')
+    assert client.patch('/api/perfis/'+str(profile.json['id_perfil']),headers=headers,json={'valores':targets}).status_code==200
+    hp=next(row for row in client.post('/api/analises',headers=headers,json=payload).json['campos'] if row['atributo']=='hp (derivado)')
+    assert hp['alvo'] is None and hp['estado_alvo']=='desconhecido' and hp['diferenca'] is None
+    for invalid in (value('DV','attack',16),value('DV','hp',1),value('STAT_EXP','special',65536)):
+        failed=client.post('/api/colecao',headers=headers,json=body|{'valores':[value('STAT_EXP','hp',1),invalid]})
+        assert failed.status_code==400
+    assert client.get('/api/colecao').json['total']==1
+    with app.app_context():
+        importar_catalogo()
+    assert len(client.get('/api/colecao/'+str(specimen.json['id_pokemon_colecao'])).json['valores'])==len(actual)
+
+
+def test_adding_early_systems_preserves_existing_specimen(app, client, monkeypatch):
+    from test_api import create_user, get_csrf
+    import pokeanalyzer.curated_data as curated
+    def old_partial(db, data):
+        game=db.execute("SELECT id_jogo FROM JOGO WHERE codigo_versao_pokeapi='yellow'").fetchone()[0]
+        db.execute("""INSERT INTO MECANICA_JOGO(id_jogo,versao,usa_natureza,usa_habilidade,usa_nivel,
+                   nivel_minimo,nivel_maximo,fonte_url,data_verificacao)
+                   VALUES(?,'regras-parciais-documentadas','nao','nao','sim',1,100,?,?)""",
+                   (game,curated.ABILITY_SOURCE,curated.HISTORICAL_DATE))
+    with app.app_context(), monkeypatch.context() as patch:
+        patch.setattr(curated,'importar_mecanicas_anteriores',old_partial)
+        importar_catalogo()
+        db=get_db()
+        context=db.execute("""SELECT d.id_dados_forma,m.id_mecanica FROM DADOS_FORMA_JOGO d
+            JOIN FORMA f USING(id_forma) JOIN JOGO j USING(id_jogo) JOIN MECANICA_JOGO m USING(id_jogo)
+            WHERE f.codigo_forma='magnemite' AND j.codigo_versao_pokeapi='yellow'""").fetchone()
+        sheet,mechanic=tuple(context)
+    create_user(client)
+    specimen=client.post('/api/colecao',headers={'X-CSRF-Token':get_csrf(client)},
+        json={'id_dados_forma_atual':sheet,'id_mecanica':mechanic,'nivel':55,'apelido':'FIXTURE preservado'})
+    assert specimen.status_code==201
+    with app.app_context():
+        importar_catalogo()
+        db=get_db()
+        assert db.execute('SELECT count(*) FROM MECANICA_SISTEMA_ATRIBUTO WHERE id_mecanica=?',(mechanic,)).fetchone()[0]==2
+    stored=client.get('/api/colecao/'+str(specimen.json['id_pokemon_colecao'])).json
+    assert (stored['id_mecanica'],stored['nivel'],stored['apelido'],stored['valores'])==(mechanic,55,'FIXTURE preservado',[])
+
+
+def test_early_special_code_conflict_aborts_without_reinterpreting_existing_data(app):
+    with app.app_context():
+        db=get_db()
+        db.execute("INSERT INTO ATRIBUTO_BATALHA(codigo,nome) VALUES('special','FIXTURE outro significado')")
+        db.commit()
+        species_before=db.execute('SELECT count(*) FROM ESPECIE').fetchone()[0]
+        with pytest.raises(ValueError,match='Conflito de curadoria'):
+            importar_catalogo()
+        assert db.execute("SELECT nome FROM ATRIBUTO_BATALHA WHERE codigo='special'").fetchone()[0]=='FIXTURE outro significado'
+        assert db.execute('SELECT count(*) FROM ESPECIE').fetchone()[0]==species_before
+
+
+def test_generation_one_stats_preserve_partial_existing_curation(app, monkeypatch):
+    import pokeanalyzer.contextual_data as contextual
+    with app.app_context(), monkeypatch.context() as patch:
+        patch.setattr(contextual,'importar_contextos_por_geracao',lambda *_:None)
+        importar_catalogo()
+        db=get_db()
+        sheet=db.execute("""SELECT d.id_dados_forma FROM DADOS_FORMA_JOGO d JOIN FORMA f USING(id_forma)
+            JOIN JOGO j USING(id_jogo) WHERE f.codigo_forma='magnemite' AND j.codigo_versao_pokeapi='yellow'""").fetchone()[0]
+        db.execute('UPDATE DADOS_FORMA_JOGO SET hp_base=42 WHERE id_dados_forma=?',(sheet,))
+        db.commit()
+    with app.app_context():
+        importar_catalogo()
+        row=get_db().execute('SELECT hp_base,ataque_base,especial_base,fonte_estatisticas FROM DADOS_FORMA_JOGO WHERE id_dados_forma=?',(sheet,)).fetchone()
+        assert tuple(row)==(42,None,None,None)
+
+
+def test_historical_stats_do_not_mix_with_existing_special_curated_value(app, monkeypatch):
+    import pokeanalyzer.contextual_data as contextual
+    with app.app_context(), monkeypatch.context() as patch:
+        patch.setattr(contextual,'importar_contextos_por_geracao',lambda *_:None)
+        importar_catalogo()
+        db=get_db()
+        sheet=db.execute("""SELECT d.id_dados_forma FROM DADOS_FORMA_JOGO d JOIN FORMA f USING(id_forma)
+            JOIN JOGO j USING(id_jogo) WHERE f.codigo_forma='pikachu' AND j.codigo_versao_pokeapi='gold'""").fetchone()[0]
+        db.execute('UPDATE DADOS_FORMA_JOGO SET especial_base=42 WHERE id_dados_forma=?',(sheet,))
+        db.commit()
+    with app.app_context():
+        report=importar_catalogo()
+        row=get_db().execute('SELECT hp_base,ataque_especial_base,especial_base,fonte_estatisticas FROM DADOS_FORMA_JOGO WHERE id_dados_forma=?',(sheet,)).fetchone()
+        assert tuple(row)==(None,None,42,None)
+        assert report['fichas_com_sistemas_estatisticos_misturados']==0
+        get_db().execute('UPDATE DADOS_FORMA_JOGO SET ataque_especial_base=99 WHERE id_dados_forma=?',(sheet,))
+        from pokeanalyzer.catalog_data import cobertura
+        assert cobertura()['fichas_com_sistemas_estatisticos_misturados']==1
+
+
+def test_real_extended_encounters_distinguish_gifts_eggs_and_wild(app, client):
+    from test_api import create_user, get_csrf
+    create_user(client)
+    with app.app_context():
+        report=importar_catalogo()
+        db=get_db()
+        def sheet(form,version):
+            row=db.execute("""SELECT d.id_dados_forma FROM DADOS_FORMA_JOGO d JOIN FORMA f USING(id_forma)
+                JOIN JOGO j USING(id_jogo) WHERE f.codigo_forma=? AND j.codigo_versao_pokeapi=?""",(form,version)).fetchone()
+            assert row,(form,version)
+            return row[0]
+        nickit=sheet('nickit','sword')
+        pidgey=sheet('pidgey','lets-go-pikachu')
+        gifted=sheet('pikachu','yellow')
+        egg=sheet('togepi','gold')
+        charmander=sheet('charmander','sword')
+        assert report['fichas_metodo_selvagem']>6000
+        assert report['fichas_metodo_presente']>200
+        assert report['fichas_metodo_ovo']>0
+    def details(identifier):
+        response=client.get('/api/pokemon/'+str(identifier))
+        assert response.status_code==200
+        return response.json
+    sword=details(nickit)
+    assert sword['status_presenca']=='nativa' and sword['pode_ser_registrada']=='sim'
+    assert sword['tipos']==['Dark'] and any('Walking in the overworld' in (m['condicao'] or '') for m in sword['metodos'])
+    assert all(m['fonte_url'].endswith('/encounters.csv') for m in sword['metodos'])
+    letsgo=details(pidgey)
+    assert letsgo['estado_sistema_habilidades']=='nao_aplicavel' and not letsgo['habilidades']
+    assert letsgo['tipos']==['Normal','Flying'] and letsgo['fonte_tipos']
+    assert letsgo['fonte_estatisticas'] and letsgo['hp_base']==40
+    assert any(m['nome']=='Encontro selvagem' for m in letsgo['metodos'])
+    assert [m['nome'] for m in details(gifted)['metodos']]==['Presente no jogo']
+    assert [m['nome'] for m in details(egg)['metodos']]==['Ovo recebido no jogo']
+    assert [m['nome'] for m in details(charmander)['metodos']]==['Presente no jogo']  # Source raid rows are not called wild or imported.
+    added=client.post('/api/colecao',headers={'X-CSRF-Token':get_csrf(client)},
+        json={'id_dados_forma_atual':gifted,'id_metodo_obtencao':details(gifted)['metodos'][0]['id_metodo'],'apelido':'FIXTURE presente'})
+    assert added.status_code==201,added.json
+
+
+def test_lets_go_type_filter_uses_sourced_context(app, client):
+    with app.app_context():
+        report=importar_catalogo()
+        db=get_db()
+        game=db.execute("SELECT id_jogo FROM JOGO WHERE codigo_versao_pokeapi='lets-go-pikachu'").fetchone()[0]
+        electric=db.execute("SELECT id_tipo FROM TIPO WHERE nome_tipo='Electric'").fetchone()[0]
+        coverage=next(g for g in report['cobertura_por_jogo'] if g['codigo_versao_pokeapi']=='lets-go-pikachu')
+        assert coverage['fichas']==187  # 153 species + 18 Alolan forms + 15 temporary Mega forms + partner.
+        assert coverage['tipos_com_fonte']==coverage['fichas']
+        assert coverage['estatisticas_sem_fonte']==0
+        assert coverage['seis_estatisticas_com_fonte']==coverage['fichas']
+        assert report['fichas_disponibilidade_lgpe']==342
+        assert report['fichas_formas_alola_lgpe']==36
+        assert report['fichas_go_park_lgpe']==340
+        assert report['fichas_poke_ball_plus_lgpe']==2
+        assert report['fichas_formas_mega_lgpe']==30
+        assert report['transformacoes_mega_lgpe']==30
+        base_form=db.execute("SELECT id_forma FROM FORMA WHERE codigo_forma='charizard'").fetchone()[0]
+        context_ids=[r[0] for r in db.execute("""SELECT d.id_dados_forma FROM DADOS_FORMA_JOGO d
+            JOIN FORMA f USING(id_forma) JOIN JOGO j USING(id_jogo)
+            WHERE f.codigo_forma IN ('raichu-alola','charizard-mega-x','venusaur')
+            AND j.codigo_versao_pokeapi='lets-go-eevee'""")]
+        destination=db.execute("""SELECT d.status_presenca,d.pode_ser_registrada,f.estado_forma,d.ataque_base,d.fonte_estatisticas
+            FROM DADOS_FORMA_JOGO d JOIN FORMA f USING(id_forma) JOIN JOGO j USING(id_jogo)
+            WHERE f.codigo_forma='charizard-mega-x' AND j.codigo_versao_pokeapi='lets-go-eevee'""").fetchone()
+        assert tuple(destination[:3])==('nativa','nao','temporario')
+        assert destination['ataque_base'] and destination['fonte_estatisticas']
+    base_detail=client.get('/api/formas/'+str(base_form))
+    assert len(context_ids)==3
+    for context_id in context_ids:
+        detail=client.get('/api/pokemon/'+str(context_id)).json
+        assert detail['estado_sistema_habilidades']=='nao_aplicavel'
+        assert detail['fonte_sistema_habilidades'] and not detail['habilidades']
+    assert base_detail.status_code==200
+    mega=next(f for f in base_detail.json['fichas'] if f['nome_jogo']=='Let’s Go, Eevee!')
+    relation=next(t for t in mega['transformacoes'] if t['codigo_destino']=='charizard-mega-x')
+    assert relation['temporaria']==1 and 'Key Stone' in relation['condicao']
+    result=client.get('/api/pokemon',query_string={'busca':'pikachu','tipo':electric,'jogo':game})
+    assert result.status_code==200
+    row=next(p for p in result.json['itens'] if p['codigo_forma']=='pikachu')
+    assert row['fichas'][0]['tipos']==['Electric'] and row['fichas'][0]['fonte_tipos']
+
+
+def test_extended_import_preserves_owned_specimen_and_existing_method_curation(app, client, monkeypatch):
+    from test_api import create_user, get_csrf
+    import pokeanalyzer.catalog_data as catalog
+    _,source=catalog.ler_snapshot()
+    original_ids={str(n) for n in (*range(1,18),22,23,24)}
+    old_names=frozenset(row['identifier'] for row in source['encounter_methods.csv'] if row['id'] in original_ids)
+    with app.app_context(), monkeypatch.context() as patch:
+        patch.setattr(catalog,'METHOD_GROUPS',{'Encontro selvagem':old_names})
+        catalog.importar_catalogo()
+        db=get_db()
+        sheet=db.execute("""SELECT d.id_dados_forma FROM DADOS_FORMA_JOGO d JOIN FORMA f USING(id_forma)
+            JOIN JOGO j USING(id_jogo) WHERE f.codigo_forma='pikachu' AND j.codigo_versao_pokeapi='gold'""").fetchone()[0]
+        db.execute("UPDATE METODO_FORMA_JOGO SET condicao='FIXTURE curadoria' WHERE id_dados_forma=?",(sheet,))
+        db.commit()
+    create_user(client)
+    added=client.post('/api/colecao',headers={'X-CSRF-Token':get_csrf(client)},
+        json={'id_dados_forma_atual':sheet,'apelido':'FIXTURE preservado'})
+    assert added.status_code==201
+    with app.app_context():
+        first=catalog.importar_catalogo()
+        assert catalog.importar_catalogo()==first
+        db=get_db()
+        assert db.execute('SELECT condicao FROM METODO_FORMA_JOGO WHERE id_dados_forma=?',(sheet,)).fetchone()[0]=='FIXTURE curadoria'
+        assert db.execute("""SELECT count(*) FROM DADOS_FORMA_JOGO d JOIN FORMA f USING(id_forma)
+            JOIN JOGO j USING(id_jogo) WHERE f.codigo_forma='pikachu' AND j.codigo_versao_pokeapi='yellow'""").fetchone()[0]==1
+        assert not db.execute('PRAGMA foreign_key_check').fetchall()
+    assert client.get('/api/colecao/'+str(added.json['id_pokemon_colecao'])).json['apelido']=='FIXTURE preservado'
+
+
+def test_history_reimport_preserves_existing_specimen_and_partial_curation(app, client, monkeypatch):
+    from test_api import create_user, get_csrf
+    import pokeanalyzer.contextual_data as contextual
+    # Represent an existing versioned database created before historical enrichment.
+    with app.app_context(), monkeypatch.context() as patch:
+        patch.setattr(contextual, 'importar_contextos_por_geracao', lambda *_: None)
+        importar_catalogo()
+        db=get_db()
+        sheet=db.execute("""SELECT d.id_dados_forma FROM DADOS_FORMA_JOGO d JOIN FORMA f USING(id_forma)
+            JOIN JOGO j USING(id_jogo) WHERE f.codigo_forma='pikachu' AND j.nome='Gold'""").fetchone()[0]
+        db.execute('UPDATE DADOS_FORMA_JOGO SET hp_base=42 WHERE id_dados_forma=?',(sheet,))
+        db.commit()
+    create_user(client)
+    added=client.post('/api/colecao',json={'id_dados_forma_atual':sheet,'apelido':'FIXTURE preservado'},
+                      headers={'X-CSRF-Token':get_csrf(client)})
+    assert added.status_code==201
+    with app.app_context():
+        importar_catalogo()
+        db=get_db()
+        row=db.execute('SELECT hp_base,ataque_base,fonte_estatisticas FROM DADOS_FORMA_JOGO WHERE id_dados_forma=?',(sheet,)).fetchone()
+        assert tuple(row)==(42,None,None)  # Existing partial curation is not replaced or completed silently.
+    assert client.get('/api/colecao/'+str(added.json['id_pokemon_colecao'])).json['apelido']=='FIXTURE preservado'
+    assert client.get('/api/pokemon/'+str(sheet)).json['tipos']==['Electric']
+
+
+def test_sword_context_has_independent_sources_and_real_values(app, client):
+    with app.app_context():
+        coverage=importar_catalogo()
+        db=get_db()
+        sword=db.execute("SELECT id_jogo FROM JOGO WHERE nome='Sword'").fetchone()[0]
+        electric=db.execute("SELECT id_tipo FROM TIPO WHERE nome_tipo='Electric'").fetchone()[0]
+    result=client.get('/api/pokemon',query_string={'busca':'pikachu','jogo':sword,'tipo':electric})
+    row=next(x for x in result.json['itens'] if x['codigo_forma']=='pikachu')
+    sheet=row['fichas'][0]
+    assert sheet['tipos']==['Electric']
+    assert sheet['fonte_url'].endswith('/encounters.csv')
+    assert sheet['fonte_tipos'] and sheet['data_verificacao_tipos']
+    detail=client.get('/api/pokemon/'+str(sheet['id_dados_forma'])).json
+    assert [detail[k] for k in ('hp_base','ataque_base','defesa_base','ataque_especial_base','defesa_especial_base','velocidade_base')]==[35,55,40,50,50,90]
+    assert detail['fonte_estatisticas'] and detail['data_verificacao_estatisticas']
+    assert {'Static','Lightning Rod'} <= {x['nome'] for x in detail['habilidades']}
+    assert all(x['fonte_url'] and x['data_verificacao'] for x in detail['habilidades'])
+    assert coverage['fichas_tipos_com_fonte']>0
+
+
+def test_sword_context_reimport_preserves_existing_curated_values(app):
+    with app.app_context():
+        importar_catalogo()
+        db=get_db()
+        sheet=db.execute("""SELECT d.id_dados_forma FROM DADOS_FORMA_JOGO d JOIN FORMA f USING(id_forma)
+            JOIN JOGO j USING(id_jogo) WHERE f.codigo_forma='pikachu' AND j.nome='Sword'""").fetchone()[0]
+        db.execute('UPDATE DADOS_FORMA_JOGO SET hp_base=42 WHERE id_dados_forma=?',(sheet,))
+        ability=db.execute('SELECT id_habilidade_forma FROM HABILIDADE_FORMA_JOGO WHERE id_dados_forma=? LIMIT 1',(sheet,)).fetchone()[0]
+        db.execute("UPDATE HABILIDADE_FORMA_JOGO SET slot='FIXTURE curated' WHERE id_habilidade_forma=?",(ability,))
+        db.commit()
+        importar_catalogo()
+        assert db.execute('SELECT hp_base FROM DADOS_FORMA_JOGO WHERE id_dados_forma=?',(sheet,)).fetchone()[0]==42
+        assert db.execute('SELECT slot FROM HABILIDADE_FORMA_JOGO WHERE id_habilidade_forma=?',(ability,)).fetchone()[0]=='FIXTURE curated'
+
+
+def test_official_series_14_eligibility_is_conditional_and_contextual(app, client):
+    with app.app_context():
+        report=importar_catalogo()
+        db=get_db()
+        sheet=db.execute("""SELECT d.id_dados_forma FROM DADOS_FORMA_JOGO d JOIN FORMA f USING(id_forma)
+            JOIN JOGO j USING(id_jogo) WHERE f.codigo_forma='pikachu' AND j.nome='Sword'""").fetchone()[0]
+        rule=db.execute("""SELECT r.id_regulamento FROM REGULAMENTO r JOIN MECANICA_JOGO m USING(id_mecanica)
+            JOIN JOGO j USING(id_jogo) WHERE j.nome='Sword' AND r.codigo='ranked-battles-series-14'""").fetchone()[0]
+        shield_rule=db.execute("""SELECT r.id_regulamento FROM REGULAMENTO r JOIN MECANICA_JOGO m USING(id_mecanica)
+            JOIN JOGO j USING(id_jogo) WHERE j.nome='Shield' AND r.codigo='ranked-battles-series-14'""").fetchone()[0]
+        assert report['contagens_banco']['REGULAMENTO']==2
+    result=client.get(f'/api/regulamentos/{rule}/formas/{sheet}')
+    assert result.status_code==200
+    assert result.json['status']=='condicional' and 'battle-ready' in result.json['condicao']
+    assert 'pokemon.com' in result.json['fonte_url'] and result.json['legalidade_completa_verificada'] is False
+    assert client.get(f'/api/regulamentos/{shield_rule}/formas/{sheet}').status_code==400
+    with app.app_context():
+        assert importar_catalogo()['contagens_banco']['REGULAMENTO']==2
+        db=get_db()
+        db.execute("UPDATE ELEGIBILIDADE_FORMA_REGULAMENTO SET status='proibido' WHERE id_regulamento=? AND id_dados_forma=?",(rule,sheet))
+        db.commit()
+        with pytest.raises(ValueError,match='Conflito de curadoria'):
+            importar_catalogo()
+        assert db.execute('SELECT status FROM ELEGIBILIDADE_FORMA_REGULAMENTO WHERE id_regulamento=? AND id_dados_forma=?',(rule,sheet)).fetchone()[0]=='proibido'
+
+
+def test_reference_dragapult_targets_are_sourced_and_no_other_values_inferred(app, client):
     from test_api import create_user, get_csrf
     create_user(client)
     with app.app_context():
