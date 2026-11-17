@@ -253,7 +253,7 @@ def test_historical_real_mechanics_have_distinct_ev_limits_and_contexts(app, cli
     with app.app_context():
         report=importar_catalogo()
         db=get_db()
-        assert report['contagens_banco']['MECANICA_JOGO']==36  # 22 históricas, 9 antigas, 2 SwSh, 2 SV, 1 FIXTURE
+        assert report['contagens_banco']['MECANICA_JOGO']==38  # Inclui duas de Let’s Go e uma FIXTURE.
         contexts={}
         for game in ('ruby','x'):
             row=db.execute("""SELECT d.id_dados_forma,m.id_mecanica,ms.id_mecanica_sistema_atributo,
@@ -268,7 +268,7 @@ def test_historical_real_mechanics_have_distinct_ev_limits_and_contexts(app, cli
         assert contexts['x']['valor_maximo_atributo']==252
         assert all(c['valor_maximo_total']==510 and c['fonte_url'].endswith('/Effort_values') for c in contexts.values())
         assert not db.execute("""SELECT 1 FROM MECANICA_JOGO m JOIN JOGO j USING(id_jogo)
-                               WHERE j.codigo_versao_pokeapi IN ('lets-go-pikachu','legends-arceus')""").fetchall()
+                               WHERE j.codigo_versao_pokeapi='legends-arceus'""").fetchall()
     headers={'X-CSRF-Token':get_csrf(client)}
     def value(context,number,field='valor'):
         return {'id_mecanica_sistema_atributo':context['id_mecanica_sistema_atributo'],'id_atributo':attr,field:number}
@@ -500,7 +500,7 @@ def test_real_extended_encounters_distinguish_gifts_eggs_and_wild(app, client):
     letsgo=details(pidgey)
     assert letsgo['estado_sistema_habilidades']=='nao_aplicavel' and not letsgo['habilidades']
     assert letsgo['tipos']==['Normal','Flying'] and letsgo['fonte_tipos']
-    assert letsgo['fonte_estatisticas'] is None and letsgo['hp_base'] is None
+    assert letsgo['fonte_estatisticas'] and letsgo['hp_base']==40
     assert any(m['nome']=='Encontro selvagem' for m in letsgo['metodos'])
     assert [m['nome'] for m in details(gifted)['metodos']]==['Presente no jogo']
     assert [m['nome'] for m in details(egg)['metodos']]==['Ovo recebido no jogo']
@@ -510,15 +510,15 @@ def test_real_extended_encounters_distinguish_gifts_eggs_and_wild(app, client):
     assert added.status_code==201,added.json
 
 
-def test_lets_go_type_filter_uses_sourced_context_without_inventing_other_stats(app, client):
+def test_lets_go_type_filter_uses_sourced_context(app, client):
     with app.app_context():
         report=importar_catalogo()
         db=get_db()
         game=db.execute("SELECT id_jogo FROM JOGO WHERE codigo_versao_pokeapi='lets-go-pikachu'").fetchone()[0]
         electric=db.execute("SELECT id_tipo FROM TIPO WHERE nome_tipo='Electric'").fetchone()[0]
         coverage=next(g for g in report['cobertura_por_jogo'] if g['codigo_versao_pokeapi']=='lets-go-pikachu')
-        assert coverage['tipos_com_fonte']==coverage['fichas']-1>0  # Parceiro é forma própria, ainda sem essa curadoria.
-        assert coverage['estatisticas_sem_fonte']==coverage['fichas']
+        assert coverage['tipos_com_fonte']==coverage['fichas']>0
+        assert coverage['estatisticas_sem_fonte']==0
     result=client.get('/api/pokemon',query_string={'busca':'pikachu','tipo':electric,'jogo':game})
     assert result.status_code==200
     row=next(p for p in result.json['itens'] if p['codigo_forma']=='pikachu')
@@ -808,3 +808,104 @@ def test_lets_go_partner_forms_are_distinct_and_old_ambiguous_links_are_preserve
     warning=next(m for m in regular_detail['metodos'] if m['nome']=='Presente no jogo')
     assert warning['estado_verificacao']=='nao_verificado' and 'forma distinta' in warning['condicao']
     assert client.get('/api/colecao/'+str(created.json['id_pokemon_colecao'])).json['apelido']=='FIXTURE legado'
+
+
+def test_lets_go_stats_mechanics_and_partner_values_are_contextual_and_explainable(app, client):
+    from test_api import create_user, get_csrf
+    from pokeanalyzer.curated_data import LGPE_RULE_SOURCE, LGPE_PARTNER_SOURCE
+    create_user(client)
+    with app.app_context():
+        report=importar_catalogo()
+        db=get_db()
+        assert report['fichas_parceiros_lgpe']==2
+        mechanics={}
+        for game in ('lets-go-pikachu','lets-go-eevee'):
+            row=db.execute("""SELECT d.id_dados_forma,m.id_mecanica,m.usa_natureza,m.usa_habilidade,
+                 m.usa_nivel,m.nivel_minimo,m.nivel_maximo,d.fonte_url,d.hp_base,d.ataque_base,
+                 d.defesa_base,d.ataque_especial_base,d.defesa_especial_base,d.velocidade_base
+              FROM DADOS_FORMA_JOGO d JOIN FORMA f USING(id_forma) JOIN JOGO j USING(id_jogo)
+              JOIN MECANICA_JOGO m USING(id_jogo) WHERE f.codigo_forma=? AND j.codigo_versao_pokeapi=?""",
+              ('pikachu-starter' if game.endswith('pikachu') else 'eevee-starter',game)).fetchone()
+            mechanics[game]=dict(row)
+            assert row['fonte_url']==LGPE_PARTNER_SOURCE
+            assert (row['usa_natureza'],row['usa_habilidade'],row['usa_nivel'])==('sim','nao','sim')
+            assert (row['nivel_minimo'],row['nivel_maximo'])==(1,100)
+        assert tuple(mechanics['lets-go-pikachu'][key] for key in ('hp_base','ataque_base','defesa_base','ataque_especial_base','defesa_especial_base','velocidade_base'))==(45,80,50,75,60,120)
+        assert tuple(mechanics['lets-go-eevee'][key] for key in ('hp_base','ataque_base','defesa_base','ataque_especial_base','defesa_especial_base','velocidade_base'))==(65,75,70,65,85,75)
+        rules={}
+        for game,context in mechanics.items():
+            rows=db.execute("""SELECT s.codigo,ms.aplicabilidade,ms.valor_minimo,ms.valor_maximo_atributo,
+                   ms.limite_total_status,ms.fonte_url,ms.data_verificacao
+                FROM MECANICA_SISTEMA_ATRIBUTO ms JOIN SISTEMA_ATRIBUTO s USING(id_sistema_atributo)
+                WHERE ms.id_mecanica=?""",(context['id_mecanica'],)).fetchall()
+            rules[game]={row['codigo']:dict(row) for row in rows}
+        for game in rules:
+            assert set(rules[game])=={'IV','AV','EV'}
+            assert rules[game]['IV']['valor_maximo_atributo']==31
+            assert rules[game]['AV']['valor_maximo_atributo']==200
+            assert rules[game]['AV']['fonte_url']==LGPE_RULE_SOURCE
+            assert rules[game]['EV']['aplicabilidade']=='nao_aplicavel'
+            assert rules[game]['EV']['valor_maximo_atributo'] is None
+        attrs={r['codigo']:r['id_atributo'] for r in db.execute('SELECT codigo,id_atributo FROM ATRIBUTO_BATALHA')}
+        system_ids={game:{r['codigo']:r['id_mecanica_sistema_atributo'] for r in db.execute("""SELECT s.codigo,ms.id_mecanica_sistema_atributo
+           FROM MECANICA_SISTEMA_ATRIBUTO ms JOIN SISTEMA_ATRIBUTO s USING(id_sistema_atributo)
+           WHERE ms.id_mecanica=?""",(mechanics[game]['id_mecanica'],))} for game in mechanics}
+        partner=mechanics['lets-go-pikachu']
+        regular=db.execute("""SELECT d.id_dados_forma FROM DADOS_FORMA_JOGO d JOIN FORMA f USING(id_forma)
+           JOIN JOGO j USING(id_jogo) WHERE f.codigo_forma='pikachu' AND j.codigo_versao_pokeapi='lets-go-pikachu'""").fetchone()[0]
+        regular_stats=db.execute("""SELECT d.hp_base,d.ataque_base,d.defesa_base,d.ataque_especial_base,
+             d.defesa_especial_base,d.velocidade_base,d.fonte_estatisticas
+          FROM DADOS_FORMA_JOGO d WHERE d.id_dados_forma=?""",(regular,)).fetchone()
+        assert tuple(regular_stats[:6])==(35,55,40,50,50,90)
+        assert regular_stats['fonte_estatisticas']
+    headers={'X-CSRF-Token':get_csrf(client)}
+    def val(system,attribute,value,state='conhecido',field='valor'):
+        return {'id_mecanica_sistema_atributo':system_ids['lets-go-pikachu'][system],
+                'id_atributo':attrs[attribute],'estado':state,field:value}
+    values=[val('IV','hp',31),val('AV','hp',0)]
+    values += [val('EV',attribute,None,'nao_aplicavel') for attribute in ('hp','attack','defense','special-attack','special-defense','speed')]
+    added=client.post('/api/colecao',headers=headers,json={'id_dados_forma_atual':partner['id_dados_forma'],
+        'id_mecanica':partner['id_mecanica'],'nivel':50,'valores':values})
+    assert added.status_code==201,added.json
+    stored=client.get('/api/colecao/'+str(added.json['id_pokemon_colecao'])).json
+    assert {v['estado'] for v in stored['valores'] if v['valor'] is None}=={'nao_aplicavel'}
+    profile_values=[val('AV','hp',200,field='valor_alvo')]
+    profile=client.post('/api/perfis',headers=headers,json={'id_dados_forma':partner['id_dados_forma'],
+        'id_mecanica':partner['id_mecanica'],'nome_perfil':'FIXTURE AV explícito','valores':profile_values})
+    assert profile.status_code==201,profile.json
+    invalid_target=client.post('/api/perfis',headers=headers,json={'id_dados_forma':partner['id_dados_forma'],
+        'id_mecanica':partner['id_mecanica'],'nome_perfil':'FIXTURE IV impossível',
+        'valores':[val('IV','hp',30,field='valor_alvo')]})
+    assert invalid_target.status_code==400
+    compared=client.post('/api/analises',headers=headers,json={'id_pokemon_colecao':added.json['id_pokemon_colecao'],
+        'id_perfil':profile.json['id_perfil']})
+    assert compared.status_code==200,compared.json
+    av=next(row for row in compared.json['campos'] if row['sistema']=='AV' and row['atributo']=='hp')
+    assert (av['real'],av['alvo'],av['diferenca'],av['estado'])==(0,200,-200,'abaixo')
+    assert 'não significa melhor' in compared.json['interpretacao']
+    for invalid in (val('AV','hp',201),val('EV','hp',0),val('IV','hp',30)):
+        rejected=client.post('/api/colecao',headers=headers,json={'id_dados_forma_atual':partner['id_dados_forma'],
+            'id_mecanica':partner['id_mecanica'],'valores':[invalid]})
+        assert rejected.status_code==400
+    # A rejected replacement rolls back children and leaves the specimen intact.
+    rejected=client.patch('/api/colecao/'+str(added.json['id_pokemon_colecao']),headers=headers,json={'valores':[val('IV','hp',30)]})
+    assert rejected.status_code==400
+    after=client.get('/api/colecao/'+str(added.json['id_pokemon_colecao'])).json
+    assert any(v['estado']=='nao_aplicavel' and v['valor'] is None for v in after['valores'])
+    # The ordinary Pikachu remains a separate profile/specimen context.
+    incompatible=client.post('/api/perfis',headers=headers,json={'id_dados_forma':regular,
+        'id_mecanica':mechanics['lets-go-eevee']['id_mecanica'],'nome_perfil':'FIXTURE contexto errado'})
+    assert incompatible.status_code==400
+
+
+def test_lets_go_mechanic_source_conflict_is_preserved_and_rejected(app):
+    with app.app_context():
+        importar_catalogo()
+        db=get_db()
+        row=db.execute("""SELECT m.id_mecanica FROM MECANICA_JOGO m JOIN JOGO j USING(id_jogo)
+            WHERE j.codigo_versao_pokeapi='lets-go-pikachu'""").fetchone()
+        db.execute("UPDATE MECANICA_JOGO SET fonte_url='https://example.invalid/curated-source' WHERE id_mecanica=?",(row[0],))
+        db.commit()
+        with pytest.raises(ValueError,match='Conflito de curadoria'):
+            importar_catalogo()
+        assert db.execute('SELECT fonte_url FROM MECANICA_JOGO WHERE id_mecanica=?',(row[0],)).fetchone()[0]=='https://example.invalid/curated-source'

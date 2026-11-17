@@ -57,7 +57,9 @@ class ColecaoService:
         values = validar_valores(dados.get("valores", []), "valor")
         try:
             with transaction(get_db()):
-                pokemon = self.colecao_dao.adicionar(self._preparar(id_usuario, dados))
+                prepared = self._preparar(id_usuario, dados)
+                validar_iv_parceiro(prepared['id_dados_forma_atual'], values, 'valor')
+                pokemon = self.colecao_dao.adicionar(prepared)
                 ValorDAO().substituir("pokemon", pokemon.id_pokemon_colecao, values)
                 return self.colecao_dao.obter_do_usuario(pokemon.id_pokemon_colecao, id_usuario)
         except sqlite3.IntegrityError as exc:
@@ -81,7 +83,10 @@ class ColecaoService:
                 if "valores" in dados:
                     values = validar_valores(dados["valores"], "valor")
                     ValorDAO().substituir("pokemon", id_pokemon, [])
-                self.colecao_dao.atualizar_do_usuario(id_pokemon, id_usuario, self._preparar(id_usuario, merged))
+                prepared = self._preparar(id_usuario, merged)
+                if "valores" in dados:
+                    validar_iv_parceiro(prepared['id_dados_forma_atual'], values, 'valor')
+                self.colecao_dao.atualizar_do_usuario(id_pokemon, id_usuario, prepared)
                 if "valores" in dados:
                     ValorDAO().substituir("pokemon", id_pokemon, values)
                 return self.colecao_dao.obter_do_usuario(id_pokemon, id_usuario)
@@ -194,6 +199,22 @@ def validar_valores(valores, campo):
     return result
 
 
+def validar_iv_parceiro(id_dados_forma, values, campo):
+    """Os parceiros documentados têm IV 31; dados desconhecidos continuam aceitos."""
+    from .curated_data import LGPE_PARTNER_SOURCE
+    row=get_db().execute('SELECT fonte_url FROM DADOS_FORMA_JOGO WHERE id_dados_forma=?',(id_dados_forma,)).fetchone()
+    if not row or row[0]!=LGPE_PARTNER_SOURCE:
+        return
+    for value in values:
+        if value['estado']!='conhecido' or value[campo]==31:
+            continue
+        system=get_db().execute("""SELECT s.codigo FROM MECANICA_SISTEMA_ATRIBUTO ms
+            JOIN SISTEMA_ATRIBUTO s USING(id_sistema_atributo) WHERE ms.id_mecanica_sistema_atributo=?""",
+            (value['id_mecanica_sistema_atributo'],)).fetchone()
+        if system and system[0]=='IV':
+            raise ValueError('Os IVs conhecidos do parceiro inicial documentado devem ser 31.')
+
+
 class PerfilService:
     CAMPOS = {"id_dados_forma", "id_mecanica", "id_regulamento", "nome_perfil", "descricao", "valores", "naturezas", "habilidades"}
 
@@ -227,6 +248,7 @@ class PerfilService:
         natures, abilities = self._opcoes(dados, "naturezas"), self._opcoes(dados, "habilidades")
         try:
             with transaction(get_db()):
+                validar_iv_parceiro(fields['id_dados_forma'], values, 'valor_alvo')
                 profile = self.perfil_dao.criar_personalizado(id_usuario, fields["id_dados_forma"], fields["id_mecanica"], fields["nome_perfil"], fields["id_regulamento"])
                 self.perfil_dao.atualizar_personalizado(profile.id_perfil, id_usuario, fields)
                 ValorDAO().substituir("perfil", profile.id_perfil, values)
@@ -249,6 +271,8 @@ class PerfilService:
                 if changed and not {"valores", "naturezas", "habilidades"} <= dados.keys():
                     raise ValueError("Mudança de contexto exige valores, naturezas e habilidades explícitos.")
                 values = validar_valores(dados["valores"] if "valores" in dados else list(current.valores), "valor_alvo")
+                if 'valores' in dados or changed:
+                    validar_iv_parceiro(merged['id_dados_forma'], values, 'valor_alvo')
                 options = {k: self._opcoes({k: dados[k] if k in dados else list(getattr(current, k))}, k) for k in ("naturezas", "habilidades")}
                 ValorDAO().substituir("perfil", id_perfil, [])
                 self.perfil_dao.substituir_opcoes(id_perfil, [], [])

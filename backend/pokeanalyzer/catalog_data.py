@@ -100,10 +100,11 @@ def importar_catalogo(directory=SNAPSHOT):
                 db.execute('INSERT INTO JOGO(nome,geracao,fonte_url,data_verificacao,codigo_versao_pokeapi) VALUES(?,?,?,?,?)',
                     (display, generation, source, date, r['identifier']))
         importar_encontros(db, data, manifest)
-        from .curated_data import importar_mecanicas_swsh, importar_mecanicas_historicas, importar_mecanicas_anteriores, importar_dragapult, importar_iniciais_sv, importar_evento_sv, importar_parceiros_lgpe
+        from .curated_data import importar_mecanicas_swsh, importar_mecanicas_historicas, importar_mecanicas_anteriores, importar_mecanicas_lgpe, importar_dragapult, importar_iniciais_sv, importar_evento_sv, importar_parceiros_lgpe
         importar_mecanicas_swsh(db, data)
         importar_mecanicas_historicas(db, data)
         importar_mecanicas_anteriores(db, data)
+        importar_mecanicas_lgpe(db)
         importar_dragapult(db)
         importar_iniciais_sv(db)
         importar_evento_sv(db)

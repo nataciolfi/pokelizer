@@ -12,6 +12,7 @@ SV_STARTER_SOURCE = 'https://press.pokemon.com/en-CA/POKEMON-ANNOUNCES-NEW-VIDEO
 SV_RAID_SOURCE = 'https://sv-news.pokemon.co.jp/en/page/261.html'
 LGPE_PARTNER_SOURCE = ('https://bulbapedia.bulbagarden.net/w/index.php?title=List_of_in-game_event_Pok%C3%A9mon_in_Pok%C3%A9mon:'
                        '_Let%27s_Go,_Pikachu!_and_Let%27s_Go,_Eevee!&oldid=4559684')
+LGPE_RULE_SOURCE = 'https://www.serebii.net/letsgopikachueevee/stats.shtml'
 SV_DATE = '2026-11-16'
 HISTORICAL_DATE = '2026-11-15'
 # Curated historical core-series versions only. Other games are added explicitly.
@@ -155,6 +156,39 @@ def importar_mecanicas_anteriores(db, data):
                 _obter_ou_inserir(db,'MECANICA_ATRIBUTO',
                     {'id_mecanica_sistema_atributo':system['id_mecanica_sistema_atributo'],'id_atributo':attrs[field]},
                     {'aplicabilidade':'aplicavel','fonte_url':source,'data_verificacao':HISTORICAL_DATE},['aplicabilidade'])
+
+
+def importar_mecanicas_lgpe(db):
+    """IV e AV são distintos de EV; o estado de habilidades é não aplicável."""
+    attrs=[db.execute('SELECT id_atributo FROM ATRIBUTO_BATALHA WHERE codigo=?',(code,)).fetchone()[0]
+           for code,_ in STATS.values()]
+    av=_obter_ou_inserir(db,'SISTEMA_ATRIBUTO',{'codigo':'AV'},
+        {'nome':'Awakening Values','descricao':'Valores de despertar próprios de Let’s Go; não são EV.'},['nome','descricao'])
+    ids={'AV':av['id_sistema_atributo']}
+    for code in ('IV','EV'):
+        ids[code]=db.execute('SELECT id_sistema_atributo FROM SISTEMA_ATRIBUTO WHERE codigo=?',(code,)).fetchone()[0]
+    for game in ('lets-go-pikachu','lets-go-eevee'):
+        row=db.execute('SELECT id_jogo FROM JOGO WHERE codigo_versao_pokeapi=?',(game,)).fetchone()
+        if not row:
+            raise ValueError(f'Jogo {game} não identificado; carga revertida.')
+        values={'usa_natureza':'sim','usa_habilidade':'nao','usa_nivel':'sim','nivel_minimo':1,'nivel_maximo':100,
+                'fonte_url':LGPE_RULE_SOURCE,'data_verificacao':SV_DATE}
+        mechanic=_obter_ou_inserir(db,'MECANICA_JOGO',{'id_jogo':row[0],'versao':'regras-parciais-documentadas'},values,
+            ['usa_natureza','usa_habilidade','usa_nivel','nivel_minimo','nivel_maximo','fonte_url','data_verificacao'])
+        for code,maximum,source in [('IV',31,IV_SOURCE),('AV',200,LGPE_RULE_SOURCE),('EV',None,LGPE_RULE_SOURCE)]:
+            applicable='nao_aplicavel' if maximum is None else 'aplicavel'
+            system_values={'aplicabilidade':applicable,'valor_minimo':None if maximum is None else 0,
+                'valor_maximo_atributo':maximum,'valor_maximo_total':None,
+                'limite_total_status':'nao_verificado' if maximum is None else 'nao_aplicavel',
+                'fonte_url':source,'data_verificacao':SV_DATE}
+            system=_obter_ou_inserir(db,'MECANICA_SISTEMA_ATRIBUTO',
+                {'id_mecanica':mechanic['id_mecanica'],'id_sistema_atributo':ids[code]},system_values,
+                ['aplicabilidade','valor_minimo','valor_maximo_atributo','valor_maximo_total','limite_total_status','fonte_url','data_verificacao'])
+            for attr in attrs:
+                _obter_ou_inserir(db,'MECANICA_ATRIBUTO',
+                    {'id_mecanica_sistema_atributo':system['id_mecanica_sistema_atributo'],'id_atributo':attr},
+                    {'aplicabilidade':applicable,'fonte_url':source,'data_verificacao':SV_DATE},
+                    ['aplicabilidade','fonte_url','data_verificacao'])
 
 
 def importar_regulamento_swsh(db, data, manifest):

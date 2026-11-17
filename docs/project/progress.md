@@ -1,5 +1,21 @@
 # Continuidade do Pokelizer
 
+## Estado atual — 16/11/2026
+
+Branch `final/complete-project`, base publicada `119d83c54858b6eb96dd330aacf40afabd3f4ef2`; alterações locais Let’s Go ainda não publicadas até novo commit. Não mexer em `main`. Continuação da auditoria: `AGENTS.md` ausente; os arquivos da Etapa 1 e as 73 provas anteriores foram preservados. As tarefas completas e pendências detalhadas continuam nos registros abaixo.
+
+### Regras, estatísticas e valores de Let’s Go
+
+Foram adicionadas mecânicas parciais independentes para `lets-go-pikachu` e `lets-go-eevee`: natureza, nível 1–100, IV 0–31 por atributo, AV (Awakening Values) 0–200 por atributo e EV marcado `nao_aplicavel`. A aplicação preserva zero, desconhecido e não aplicável. Os dois parceiros iniciais têm estatísticas-base próprias e ficha distinta; a importação confronta seus seis valores com a tabela histórica da Bulbapedia e mantém Pikachu/Eevee comuns distintos. A ficha comum usa estatísticas históricas PokéAPI, sem alegar que a disponibilidade de cada forma em Let’s Go foi completamente catalogada. Valores de IV conhecidos do parceiro documentado são validados como 31. Reimportação não sobrescreve curadoria conflitante.
+
+Banco vazio aplicou migrações `[1, 2, 3, 4]`; duas importações mantiveram 1.025 espécies, 1.579 formas, 53 jogos, 7.472 fichas e 37 mecânicas; `integrity_check=ok`, `foreign_key_check=[]`. Cobertura: 7.454 tipos, 7.454 estatísticas com fonte, 493 fichas de Especial único, 14.220 vínculos de habilidade potencial e 11 mecânicas parciais. As duas versões Let’s Go têm 117 fichas cada com tipo e estatísticas-base, incluindo o parceiro; isso não significa disponibilidade total (há 1 ficha de parceiro documentada por versão, 116 formas padrão do conjunto de referência e alternativas ainda sem curadoria específica). `docs/project/coverage-final.json` foi regenerado.
+
+`PYTHONPATH=/home/Danilo/tools/python:backend python tools/check_stage2.py`: 109 testes passaram; SQL, dicionário, modelo nativo brModelo, UML, links e demonstração passaram. Brave headless + Flask em banco temporário: conta, catálogo, exemplar do parceiro (IV HP 31, AV HP zero, EV não aplicável), perfil com AV HP 200 e análise -200. Foram inspecionadas imagens 1440 px e 390 px; a página móvel mediu 390 px sem overflow horizontal. O detalhe contextual dentro do painel do catálogo ainda não foi validado nessa execução automatizada; API e integração de dados são exercitadas em testes. Detalhe registrado em `docs/project/frontend.md`.
+
+Próximo passo: revisar, testar, commitar e publicar somente estas alterações na branch dedicada; depois continuar fonte/abrangência para outros contextos, melhorar revisão integral de acessibilidade do frontend e completar os dados por jogo/regulamentos/perfis. Não declarar entrega final: cobertura contextual permanece parcial. Convite/aceitação do professor e submissão no Classroom são ações manuais autorizadas apenas pelo usuário.
+
+---
+
 ## Base auditada em 13/11/2026
 
 Branch de trabalho: `stage2/functional-delivery`, derivada de `stage1/reconciled-architecture` em `91875bd`. Árvore inicial limpa; nenhuma instrução AGENTS.md encontrada no repositório ou ancestrais. Remoto consultado pelo conector GitHub: não há commits posteriores; `main=f0e570b` está atrasada. Auditorias divergentes já reconciliadas na base; não fazer merge indiscriminado.

@@ -3,7 +3,7 @@ from collections import defaultdict
 import csv
 import hashlib
 from pathlib import Path
-from .curated_data import _obter_ou_inserir, DRAGAPULT_SOURCE, SV_STARTER_SOURCE, SV_RAID_SOURCE, SV_DATE
+from .curated_data import _obter_ou_inserir, DRAGAPULT_SOURCE, SV_STARTER_SOURCE, SV_RAID_SOURCE, LGPE_PARTNER_SOURCE, SV_DATE
 
 CONTEXT_DATE = '2026-11-15'
 # Groups with the six-stat system and/or abilities. Generation I has one
@@ -19,6 +19,10 @@ LGPE_TYPE_GROUP = 'lets-go-pikachu-lets-go-eevee'
 # Default forms listed for these games were cross-checked against the versioned
 # game-specific list; non-default forms need their own verification.
 LGPE_DEFAULT_SPECIES = frozenset(range(1, 152)) | {808, 809}
+LGPE_PARTNER_STATS = {
+    ('lets-go-pikachu','pikachu-starter'): (45,80,50,75,60,120),
+    ('lets-go-eevee','eevee-starter'): (65,75,70,65,85,75),
+}
 LGPE_TYPES_FILE = Path(__file__).resolve().parents[1] / 'data' / 'curated' / 'lgpe-default-types.csv'
 LGPE_TYPES_SHA256 = 'acee9b929108c023e8284f2d8756898e502e4ec82f2e630d09bf5d6508a97377'
 
@@ -90,13 +94,15 @@ def importar_contextos_por_geracao(db, data, manifest):
     attrs = {'1':'hp_base','2':'ataque_base','3':'defesa_base','4':'ataque_especial_base','5':'defesa_especial_base','6':'velocidade_base'}
     sheets = db.execute("""SELECT d.*,e.numero_nacional,f.codigo_forma,f.forma_padrao,j.codigo_versao_pokeapi FROM DADOS_FORMA_JOGO d
         JOIN FORMA f USING(id_forma) JOIN ESPECIE e USING(id_especie) JOIN JOGO j USING(id_jogo)
-        WHERE d.fonte_url IN (?,?,?,?)""", (encounter_source,DRAGAPULT_SOURCE,SV_STARTER_SOURCE,SV_RAID_SOURCE)).fetchall()
+        WHERE d.fonte_url IN (?,?,?,?,?)""", (encounter_source,DRAGAPULT_SOURCE,SV_STARTER_SOURCE,SV_RAID_SOURCE,LGPE_PARTNER_SOURCE)).fetchall()
     for sheet in sheets:
-        context_date = SV_DATE if sheet['fonte_url'] in (SV_STARTER_SOURCE,SV_RAID_SOURCE) else CONTEXT_DATE
+        context_date = SV_DATE if sheet['fonte_url'] in (SV_STARTER_SOURCE,SV_RAID_SOURCE,LGPE_PARTNER_SOURCE) or sheet['codigo_versao_pokeapi'] in ('lets-go-pikachu','lets-go-eevee') else CONTEXT_DATE
         group = versions.get(sheet['codigo_versao_pokeapi'])
         if not group or group['identifier'] not in STANDARD_GROUPS | TYPE_ONLY_GROUPS | {LGPE_TYPE_GROUP}:
             continue
-        if group['identifier'] == LGPE_TYPE_GROUP and (not sheet['forma_padrao'] or sheet['numero_nacional'] not in LGPE_DEFAULT_SPECIES):
+        partner_key=(sheet['codigo_versao_pokeapi'],sheet['codigo_forma'])
+        is_partner=sheet['fonte_url']==LGPE_PARTNER_SOURCE and partner_key in LGPE_PARTNER_STATS
+        if group['identifier'] == LGPE_TYPE_GROUP and not is_partner and (not sheet['forma_padrao'] or sheet['numero_nacional'] not in LGPE_DEFAULT_SPECIES):
             continue
         generation = int(group['generation_id'])
         pid = by_form.get((sheet['numero_nacional'],sheet['codigo_forma']))
@@ -129,14 +135,16 @@ def importar_contextos_por_geracao(db, data, manifest):
                            ',especial_base=?,fonte_estatisticas=?,data_verificacao_estatisticas=? WHERE id_dados_forma=?',
                     tuple(int(old_stats[k]) for k in old_attrs)+(int(first_special[pid]),source,context_date,sheet['id_dados_forma']))
             continue
-        if group['identifier'] not in STANDARD_GROUPS:
+        if group['identifier'] not in STANDARD_GROUPS | {LGPE_TYPE_GROUP}:
             continue
         stats = _historical_rows(current_stats[pid],past_stats[pid],generation,'base_stat')
+        if is_partner and (set(stats)!=set(attrs) or tuple(int(stats[n]) for n in attrs) != LGPE_PARTNER_STATS[partner_key]):
+            raise ValueError('Divergência nas estatísticas do parceiro de Let’s Go; carga revertida.')
         if all(sheet[column] is None for column in attrs.values()) and sheet['especial_base'] is None and sheet['fonte_estatisticas'] is None and set(stats)==set(attrs):
             db.execute('UPDATE DADOS_FORMA_JOGO SET '+','.join(column+'=?' for column in attrs.values())+',fonte_estatisticas=?,data_verificacao_estatisticas=? WHERE id_dados_forma=?',
                 tuple(int(stats[n]) for n in attrs)+(source,context_date,sheet['id_dados_forma']))
         # Generations I and II have no abilities; omission here does not mean zero.
-        if generation < 3:
+        if generation < 3 or group['identifier']==LGPE_TYPE_GROUP:
             continue
         has_abilities = db.execute('SELECT 1 FROM HABILIDADE_FORMA_JOGO WHERE id_dados_forma=? LIMIT 1',(sheet['id_dados_forma'],)).fetchone()
         if not has_abilities:
