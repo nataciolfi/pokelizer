@@ -13,6 +13,7 @@ SERIES_14_SOURCE = 'https://www.pokemon.com/us/pokemon-news/pokemon-sword-and-po
 SV_REGULATION_H_SOURCE = 'https://sv-news.pokemon.co.jp/en/page/246.html'
 SV_POCO_SOURCE = 'https://bulbapedia.bulbagarden.net/w/index.php?title=Poco_Path&oldid=4664426'
 SV_PALDEA_SOURCE = 'https://pokemaps.net/games/sv/pokemon-locations'
+SV_WEST_SOURCE = 'https://bulbapedia.bulbagarden.net/w/index.php?title=West_Province_(Area_One)&oldid=4664491'
 DRAGAPULT_SOURCE = 'https://www.vgcguide.com/ev-training'
 ABILITY_SOURCE = 'https://bulbapedia.bulbagarden.net/wiki/Ability'
 SV_STARTER_SOURCE = 'https://press.pokemon.com/en-CA/POKEMON-ANNOUNCES-NEW-VIDEO-GAMES-POKEMON-SCARLET-AND-POKEMON-VIOLET-'
@@ -272,8 +273,8 @@ def importar_regulamento_sv_h(db, data):
         rows=db.execute("""SELECT d.id_dados_forma,e.numero_nacional FROM DADOS_FORMA_JOGO d
             JOIN FORMA f USING(id_forma) JOIN ESPECIE e USING(id_especie) JOIN JOGO j USING(id_jogo)
             WHERE j.codigo_versao_pokeapi=? AND f.forma_padrao=1 AND d.status_presenca='nativa'
-              AND d.pode_ser_registrada='sim' AND d.fonte_url IN (?,?,?,?)""",
-            (game,SV_STARTER_SOURCE,SV_RAID_SOURCE,SV_POCO_SOURCE,SV_PALDEA_SOURCE)).fetchall()
+              AND d.pode_ser_registrada='sim' AND d.fonte_url IN (?,?,?,?,?)""",
+            (game,SV_STARTER_SOURCE,SV_RAID_SOURCE,SV_POCO_SOURCE,SV_PALDEA_SOURCE,SV_WEST_SOURCE)).fetchall()
         for row in rows:
             if row['numero_nacional'] not in eligible:
                 continue
@@ -298,6 +299,50 @@ def importar_dragapult(db):
             db.execute("""INSERT INTO DADOS_FORMA_JOGO(id_forma,id_jogo,status_presenca,pode_ser_registrada,
                 motivo_registro,fonte_url,data_verificacao) VALUES (?,?,'nativa','sim',?,?,?)""",
                 (*tuple(row),'Guia descreve treinar Dreepy para evoluir a Dragapult.',DRAGAPULT_SOURCE,DATE))
+
+
+def importar_encontros_west_sv(db):
+    """Wild encounters with explicitly linked edition markers in the source table."""
+    species=((56,'mankey','SV'),(92,'gastly','SV'),(200,'misdreavus','V'),(231,'phanpy','SV'),
+      (322,'numel','SV'),(333,'swablu','SV'),(425,'drifloon','S'),(672,'skiddo','SV'),
+      (749,'mudbray','SV'),(919,'nymble','SV'),(922,'pawmo','SV'),(935,'charcadet','SV'),
+      (951,'capsakid','SV'),(955,'flittle','SV'),(962,'bombirdier','SV'),(54,'psyduck','SV'),
+      (129,'magikarp','SV'),(418,'buizel','SV'),(833,'chewtle','SV'),(846,'arrokuda','SV'),
+      (938,'tadbulb','SV'),(90,'shellder','SV'),(278,'wingull','SV'),(370,'luvdisc','SV'),
+      (940,'wattrel','SV'),(963,'finizen','SV'),(296,'makuhita','SV'),(734,'yungoos','SV'),
+      (932,'nacli','SV'),(206,'dunsparce','SV'),(246,'larvitar','S'),(371,'bagon','V'),
+      (443,'gible','SV'),(757,'salandit','SV'),(739,'crabrawler','SV'),(960,'wiglett','SV'),
+      (415,'combee','SV'),(440,'happiny','SV'),(548,'petilil','SV'))
+    method=db.execute("SELECT id_metodo FROM METODO_OBTENCAO WHERE nome='Encontro selvagem'").fetchone()
+    if not method:
+        raise ValueError('Método selvagem não encontrado; carga revertida.')
+    for game,marker in (('scarlet','S'),('violet','V')):
+        for number,code,editions in species:
+            if marker not in editions:
+                continue
+            rows=db.execute("""SELECT f.id_forma,j.id_jogo FROM FORMA f JOIN ESPECIE e USING(id_especie)
+                CROSS JOIN JOGO j WHERE e.numero_nacional=? AND f.codigo_forma=? AND f.forma_padrao=1
+                AND j.codigo_versao_pokeapi=? AND (SELECT count(*) FROM FORMA x WHERE x.id_especie=e.id_especie)=1""",
+                (number,code,game)).fetchall()
+            if len(rows)!=1:
+                raise ValueError(f'Forma ou versão ambígua: {code}/{game}; carga revertida.')
+            key=(rows[0]['id_forma'],rows[0]['id_jogo'])
+            sheet=db.execute('SELECT * FROM DADOS_FORMA_JOGO WHERE id_forma=? AND id_jogo=?',key).fetchone()
+            if sheet and sheet['fonte_url']!=SV_WEST_SOURCE:
+                continue
+            if not sheet:
+                ident=db.execute("""INSERT INTO DADOS_FORMA_JOGO(id_forma,id_jogo,status_presenca,
+                    pode_ser_registrada,motivo_registro,fonte_url,data_verificacao)
+                    VALUES(?,?,'nativa','sim',?,?,?)""",(*key,
+                    'Encontro selvagem documentado em West Province (Area One).',SV_WEST_SOURCE,'2026-11-17')).lastrowid
+            else:
+                if (sheet['status_presenca'],sheet['pode_ser_registrada'])!=('nativa','sim'):
+                    raise ValueError(f'Conflito no encontro {code}/{game}; dados preservados.')
+                ident=sheet['id_dados_forma']
+            _obter_ou_inserir(db,'METODO_FORMA_JOGO',{'id_dados_forma':ident,'id_metodo':method[0]},
+                {'condicao':'Encontro selvagem em West Province (Area One); nível e condições variam com local e progresso.',
+                 'fonte_url':SV_WEST_SOURCE,'data_verificacao':'2026-11-17'},
+                ['condicao','fonte_url','data_verificacao'])
 
 
 def importar_encontros_paldea_sv(db):

@@ -681,7 +681,7 @@ def test_regulation_h_is_historical_conditional_and_version_specific(app, client
         sheet=db.execute("""SELECT d.id_dados_forma FROM DADOS_FORMA_JOGO d JOIN FORMA f USING(id_forma)
             JOIN JOGO j USING(id_jogo) WHERE f.codigo_forma='sprigatito' AND j.codigo_versao_pokeapi='scarlet'""").fetchone()[0]
         assert db.execute('SELECT count(*) FROM ELEGIBILIDADE_FORMA_REGULAMENTO WHERE id_regulamento IN (?,?)',
-                          (rules['scarlet'],rules['violet'])).fetchone()[0]==66
+                          (rules['scarlet'],rules['violet'])).fetchone()[0]==122
     response=client.get(f"/api/regulamentos/{rules['scarlet']}/formas/{sheet}")
     assert response.status_code==200
     assert response.json['status']=='condicional' and response.json['legalidade_completa_verificada'] is False
@@ -741,6 +741,32 @@ def test_paldea_encounters_preserve_versions_and_existing_curation(app, client):
         with pytest.raises(ValueError,match='Conflito de curadoria'):
             importar_catalogo()
         assert db.execute('SELECT condicao FROM METODO_FORMA_JOGO WHERE id_dados_forma=?',(ident,)).fetchone()[0]=='FIXTURE preservada'
+
+
+def test_west_province_encounters_respect_edition_and_preserve_curated_methods(app, client):
+    from pokeanalyzer.curated_data import SV_WEST_SOURCE, SV_PALDEA_SOURCE
+    with app.app_context():
+        report=importar_catalogo()
+        assert report['fichas_west_sv']==56 and importar_catalogo()==report
+        db=get_db()
+        rows=db.execute("""SELECT f.codigo_forma,j.codigo_versao_pokeapi,d.id_dados_forma,d.fonte_url
+            FROM DADOS_FORMA_JOGO d JOIN FORMA f USING(id_forma) JOIN JOGO j USING(id_jogo)
+            WHERE f.codigo_forma IN ('drifloon','misdreavus','psyduck') AND j.codigo_versao_pokeapi IN ('scarlet','violet')""").fetchall()
+        found={(r['codigo_forma'],r['codigo_versao_pokeapi']):r for r in rows}
+        assert ('drifloon','scarlet') in found and ('drifloon','violet') not in found
+        assert ('misdreavus','violet') in found and ('misdreavus','scarlet') not in found
+        assert found[('psyduck','scarlet')]['fonte_url']==SV_PALDEA_SOURCE
+        ident=found[('drifloon','scarlet')]['id_dados_forma']
+    detail=client.get('/api/pokemon/'+str(ident)).json
+    assert detail['pode_ser_registrada']=='sim' and detail['fonte_tipos'] and detail['fonte_estatisticas']
+    assert any(m['fonte_url']==SV_WEST_SOURCE and 'West Province' in m['condicao'] for m in detail['metodos'])
+    with app.app_context():
+        db=get_db()
+        db.execute("UPDATE METODO_FORMA_JOGO SET condicao='FIXTURE mantida' WHERE id_dados_forma=?",(ident,))
+        db.commit()
+        with pytest.raises(ValueError,match='Conflito de curadoria'):
+            importar_catalogo()
+        assert db.execute('SELECT condicao FROM METODO_FORMA_JOGO WHERE id_dados_forma=?',(ident,)).fetchone()[0]=='FIXTURE mantida'
 
 
 def test_reference_dragapult_targets_are_sourced_and_no_other_values_inferred(app, client):
