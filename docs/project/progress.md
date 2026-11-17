@@ -2,6 +2,8 @@
 
 ## Estado atual — 17/11/2026
 
+Auditoria da árvore remota identificou dois arquivos truncados durante a publicação pelo conector: `backend/tests/test_catalog_data.py` e este checkpoint. Foram reenviados em blocos completos e o commit remoto `d77e4b8d3c5a1e5282b3370dd6eb5ced56c9521c` restaurou a árvore `de337335a7086878085bc0ef10f417238a327891`, idêntica à árvore local do commit `88c5936`. A branch remota avançou sem force. Os commits locais e remotos têm históricos com SHAs distintos; não sincronizar refs sem reconstruir e conferir os objetos. Próximo passo: confirmar clone remoto, alinhar histórico local com segurança e continuar cobertura contextual e QA no navegador.
+
 O marco Mega foi publicado na branch remota em `3022ab62e721201187652f995d0568104bf19d3e`; o commit local equivalente é `50d3134dcba80012f18d01de108536594aaa7d88`. Os hashes diferem porque o conector recriou os commits; as referências locais ainda não estão sincronizadas. Correção em andamento: a API agora informa habilidades como não aplicáveis também nas fichas Let’s Go de disponibilidade e Mega. Testes focados de formas comuns, Alola, Mega e parceiros: 2 passaram. Próximo passo: registrar a correção e publicar na branch remota, reconstruindo objetos locais ou usando Git com transporte HTTPS funcional; continuar QA visual e cobertura dos demais jogos.
 
 Branch `final/complete-project`; o marco Alola está publicado no GitHub em `1a7f07166ef7883b7ed7e38e838191b49db60229` (cópia local equivalente `0c03fe662d323e1262212a75d00c4dc4d81f9caf`, diferente apenas nos metadados do conector). O objeto local e `origin/final/complete-project` precisam ser alinhados ao SHA remoto antes do próximo commit. O marco Mega de Let’s Go está em trabalho local. Não alterar `main`.
