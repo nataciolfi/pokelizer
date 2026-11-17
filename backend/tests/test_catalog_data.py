@@ -681,7 +681,7 @@ def test_regulation_h_is_historical_conditional_and_version_specific(app, client
         sheet=db.execute("""SELECT d.id_dados_forma FROM DADOS_FORMA_JOGO d JOIN FORMA f USING(id_forma)
             JOIN JOGO j USING(id_jogo) WHERE f.codigo_forma='sprigatito' AND j.codigo_versao_pokeapi='scarlet'""").fetchone()[0]
         assert db.execute('SELECT count(*) FROM ELEGIBILIDADE_FORMA_REGULAMENTO WHERE id_regulamento IN (?,?)',
-                          (rules['scarlet'],rules['violet'])).fetchone()[0]==24
+                          (rules['scarlet'],rules['violet'])).fetchone()[0]==66
     response=client.get(f"/api/regulamentos/{rules['scarlet']}/formas/{sheet}")
     assert response.status_code==200
     assert response.json['status']=='condicional' and response.json['legalidade_completa_verificada'] is False
@@ -718,6 +718,29 @@ def test_poco_path_contexts_and_repeatable_import(app, client):
             importar_catalogo()
         assert db.execute('SELECT condicao FROM METODO_FORMA_JOGO WHERE id_dados_forma=?',
                           (rows[0]['id_dados_forma'],)).fetchone()[0]=='FIXTURE curadoria'
+
+
+def test_paldea_encounters_preserve_versions_and_existing_curation(app, client):
+    from pokeanalyzer.curated_data import SV_PALDEA_SOURCE
+    with app.app_context():
+        report=importar_catalogo()
+        assert report['fichas_paldea_sv']==42 and importar_catalogo()==report
+        db=get_db()
+        rows=db.execute("""SELECT d.id_dados_forma,j.codigo_versao_pokeapi FROM DADOS_FORMA_JOGO d
+            JOIN FORMA f USING(id_forma) JOIN JOGO j USING(id_jogo)
+            WHERE f.codigo_forma='psyduck' AND d.fonte_url=?""",(SV_PALDEA_SOURCE,)).fetchall()
+        assert {row['codigo_versao_pokeapi'] for row in rows}=={'scarlet','violet'}
+        ident=rows[0]['id_dados_forma']
+    detail=client.get('/api/pokemon/'+str(ident)).json
+    assert detail['pode_ser_registrada']=='sim' and detail['tipos']==['Water']
+    assert detail['fonte_estatisticas'] and any(m['fonte_url']==SV_PALDEA_SOURCE for m in detail['metodos'])
+    with app.app_context():
+        db=get_db()
+        db.execute("UPDATE METODO_FORMA_JOGO SET condicao='FIXTURE preservada' WHERE id_dados_forma=?",(ident,))
+        db.commit()
+        with pytest.raises(ValueError,match='Conflito de curadoria'):
+            importar_catalogo()
+        assert db.execute('SELECT condicao FROM METODO_FORMA_JOGO WHERE id_dados_forma=?',(ident,)).fetchone()[0]=='FIXTURE preservada'
 
 
 def test_reference_dragapult_targets_are_sourced_and_no_other_values_inferred(app, client):
