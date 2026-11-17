@@ -361,25 +361,7 @@ def test_early_values_derive_hp_preserve_unknown_and_validate_limits(app, client
     mechanic=client.get('/api/mecanicas/'+str(context['id_mecanica'])).json
     choices={s['codigo']:{a['codigo'] for a in s['atributos']} for s in mechanic['sistemas']}
     assert choices=={'DV':{'attack','defense','speed','special'},'STAT_EXP':{'hp','attack','defense','speed','special'}}
-    assert all(s['descricao_sistema'] for s in mec…4116 tokens truncated…      assert db.execute('SELECT hp_base FROM DADOS_FORMA_JOGO WHERE id_dados_forma=?',(sheet,)).fetchone()[0]==42
-        assert db.execute('SELECT slot FROM HABILIDADE_FORMA_JOGO WHERE id_habilidade_forma=?',(ability,)).fetchone()[0]=='FIXTURE curated'
-
-
-def test_official_series_14_eligibility_is_conditional_and_contextual(app, client):
-    with app.app_context():
-        report=importar_catalogo()
-        db=get_db()
-        sheet=db.execute("""SELECT d.id_dados_forma FROM DADOS_FORMA_JOGO d JOIN FORMA f USING(id_forma)
-            JOIN JOGO j USING(id_jogo) WHERE f.codigo_forma='pikachu' AND j.nome='Sword'""").fetchone()[0]
-        rule=db.execute("""SELECT r.id_regulamento FROM REGULAMENTO r JOIN MECANICA_JOGO m USING(id_mecanica)
-            JOIN JOGO j USING(id_jogo) WHERE j.nome='Sword' AND r.codigo='ranked-battles-series-14'""").fetchone()[0]
-        shield_rule=db.execute("""SELECT r.id_regulamento FROM REGULAMENTO r JOIN MECANICA_JOGO m USING(id_mecanica)
-            JOIN JOGO j USING(id_jogo) WHERE j.nome='Shield' AND r.codigo='ranked-battles-series-14'""").fetchone()[0]
-        assert report['contagens_banco']['REGULAMENTO']==2
-    result=client.get(f'/api/regulamentos/{rule}/formas/{sheet}')
-    assert result.status_code==200
-    assert result.json['status']=='condicional' and 'battle-ready' in result.json['condicao']
-    assert 'pokemon.com' in result.json['fonte_url'] and result.json['legalidade_completa_verificada'] is False
+    assert all(s['descricao_sistema'] for s in mec…4495 tokens truncated…esult.json['legalidade_completa_verificada'] is False
     assert client.get(f'/api/regulamentos/{shield_rule}/formas/{sheet}').status_code==400
     with app.app_context():
         assert importar_catalogo()['contagens_banco']['REGULAMENTO']==2
@@ -675,9 +657,19 @@ def test_lets_go_availability_import_is_complete_repeatable_and_source_checked(a
                 JOIN METODO_FORMA_JOGO mf USING(id_dados_forma) JOIN METODO_OBTENCAO mo USING(id_metodo)
                 WHERE j.codigo_versao_pokeapi=? AND mf.fonte_url=?""",
                 (game,curated_data.LGPE_AVAILABILITY_SOURCE)).fetchall()
-            assert len(rows)==153
-            assert len({row['numero_nacional'] for row in rows})==153
+            assert len(rows)==171
+            assert len({(row['numero_nacional'],row['codigo_forma']) for row in rows})==171
             assert all(row['pode_ser_registrada']=='sim' for row in rows)
+            alolan=db.execute("""SELECT d.status_presenca,f.codigo_forma FROM DADOS_FORMA_JOGO d
+                JOIN FORMA f USING(id_forma) JOIN JOGO j USING(id_jogo) WHERE j.codigo_versao_pokeapi=?
+                AND f.codigo_forma='raichu-alola'""",(game,)).fetchone()
+            assert tuple(alolan)==('transferivel','raichu-alola')
+            contextual=db.execute("""SELECT d.hp_base,d.fonte_estatisticas,d.fonte_tipos,count(tfj.id_tipo) AS types
+                FROM DADOS_FORMA_JOGO d JOIN FORMA f USING(id_forma) JOIN JOGO j USING(id_jogo)
+                LEFT JOIN TIPO_FORMA_JOGO tfj USING(id_dados_forma) WHERE j.codigo_versao_pokeapi=?
+                AND f.codigo_forma='raichu-alola' GROUP BY d.id_dados_forma""",(game,)).fetchone()
+            assert contextual['hp_base']==60 and contextual['fonte_estatisticas'] and contextual['fonte_tipos']
+            assert contextual['types']==2
         # Kanto species missing a native encounter are explicitly transfer-only.
         transfer=db.execute("""SELECT d.status_presenca FROM DADOS_FORMA_JOGO d JOIN FORMA f USING(id_forma)
             JOIN ESPECIE e USING(id_especie) JOIN JOGO j USING(id_jogo)
@@ -694,6 +686,12 @@ def test_lets_go_availability_import_is_complete_repeatable_and_source_checked(a
         altered=tmp_path/'availability.csv';altered.write_text('numero_nacional,metodo\n1,go-park\n')
         monkeypatch.setattr(curated_data,'LGPE_AVAILABILITY_FILE',altered)
         with pytest.raises(ValueError,match='Referência de disponibilidade'):
+            importar_catalogo()
+        assert db.execute('SELECT count(*) FROM DADOS_FORMA_JOGO').fetchone()[0]==before
+        # The independent form manifest also fails before mutating the database.
+        monkeypatch.setattr(curated_data,'LGPE_AVAILABILITY_FILE',curated_data.Path(__file__).parents[1]/'data/curated/lgpe-availability.csv')
+        monkeypatch.setattr(curated_data,'LGPE_ALOLAN_FILE',altered)
+        with pytest.raises(ValueError,match='Referência das formas Alola'):
             importar_catalogo()
         assert db.execute('SELECT count(*) FROM DADOS_FORMA_JOGO').fetchone()[0]==before
         assert not db.execute('PRAGMA foreign_key_check').fetchall()

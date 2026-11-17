@@ -22,6 +22,15 @@ LGPE_AVAILABILITY_SOURCE = ('https://bulbapedia.bulbagarden.net/wiki/Pok%C3%A9mo
 LGPE_AVAILABILITY_DATE = '2026-11-17'
 LGPE_AVAILABILITY_FILE = Path(__file__).resolve().parents[1] / 'data' / 'curated' / 'lgpe-availability.csv'
 LGPE_AVAILABILITY_SHA256 = '19c7d64158941b727d108355699882a907d920ebfb42e63da3afa0b4e56ed7be'
+LGPE_ALOLAN_FILE = Path(__file__).resolve().parents[1] / 'data' / 'curated' / 'lgpe-alolan-forms.csv'
+LGPE_ALOLAN_SHA256 = '07fdd18bb51ce0250ca1b1ddd1f4b573c1c49f828213bb8230578a6d2af10190'
+LGPE_ALOLAN_FORMS = {
+    19:'rattata-alola',20:'raticate-alola',26:'raichu-alola',27:'sandshrew-alola',
+    28:'sandslash-alola',37:'vulpix-alola',38:'ninetales-alola',50:'diglett-alola',
+    51:'dugtrio-alola',52:'meowth-alola',53:'persian-alola',74:'geodude-alola',
+    75:'graveler-alola',76:'golem-alola',88:'grimer-alola',89:'muk-alola',
+    103:'exeggutor-alola',105:'marowak-alola',
+}
 SV_DATE = '2026-11-16'
 HISTORICAL_DATE = '2026-11-15'
 # Curated historical core-series versions only. Other games are added explicitly.
@@ -363,6 +372,46 @@ def importar_disponibilidade_lgpe(db):
             else:
                 db.execute('''INSERT INTO METODO_FORMA_JOGO(id_dados_forma,id_metodo,condicao,fonte_url,data_verificacao)
                     VALUES(?,?,?,?,?)''',(identifier,method['id_metodo'],*expected_values))
+
+    raw=LGPE_ALOLAN_FILE.read_bytes()
+    if hashlib.sha256(raw).hexdigest()!=LGPE_ALOLAN_SHA256:
+        raise ValueError('Referência das formas Alola em Let’s Go alterada; carga revertida.')
+    alolan_rows=list(csv.DictReader(raw.decode('utf-8').splitlines()))
+    try:
+        alolan={int(row['numero_nacional']):row['codigo_forma'] for row in alolan_rows}
+    except (KeyError,TypeError,ValueError) as exc:
+        raise ValueError('Referência das formas Alola inválida; carga revertida.') from exc
+    if len(alolan_rows)!=18 or alolan!=LGPE_ALOLAN_FORMS:
+        raise ValueError('Referência das 18 formas Alola incompleta ou divergente; carga revertida.')
+    park_method=methods['go-park']
+    for game in ('lets-go-pikachu','lets-go-eevee'):
+        game_id=db.execute('SELECT id_jogo FROM JOGO WHERE codigo_versao_pokeapi=?',(game,)).fetchone()[0]
+        for number,code in alolan.items():
+            form=db.execute("""SELECT f.id_forma FROM FORMA f JOIN ESPECIE e USING(id_especie)
+                WHERE e.numero_nacional=? AND f.codigo_forma=? AND f.estado_forma!='temporario'""",
+                (number,code)).fetchone()
+            if not form:
+                raise ValueError(f'Forma Alola {code} ausente no snapshot; carga revertida.')
+            key=(form['id_forma'],game_id)
+            sheet=db.execute('SELECT id_dados_forma FROM DADOS_FORMA_JOGO WHERE id_forma=? AND id_jogo=?',key).fetchone()
+            if not sheet:
+                sheet_id=db.execute("""INSERT INTO DADOS_FORMA_JOGO(id_forma,id_jogo,status_presenca,
+                    pode_ser_registrada,motivo_registro,fonte_url,data_verificacao)
+                    VALUES(?,?,'transferivel','sim',?,?,?)""",(*key,
+                    'Forma Alola compatível via transferência de Pokémon GO pelo GO Park.',
+                    LGPE_AVAILABILITY_SOURCE,LGPE_AVAILABILITY_DATE)).lastrowid
+            else:
+                sheet_id=sheet['id_dados_forma']
+            method_key=(sheet_id,park_method['id_metodo'])
+            existing=db.execute('SELECT * FROM METODO_FORMA_JOGO WHERE id_dados_forma=? AND id_metodo=?',method_key).fetchone()
+            expected_values=('Transferência da forma Alola via GO Park; disponibilidade e exclusividade por versão não inferidas.',
+                             LGPE_AVAILABILITY_SOURCE,LGPE_AVAILABILITY_DATE)
+            if existing:
+                if (existing['condicao'],existing['fonte_url'],existing['data_verificacao'])!=expected_values:
+                    raise ValueError(f'Conflito de curadoria para a forma Alola {code}; dados preservados.')
+            else:
+                db.execute('''INSERT INTO METODO_FORMA_JOGO(id_dados_forma,id_metodo,condicao,fonte_url,data_verificacao)
+                    VALUES(?,?,?,?,?)''',(sheet_id,park_method['id_metodo'],*expected_values))
 
 
 def importar_perfis_dragapult(db):

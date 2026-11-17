@@ -3,7 +3,7 @@ from collections import defaultdict
 import csv
 import hashlib
 from pathlib import Path
-from .curated_data import _obter_ou_inserir, DRAGAPULT_SOURCE, SV_STARTER_SOURCE, SV_RAID_SOURCE, LGPE_PARTNER_SOURCE, LGPE_AVAILABILITY_SOURCE, SV_DATE
+from .curated_data import _obter_ou_inserir, DRAGAPULT_SOURCE, SV_STARTER_SOURCE, SV_RAID_SOURCE, LGPE_PARTNER_SOURCE, LGPE_AVAILABILITY_SOURCE, LGPE_ALOLAN_FORMS, SV_DATE
 
 CONTEXT_DATE = '2026-11-15'
 # Groups with the six-stat system and/or abilities. Generation I has one
@@ -16,8 +16,7 @@ STANDARD_GROUPS = {
 }
 TYPE_ONLY_GROUPS = {'red-green-japan', 'blue-japan', 'red-blue', 'yellow'}
 LGPE_TYPE_GROUP = 'lets-go-pikachu-lets-go-eevee'
-# Default forms listed for these games were cross-checked against the versioned
-# game-specific list; non-default forms need their own verification.
+# Default forms and Alolan variants have independently verified availability.
 LGPE_DEFAULT_SPECIES = frozenset(range(1, 152)) | {808, 809}
 LGPE_PARTNER_STATS = {
     ('lets-go-pikachu','pikachu-starter'): (45,80,50,75,60,120),
@@ -102,7 +101,8 @@ def importar_contextos_por_geracao(db, data, manifest):
             continue
         partner_key=(sheet['codigo_versao_pokeapi'],sheet['codigo_forma'])
         is_partner=sheet['fonte_url']==LGPE_PARTNER_SOURCE and partner_key in LGPE_PARTNER_STATS
-        if group['identifier'] == LGPE_TYPE_GROUP and not is_partner and (not sheet['forma_padrao'] or sheet['numero_nacional'] not in LGPE_DEFAULT_SPECIES):
+        is_lgpe_alola=(group['identifier']==LGPE_TYPE_GROUP and LGPE_ALOLAN_FORMS.get(sheet['numero_nacional'])==sheet['codigo_forma'])
+        if group['identifier'] == LGPE_TYPE_GROUP and not is_partner and not is_lgpe_alola and (not sheet['forma_padrao'] or sheet['numero_nacional'] not in LGPE_DEFAULT_SPECIES):
             continue
         generation = int(group['generation_id'])
         pid = by_form.get((sheet['numero_nacional'],sheet['codigo_forma']))
@@ -112,7 +112,7 @@ def importar_contextos_por_geracao(db, data, manifest):
         eligible = [g for g in past_types[pid] if g >= generation]
         if eligible:
             selected_types = {r['slot']:r for r in past_types[pid][min(eligible)]}
-        if group['identifier'] == LGPE_TYPE_GROUP:
+        if group['identifier'] == LGPE_TYPE_GROUP and not is_lgpe_alola:
             observed=[type_names.get(item['type_id']) for _,item in sorted(selected_types.items())]
             if observed != lgpe_types[sheet['numero_nacional']]:
                 raise ValueError('Divergência nas fontes de tipos de Let’s Go; carga revertida.')

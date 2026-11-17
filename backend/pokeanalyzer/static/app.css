@@ -2,3 +2,5 @@
 .attribute{margin-bottom:18px}.value-reason{font-size:11px;padding:7px 10px;max-width:100%}
 
 .card-art .pokemon-art{position:relative;z-index:1;width:116px;height:116px;object-fit:contain;image-rendering:pixelated}
+:where(a,button,input,select,textarea,summary,[tabindex]):focus-visible{outline:3px solid #a9402a;outline-offset:3px}
+@media(forced-colors:active){:where(a,button,input,select,textarea,summary,[tabindex]):focus-visible{outline:3px solid Highlight}button{border:1px solid ButtonText}}

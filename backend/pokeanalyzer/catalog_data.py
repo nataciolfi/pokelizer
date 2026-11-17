@@ -235,7 +235,7 @@ def cobertura(directory=SNAPSHOT):
                                   {r[0].casefold() for r in db.execute('SELECT codigo_versao_pokeapi FROM JOGO WHERE codigo_versao_pokeapi IS NOT NULL')})},
         'nomes_exibidos': 'Inglês da fonte, sem tradução portuguesa confirmada; códigos de forma preservados.',
         'pendencias': ['Fichas de presença e métodos ainda sem fonte por jogo',
-                      'Formas Alola e Mega de Let’s Go e outras transformações temporárias sem ficha contextual',
+                      'Mega evoluções temporárias de Let’s Go e outras transformações temporárias sem ficha contextual',
                       'Tipos, habilidades e atributos históricos para contextos ainda não importados',
                       'Mecânicas e limites para versões ainda não contempladas', 'Outros regulamentos, formas e elegibilidades com fontes específicas',
                       'Outros perfis de referência competitiva verificados'],
@@ -244,6 +244,9 @@ def cobertura(directory=SNAPSHOT):
         'fichas_iniciais_scarlet_violet': db.execute('SELECT count(*) FROM DADOS_FORMA_JOGO WHERE fonte_url=?',(SV_STARTER_SOURCE,)).fetchone()[0],
         'fichas_evento_sv_2024': db.execute('SELECT count(*) FROM DADOS_FORMA_JOGO WHERE fonte_url=?',(SV_RAID_SOURCE,)).fetchone()[0],
         'fichas_parceiros_lgpe': db.execute('SELECT count(*) FROM DADOS_FORMA_JOGO WHERE fonte_url=?',(LGPE_PARTNER_SOURCE,)).fetchone()[0],
+        'fichas_formas_alola_lgpe': db.execute("""SELECT count(*) FROM DADOS_FORMA_JOGO d JOIN FORMA f USING(id_forma)
+            JOIN JOGO j USING(id_jogo) WHERE d.fonte_url=? AND f.codigo_forma LIKE '%-alola'
+            AND j.codigo_versao_pokeapi IN ('lets-go-pikachu','lets-go-eevee')""",(LGPE_AVAILABILITY_SOURCE,)).fetchone()[0],
         'fichas_disponibilidade_lgpe': db.execute("""SELECT count(DISTINCT mf.id_dados_forma) FROM METODO_FORMA_JOGO mf
             WHERE mf.fonte_url=?""",(LGPE_AVAILABILITY_SOURCE,)).fetchone()[0],
         'fichas_go_park_lgpe': db.execute("""SELECT count(DISTINCT mf.id_dados_forma) FROM METODO_FORMA_JOGO mf
