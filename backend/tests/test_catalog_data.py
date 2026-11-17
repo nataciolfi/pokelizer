@@ -681,12 +681,43 @@ def test_regulation_h_is_historical_conditional_and_version_specific(app, client
         sheet=db.execute("""SELECT d.id_dados_forma FROM DADOS_FORMA_JOGO d JOIN FORMA f USING(id_forma)
             JOIN JOGO j USING(id_jogo) WHERE f.codigo_forma='sprigatito' AND j.codigo_versao_pokeapi='scarlet'""").fetchone()[0]
         assert db.execute('SELECT count(*) FROM ELEGIBILIDADE_FORMA_REGULAMENTO WHERE id_regulamento IN (?,?)',
-                          (rules['scarlet'],rules['violet'])).fetchone()[0]==14
+                          (rules['scarlet'],rules['violet'])).fetchone()[0]==24
     response=client.get(f"/api/regulamentos/{rules['scarlet']}/formas/{sheet}")
     assert response.status_code==200
     assert response.json['status']=='condicional' and response.json['legalidade_completa_verificada'] is False
     assert 'Pokémon HOME' in response.json['condicao'] and response.json['fonte_url'].endswith('/page/246.html')
     assert client.get(f"/api/regulamentos/{rules['violet']}/formas/{sheet}").status_code==400
+
+
+def test_poco_path_contexts_and_repeatable_import(app, client):
+    from pokeanalyzer.curated_data import SV_POCO_SOURCE
+    with app.app_context():
+        report=importar_catalogo()
+        assert report['fichas_poco_path_sv']==10
+        assert importar_catalogo()==report
+        db=get_db()
+        rows=db.execute("""SELECT d.id_dados_forma,j.codigo_versao_pokeapi,f.codigo_forma
+            FROM DADOS_FORMA_JOGO d JOIN JOGO j USING(id_jogo) JOIN FORMA f USING(id_forma)
+            WHERE d.fonte_url=?""",(SV_POCO_SOURCE,)).fetchall()
+        assert {(r['codigo_versao_pokeapi'],r['codigo_forma']) for r in rows}=={
+            (game,form) for game in ('scarlet','violet')
+            for form in ('hoppip','fletchling','lechonk','tarountula','pawmi')}
+    for row in rows:
+        response=client.get('/api/pokemon/'+str(row['id_dados_forma']))
+        assert response.status_code==200
+        detail=response.json
+        assert detail['status_presenca']=='nativa' and detail['pode_ser_registrada']=='sim'
+        assert detail['fonte_tipos'] and detail['fonte_estatisticas']
+        assert any(m['nome']=='Encontro selvagem' and m['fonte_url']==SV_POCO_SOURCE
+                   and 'Poco Path' in m['condicao'] for m in detail['metodos'])
+    with app.app_context():
+        db=get_db()
+        db.execute("UPDATE METODO_FORMA_JOGO SET condicao='FIXTURE curadoria' WHERE id_dados_forma=?",(rows[0]['id_dados_forma'],))
+        db.commit()
+        with pytest.raises(ValueError,match='Conflito de curadoria'):
+            importar_catalogo()
+        assert db.execute('SELECT condicao FROM METODO_FORMA_JOGO WHERE id_dados_forma=?',
+                          (rows[0]['id_dados_forma'],)).fetchone()[0]=='FIXTURE curadoria'
 
 
 def test_reference_dragapult_targets_are_sourced_and_no_other_values_inferred(app, client):

@@ -11,6 +11,7 @@ NATURE_SOURCE = 'https://raw.githubusercontent.com/PokeAPI/pokeapi/8a92bfa7dab2f
 DATE = '2026-11-14'
 SERIES_14_SOURCE = 'https://www.pokemon.com/us/pokemon-news/pokemon-sword-and-pokemon-shield-ranked-battles-november-2022-season-season-36/'
 SV_REGULATION_H_SOURCE = 'https://sv-news.pokemon.co.jp/en/page/246.html'
+SV_POCO_SOURCE = 'https://bulbapedia.bulbagarden.net/w/index.php?title=Poco_Path&oldid=4664426'
 DRAGAPULT_SOURCE = 'https://www.vgcguide.com/ev-training'
 ABILITY_SOURCE = 'https://bulbapedia.bulbagarden.net/wiki/Ability'
 SV_STARTER_SOURCE = 'https://press.pokemon.com/en-CA/POKEMON-ANNOUNCES-NEW-VIDEO-GAMES-POKEMON-SCARLET-AND-POKEMON-VIOLET-'
@@ -270,8 +271,8 @@ def importar_regulamento_sv_h(db, data):
         rows=db.execute("""SELECT d.id_dados_forma,e.numero_nacional FROM DADOS_FORMA_JOGO d
             JOIN FORMA f USING(id_forma) JOIN ESPECIE e USING(id_especie) JOIN JOGO j USING(id_jogo)
             WHERE j.codigo_versao_pokeapi=? AND f.forma_padrao=1 AND d.status_presenca='nativa'
-              AND d.pode_ser_registrada='sim' AND d.fonte_url IN (?,?)""",
-            (game,SV_STARTER_SOURCE,SV_RAID_SOURCE)).fetchall()
+              AND d.pode_ser_registrada='sim' AND d.fonte_url IN (?,?,?)""",
+            (game,SV_STARTER_SOURCE,SV_RAID_SOURCE,SV_POCO_SOURCE)).fetchall()
         for row in rows:
             if row['numero_nacional'] not in eligible:
                 continue
@@ -296,6 +297,37 @@ def importar_dragapult(db):
             db.execute("""INSERT INTO DADOS_FORMA_JOGO(id_forma,id_jogo,status_presenca,pode_ser_registrada,
                 motivo_registro,fonte_url,data_verificacao) VALUES (?,?,'nativa','sim',?,?,?)""",
                 (*tuple(row),'Guia descreve treinar Dreepy para evoluir a Dragapult.',DRAGAPULT_SOURCE,DATE))
+
+
+def importar_encontros_poco_sv(db):
+    """Five ordinary, independently identified forms occur in both versions."""
+    method=db.execute("SELECT id_metodo FROM METODO_OBTENCAO WHERE nome='Encontro selvagem'").fetchone()
+    if not method:
+        raise ValueError('Método selvagem não encontrado; carga revertida.')
+    for game in ('scarlet','violet'):
+        for number,code in ((187,'hoppip'),(661,'fletchling'),(915,'lechonk'),(917,'tarountula'),(921,'pawmi')):
+            rows=db.execute("""SELECT f.id_forma,j.id_jogo FROM FORMA f JOIN ESPECIE e USING(id_especie)
+                CROSS JOIN JOGO j WHERE e.numero_nacional=? AND f.codigo_forma=? AND f.forma_padrao=1
+                AND j.codigo_versao_pokeapi=?""",(number,code,game)).fetchall()
+            if len(rows)!=1:
+                raise ValueError(f'Forma ou versão ambígua: {code}/{game}; carga revertida.')
+            key=(rows[0]['id_forma'],rows[0]['id_jogo'])
+            sheet=db.execute('SELECT * FROM DADOS_FORMA_JOGO WHERE id_forma=? AND id_jogo=?',key).fetchone()
+            if sheet and sheet['fonte_url']!=SV_POCO_SOURCE:
+                continue  # A different curator owns this sheet and its methods.
+            if not sheet:
+                ident=db.execute("""INSERT INTO DADOS_FORMA_JOGO(id_forma,id_jogo,status_presenca,
+                    pode_ser_registrada,motivo_registro,fonte_url,data_verificacao)
+                    VALUES(?,?,'nativa','sim',?,?,?)""",(*key,
+                    'Encontro selvagem documentado em Poco Path.',SV_POCO_SOURCE,'2026-11-17')).lastrowid
+            else:
+                if (sheet['status_presenca'],sheet['pode_ser_registrada'])!=('nativa','sim'):
+                    raise ValueError(f'Conflito no encontro {code}/{game}; dados preservados.')
+                ident=sheet['id_dados_forma']
+            _obter_ou_inserir(db,'METODO_FORMA_JOGO',{'id_dados_forma':ident,'id_metodo':method[0]},
+                {'condicao':'Encontro selvagem em Poco Path; condições e níveis variam conforme o local e progresso.',
+                 'fonte_url':SV_POCO_SOURCE,'data_verificacao':'2026-11-17'},
+                ['condicao','fonte_url','data_verificacao'])
 
 
 def importar_iniciais_sv(db):
