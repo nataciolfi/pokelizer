@@ -681,7 +681,7 @@ def test_regulation_h_is_historical_conditional_and_version_specific(app, client
         sheet=db.execute("""SELECT d.id_dados_forma FROM DADOS_FORMA_JOGO d JOIN FORMA f USING(id_forma)
             JOIN JOGO j USING(id_jogo) WHERE f.codigo_forma='sprigatito' AND j.codigo_versao_pokeapi='scarlet'""").fetchone()[0]
         assert db.execute('SELECT count(*) FROM ELEGIBILIDADE_FORMA_REGULAMENTO WHERE id_regulamento IN (?,?)',
-                          (rules['scarlet'],rules['violet'])).fetchone()[0]==122
+                          (rules['scarlet'],rules['violet'])).fetchone()[0]==223
     response=client.get(f"/api/regulamentos/{rules['scarlet']}/formas/{sheet}")
     assert response.status_code==200
     assert response.json['status']=='condicional' and response.json['legalidade_completa_verificada'] is False
@@ -767,6 +767,30 @@ def test_west_province_encounters_respect_edition_and_preserve_curated_methods(a
         with pytest.raises(ValueError,match='Conflito de curadoria'):
             importar_catalogo()
         assert db.execute('SELECT condicao FROM METODO_FORMA_JOGO WHERE id_dados_forma=?',(ident,)).fetchone()[0]=='FIXTURE mantida'
+
+
+def test_north_province_source_editions_and_tampering_rollback(app, client, tmp_path, monkeypatch):
+    from pokeanalyzer import curated_data
+    with app.app_context():
+        report=importar_catalogo()
+        assert report['fichas_north_sv']==101 and importar_catalogo()==report
+        db=get_db()
+        rows=db.execute("""SELECT f.codigo_forma,j.codigo_versao_pokeapi,d.id_dados_forma
+            FROM DADOS_FORMA_JOGO d JOIN FORMA f USING(id_forma) JOIN JOGO j USING(id_jogo)
+            WHERE d.fonte_url=?""",(curated_data.SV_NORTH_SOURCE,)).fetchall()
+        found={(r['codigo_forma'],r['codigo_versao_pokeapi']):r['id_dados_forma'] for r in rows}
+        assert ('drifblim','scarlet') in found and ('drifblim','violet') not in found
+        assert ('mismagius','violet') in found and ('mismagius','scarlet') not in found
+        before=db.execute('SELECT count(*) FROM DADOS_FORMA_JOGO').fetchone()[0]
+        altered=tmp_path/'north.csv';altered.write_text('numero_nacional,codigo_forma,edicoes\n1,bulbasaur,SV\n')
+        monkeypatch.setattr(curated_data,'SV_NORTH_FILE',altered)
+        with pytest.raises(ValueError,match='Referência North Province alterada'):
+            importar_catalogo()
+        assert db.execute('SELECT count(*) FROM DADOS_FORMA_JOGO').fetchone()[0]==before
+        assert not db.execute('PRAGMA foreign_key_check').fetchall()
+    detail=client.get('/api/pokemon/'+str(found[('drifblim','scarlet')])).json
+    assert detail['pode_ser_registrada']=='sim' and detail['fonte_estatisticas']
+    assert any(m['fonte_url']==curated_data.SV_NORTH_SOURCE for m in detail['metodos'])
 
 
 def test_reference_dragapult_targets_are_sourced_and_no_other_values_inferred(app, client):

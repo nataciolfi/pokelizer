@@ -100,7 +100,7 @@ def importar_catalogo(directory=SNAPSHOT):
                 db.execute('INSERT INTO JOGO(nome,geracao,fonte_url,data_verificacao,codigo_versao_pokeapi) VALUES(?,?,?,?,?)',
                     (display, generation, source, date, r['identifier']))
         importar_encontros(db, data, manifest)
-        from .curated_data import importar_mecanicas_swsh, importar_mecanicas_historicas, importar_mecanicas_anteriores, importar_mecanicas_lgpe, importar_dragapult, importar_iniciais_sv, importar_evento_sv, importar_parceiros_lgpe, importar_disponibilidade_lgpe, importar_transformacoes_lgpe, importar_encontros_poco_sv, importar_encontros_paldea_sv, importar_encontros_west_sv
+        from .curated_data import importar_mecanicas_swsh, importar_mecanicas_historicas, importar_mecanicas_anteriores, importar_mecanicas_lgpe, importar_dragapult, importar_iniciais_sv, importar_evento_sv, importar_parceiros_lgpe, importar_disponibilidade_lgpe, importar_transformacoes_lgpe, importar_encontros_poco_sv, importar_encontros_paldea_sv, importar_encontros_west_sv, importar_encontros_north_sv
         importar_mecanicas_swsh(db, data)
         importar_mecanicas_historicas(db, data)
         importar_mecanicas_anteriores(db, data)
@@ -111,6 +111,7 @@ def importar_catalogo(directory=SNAPSHOT):
         importar_encontros_poco_sv(db)
         importar_encontros_paldea_sv(db)
         importar_encontros_west_sv(db)
+        importar_encontros_north_sv(db)
         importar_parceiros_lgpe(db)
         importar_disponibilidade_lgpe(db)
         importar_transformacoes_lgpe(db)
@@ -194,7 +195,7 @@ def importar_encontros(db, data, manifest):
                        (cursor.lastrowid,method_ids[group],condition,source,date))
 
 def cobertura(directory=SNAPSHOT):
-    from .curated_data import DRAGAPULT_SOURCE, SV_STARTER_SOURCE, SV_RAID_SOURCE, SV_POCO_SOURCE, SV_PALDEA_SOURCE, SV_WEST_SOURCE, LGPE_PARTNER_SOURCE, LGPE_AVAILABILITY_SOURCE, LGPE_MEGA_SOURCE
+    from .curated_data import DRAGAPULT_SOURCE, SV_STARTER_SOURCE, SV_RAID_SOURCE, SV_POCO_SOURCE, SV_PALDEA_SOURCE, SV_WEST_SOURCE, SV_NORTH_SOURCE, LGPE_PARTNER_SOURCE, LGPE_AVAILABILITY_SOURCE, LGPE_MEGA_SOURCE
     manifest, data = ler_snapshot(directory)
     db = get_db()
     counts = {t: db.execute(f'SELECT count(*) FROM {t}').fetchone()[0] for t in
@@ -244,7 +245,8 @@ def cobertura(directory=SNAPSHOT):
                       'Tipos, habilidades e atributos históricos para contextos ainda não importados',
                       'Mecânicas e limites para versões ainda não contempladas', 'Outros regulamentos, formas e elegibilidades com fontes específicas',
                       'Outros perfis de referência competitiva verificados'],
-        'fichas_outras_fontes_preservadas': db.execute("SELECT count(*) FROM DADOS_FORMA_JOGO WHERE fonte_url IS NULL OR fonte_url NOT IN (?,?,?,?,?,?,?,?,?,?)", (manifest['files']['encounters.csv.gz']['url'],DRAGAPULT_SOURCE,SV_STARTER_SOURCE,SV_RAID_SOURCE,SV_POCO_SOURCE,SV_PALDEA_SOURCE,SV_WEST_SOURCE,LGPE_PARTNER_SOURCE,LGPE_AVAILABILITY_SOURCE,LGPE_MEGA_SOURCE)).fetchone()[0],
+        'fichas_outras_fontes_preservadas': db.execute("SELECT count(*) FROM DADOS_FORMA_JOGO WHERE fonte_url IS NULL OR fonte_url NOT IN (?,?,?,?,?,?,?,?,?,?,?)", (manifest['files']['encounters.csv.gz']['url'],DRAGAPULT_SOURCE,SV_STARTER_SOURCE,SV_RAID_SOURCE,SV_POCO_SOURCE,SV_PALDEA_SOURCE,SV_WEST_SOURCE,SV_NORTH_SOURCE,LGPE_PARTNER_SOURCE,LGPE_AVAILABILITY_SOURCE,LGPE_MEGA_SOURCE)).fetchone()[0],
+        'fichas_north_sv': db.execute('SELECT count(*) FROM DADOS_FORMA_JOGO WHERE fonte_url=?',(SV_NORTH_SOURCE,)).fetchone()[0],
         'fichas_west_sv': db.execute('SELECT count(*) FROM DADOS_FORMA_JOGO WHERE fonte_url=?',(SV_WEST_SOURCE,)).fetchone()[0],
         'fichas_paldea_sv': db.execute('SELECT count(*) FROM DADOS_FORMA_JOGO WHERE fonte_url=?',(SV_PALDEA_SOURCE,)).fetchone()[0],
         'fichas_poco_path_sv': db.execute('SELECT count(*) FROM DADOS_FORMA_JOGO WHERE fonte_url=?',(SV_POCO_SOURCE,)).fetchone()[0],
