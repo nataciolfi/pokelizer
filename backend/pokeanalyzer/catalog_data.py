@@ -100,7 +100,7 @@ def importar_catalogo(directory=SNAPSHOT):
                 db.execute('INSERT INTO JOGO(nome,geracao,fonte_url,data_verificacao,codigo_versao_pokeapi) VALUES(?,?,?,?,?)',
                     (display, generation, source, date, r['identifier']))
         importar_encontros(db, data, manifest)
-        from .curated_data import importar_mecanicas_swsh, importar_mecanicas_historicas, importar_mecanicas_anteriores, importar_mecanicas_lgpe, importar_dragapult, importar_iniciais_sv, importar_evento_sv, importar_parceiros_lgpe, importar_disponibilidade_lgpe
+        from .curated_data import importar_mecanicas_swsh, importar_mecanicas_historicas, importar_mecanicas_anteriores, importar_mecanicas_lgpe, importar_dragapult, importar_iniciais_sv, importar_evento_sv, importar_parceiros_lgpe, importar_disponibilidade_lgpe, importar_transformacoes_lgpe
         importar_mecanicas_swsh(db, data)
         importar_mecanicas_historicas(db, data)
         importar_mecanicas_anteriores(db, data)
@@ -110,6 +110,7 @@ def importar_catalogo(directory=SNAPSHOT):
         importar_evento_sv(db)
         importar_parceiros_lgpe(db)
         importar_disponibilidade_lgpe(db)
+        importar_transformacoes_lgpe(db)
         from .contextual_data import importar_contextos_por_geracao
         importar_contextos_por_geracao(db, data, manifest)
         from .curated_data import importar_regulamento_swsh
@@ -189,7 +190,7 @@ def importar_encontros(db, data, manifest):
                        (cursor.lastrowid,method_ids[group],condition,source,date))
 
 def cobertura(directory=SNAPSHOT):
-    from .curated_data import DRAGAPULT_SOURCE, SV_STARTER_SOURCE, SV_RAID_SOURCE, LGPE_PARTNER_SOURCE, LGPE_AVAILABILITY_SOURCE
+    from .curated_data import DRAGAPULT_SOURCE, SV_STARTER_SOURCE, SV_RAID_SOURCE, LGPE_PARTNER_SOURCE, LGPE_AVAILABILITY_SOURCE, LGPE_MEGA_SOURCE
     manifest, data = ler_snapshot(directory)
     db = get_db()
     counts = {t: db.execute(f'SELECT count(*) FROM {t}').fetchone()[0] for t in
@@ -235,11 +236,11 @@ def cobertura(directory=SNAPSHOT):
                                   {r[0].casefold() for r in db.execute('SELECT codigo_versao_pokeapi FROM JOGO WHERE codigo_versao_pokeapi IS NOT NULL')})},
         'nomes_exibidos': 'Inglês da fonte, sem tradução portuguesa confirmada; códigos de forma preservados.',
         'pendencias': ['Fichas de presença e métodos ainda sem fonte por jogo',
-                      'Mega evoluções temporárias de Let’s Go e outras transformações temporárias sem ficha contextual',
+                      'Transformações temporárias para jogos além de Let’s Go sem ficha contextual',
                       'Tipos, habilidades e atributos históricos para contextos ainda não importados',
                       'Mecânicas e limites para versões ainda não contempladas', 'Outros regulamentos, formas e elegibilidades com fontes específicas',
                       'Outros perfis de referência competitiva verificados'],
-        'fichas_outras_fontes_preservadas': db.execute("SELECT count(*) FROM DADOS_FORMA_JOGO WHERE fonte_url IS NULL OR fonte_url NOT IN (?,?,?,?,?,?)", (manifest['files']['encounters.csv.gz']['url'],DRAGAPULT_SOURCE,SV_STARTER_SOURCE,SV_RAID_SOURCE,LGPE_PARTNER_SOURCE,LGPE_AVAILABILITY_SOURCE)).fetchone()[0],
+        'fichas_outras_fontes_preservadas': db.execute("SELECT count(*) FROM DADOS_FORMA_JOGO WHERE fonte_url IS NULL OR fonte_url NOT IN (?,?,?,?,?,?,?)", (manifest['files']['encounters.csv.gz']['url'],DRAGAPULT_SOURCE,SV_STARTER_SOURCE,SV_RAID_SOURCE,LGPE_PARTNER_SOURCE,LGPE_AVAILABILITY_SOURCE,LGPE_MEGA_SOURCE)).fetchone()[0],
         'fichas_dragapult_guia_vgc': db.execute('SELECT count(*) FROM DADOS_FORMA_JOGO WHERE fonte_url=?',(DRAGAPULT_SOURCE,)).fetchone()[0],
         'fichas_iniciais_scarlet_violet': db.execute('SELECT count(*) FROM DADOS_FORMA_JOGO WHERE fonte_url=?',(SV_STARTER_SOURCE,)).fetchone()[0],
         'fichas_evento_sv_2024': db.execute('SELECT count(*) FROM DADOS_FORMA_JOGO WHERE fonte_url=?',(SV_RAID_SOURCE,)).fetchone()[0],
@@ -247,6 +248,8 @@ def cobertura(directory=SNAPSHOT):
         'fichas_formas_alola_lgpe': db.execute("""SELECT count(*) FROM DADOS_FORMA_JOGO d JOIN FORMA f USING(id_forma)
             JOIN JOGO j USING(id_jogo) WHERE d.fonte_url=? AND f.codigo_forma LIKE '%-alola'
             AND j.codigo_versao_pokeapi IN ('lets-go-pikachu','lets-go-eevee')""",(LGPE_AVAILABILITY_SOURCE,)).fetchone()[0],
+        'fichas_formas_mega_lgpe': db.execute('SELECT count(*) FROM DADOS_FORMA_JOGO WHERE fonte_url=?',(LGPE_MEGA_SOURCE,)).fetchone()[0],
+        'transformacoes_mega_lgpe': db.execute('SELECT count(*) FROM TRANSFORMACAO_FORMA WHERE fonte_url=?',(LGPE_MEGA_SOURCE,)).fetchone()[0],
         'fichas_disponibilidade_lgpe': db.execute("""SELECT count(DISTINCT mf.id_dados_forma) FROM METODO_FORMA_JOGO mf
             WHERE mf.fonte_url=?""",(LGPE_AVAILABILITY_SOURCE,)).fetchone()[0],
         'fichas_go_park_lgpe': db.execute("""SELECT count(DISTINCT mf.id_dados_forma) FROM METODO_FORMA_JOGO mf

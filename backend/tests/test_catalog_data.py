@@ -1,6 +1,7 @@
 from test_api import app, client
 from pokeanalyzer.catalog_data import importar_catalogo, ler_snapshot
 from pokeanalyzer.db import get_db
+from pathlib import Path
 import pytest
 
 
@@ -361,19 +362,7 @@ def test_early_values_derive_hp_preserve_unknown_and_validate_limits(app, client
     mechanic=client.get('/api/mecanicas/'+str(context['id_mecanica'])).json
     choices={s['codigo']:{a['codigo'] for a in s['atributos']} for s in mechanic['sistemas']}
     assert choices=={'DV':{'attack','defense','speed','special'},'STAT_EXP':{'hp','attack','defense','speed','special'}}
-    assert all(s['descricao_sistema'] for s in mec…4495 tokens truncated…esult.json['legalidade_completa_verificada'] is False
-    assert client.get(f'/api/regulamentos/{shield_rule}/formas/{sheet}').status_code==400
-    with app.app_context():
-        assert importar_catalogo()['contagens_banco']['REGULAMENTO']==2
-        db=get_db()
-        db.execute("UPDATE ELEGIBILIDADE_FORMA_REGULAMENTO SET status='proibido' WHERE id_regulamento=? AND id_dados_forma=?",(rule,sheet))
-        db.commit()
-        with pytest.raises(ValueError,match='Conflito de curadoria'):
-            importar_catalogo()
-        assert db.execute('SELECT status FROM ELEGIBILIDADE_FORMA_REGULAMENTO WHERE id_regulamento=? AND id_dados_forma=?',(rule,sheet)).fetchone()[0]=='proibido'
-
-
-def test_reference_dragapult_targets_are_sourced_and_no_other_values_inferred(app, client):
+    assert all(s['descri…4964 tokens truncated…no_other_values_inferred(app, client):
     from test_api import create_user, get_csrf
     create_user(client)
     with app.app_context():
@@ -694,4 +683,13 @@ def test_lets_go_availability_import_is_complete_repeatable_and_source_checked(a
         with pytest.raises(ValueError,match='Referência das formas Alola'):
             importar_catalogo()
         assert db.execute('SELECT count(*) FROM DADOS_FORMA_JOGO').fetchone()[0]==before
+        curated_dir=Path(__file__).resolve().parents[1]/'data'/'curated'
+        monkeypatch.setattr(curated_data,'LGPE_AVAILABILITY_FILE',curated_dir/'lgpe-availability.csv')
+        monkeypatch.setattr(curated_data,'LGPE_ALOLAN_FILE',curated_dir/'lgpe-alolan-forms.csv')
+        monkeypatch.setattr(curated_data,'LGPE_MEGA_FILE',altered)
+        transformations_before=db.execute('SELECT count(*) FROM TRANSFORMACAO_FORMA').fetchone()[0]
+        with pytest.raises(ValueError,match='Referência das Megaevoluções'):
+            importar_catalogo()
+        assert db.execute('SELECT count(*) FROM DADOS_FORMA_JOGO').fetchone()[0]==before
+        assert db.execute('SELECT count(*) FROM TRANSFORMACAO_FORMA').fetchone()[0]==transformations_before
         assert not db.execute('PRAGMA foreign_key_check').fetchall()

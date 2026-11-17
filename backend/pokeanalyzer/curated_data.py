@@ -31,6 +31,15 @@ LGPE_ALOLAN_FORMS = {
     75:'graveler-alola',76:'golem-alola',88:'grimer-alola',89:'muk-alola',
     103:'exeggutor-alola',105:'marowak-alola',
 }
+LGPE_MEGA_FILE = Path(__file__).resolve().parents[1] / 'data' / 'curated' / 'lgpe-mega-forms.csv'
+LGPE_MEGA_SHA256 = '6c852fc04921f0f1433604ef0088bf9015cdb6a11b369d58b556843546533cf0'
+LGPE_MEGA_FORMS = {
+    3:('venusaur-mega',),6:('charizard-mega-x','charizard-mega-y'),9:('blastoise-mega',),
+    15:('beedrill-mega',),18:('pidgeot-mega',),65:('alakazam-mega',),80:('slowbro-mega',),
+    94:('gengar-mega',),115:('kangaskhan-mega',),127:('pinsir-mega',),130:('gyarados-mega',),
+    142:('aerodactyl-mega',),150:('mewtwo-mega-x','mewtwo-mega-y'),
+}
+LGPE_MEGA_SOURCE = ('https://bulbapedia.bulbagarden.net/wiki/Pok%C3%A9mon%3A_Let%27s_Go%2C_Eevee%21')
 SV_DATE = '2026-11-16'
 HISTORICAL_DATE = '2026-11-15'
 # Curated historical core-series versions only. Other games are added explicitly.
@@ -435,3 +444,60 @@ def importar_perfis_dragapult(db):
             _obter_ou_inserir(db,'VALOR_PERFIL_ANALISE',
                 {'id_perfil':profile['id_perfil'],'id_mecanica_sistema_atributo':context['id_mecanica_sistema_atributo'],'id_atributo':attr},
                 {'estado':'conhecido','valor_alvo':target},['estado','valor_alvo'])
+
+
+def importar_transformacoes_lgpe(db):
+    """Contextualize Mega forms as temporary battle transformations, never specimens."""
+    raw=LGPE_MEGA_FILE.read_bytes()
+    if hashlib.sha256(raw).hexdigest()!=LGPE_MEGA_SHA256:
+        raise ValueError('Referência das Megaevoluções de Let’s Go alterada; carga revertida.')
+    rows=list(csv.DictReader(raw.decode('utf-8').splitlines()))
+    try:
+        reference=[(int(row['numero_nacional']),row['codigo_forma']) for row in rows]
+    except (KeyError,TypeError,ValueError) as exc:
+        raise ValueError('Referência das Megaevoluções inválida; carga revertida.') from exc
+    expected={(number,code) for number,codes in LGPE_MEGA_FORMS.items() for code in codes}
+    if len(rows)!=15 or len(set(reference))!=15 or set(reference)!=expected:
+        raise ValueError('Referência das 15 formas Mega de Kanto incompleta ou divergente; carga revertida.')
+    for game in ('lets-go-pikachu','lets-go-eevee'):
+        game_id=db.execute('SELECT id_jogo FROM JOGO WHERE codigo_versao_pokeapi=?',(game,)).fetchone()[0]
+        for number,mega_code in reference:
+            mega=db.execute("""SELECT f.id_forma FROM FORMA f JOIN ESPECIE e USING(id_especie)
+                WHERE e.numero_nacional=? AND f.codigo_forma=? AND f.estado_forma='temporario'""",
+                (number,mega_code)).fetchone()
+            base=db.execute("""SELECT id_forma FROM FORMA WHERE id_especie=(SELECT id_especie FROM FORMA WHERE id_forma=?)
+                AND forma_padrao=1""",(mega['id_forma'],)).fetchone() if mega else None
+            if not mega or not base:
+                raise ValueError(f'Forma Mega ou forma-base ausente para {mega_code}; carga revertida.')
+            base_sheet=db.execute('SELECT id_dados_forma FROM DADOS_FORMA_JOGO WHERE id_forma=? AND id_jogo=?',
+                                  (base['id_forma'],game_id)).fetchone()
+            if not base_sheet:
+                raise ValueError(f'Ficha-base de {mega_code} não está documentada em {game}; carga revertida.')
+            destination=db.execute('SELECT id_dados_forma FROM DADOS_FORMA_JOGO WHERE id_forma=? AND id_jogo=?',
+                                   (mega['id_forma'],game_id)).fetchone()
+            if not destination:
+                destination_id=db.execute("""INSERT INTO DADOS_FORMA_JOGO(id_forma,id_jogo,status_presenca,
+                    pode_ser_registrada,motivo_registro,fonte_url,data_verificacao)
+                    VALUES(?,?,'nativa','nao',?,?,?)""",(mega['id_forma'],game_id,
+                    'Forma temporária de batalha; não pode ser capturada ou mantida como exemplar separado.',
+                    LGPE_MEGA_SOURCE,LGPE_AVAILABILITY_DATE)).lastrowid
+            else:
+                destination_id=destination['id_dados_forma']
+                row=db.execute('SELECT status_presenca,pode_ser_registrada,fonte_url,data_verificacao FROM DADOS_FORMA_JOGO WHERE id_dados_forma=?',(destination_id,)).fetchone()
+                if tuple(row)!=('nativa','nao',LGPE_MEGA_SOURCE,LGPE_AVAILABILITY_DATE):
+                    raise ValueError(f'Ficha da forma Mega {mega_code} diverge da transformação curada; dados preservados.')
+            condition='Uma vez por batalha, com Key Stone e Mega Stone correspondente; a forma retorna ao encerrar a batalha.'
+            item='Key Stone e Mega Stone correspondente'
+            observation='Estado de transformação de batalha; não representa captura, transferência ou registro independente.'
+            key=(base_sheet['id_dados_forma'],destination_id,'Mega Evolution',condition)
+            existing=db.execute("""SELECT * FROM TRANSFORMACAO_FORMA WHERE id_dados_forma_origem=?
+                AND id_dados_forma_destino=? AND tipo_transformacao=? AND condicao=?""",key).fetchone()
+            values=(1,item,observation,LGPE_MEGA_SOURCE,LGPE_AVAILABILITY_DATE)
+            if existing:
+                if tuple(existing[k] for k in ('temporaria','item_requerido','observacao','fonte_url','data_verificacao'))!=values:
+                    raise ValueError(f'Conflito na transformação Mega {mega_code}; dados preservados.')
+            else:
+                db.execute("""INSERT INTO TRANSFORMACAO_FORMA(id_dados_forma_origem,id_dados_forma_destino,
+                    tipo_transformacao,temporaria,condicao,item_requerido,observacao,fonte_url,data_verificacao)
+                    VALUES(?,?, 'Mega Evolution',?,?,?,?,?,?)""",(base_sheet['id_dados_forma'],destination_id,
+                    1,condition,item,observation,LGPE_MEGA_SOURCE,LGPE_AVAILABILITY_DATE))

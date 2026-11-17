@@ -3,7 +3,7 @@ from collections import defaultdict
 import csv
 import hashlib
 from pathlib import Path
-from .curated_data import _obter_ou_inserir, DRAGAPULT_SOURCE, SV_STARTER_SOURCE, SV_RAID_SOURCE, LGPE_PARTNER_SOURCE, LGPE_AVAILABILITY_SOURCE, LGPE_ALOLAN_FORMS, SV_DATE
+from .curated_data import _obter_ou_inserir, DRAGAPULT_SOURCE, SV_STARTER_SOURCE, SV_RAID_SOURCE, LGPE_PARTNER_SOURCE, LGPE_AVAILABILITY_SOURCE, LGPE_MEGA_SOURCE, LGPE_ALOLAN_FORMS, LGPE_MEGA_FORMS, SV_DATE
 
 CONTEXT_DATE = '2026-11-15'
 # Groups with the six-stat system and/or abilities. Generation I has one
@@ -93,7 +93,7 @@ def importar_contextos_por_geracao(db, data, manifest):
     attrs = {'1':'hp_base','2':'ataque_base','3':'defesa_base','4':'ataque_especial_base','5':'defesa_especial_base','6':'velocidade_base'}
     sheets = db.execute("""SELECT d.*,e.numero_nacional,f.codigo_forma,f.forma_padrao,j.codigo_versao_pokeapi FROM DADOS_FORMA_JOGO d
         JOIN FORMA f USING(id_forma) JOIN ESPECIE e USING(id_especie) JOIN JOGO j USING(id_jogo)
-        WHERE d.fonte_url IN (?,?,?,?,?,?)""", (encounter_source,DRAGAPULT_SOURCE,SV_STARTER_SOURCE,SV_RAID_SOURCE,LGPE_PARTNER_SOURCE,LGPE_AVAILABILITY_SOURCE)).fetchall()
+        WHERE d.fonte_url IN (?,?,?,?,?,?,?)""", (encounter_source,DRAGAPULT_SOURCE,SV_STARTER_SOURCE,SV_RAID_SOURCE,LGPE_PARTNER_SOURCE,LGPE_AVAILABILITY_SOURCE,LGPE_MEGA_SOURCE)).fetchall()
     for sheet in sheets:
         context_date = SV_DATE if sheet['fonte_url'] in (SV_STARTER_SOURCE,SV_RAID_SOURCE,LGPE_PARTNER_SOURCE) or sheet['codigo_versao_pokeapi'] in ('lets-go-pikachu','lets-go-eevee') else CONTEXT_DATE
         group = versions.get(sheet['codigo_versao_pokeapi'])
@@ -102,7 +102,8 @@ def importar_contextos_por_geracao(db, data, manifest):
         partner_key=(sheet['codigo_versao_pokeapi'],sheet['codigo_forma'])
         is_partner=sheet['fonte_url']==LGPE_PARTNER_SOURCE and partner_key in LGPE_PARTNER_STATS
         is_lgpe_alola=(group['identifier']==LGPE_TYPE_GROUP and LGPE_ALOLAN_FORMS.get(sheet['numero_nacional'])==sheet['codigo_forma'])
-        if group['identifier'] == LGPE_TYPE_GROUP and not is_partner and not is_lgpe_alola and (not sheet['forma_padrao'] or sheet['numero_nacional'] not in LGPE_DEFAULT_SPECIES):
+        is_lgpe_mega=(group['identifier']==LGPE_TYPE_GROUP and sheet['codigo_forma'] in LGPE_MEGA_FORMS.get(sheet['numero_nacional'],()))
+        if group['identifier'] == LGPE_TYPE_GROUP and not is_partner and not is_lgpe_alola and not is_lgpe_mega and (not sheet['forma_padrao'] or sheet['numero_nacional'] not in LGPE_DEFAULT_SPECIES):
             continue
         generation = int(group['generation_id'])
         pid = by_form.get((sheet['numero_nacional'],sheet['codigo_forma']))
@@ -112,7 +113,7 @@ def importar_contextos_por_geracao(db, data, manifest):
         eligible = [g for g in past_types[pid] if g >= generation]
         if eligible:
             selected_types = {r['slot']:r for r in past_types[pid][min(eligible)]}
-        if group['identifier'] == LGPE_TYPE_GROUP and not is_lgpe_alola:
+        if group['identifier'] == LGPE_TYPE_GROUP and not (is_lgpe_alola or is_lgpe_mega):
             observed=[type_names.get(item['type_id']) for _,item in sorted(selected_types.items())]
             if observed != lgpe_types[sheet['numero_nacional']]:
                 raise ValueError('Divergência nas fontes de tipos de Let’s Go; carga revertida.')

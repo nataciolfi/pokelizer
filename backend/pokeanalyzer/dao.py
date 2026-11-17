@@ -110,7 +110,25 @@ class PokemonDAO:
             return None
         species = get_db().execute("SELECT * FROM ESPECIE WHERE id_especie=?", (row["id_especie"],)).fetchone()
         sheets = get_db().execute(self._SELECT + " WHERE f.id_forma=? ORDER BY j.id_jogo", (id_forma,))
-        return dict(row) | {"especie": dict(species), "fichas": [self._row_to_model(r).to_dict() for r in sheets if r["id_dados_forma"] is not None]}
+        result=[]
+        db=get_db()
+        for sheet in sheets:
+            if sheet['id_dados_forma'] is None:
+                continue
+            item=self._row_to_model(sheet).to_dict()
+            item['transformacoes']=[dict(t) for t in db.execute("""SELECT tr.*,
+                fo.codigo_forma AS codigo_origem, eo.nome_pt AS nome_especie_origem,
+                fd.codigo_forma AS codigo_destino, ed.nome_pt AS nome_especie_destino
+                FROM TRANSFORMACAO_FORMA tr
+                JOIN DADOS_FORMA_JOGO od ON od.id_dados_forma=tr.id_dados_forma_origem
+                JOIN FORMA fo ON fo.id_forma=od.id_forma JOIN ESPECIE eo ON eo.id_especie=fo.id_especie
+                JOIN DADOS_FORMA_JOGO dd ON dd.id_dados_forma=tr.id_dados_forma_destino
+                JOIN FORMA fd ON fd.id_forma=dd.id_forma JOIN ESPECIE ed ON ed.id_especie=fd.id_especie
+                WHERE tr.id_dados_forma_origem=? OR tr.id_dados_forma_destino=?
+                ORDER BY tr.tipo_transformacao,codigo_destino""",
+                (item['id_dados_forma'],item['id_dados_forma']))]
+            result.append(item)
+        return dict(row) | {"especie": dict(species), "fichas": result}
 
     def obter(self, id_dados_forma: int) -> PokemonCatalogo | None:
         row = get_db().execute(self._SELECT + " WHERE dfj.id_dados_forma = ?", (id_dados_forma,)).fetchone()
