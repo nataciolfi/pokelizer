@@ -362,7 +362,7 @@ def test_early_values_derive_hp_preserve_unknown_and_validate_limits(app, client
     mechanic=client.get('/api/mecanicas/'+str(context['id_mecanica'])).json
     choices={s['codigo']:{a['codigo'] for a in s['atributos']} for s in mechanic['sistemas']}
     assert choices=={'DV':{'attack','defense','speed','special'},'STAT_EXP':{'hp','attack','defense','speed','special'}}
-    assert all(s['descri…4964 tokens truncated…no_other_values_inferred(app, client):
+    assert all(s['descri…5115 tokens truncated…no_other_values_inferred(app, client):
     from test_api import create_user, get_csrf
     create_user(client)
     with app.app_context():

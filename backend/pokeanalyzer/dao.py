@@ -362,7 +362,7 @@ class ContextoDAO:
         old_games = first_generation | {'gold', 'silver', 'crystal', 'lets-go-pikachu', 'lets-go-eevee'}
         encounter_source = ('https://raw.githubusercontent.com/PokeAPI/pokeapi/'
                             '8a92bfa7dab2f12b84b5d151562f9857c133ff30/data/v2/csv/encounters.csv')
-        from .curated_data import LGPE_PARTNER_SOURCE
+        from .curated_data import LGPE_PARTNER_SOURCE, LGPE_AVAILABILITY_SOURCE, LGPE_MEGA_SOURCE
         if (code,raw['codigo_forma']) in {('lets-go-pikachu','pikachu'),('lets-go-eevee','eevee')}:
             for method in raw['metodos']:
                 if method['nome']=='Presente no jogo' and method['fonte_url']==encounter_source:
@@ -370,7 +370,9 @@ class ContextoDAO:
                     method['condicao']=('Associação antiga não verificada: o parceiro inicial é uma forma distinta. '
                                         'O vínculo foi preservado para revisão, sem confirmar presente da forma comum. '
                                         +(method['condicao'] or ''))
-        if code in old_games and raw['fonte_url'] in (encounter_source,LGPE_PARTNER_SOURCE):
+        known_no_abilities = (code in old_games and raw['fonte_url'] in (encounter_source,LGPE_PARTNER_SOURCE)) or (
+            code in {'lets-go-pikachu','lets-go-eevee'} and raw['fonte_url'] in (LGPE_AVAILABILITY_SOURCE,LGPE_MEGA_SOURCE))
+        if known_no_abilities:
             raw['estado_sistema_habilidades'] = 'nao_aplicavel'
             raw['fonte_sistema_habilidades'] = 'https://bulbapedia.bulbagarden.net/wiki/Abilities'
             raw['data_verificacao_sistema_habilidades'] = '2026-11-15'
