@@ -2,7 +2,7 @@
 
 ## Estado atual — 16/11/2026
 
-Branch `final/complete-project`, base publicada `119d83c54858b6eb96dd330aacf40afabd3f4ef2`; alterações locais Let’s Go ainda não publicadas até novo commit. Não mexer em `main`. Continuação da auditoria: `AGENTS.md` ausente; os arquivos da Etapa 1 e as 73 provas anteriores foram preservados. As tarefas completas e pendências detalhadas continuam nos registros abaixo.
+Branch `final/complete-project`, commit atual publicado `0c1a59a7cd34510319f4f7a95e80ed2ffac1a467`, árvore `cd04c6dfea93f6a0ac4c8f5d81285f77c2b18c1f`. A tag `final-session-history-2026-11-16-09` preserva o commit local original `273e32e` antes do alinhamento de metadados do conector; árvores são idênticas. Não mexer em `main`. Continuação da auditoria: `AGENTS.md` ausente; os arquivos da Etapa 1 e as 73 provas anteriores foram preservados. As tarefas completas e pendências detalhadas continuam nos registros abaixo.
 
 ### Regras, estatísticas e valores de Let’s Go
 
@@ -12,7 +12,7 @@ Banco vazio aplicou migrações `[1, 2, 3, 4]`; duas importações mantiveram 1.
 
 `PYTHONPATH=/home/Danilo/tools/python:backend python tools/check_stage2.py`: 109 testes passaram; SQL, dicionário, modelo nativo brModelo, UML, links e demonstração passaram. Brave headless + Flask em banco temporário: conta, catálogo, exemplar do parceiro (IV HP 31, AV HP zero, EV não aplicável), perfil com AV HP 200 e análise -200. Foram inspecionadas imagens 1440 px e 390 px; a página móvel mediu 390 px sem overflow horizontal. O detalhe contextual dentro do painel do catálogo ainda não foi validado nessa execução automatizada; API e integração de dados são exercitadas em testes. Detalhe registrado em `docs/project/frontend.md`.
 
-Próximo passo: revisar, testar, commitar e publicar somente estas alterações na branch dedicada; depois continuar fonte/abrangência para outros contextos, melhorar revisão integral de acessibilidade do frontend e completar os dados por jogo/regulamentos/perfis. Não declarar entrega final: cobertura contextual permanece parcial. Convite/aceitação do professor e submissão no Classroom são ações manuais autorizadas apenas pelo usuário.
+Próximo passo: continuar fonte/abrangência para outros contextos, melhorar revisão integral de acessibilidade do frontend e completar os dados por jogo/regulamentos/perfis. As alterações deste marco estão commitadas e publicadas na branch dedicada. Não declarar entrega final: cobertura contextual permanece parcial. Convite/aceitação do professor e submissão no Classroom são ações manuais autorizadas apenas pelo usuário.
 
 ---
 
