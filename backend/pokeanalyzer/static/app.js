@@ -6,6 +6,7 @@ const labels = {conhecido:'Conhecido',desconhecido:'Desconhecido',ausente:'Não 
 const state = {user:null,csrf:null,all:[],options:{},rules:[],collection:[],profiles:[],page:'catalogo',offset:0,results:[],coverage:null};
 const content = $('#content'), dialog = $('#dialog'), dialogBody = $('#dialog-body');
 let viewVersion = 0;
+let initialized = false;
 dialog.addEventListener('keydown', event => {
   if (event.key !== 'Tab') return;
   const focusable = $$('a[href],button,input,select,textarea,[tabindex]',dialog)
@@ -48,6 +49,7 @@ function auth(register=false){
   $('#auth-form').onsubmit=async e=>{e.preventDefault();const b=$('button[type=submit]',e.target);b.disabled=true;try{const data=await api('/auth/'+(register?'cadastro':'login'),{method:'POST',body:Object.fromEntries(new FormData(e.target))});state.user=data.usuario;account();dialog.close();feedback('Seu espaço está aberto.');await render();}catch(err){modalError(err.message);}finally{b.disabled=false;}};
 }
 async function render(){
+  if(!initialized)return;
   const version=++viewVersion;state.page=(location.hash.slice(1)||'catalogo');
   if(!['catalogo','colecao','perfis','analise','regulamentos'].includes(state.page))state.page='catalogo';
   $$('#feedback').forEach(e=>e.hidden=true);$$('nav a').forEach(a=>a.classList.toggle('active',a.dataset.page===state.page));
@@ -119,8 +121,20 @@ async function editor(type,existing=null,initialSheet=null){
  const isProfile=type==='profile',allSheets=sheets().filter(f=>isProfile||(['nativa','transferivel'].includes(f.status_presenca)&&f.pode_ser_registrada==='sim')||f.id_dados_forma===existing?.id_dados_forma_atual);
  if(!allSheets.length){showDialog(`<h2 id="dialog-title">Um contexto antes do registro.</h2><p>O catálogo global está disponível, mas ainda não há fichas por jogo carregadas neste banco. A inclusão depende dessas fichas e de regras verificadas.</p><p class="hint">A carga global não confirma disponibilidade por jogo. Consulte a cobertura e as fontes do projeto.</p>`);return;}
  const sheetId=existing?.[isProfile?'id_dados_forma':'id_dados_forma_atual']||initialSheet||allSheets[0].id_dados_forma;
- showDialog(`<h2 id="dialog-title">${existing?'Consultar / editar':isProfile?'Novo perfil':'Novo exemplar'}</h2><p class="help">${isProfile?'Seus alvos, no contexto certo.':'Origem e contexto atual são informações distintas.'}</p><form id="editor"><div class="field-grid"><label class="wide">${isProfile?'Nome do perfil':'Apelido (opcional)'}<input name="${isProfile?'nome_perfil':'apelido'}" value="${esc(existing?.[isProfile?'nome_perfil':'apelido']||'')}" maxlength="${isProfile?120:40}" ${isProfile?'required':''}></label><label class="wide">Forma e jogo atual<select id="sheet" required>${allSheets.map(f=>option(f.id_dados_forma,f.label,f.id_dados_forma===sheetId)).join('')}</select></label><label class="wide">Versão da mecânica<select id="mechanic"></select></label></div><p id="context-warning" class="hint" hidden>Contexto alterado. Revise os campos e os valores abaixo; salvar substituirá os dados contextuais pela seleção exibida.</p><div id="context-fields"></div>${isProfile?`<label>Descrição<textarea name="descricao" maxlength="2000">${esc(existing?.descricao||'')}</textarea></label>`:`<h3>Origem e observações</h3><div class="field-grid"><label>Jogo de origem<select id="origin-game">${selectOptions(state.options.jogos,'id_jogo',j=>j.nome,existing?.id_jogo_origem)}</select></label><label>Forma de origem<select id="origin-sheet"></select></label><label class="wide">Método de obtenção<select name="id_metodo_obtencao">${selectOptions(state.options.metodos,'id_metodo',m=>m.nome,existing?.id_metodo_obtencao)}</select></label><label class="wide">Observações<textarea name="observacao" maxlength="500">${esc(existing?.observacao||'')}</textarea></label></div>`}<div class="toolbar"><button type="button" id="cancel-editor">Voltar</button><button type="submit" id="save-editor" class="primary">Salvar ${isProfile?'perfil':'exemplar'} →</button></div></form>`);
+ showDialog(`<h2 id="dialog-title">${existing?'Consultar / editar':isProfile?'Novo perfil':'Novo exemplar'}</h2><p class="help">${isProfile?'Seus alvos, no contexto certo.':'Origem e contexto atual são informações distintas.'}</p><form id="editor"><div class="field-grid"><label class="wide">${isProfile?'Nome do perfil':'Apelido (opcional)'}<input name="${isProfile?'nome_perfil':'apelido'}" value="${esc(existing?.[isProfile?'nome_perfil':'apelido']||'')}" maxlength="${isProfile?120:40}" ${isProfile?'required':''}></label><label class="wide">Buscar forma ou jogo<input id="sheet-search" type="search" autocomplete="off" placeholder="Nome, código ou jogo" aria-describedby="sheet-search-status"></label><p class="help wide" id="sheet-search-status" role="status" aria-live="polite"></p><label class="wide">Forma e jogo atual<select id="sheet" required>${allSheets.map(f=>option(f.id_dados_forma,f.label,f.id_dados_forma===sheetId)).join('')}</select></label><label class="wide">Versão da mecânica<select id="mechanic"></select></label></div><p id="context-warning" class="hint" hidden>Contexto alterado. Revise os campos e os valores abaixo; salvar substituirá os dados contextuais pela seleção exibida.</p><div id="context-fields"></div>${isProfile?`<label>Descrição<textarea name="descricao" maxlength="2000">${esc(existing?.descricao||'')}</textarea></label>`:`<h3>Origem e observações</h3><div class="field-grid"><label>Jogo de origem<select id="origin-game">${selectOptions(state.options.jogos,'id_jogo',j=>j.nome,existing?.id_jogo_origem)}</select></label><label>Forma de origem<select id="origin-sheet"></select></label><label class="wide">Método de obtenção<select name="id_metodo_obtencao">${selectOptions(state.options.metodos,'id_metodo',m=>m.nome,existing?.id_metodo_obtencao)}</select></label><label class="wide">Observações<textarea name="observacao" maxlength="500">${esc(existing?.observacao||'')}</textarea></label></div>`}<div class="toolbar"><button type="button" id="cancel-editor">Voltar</button><button type="submit" id="save-editor" class="primary">Salvar ${isProfile?'perfil':'exemplar'} →</button></div></form>`);
  $('#cancel-editor').onclick=()=>dialog.close();
+ const searchSheet=$('#sheet-search'),sheetSelect=$('#sheet'),searchStatus=$('#sheet-search-status');
+ const normalizeSearch=s=>s.normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLocaleLowerCase('pt-BR').trim();
+ const filterSheets=()=>{
+  const query=normalizeSearch(searchSheet.value),selected=sheetSelect.value;
+  const matches=allSheets.filter(f=>normalizeSearch(f.label).includes(query));
+  const current=allSheets.find(f=>String(f.id_dados_forma)===selected);
+  const retained=current&&!matches.some(f=>f.id_dados_forma===current.id_dados_forma);
+  sheetSelect.innerHTML=(retained?option(current.id_dados_forma,'Seleção atual · '+current.label,true):'')+
+    matches.map(f=>option(f.id_dados_forma,f.label,String(f.id_dados_forma)===selected)).join('');
+  searchStatus.textContent=matches.length+' ficha(s) encontrada(s).'+(retained?' A seleção atual permanece até você escolher outra ficha.':'');
+ };
+ searchSheet.addEventListener('input',filterSheets);filterSheets();
  let activeMechanic=null,sheet=null,loading=0,sheetLoading=0;
  const updateValues=(mechanic,keep)=>{
   const field=isProfile?'valor_alvo':'valor',saved=keep?(existing?.valores||[]):[];
@@ -153,7 +167,7 @@ async function editor(type,existing=null,initialSheet=null){
    await loadMechanic(keep);
   }catch(e){if(revision===sheetLoading){$('#mechanic').disabled=false;$('#sheet').disabled=false;modalError(e.message);}}
  };
- $('#sheet').onchange=()=>loadSheet();$('#mechanic').onchange=()=>{ $('#context-warning').hidden=false;loadMechanic(); };
+ $('#sheet').onchange=()=>{filterSheets();loadSheet();};$('#mechanic').onchange=()=>{ $('#context-warning').hidden=false;loadMechanic(); };
  if(!isProfile){const origin=()=>{$('#origin-sheet').innerHTML=selectOptions(allSheets.filter(s=>s.id_jogo===Number($('#origin-game').value)),'id_dados_forma',s=>s.label,existing?.id_dados_forma_origem);};$('#origin-game').onchange=origin;origin();}
  $('#editor').onsubmit=async e=>{
   e.preventDefault();const b=$('#save-editor');b.disabled=true;
@@ -200,5 +214,5 @@ function regulations(){
 window.addEventListener('hashchange',render);
 (async()=>{try{
  const [catalogData,options,rules,coverage,user]=await Promise.all([api('/pokemon'),api('/opcoes'),api('/regulamentos'),api('/catalogo/cobertura'),api('/auth/me').catch(e=>{if(e.status===401)return null;throw e;})]);
- state.all=catalogData.itens;state.options=options;state.rules=rules.itens;state.coverage=coverage;state.user=user?.usuario||null;account();await render();
-}catch(e){content.innerHTML=empty('O arquivo não abriu.','Confira a inicialização do banco e recarregue a página.');feedback(e.message,true);}})();
+ state.all=catalogData.itens;state.options=options;state.rules=rules.itens;state.coverage=coverage;state.user=user?.usuario||null;initialized=true;content.setAttribute('aria-busy','false');$('#account').disabled=false;account();await render();
+}catch(e){content.setAttribute('aria-busy','false');content.innerHTML=empty('O arquivo não abriu.','Confira a inicialização do banco e recarregue a página.');feedback(e.message,true);}})();
