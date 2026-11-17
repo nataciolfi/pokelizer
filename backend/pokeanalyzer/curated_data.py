@@ -1,5 +1,9 @@
 """Mechanics only for explicitly named games and documented generation limits."""
 
+import csv
+import hashlib
+from pathlib import Path
+
 OFFICIAL = 'https://www.pokemon.com/us/strategy/train-raid-and-hatch-pokemon-to-breed-victories-in-pokemon-sword-and-pokemon-shield'
 IV_SOURCE = 'https://bulbapedia.bulbagarden.net/wiki/Individual_values'
 EV_SOURCE = 'https://bulbapedia.bulbagarden.net/wiki/Effort_values'
@@ -13,6 +17,11 @@ SV_RAID_SOURCE = 'https://sv-news.pokemon.co.jp/en/page/261.html'
 LGPE_PARTNER_SOURCE = ('https://bulbapedia.bulbagarden.net/w/index.php?title=List_of_in-game_event_Pok%C3%A9mon_in_Pok%C3%A9mon:'
                        '_Let%27s_Go,_Pikachu!_and_Let%27s_Go,_Eevee!&oldid=4559684')
 LGPE_RULE_SOURCE = 'https://www.serebii.net/letsgopikachueevee/stats.shtml'
+LGPE_AVAILABILITY_SOURCE = ('https://bulbapedia.bulbagarden.net/wiki/Pok%C3%A9mon_availability_'
+                            '%28Let%27s_Go%2C_Pikachu%21_and_Let%27s_Go%2C_Eevee%21%29')
+LGPE_AVAILABILITY_DATE = '2026-11-17'
+LGPE_AVAILABILITY_FILE = Path(__file__).resolve().parents[1] / 'data' / 'curated' / 'lgpe-availability.csv'
+LGPE_AVAILABILITY_SHA256 = '19c7d64158941b727d108355699882a907d920ebfb42e63da3afa0b4e56ed7be'
 SV_DATE = '2026-11-16'
 HISTORICAL_DATE = '2026-11-15'
 # Curated historical core-series versions only. Other games are added explicitly.
@@ -296,6 +305,64 @@ def importar_parceiros_lgpe(db):
             (*tuple(row),'Parceiro inicial exclusivo desta versão, distinto da forma comum.',LGPE_PARTNER_SOURCE,SV_DATE)).lastrowid
         db.execute("""INSERT INTO METODO_FORMA_JOGO(id_dados_forma,id_metodo,condicao,fonte_url,data_verificacao)
             VALUES(?,?,?,?,?)""",(sheet,method[0],'Primeiro parceiro desta versão; não evolui nem pode ser transferido a outros jogos.',LGPE_PARTNER_SOURCE,SV_DATE))
+
+
+def importar_disponibilidade_lgpe(db):
+    """Complete default-form entries using the documented GO Park/device methods."""
+    raw=LGPE_AVAILABILITY_FILE.read_bytes()
+    if hashlib.sha256(raw).hexdigest()!=LGPE_AVAILABILITY_SHA256:
+        raise ValueError('Referência de disponibilidade de Let’s Go alterada; carga revertida.')
+    rows=list(csv.DictReader(raw.decode('utf-8').splitlines()))
+    expected={*range(1,152),808,809}
+    try:
+        reference={int(row['numero_nacional']):row['metodo'] for row in rows}
+    except (KeyError,TypeError,ValueError) as exc:
+        raise ValueError('Referência de disponibilidade de Let’s Go inválida; carga revertida.') from exc
+    if len(rows)!=153 or set(reference)!=expected or any(value not in ('go-park','poke-ball-plus') for value in reference.values()):
+        raise ValueError('Referência de disponibilidade de Let’s Go incompleta ou duplicada; carga revertida.')
+    if {n for n,method in reference.items() if method=='poke-ball-plus'}!={151}:
+        raise ValueError('Método de Mew divergente na referência de Let’s Go; carga revertida.')
+
+    methods={
+        'go-park':_obter_ou_inserir(db,'METODO_OBTENCAO',{'nome':'Transferência via GO Park'},
+            {'descricao':'Transferência unidirecional de Pokémon GO para Pokémon: Let’s Go.'},['descricao']),
+        'poke-ball-plus':_obter_ou_inserir(db,'METODO_OBTENCAO',{'nome':'Presente do Poké Ball Plus'},
+            {'descricao':'Presente especial de Mew vinculado ao acessório Poké Ball Plus.'},['descricao']),
+    }
+    for game in ('lets-go-pikachu','lets-go-eevee'):
+        game_row=db.execute('SELECT id_jogo FROM JOGO WHERE codigo_versao_pokeapi=?',(game,)).fetchone()
+        if not game_row:
+            raise ValueError(f'Jogo {game} não identificado; carga revertida.')
+        for number,method_code in reference.items():
+            form=db.execute("""SELECT f.id_forma FROM FORMA f JOIN ESPECIE e USING(id_especie)
+                WHERE e.numero_nacional=? AND f.forma_padrao=1 AND f.estado_forma!='temporario'""",(number,)).fetchall()
+            if len(form)!=1:
+                raise ValueError(f'Forma padrão de número {number} ausente ou ambígua; carga revertida.')
+            key=(form[0]['id_forma'],game_row[0])
+            sheet=db.execute('SELECT id_dados_forma FROM DADOS_FORMA_JOGO WHERE id_forma=? AND id_jogo=?',key).fetchone()
+            if not sheet:
+                presence='nativa' if method_code=='poke-ball-plus' else 'transferivel'
+                reason=('Mew é documentado via Poké Ball Plus.' if method_code=='poke-ball-plus' else
+                        'Fonte documenta a compatibilidade via GO Park; não implica captura selvagem nesta versão.')
+                identifier=db.execute("""INSERT INTO DADOS_FORMA_JOGO(id_forma,id_jogo,status_presenca,
+                    pode_ser_registrada,motivo_registro,fonte_url,data_verificacao)
+                    VALUES(?,?,?, 'sim',?,?,?)""",(*key,presence,reason,LGPE_AVAILABILITY_SOURCE,LGPE_AVAILABILITY_DATE)).lastrowid
+            else:
+                identifier=sheet['id_dados_forma']
+            method=methods[method_code]
+            condition=('Transferência unidirecional de Pokémon GO pelo GO Park, disponível após chegar a Fuchsia City.'
+                       if method_code=='go-park' else
+                       'Presente especial de Mew via Poké Ball Plus; a fonte registra um Mew por acessório.')
+            current=db.execute('SELECT * FROM METODO_FORMA_JOGO WHERE id_dados_forma=? AND id_metodo=?',
+                               (identifier,method['id_metodo'])).fetchone()
+            expected_values=(condition,LGPE_AVAILABILITY_SOURCE,LGPE_AVAILABILITY_DATE)
+            if current:
+                actual=(current['condicao'],current['fonte_url'],current['data_verificacao'])
+                if actual!=expected_values:
+                    raise ValueError(f'Conflito de curadoria no método de Let’s Go para espécie {number}; nenhum dado foi sobrescrito.')
+            else:
+                db.execute('''INSERT INTO METODO_FORMA_JOGO(id_dados_forma,id_metodo,condicao,fonte_url,data_verificacao)
+                    VALUES(?,?,?,?,?)''',(identifier,method['id_metodo'],*expected_values))
 
 
 def importar_perfis_dragapult(db):

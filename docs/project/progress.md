@@ -1,5 +1,21 @@
 # Continuidade do Pokelizer
 
+## Estado atual — 17/11/2026
+
+Branch `final/complete-project`, último commit publicado `356ef7bea3cfbc899c3ac9dffcd2f375495cf29e`; a expansão de disponibilidade de Let’s Go está em trabalho local e ainda não commitada. Não alterar `main`.
+
+### Disponibilidade transferível em Let’s Go
+
+A fonte de disponibilidade registra 153 espécies compatíveis: 1–150 e Meltan/Melmetal via GO Park, Mew via Poké Ball Plus. Foram adicionadas fichas padrão ausentes nas duas versões (37 por versão), sem reclassificar fichas que já tinham método nativo. Os métodos de transferência foram anexados também às fichas existentes. Uma extração CSV de 153 linhas é validada por SHA-256, escopo, unicidade e métodos. A página Bulbapedia é dinâmica, sem revisão estável recuperável; a data consultada, hash do extrato, atribuição e licença CC BY-NC-SA estão documentados. As formas Alola e Mega ainda não foram importadas como fichas de jogo.
+
+Banco limpo, migrações `[1, 2, 3, 4]`, duas cargas idênticas, `integrity_check=ok`, sem FKs inválidas. Contagem: 1.025 espécies, 1.579 formas, 53 jogos, 7.546 fichas, 37 mecânicas (11 parciais), 7.528 com tipos e estatísticas-base, 304 fichas/métodos GO Park e 2 Poké Ball Plus. Let’s Go tem 154 fichas por versão: 153 espécies + parceiro, todas com tipos e seis estatísticas com fonte. `coverage-final.json` foi regenerado.
+
+`PYTHONPATH=/home/Danilo/tools/python:backend python tools/check_stage2.py` passou 110 testes; SQL, dicionário, brModelo, UML, links e demonstração passaram. No Brave com banco limpo: conta, filtro Pikachu, exemplar do parceiro (IV HP 31, AV HP 0, seis EV não aplicáveis), perfil AV HP 200 e comparação -200; em 390 px, `scrollWidth=390`. A consulta detalhada do parceiro no card fez requisição API, mas o roteiro de extração de texto não confirmou a renderização da seção; esse detalhe permanece pendente de verificação visual/ajuste.
+
+Próximo passo: repetir/inspecionar a ficha do parceiro no card e resolver se necessário; conferir `git diff`, documentar e commit/push desta expansão. Depois seguir com formas Alola/Mega/contextos Scarlet-Violet, regulamentos e revisão completa de teclado/leitor de tela. Não declarar conclusão.
+
+---
+
 ## Estado atual — 16/11/2026
 
 Branch `final/complete-project`, commit atual publicado `0c1a59a7cd34510319f4f7a95e80ed2ffac1a467`, árvore `cd04c6dfea93f6a0ac4c8f5d81285f77c2b18c1f`. A tag `final-session-history-2026-11-16-09` preserva o commit local original `273e32e` antes do alinhamento de metadados do conector; árvores são idênticas. Não mexer em `main`. Continuação da auditoria: `AGENTS.md` ausente; os arquivos da Etapa 1 e as 73 provas anteriores foram preservados. As tarefas completas e pendências detalhadas continuam nos registros abaixo.
@@ -128,39 +144,7 @@ Próximo passo: preparar perfil de referência com distribuição explicitamente
 
 ### Perfil de referência e nova verificação em navegador
 
-O marco do regulamento foi publicado em `791b2d352cd5e387d45644262fa6780ae1552998` na branch `final/complete-project`; árvore local alinhada, commit original preservado na tag `final-session-history-2026-11-14-04`. O guia VGC citado documenta criação de Dreepy para Dragapult em Sword/Shield e distribuição ofensiva; a carga adiciona duas fichas e dois perfis somente leitura com EVs ataque 252, velocidade 252 e HP 4, sem inventar natureza, habilidade ou outros alvos. Fontes da ficha, do perfil e das estatísticas são distintas. Banco vazio: 5.074 fichas (5.072 encontros + 2 do guia), 366 com tipos/estatísticas, 976 vínculos de habilidade, 2 mecânicas, 2 regulamentos, 355 elegibilidades condicionais, 2 perfis de referência. Reimportação é repetível; não adota automaticamente ficha existente de outra fonte.
-
-`python tools/check_stage2.py` passou **84 testes**, mais modelos/SQL/UML/links e demonstração. Em Brave com dados reais e contas sintéticas, a referência mostra fonte e alvos; Escape fecha o diálogo. A tentativa de comparação incompatível mostrou erro, e a comparação compatível passou. Duas contas ficaram isoladas e a primeira excluiu seu exemplar e perfil pela interface, sem exceções JS. Uma tentativa inicial usou porta 5060 reservada; outra enviou Enter via automação sem fechar o diálogo: Escape foi confirmado, mas resta investigar Enter e revisar a navegação completa por teclado. O navegador e o banco usados são temporários.
-
-Próximo passo: investigar ativação por Enter, melhorar as imagens gerais dos modelos, ampliar cobertura contextual e referências com fontes. A cobertura de encontros é parcial e os jogos Red/Blue homônimos seguem sem importação contextual; não declarar o projeto concluído.
-
-Enter no botão focado foi repetido com o evento completo do navegador e fechou o diálogo; a tentativa anterior não enviava o caractere. Permanece pendente navegar por todos os fluxos usando apenas teclado e verificar contraste dos estados.
-
-### Retomada em 15/11/2026 — modelos completos
-
-Estado inicial da retomada: branch `final/complete-project` sincronizada com `origin` em `82415d9720a94d535be8b2b1822db52e52c22411`; a alteração local dos modelos lógicos era trabalho em andamento da sessão anterior. O relatório de cobertura continua registrando 5.074 fichas, 366 com tipos/estatísticas, 976 vínculos de habilidade, duas mecânicas, dois regulamentos, 355 elegibilidades condicionais e dois perfis de referência. Esses dados são parciais e o objetivo permanece ativo.
-
-As duas visões completas do brModelo foram reorganizadas em uma cópia temporária antes de atualizar os arquivos nativos e as imagens. Cardinalidades foram distribuídas acima das entidades e conexões encaminhadas por corredores; as caixas ficaram mais estreitas para abrir espaço ao redor dos relacionamentos. As duas imagens e recortes a 100% foram inspecionados, e os modelos foram reabertos pelo carregador oficial. A leitura das cardinalidades melhorou; ainda há muitos corredores compartilhados e é difícil seguir determinados vínculos na visão geral. Pranchas R e visões por domínio continuam complementos necessários. O SQL e a implementação não foram alterados nesta revisão.
-
-Próximo passo: executar as verificações de consistência, registrar/publicar o marco dos diagramas e ampliar dados reais para mais jogos, formas e perfis, com fontes e sem inferir disponibilidade a partir de índices internos. Também falta a revisão completa por teclado e contraste no navegador.
-
-Verificação após reorganização: `PYTHONPATH=/home/Danilo/tools/python:backend python tools/check_stage2.py` passou com **84 testes**, conferência de 26 entidades/187 campos/43 relações, UML, links e demonstração; `git diff --check` passou. A inspeção visual e seus limites estão em `docs/diagrams/visual-review.md`.
-
-### Dados históricos por geração — 15/11/2026
-
-O marco dos modelos foi publicado na branch `final/complete-project` em `13b011271ebe5febe3ebbc834af5905430730fce`, com árvore remota conferida e histórico local anterior salvo na tag `final-session-history-2026-11-15-06`. A carga usa agora os históricos da PokéAPI nas fichas de encontro existentes, com geração proveniente do grupo de versão. Em banco temporário limpo: 5.074 fichas com tipo e fonte, 4.903 com as seis estatísticas e 9.956 vínculos de habilidade com fonte. As 171 fichas da primeira geração não recebem seis estatísticas indevidas; a interface explica que há Especial único ainda não representado. A API e a interface distinguem habilidades não aplicáveis nas gerações I e II das não verificadas; habilidades em outras gerações são apresentadas como potenciais, sem afirmar método de obtenção. O relatório `coverage-final.json` passou a detalhar cada jogo. Nenhuma ficha de presença foi criada a partir de índice interno.
-
-Testes com dados reais conferem Clefairy Gold/X (Normal/Fairy), Magnemite Yellow/Gold (Electric/Electric-Steel), Pikachu Gold, habilidades históricas de Gengar, Pikachu e Poochyena, fonte, não aplicabilidade e preservação de histórico. CLI aplicou `[1, 2]` em banco temporário e duas cargas retornaram relatórios idênticos. No Brave, Magnemite Yellow e Gold mostraram tipos, estados e fontes esperados, sem exceções JavaScript; uma tentativa inicial foi repetida aguardando o Fetch. O objetivo permanece aberto: faltam identidade distinta para versões Red/Blue homônimas, ampliação de presença e dados além dos encontros, mecânicas de outros jogos, mais perfis/regulamentos e revisão completa por teclado/contraste.
-
-A coleção passou a recusar com mensagem explícita contextos cuja presença ou registro independente não estejam confirmados, em conformidade com a regra SQL existente; a interface identifica esse estado e desabilita a inclusão. No navegador, uma ficha `FIXTURE` temporária não verificada exibiu o estado e o botão desabilitado. Um teste de reimportação sobre banco com exemplar e curadoria parcial preservou os dados anteriores sem completar a estatística parcialmente curada.
-
-Verificação consolidada: `PYTHONPATH=/home/Danilo/tools/python:backend python tools/check_stage2.py` passou com **88 testes**, modelos/SQL/UML/links e demonstração. `git diff --check` passou.
-
-### Identidade das versões Red/Blue — 15/11/2026
-
-O marco de dados históricos foi publicado na branch `final/complete-project` em `14f5ead7f22166571cd4196c91de917c35ad9d88`. A migração 003 acrescenta o identificador de versão da PokéAPI sem alterar as migrações existentes, os IDs ou os vínculos anteriores. Red e Blue legados sem identificação permanecem ambíguos e são rotulados assim; quatro versões da fonte recebem identidades distintas. A importação e a seleção do grupo histórico usam o código, e não nomes repetidos. A base limpa passa a conter 53 versões, 5.330 fichas de encontro e duas do guia VGC; 5.332 com tipos, 4.903 com seis estatísticas, 9.956 vínculos de habilidades, duas mecânicas, dois regulamentos e 355 elegibilidades condicionais. Blue japonês não tem encontro cujo grupo de versão seja compatível no snapshot: ausência de ficha não prova ausência no jogo.
-
-Em banco temporário, `db-init` aplicou `[1, 2, 3]`; duas cargas geraram relatórios idênticos e `db-upgrade` não reaplicou migrações. Teste da migração 002→003 preservou usuário, exemplar, ficha e jogo Red de identidade desconhecida; um código já utilizado não pode ser alterado e duplicatas diferindo apenas por caixa são rejeitadas. `integrity_check` retornou `ok` e `foreign_key_check` vazio. `PYTHONPATH=/home/Danilo/tools/python:backend python tools/check_stage2.py` passou **90 testes**, além de SQL, 26 entidades/188 campos/43 relações brModelo, UML, 255 links e demonstração FIXTURE. `git diff --check` passou. As imagens gerais foram abertas; o espaço entre linhas foi aumentado após identificar caixas sobrepostas. Os vínculos continuam densos e as pranchas ampliadas são necessárias.
+O marco do regulamento foi publicado em `791b2d352cd5e387d45644262fa6780ae1552998` na branch `final/complete-project`; árvore local alinhada, commit original preservado na tag `final-session-history-2026-11-14-04`. O guia VGC citado documenta criação de Dreepy para Dragapult em Sword/Shield e distribuição ofensiva; a carga adiciona duas fichas e dois perfis somente leitura com EVs ataque 252, velocidade 252 e HP 4, sem inventar natureza, habilidade ou outros alvos. Fontes da ficha, do perfil e das estatísticas sã…1799 tokens truncated…me/Danilo/tools/python:backend python tools/check_stage2.py` passou **90 testes**, além de SQL, 26 entidades/188 campos/43 relações brModelo, UML, 255 links e demonstração FIXTURE. `git diff --check` passou. As imagens gerais foram abertas; o espaço entre linhas foi aumentado após identificar caixas sobrepostas. Os vínculos continuam densos e as pranchas ampliadas são necessárias.
 
 No Brave, usando Flask em banco temporário limpo, o filtro exibiu quatro versões distintas e Pikachu em `Red (red-japan)` mostrou Electric, Especial único e habilidade não aplicável, sem exceções JavaScript. Uma primeira tentativa de servidor encontrou a porta 5055 ocupada; repetida com sucesso na 5057. As verificações completas por teclado/contraste ainda não foram concluídas. Próximo passo: publicar este marco; depois ampliar mecânicas e cobertura contextual com fontes específicas, contemplar Especial da geração I e concluir QA de acessibilidade. Não declarar o projeto final completo.
 
