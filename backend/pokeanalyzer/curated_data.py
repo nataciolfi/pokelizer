@@ -10,6 +10,7 @@ EV_SOURCE = 'https://bulbapedia.bulbagarden.net/wiki/Effort_values'
 NATURE_SOURCE = 'https://raw.githubusercontent.com/PokeAPI/pokeapi/8a92bfa7dab2f12b84b5d151562f9857c133ff30/data/v2/csv/natures.csv'
 DATE = '2026-11-14'
 SERIES_14_SOURCE = 'https://www.pokemon.com/us/pokemon-news/pokemon-sword-and-pokemon-shield-ranked-battles-november-2022-season-season-36/'
+SV_REGULATION_H_SOURCE = 'https://sv-news.pokemon.co.jp/en/page/246.html'
 DRAGAPULT_SOURCE = 'https://www.vgcguide.com/ev-training'
 ABILITY_SOURCE = 'https://bulbapedia.bulbagarden.net/wiki/Ability'
 SV_STARTER_SOURCE = 'https://press.pokemon.com/en-CA/POKEMON-ANNOUNCES-NEW-VIDEO-GAMES-POKEMON-SCARLET-AND-POKEMON-VIOLET-'
@@ -245,6 +246,41 @@ def importar_regulamento_swsh(db, data, manifest):
                 {'id_regulamento':rule['id_regulamento'],'id_dados_forma':sheet['id_dados_forma']},
                 {'status':'condicional','condicao':condition,'fonte_url':SERIES_14_SOURCE,'data_verificacao':DATE},
                 ['status','condicao','fonte_url'])
+
+
+def importar_regulamento_sv_h(db, data):
+    """Season 22: conditional evidence for already sourced default forms only."""
+    dex_ids={r['identifier']:r['id'] for r in data['pokedexes.csv']}
+    ranges={'paldea': lambda n: 1<=n<=375 or 388<=n<=392,
+            'kitakami':lambda n: 1<=n<=196,'blueberry':lambda n: 1<=n<=235}
+    eligible={int(r['species_id']) for r in data['pokemon_dex_numbers.csv']
+              if any(r['pokedex_id']==dex_ids[name] and predicate(int(r['pokedex_number']))
+                     for name,predicate in ranges.items())}
+    for game in ('scarlet','violet'):
+        mechanic=db.execute("""SELECT m.id_mecanica FROM MECANICA_JOGO m JOIN JOGO j USING(id_jogo)
+            WHERE j.codigo_versao_pokeapi=? AND m.versao='regras-gerais-documentadas'""",(game,)).fetchone()
+        if not mechanic:
+            raise ValueError(f'Mecânica de {game} não encontrada; carga revertida.')
+        rule=_obter_ou_inserir(db,'REGULAMENTO',
+            {'id_mecanica':mechanic[0],'codigo':'ranked-battles-regulation-h','versao':'season-22',
+             'formato':'Ranked Battles','temporada':'September 2024'},
+            {'nome':'Scarlet/Violet Ranked Battles Season 22 — Regulation H',
+             'fonte_url':SV_REGULATION_H_SOURCE,'data_verificacao':'2026-11-17'},
+            ['nome','fonte_url','data_verificacao'])
+        rows=db.execute("""SELECT d.id_dados_forma,e.numero_nacional FROM DADOS_FORMA_JOGO d
+            JOIN FORMA f USING(id_forma) JOIN ESPECIE e USING(id_especie) JOIN JOGO j USING(id_jogo)
+            WHERE j.codigo_versao_pokeapi=? AND f.forma_padrao=1 AND d.status_presenca='nativa'
+              AND d.pode_ser_registrada='sim' AND d.fonte_url IN (?,?)""",
+            (game,SV_STARTER_SOURCE,SV_RAID_SOURCE)).fetchall()
+        for row in rows:
+            if row['numero_nacional'] not in eligible:
+                continue
+            condition=('Espécie está em uma faixa regional citada na regra; o jogo exige origem em Scarlet/Violet '
+                       'ou transferência por Pokémon HOME e pode impor outras restrições. Forma e exemplar não foram certificados.')
+            _obter_ou_inserir(db,'ELEGIBILIDADE_FORMA_REGULAMENTO',
+                {'id_regulamento':rule['id_regulamento'],'id_dados_forma':row['id_dados_forma']},
+                {'status':'condicional','condicao':condition,'fonte_url':SV_REGULATION_H_SOURCE,
+                 'data_verificacao':'2026-11-17'},['status','condicao','fonte_url','data_verificacao'])
 
 
 def importar_dragapult(db):

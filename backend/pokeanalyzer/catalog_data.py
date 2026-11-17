@@ -113,8 +113,9 @@ def importar_catalogo(directory=SNAPSHOT):
         importar_transformacoes_lgpe(db)
         from .contextual_data import importar_contextos_por_geracao
         importar_contextos_por_geracao(db, data, manifest)
-        from .curated_data import importar_regulamento_swsh
+        from .curated_data import importar_regulamento_swsh, importar_regulamento_sv_h
         importar_regulamento_swsh(db, data, manifest)
+        importar_regulamento_sv_h(db, data)
         from .curated_data import importar_perfis_dragapult
         importar_perfis_dragapult(db)
         if db.execute('PRAGMA foreign_key_check').fetchone():

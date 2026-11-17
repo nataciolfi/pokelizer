@@ -653,20 +653,40 @@ def test_official_series_14_eligibility_is_conditional_and_contextual(app, clien
             JOIN JOGO j USING(id_jogo) WHERE j.nome='Sword' AND r.codigo='ranked-battles-series-14'""").fetchone()[0]
         shield_rule=db.execute("""SELECT r.id_regulamento FROM REGULAMENTO r JOIN MECANICA_JOGO m USING(id_mecanica)
             JOIN JOGO j USING(id_jogo) WHERE j.nome='Shield' AND r.codigo='ranked-battles-series-14'""").fetchone()[0]
-        assert report['contagens_banco']['REGULAMENTO']==2
+        assert report['contagens_banco']['REGULAMENTO']==4
     result=client.get(f'/api/regulamentos/{rule}/formas/{sheet}')
     assert result.status_code==200
     assert result.json['status']=='condicional' and 'battle-ready' in result.json['condicao']
     assert 'pokemon.com' in result.json['fonte_url'] and result.json['legalidade_completa_verificada'] is False
     assert client.get(f'/api/regulamentos/{shield_rule}/formas/{sheet}').status_code==400
     with app.app_context():
-        assert importar_catalogo()['contagens_banco']['REGULAMENTO']==2
+        assert importar_catalogo()['contagens_banco']['REGULAMENTO']==4
         db=get_db()
         db.execute("UPDATE ELEGIBILIDADE_FORMA_REGULAMENTO SET status='proibido' WHERE id_regulamento=? AND id_dados_forma=?",(rule,sheet))
         db.commit()
         with pytest.raises(ValueError,match='Conflito de curadoria'):
             importar_catalogo()
         assert db.execute('SELECT status FROM ELEGIBILIDADE_FORMA_REGULAMENTO WHERE id_regulamento=? AND id_dados_forma=?',(rule,sheet)).fetchone()[0]=='proibido'
+
+
+def test_regulation_h_is_historical_conditional_and_version_specific(app, client):
+    with app.app_context():
+        report=importar_catalogo()
+        assert importar_catalogo()==report
+        db=get_db()
+        rules=dict(db.execute("""SELECT j.codigo_versao_pokeapi,r.id_regulamento FROM REGULAMENTO r
+            JOIN MECANICA_JOGO m USING(id_mecanica) JOIN JOGO j USING(id_jogo)
+            WHERE r.codigo='ranked-battles-regulation-h'""").fetchall())
+        assert set(rules)=={'scarlet','violet'}
+        sheet=db.execute("""SELECT d.id_dados_forma FROM DADOS_FORMA_JOGO d JOIN FORMA f USING(id_forma)
+            JOIN JOGO j USING(id_jogo) WHERE f.codigo_forma='sprigatito' AND j.codigo_versao_pokeapi='scarlet'""").fetchone()[0]
+        assert db.execute('SELECT count(*) FROM ELEGIBILIDADE_FORMA_REGULAMENTO WHERE id_regulamento IN (?,?)',
+                          (rules['scarlet'],rules['violet'])).fetchone()[0]==14
+    response=client.get(f"/api/regulamentos/{rules['scarlet']}/formas/{sheet}")
+    assert response.status_code==200
+    assert response.json['status']=='condicional' and response.json['legalidade_completa_verificada'] is False
+    assert 'Pokémon HOME' in response.json['condicao'] and response.json['fonte_url'].endswith('/page/246.html')
+    assert client.get(f"/api/regulamentos/{rules['violet']}/formas/{sheet}").status_code==400
 
 
 def test_reference_dragapult_targets_are_sourced_and_no_other_values_inferred(app, client):

@@ -7,8 +7,8 @@
     "JOGO": 53,
     "DADOS_FORMA_JOGO": 7612,
     "MECANICA_JOGO": 37,
-    "REGULAMENTO": 2,
-    "ELEGIBILIDADE_FORMA_REGULAMENTO": 617
+    "REGULAMENTO": 4,
+    "ELEGIBILIDADE_FORMA_REGULAMENTO": 631
   },
   "cobertura_snapshot": {
     "especies_importadas": 1025,
